@@ -1,6 +1,7 @@
 name: E2E CLI 5.x
 
 on:
+  workflow_dispatch:
   pull_request:
   push:
   schedule:
