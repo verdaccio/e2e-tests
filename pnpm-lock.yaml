@@ -38,7 +38,7 @@ importers:
       '@types/http-errors': 1.8.2
       '@types/jest': 27.5.2
       '@types/jsonwebtoken': 8.5.9
-      '@types/lodash': 4.14.186
+      '@types/lodash': 4.14.188
       '@types/mime': 2.0.3
       '@types/minimatch': 3.0.5
       '@types/node': 16.11.65
@@ -102,7 +102,7 @@ importers:
       '@types/http-errors': 1.8.2
       '@types/jest': 27.5.2
       '@types/jsonwebtoken': 8.5.9
-      '@types/lodash': 4.14.186
+      '@types/lodash': 4.14.188
       '@types/mime': 2.0.3
       '@types/minimatch': 3.0.5
       '@types/node': 16.11.65
@@ -1827,7 +1827,7 @@ packages:
     dependencies:
       '@formatjs/ts-transformer': 2.13.0
       '@types/json-stable-stringify': 1.0.34
-      '@types/lodash': 4.14.186
+      '@types/lodash': 4.14.188
       '@types/loud-rejection': 2.0.0
       '@types/node': 14.18.33
       '@vue/compiler-core': 3.2.41
@@ -2397,10 +2397,6 @@ packages:
     deprecated: This is a stub types definition. keyv provides its own type definitions, so you do not need this installed.
     dependencies:
       keyv: 4.5.0
-    dev: true
-
-  /@types/lodash/4.14.186:
-    resolution: {integrity: sha512-eHcVlLXP0c2FlMPm56ITode2AgLMSa6aJ05JTTbYbI+7EMkCEE5qk2E41d5g2lCVTqRe0GnnRFurmlCsDODrPw==}
     dev: true
 
   /@types/lodash/4.14.188:
@@ -7588,7 +7584,7 @@ packages:
   /regenerator-transform/0.15.0:
     resolution: {integrity: sha512-LsrGtPmbYg19bcPHwdtmXwbW+TqNvtY4riE3P83foeHRroMbH6/2ddFBfab3t7kbzc7v7p4wbkIecHImqt0QNg==}
     dependencies:
-      '@babel/runtime': 7.19.4
+      '@babel/runtime': 7.20.1
     dev: true
 
   /regexp.prototype.flags/1.4.3:
