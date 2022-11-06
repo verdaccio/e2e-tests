@@ -1,12 +1,13 @@
 /* eslint-disable prefer-promise-reject-errors */
-import buildDebug from "debug";
-import { merge } from "lodash";
-import { Registry } from "./server";
+import buildDebug from 'debug';
+import { merge } from 'lodash';
 
-import { getDefaultConfig } from "@verdaccio/config";
-import { ConfigYaml } from "@verdaccio/types";
+import { getDefaultConfig } from '@verdaccio/config';
+import { ConfigYaml } from '@verdaccio/types';
 
-const debug = buildDebug("verdaccio:e2e:registry-utils");
+import { Registry } from './server';
+
+const debug = buildDebug('verdaccio:e2e:registry-utils');
 
 export type Setup = {
   registry: Registry;
@@ -14,9 +15,9 @@ export type Setup = {
 };
 
 const log =
-  process.env.NODE_ENV === "production"
-    ? { type: "stdout", format: "json", level: "warn" }
-    : { type: "stdout", format: "pretty", level: "info" };
+  process.env.NODE_ENV === 'production'
+    ? { type: 'stdout', format: 'json', level: 'warn' }
+    : { type: 'stdout', format: 'pretty', level: 'info' };
 
 const defaultConfig = {
   ...getDefaultConfig(),

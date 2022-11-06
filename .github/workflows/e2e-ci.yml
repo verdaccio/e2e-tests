@@ -1,6 +1,6 @@
 name: E2E CLI 5.x
 
-on: 
+on:
   pull_request:
   push:
   schedule:
@@ -20,11 +20,11 @@ jobs:
       - name: corepack
         run: corepack enable
       - name: pnpm enable
-        run: corepack prepare pnpm@latest --activate       
+        run: corepack prepare pnpm@latest --activate
       - name: set store
         run: |
           mkdir ~/.pnpm-store
-          pnpm config set store-dir ~/.pnpm-store    
+          pnpm config set store-dir ~/.pnpm-store
       - name: Install
         run: pnpm install
       - name: Cache .pnpm-store
@@ -33,7 +33,7 @@ jobs:
           path: ~/.pnpm-store
           key: pnpm-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.run_id }}-${{ github.sha }}
           restore-keys: |
-            pnpm-            
+            pnpm-
       - name: build
         run: pnpm build
       - name: Cache tools
@@ -43,14 +43,14 @@ jobs:
           path: ./tools/
           key: pkg-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.run_id }}-${{ github.sha }}
           restore-keys: |
-            tools-        
+            tools-
   e2e-cli:
     needs: [build]
     strategy:
       fail-fast: false
       matrix:
-        pkg: [npm6, npm7, npm8, npm9, pnpm6, pnpm7, yarn1, yarn2,  yarn3, yarn4]
-    name:  ${{ matrix.pkg }} / ${{ matrix.os }}
+        pkg: [npm6, npm7, npm8, npm9, pnpm6, pnpm7, yarn1, yarn2, yarn3, yarn4]
+    name: ${{ matrix.pkg }} / ${{ matrix.os }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # tag=v3
@@ -60,7 +60,7 @@ jobs:
       - name: corepack
         run: corepack enable
       - name: pnpm enable
-        run: corepack prepare pnpm@latest --activate       
+        run: corepack prepare pnpm@latest --activate
       - uses: actions/cache@1c73980b09e7aea7201f325a7aa3ad00beddcdda # tag=v3
         with:
           path: ~/.pnpm-store

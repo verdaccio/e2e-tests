@@ -1,12 +1,13 @@
-import assert from "assert";
-import buildDebug from "debug";
-import got, { HTTPAlias, Response, Headers as gotHeaders } from "got";
-import { isNil, isObject, isRegExp } from "lodash";
+import assert from 'assert';
+import buildDebug from 'debug';
+import got, { HTTPAlias, Response, Headers as gotHeaders } from 'got';
+import { isNil, isObject, isRegExp } from 'lodash';
 
-import { API_MESSAGE, HEADERS, HTTP_STATUS } from "@verdaccio/core";
-import { generatePackageMetadata } from "./generatePackageMetadata";
+import { API_MESSAGE, HEADERS, HTTP_STATUS } from '@verdaccio/core';
 
-const debug = buildDebug("verdaccio:registry:request");
+import { generatePackageMetadata } from './generatePackageMetadata';
+
+const debug = buildDebug('verdaccio:registry:request');
 
 export interface ResponseAssert {
   status(reason: any): any;
@@ -38,11 +39,7 @@ class RequestAssert {
   }
 
   public status(code: number) {
-    debug(
-      "expected check status %s vs response code %s",
-      code,
-      this.response.statusCode
-    );
+    debug('expected check status %s vs response code %s', code, this.response.statusCode);
     assert(code === this.response.statusCode);
     return this;
   }
@@ -52,14 +49,14 @@ class RequestAssert {
   }
 
   public body_ok(expected: string | RegExp) {
-    debug("body expect ok %s", expected);
+    debug('body expect ok %s', expected);
     if (isRegExp(expected)) {
       assert(this.response.body?.ok?.match(expected));
       assert(
         this.response.body?.ok.match(expected),
         `'${this.response.body.ok}' doesn't match " ${expected}`
       );
-    } else if (typeof expected === "string") {
+    } else if (typeof expected === 'string') {
       assert.equal(this.response.body?.ok, expected);
     } else {
       assert.deepEqual(this.response.body, expected);
@@ -67,7 +64,7 @@ class RequestAssert {
   }
 
   public body_error(expected: string | RegExp) {
-    debug("body expect error %s", expected);
+    debug('body expect error %s', expected);
     if (isRegExp(expect)) {
       assert(
         this.response?.body?.error?.match(expected),
@@ -79,26 +76,23 @@ class RequestAssert {
 }
 
 export async function createRequest(options: Options): Promise<any> {
-  debug("options %s", JSON.stringify(options));
+  debug('options %s', JSON.stringify(options));
   let body = undefined;
   if (isNil(options.body) === false) {
-    body =
-      isObject(options.body) === false
-        ? JSON.stringify(options.body)
-        : options.body;
+    body = isObject(options.body) === false ? JSON.stringify(options.body) : options.body;
   }
 
   const method = options?.method?.toLocaleLowerCase();
-  debug("method %s", method);
-  debug("url %s", options?.url);
-  debug("headers %s", options?.headers);
-  if (method === "get") {
+  debug('method %s', method);
+  debug('url %s', options?.url);
+  debug('headers %s', options?.headers);
+  if (method === 'get') {
     return got(options.url, {
       isStream: false,
       resolveBodyOnly: false,
       throwHttpErrors: false,
       // @ts-ignore
-      responseType: options.encoding ?? "json",
+      responseType: options.encoding ?? 'json',
       headers: options.headers,
       method: options.method,
       body,
@@ -107,12 +101,12 @@ export async function createRequest(options: Options): Promise<any> {
     }).then((response) => {
       return new RequestAssert(response as any);
     });
-  } else if (method === "put") {
+  } else if (method === 'put') {
     return (
       got
         .put(options.url, {
           throwHttpErrors: false,
-          responseType: "json",
+          responseType: 'json',
           headers: options.headers,
           json: options.body ? options.body : undefined,
           retry: { limit: 0 },
@@ -122,12 +116,12 @@ export async function createRequest(options: Options): Promise<any> {
           return new RequestAssert(response as any);
         })
     );
-  } else if (method === "delete") {
+  } else if (method === 'delete') {
     return (
       got
         .delete(options.url, {
           throwHttpErrors: false,
-          responseType: "json",
+          responseType: 'json',
           headers: options.headers,
           retry: { limit: 0 },
         })
@@ -143,9 +137,9 @@ export class ServerQuery {
   private userAgent: string;
   private url: string;
   public constructor(url) {
-    this.url = url.replace(/\/$/, "");
-    debug("server url %s", this.url);
-    this.userAgent = "node/v14.1.2 linux x64";
+    this.url = url.replace(/\/$/, '');
+    debug('server url %s', this.url);
+    this.userAgent = 'node/v14.1.2 linux x64';
   }
 
   private request(options: any): Promise<ResponseAssert> {
@@ -157,8 +151,8 @@ export class ServerQuery {
 
   public debug(): Promise<ResponseAssert> {
     return this.request({
-      uri: "/-/_debug",
-      method: "get",
+      uri: '/-/_debug',
+      method: 'get',
       headers: {
         [HEADERS.CONTENT_TYPE]: HEADERS.JSON,
       },
@@ -173,25 +167,19 @@ export class ServerQuery {
    * @memberof ServerQuery
    * @deprecated use createUser instead
    */
-  public auth({
-    name,
-    password,
-  }: {
-    name: string;
-    password: string;
-  }): Promise<ResponseAssert> {
+  public auth({ name, password }: { name: string; password: string }): Promise<ResponseAssert> {
     return this.createUser(name, password);
   }
 
   public createUser(name, password): Promise<ResponseAssert> {
     return this.request({
       uri: `/-/user/org.couchdb.user:${encodeURIComponent(name)}`,
-      method: "PUT",
+      method: 'PUT',
       body: {
         name,
         password,
         _id: `org.couchdb.user:${name}`,
-        type: "user",
+        type: 'user',
         roles: [],
         date: new Date(),
       },
@@ -201,22 +189,22 @@ export class ServerQuery {
   public logout(token: string) {
     return this.request({
       uri: `/-/user/token/${encodeURIComponent(token)}`,
-      method: "DELETE",
+      method: 'DELETE',
     });
   }
 
   public getPackage(name: string) {
     return this.request({
       uri: `/${encodeURIComponent(name)}`,
-      method: "get",
+      method: 'get',
     });
   }
 
   public getTarball(name: string, filename: string) {
     return this.request({
       uri: `/${encodeURIComponent(name)}/-/${encodeURIComponent(filename)}`,
-      method: "GET",
-      encoding: "buffer",
+      method: 'GET',
+      encoding: 'buffer',
     });
   }
 
@@ -229,7 +217,7 @@ export class ServerQuery {
   public removePackage(name: string, rev) {
     return this.request({
       uri: `/${encodeURIComponent(name)}/-rev/${rev}`,
-      method: "DELETE",
+      method: 'DELETE',
       headers: {
         [HEADERS.CONTENT_TYPE]: HEADERS.JSON_CHARSET,
       },
@@ -239,7 +227,7 @@ export class ServerQuery {
   public removeSingleTarball(name: string, filename: string) {
     return this.request({
       uri: `/${encodeURIComponent(name)}/-/${filename}/-rev/whatever`,
-      method: "DELETE",
+      method: 'DELETE',
       headers: {
         [HEADERS.CONTENT_TYPE]: HEADERS.JSON_CHARSET,
       },
@@ -256,7 +244,7 @@ export class ServerQuery {
   public addTag(name: string, tag: string, version: string) {
     return this.request({
       uri: `/${encodeURIComponent(name)}/${encodeURIComponent(tag)}`,
-      method: "PUT",
+      method: 'PUT',
       body: version,
       headers: {
         [HEADERS.CONTENT_TYPE]: HEADERS.JSON,
@@ -266,10 +254,8 @@ export class ServerQuery {
 
   public putVersion(name: string, version: string, data: any, headers) {
     return this.request({
-      uri: `/${encodeURIComponent(name)}/${encodeURIComponent(
-        version
-      )}/-tag/latest`,
-      method: "PUT",
+      uri: `/${encodeURIComponent(name)}/${encodeURIComponent(version)}/-tag/latest`,
+      method: 'PUT',
       body: data,
       headers: {
         [HEADERS.CONTENT_TYPE]: HEADERS.JSON,
@@ -281,7 +267,7 @@ export class ServerQuery {
   public putPackage(name: string, data, headers = {}) {
     return this.request({
       uri: `/${encodeURIComponent(name)}`,
-      method: "PUT",
+      method: 'PUT',
       body: data,
       headers: {
         [HEADERS.CONTENT_TYPE]: HEADERS.JSON,
@@ -292,7 +278,7 @@ export class ServerQuery {
 
   public async addPackage(
     name: string,
-    version: string = "1.0.0",
+    version: string = '1.0.0',
     message = API_MESSAGE.PKG_CREATED
   ): Promise<ResponseAssert> {
     return (await this.putPackage(name, generatePackageMetadata(name, version)))
@@ -300,26 +286,23 @@ export class ServerQuery {
       .body_ok(message);
   }
 
-  public async addPackageAssert(
-    name: string,
-    version: string = "1.0.0"
-  ): Promise<ResponseAssert> {
+  public async addPackageAssert(name: string, version: string = '1.0.0'): Promise<ResponseAssert> {
     return this.putPackage(name, generatePackageMetadata(name, version));
   }
 
   public async whoami() {
-    debug("request whoami");
+    debug('request whoami');
     return await this.request({
-      uri: "/-/whoami",
-      method: "get",
+      uri: '/-/whoami',
+      method: 'get',
     });
   }
 
   public async ping() {
     return (
       await this.request({
-        uri: "/-/ping",
-        method: "get",
+        uri: '/-/ping',
+        method: 'get',
       })
     ).status(HTTP_STATUS.OK);
   }
