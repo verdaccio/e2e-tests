@@ -50,7 +50,7 @@
     "@types/node": "16.11.65",
     "@types/jsonwebtoken": "8.5.9",
     "@types/request": "2.48.8",
-    "@types/semver": "7.3.12",
+    "@types/semver": "7.3.13",
     "@types/node-fetch": "2.6.2",
     "@types/supertest": "2.0.12",
     "@types/testing-library__jest-dom": "5.14.5",
