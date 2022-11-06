@@ -9,7 +9,7 @@ jobs:
     name: setup e2e verdaccio
     services:
       verdaccio:
-        image: verdaccio/verdaccio:nightly-master
+        image: verdaccio/verdaccio:5
         ports:
           - 4873:4873
         env:
@@ -51,7 +51,7 @@ jobs:
           path: ~/.pnpm-store
           key: pnpm-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.run_id }}-${{ github.sha }}
       - name: Install
-        run: pnpm recursive install --frozen-lockfile --reporter=silence --registry http://localhost:4873
+        run: pnpm install --frozen-lockfile --reporter=silence --registry http://localhost:4873
       - name: build
         run: pnpm build
   e2e-cli:
