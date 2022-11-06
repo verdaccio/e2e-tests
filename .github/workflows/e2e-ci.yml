@@ -15,14 +15,14 @@ jobs:
           NODE_ENV: production
     steps:
       - uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # tag=v3
-      - name: Use Node 16
+      - name: Use Node
         uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # tag=v3
         with:
           node-version-file: '.nvmrc'
       - name: corepack
         run: corepack enable
       - name: pnpm enable
-        run: corepack prepare pnpm@latest-6 --activate       
+        run: corepack prepare pnpm@latest --activate       
       - name: set store
         run: |
           mkdir ~/.pnpm-store
@@ -62,7 +62,7 @@ jobs:
       - name: corepack
         run: corepack enable
       - name: pnpm enable
-        run: corepack prepare pnpm@latest-6 --activate       
+        run: corepack prepare pnpm@latest --activate       
       - uses: actions/cache@1c73980b09e7aea7201f325a7aa3ad00beddcdda # tag=v3
         with:
           path: ~/.pnpm-store
