@@ -4,9 +4,8 @@ on: [pull_request, push]
 permissions:
   contents: read
 jobs:
-  prepare:
+  build:
     runs-on: ubuntu-latest
-    name: setup e2e verdaccio
     services:
       verdaccio:
         image: verdaccio/verdaccio:5
@@ -15,30 +14,6 @@ jobs:
         env:
           NODE_ENV: production
     steps:
-    - uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # tag=v3
-    - name: Use Node
-      uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # tag=v3
-      with:
-        node-version-file: '.nvmrc'
-    - name: Install pnpm
-      run: npm i pnpm@latest
-    - name: set store
-      run: |
-        mkdir ~/.pnpm-store
-        pnpm config set store-dir ~/.pnpm-store
-    - name: Install
-      run: pnpm recursive install --frozen-lockfile --reporter=silence --ignore-scripts --registry http://localhost:4873
-    - name: Cache .pnpm-store
-      uses: actions/cache@1c73980b09e7aea7201f325a7aa3ad00beddcdda # tag=v3
-      with:
-        path: ~/.pnpm-store
-        key: pnpm-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.run_id }}-${{ github.sha }}
-        restore-keys: |
-          pnpm-
-  build:
-    needs: [prepare]
-    runs-on: ubuntu-latest
-    steps:
       - uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # tag=v3
       - name: Use Node 16
         uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # tag=v3
@@ -46,16 +21,12 @@ jobs:
           node-version-file: '.nvmrc'
       - name: Install pnpm
         run: npm i pnpm@latest
-      - uses: actions/cache@1c73980b09e7aea7201f325a7aa3ad00beddcdda # tag=v3
-        with:
-          path: ~/.pnpm-store
-          key: pnpm-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.run_id }}-${{ github.sha }}
       - name: Install
-        run: pnpm install --frozen-lockfile --reporter=silence --registry http://localhost:4873
+        run: pnpm install --registry http://localhost:4873
       - name: build
         run: pnpm build
   e2e-cli:
-    needs: [prepare, build]
+    needs: [build]
     strategy:
       fail-fast: false
       matrix:
