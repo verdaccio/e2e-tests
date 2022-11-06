@@ -1,5 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:base", "schedule:earlyMondays", "helpers:pinGitHubActionDigests"],
-  "prConcurrentLimit": 2
+  "prConcurrentLimit": 2,
+  "major": false
 }
