@@ -52,7 +52,6 @@ importers:
       '@types/webpack-env': 1.18.0
       '@typescript-eslint/eslint-plugin': 5.41.0
       '@typescript-eslint/parser': 5.41.0
-      '@verdaccio/eslint-config': 2.0.0-6-next.1
       '@verdaccio/types': 6-next
       babel-core: 7.0.0-bridge.0
       babel-eslint: 10.1.0
@@ -116,7 +115,6 @@ importers:
       '@types/webpack-env': 1.18.0
       '@typescript-eslint/eslint-plugin': 5.41.0_huremdigmcnkianavgfk3x6iou
       '@typescript-eslint/parser': 5.41.0_wyqvi574yv7oiwfeinomdzmc3m
-      '@verdaccio/eslint-config': link:tools/eslint
       '@verdaccio/types': 11.0.0-6-next.17
       babel-core: 7.0.0-bridge.0_@babel+core@7.19.3
       babel-eslint: 10.1.0_eslint@8.26.0
