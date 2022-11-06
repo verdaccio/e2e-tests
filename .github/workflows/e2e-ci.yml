@@ -19,10 +19,10 @@ jobs:
         uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # tag=v3
         with:
           node-version-file: '.nvmrc'
-      - name: Corepack
+      - name: corepack
         run: corepack enable
-      - name: Corepack
-        run: corepack prepare pnpm@6-latest --activate       
+      - name: pnpm enable
+        run: corepack prepare pnpm@latest-6 --activate       
       - name: Install
         run: pnpm install --registry http://localhost:4873
       - name: build
