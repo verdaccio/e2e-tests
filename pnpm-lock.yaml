@@ -153,10 +153,10 @@ importers:
   e2e/cli/e2e-npm9:
     specifiers:
       '@verdaccio/test-cli-commons': workspace:1.0.1-6-next.5
-      npm: 9.0.0-pre.5
+      npm: 9.1.0
     dependencies:
       '@verdaccio/test-cli-commons': link:../../../tools/cli-commons
-      npm: 9.0.0-pre.5
+      npm: 9.1.0
 
   e2e/cli/e2e-pnpm6:
     specifiers:
@@ -6206,8 +6206,8 @@ packages:
       - which
       - write-file-atomic
 
-  /npm/9.0.0-pre.5:
-    resolution: {integrity: sha512-32BmUjMP5ovadyIQlxOUR5OxjXa09OK3KZ2uV64ySxplmETdnIykS7ECozBwBQImpcuRHzuhHFQM2AQmuUpqYQ==}
+  /npm/9.1.0:
+    resolution: {integrity: sha512-ReDxpn3P2vWnUnql8o6GfAtLiVrWoX6N2vdbp4jxgXl81TVrCJmYH3wyi9V3Dt5rmJZH2FxXoiesZiLSEGCi3A==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
     hasBin: true
     dev: false
@@ -6216,7 +6216,6 @@ packages:
       - '@npmcli/arborist'
       - '@npmcli/ci-detect'
       - '@npmcli/config'
-      - '@npmcli/fs'
       - '@npmcli/map-workspaces'
       - '@npmcli/package-json'
       - '@npmcli/run-script'
@@ -6224,7 +6223,6 @@ packages:
       - archy
       - cacache
       - chalk
-      - chownr
       - cli-columns
       - cli-table3
       - columnify
@@ -6253,7 +6251,6 @@ packages:
       - minipass
       - minipass-pipeline
       - mkdirp
-      - mkdirp-infer-owner
       - ms
       - node-gyp
       - nopt
@@ -6265,7 +6262,6 @@ packages:
       - npm-registry-fetch
       - npm-user-validate
       - npmlog
-      - opener
       - p-map
       - pacote
       - parse-conflict-json
