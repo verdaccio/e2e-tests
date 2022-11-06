@@ -23,12 +23,19 @@ jobs:
         run: corepack enable
       - name: pnpm enable
         run: corepack prepare pnpm@latest-6 --activate       
-      - name: Install
-        run: pnpm install --registry http://localhost:4873
       - name: set store
         run: |
           mkdir ~/.pnpm-store
-          pnpm config set store-dir ~/.pnpm-store        
+          pnpm config set store-dir ~/.pnpm-store    
+      - name: Install
+        run: pnpm install --registry http://localhost:4873
+      - name: Cache .pnpm-store
+        uses: actions/cache@1c73980b09e7aea7201f325a7aa3ad00beddcdda # tag=v3
+        with:
+          path: ~/.pnpm-store
+          key: pnpm-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.run_id }}-${{ github.sha }}
+          restore-keys: |
+            pnpm-            
       - name: build
         run: pnpm build
   e2e-cli:
