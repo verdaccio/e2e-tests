@@ -123,10 +123,10 @@ importers:
   e2e/cli/e2e-npm9:
     specifiers:
       '@verdaccio/test-cli-commons': workspace:1.0.1-6-next.5
-      npm: 9.1.0
+      npm: 9.1.2
     dependencies:
       '@verdaccio/test-cli-commons': link:../../../tools/cli-commons
-      npm: 9.1.0
+      npm: 9.1.2
 
   e2e/cli/e2e-pnpm6:
     specifiers:
@@ -134,7 +134,7 @@ importers:
       pnpm: latest-6
     dependencies:
       '@verdaccio/test-cli-commons': link:../../../tools/cli-commons
-      pnpm: 6.35.0
+      pnpm: 6.35.1
 
   e2e/cli/e2e-pnpm7:
     specifiers:
@@ -142,7 +142,7 @@ importers:
       pnpm: next-7
     dependencies:
       '@verdaccio/test-cli-commons': link:../../../tools/cli-commons
-      pnpm: 7.14.2
+      pnpm: 7.16.1
 
   e2e/cli/e2e-yarn1:
     specifiers:
@@ -5804,15 +5804,14 @@ packages:
       - which
       - write-file-atomic
 
-  /npm/9.1.0:
-    resolution: {integrity: sha512-ReDxpn3P2vWnUnql8o6GfAtLiVrWoX6N2vdbp4jxgXl81TVrCJmYH3wyi9V3Dt5rmJZH2FxXoiesZiLSEGCi3A==}
+  /npm/9.1.2:
+    resolution: {integrity: sha512-qOFg33/5YCHLArtRBep9HJydPZURbCwt8nxwXDRHZO9PZtTUMCo1C4iXBFPW1TxnzAdHscdw76ihbupdmL7cmw==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
     hasBin: true
     dev: false
     bundledDependencies:
       - '@isaacs/string-locale-compare'
       - '@npmcli/arborist'
-      - '@npmcli/ci-detect'
       - '@npmcli/config'
       - '@npmcli/map-workspaces'
       - '@npmcli/package-json'
@@ -5821,6 +5820,7 @@ packages:
       - archy
       - cacache
       - chalk
+      - ci-info
       - cli-columns
       - cli-table3
       - columnify
@@ -5868,7 +5868,6 @@ packages:
       - read
       - read-package-json
       - read-package-json-fast
-      - readdir-scoped-modules
       - rimraf
       - semver
       - ssri
@@ -6143,14 +6142,14 @@ packages:
       semver-compare: 1.0.0
     dev: true
 
-  /pnpm/6.35.0:
-    resolution: {integrity: sha512-XKAxyK1weNV0x8Ip8/beHY1JGcO8c8fnYNL4yzZx3TxZjYOYY6r2ltrUM2R8vCD+Vmjtbq1YAKhIT7Q4Q79XSg==}
+  /pnpm/6.35.1:
+    resolution: {integrity: sha512-Pt5JEjV2JSORAqw/XtjfF4k34PBQFpqV3kUMFYSlyrWJsio5Hr3lqy2oJkpprMrVbOyBJsxXfZDQOlvmytIrgA==}
     engines: {node: '>=12.17'}
     hasBin: true
     dev: false
 
-  /pnpm/7.14.2:
-    resolution: {integrity: sha512-NSxrIaRW07jFQQ1fPFFOA8eMfuogsMeygOKd3zaFgyJBdo1oh61jl2JjWc+w0XNzWIMG7/v9HK7nP8RTL5NO3g==}
+  /pnpm/7.16.1:
+    resolution: {integrity: sha512-vtAw/kJ+Slm/XdLvd3zbSA8FKBgetrk+1KQFDnyvPP0q2Pjc1f2HsA7idYs9MJewYi4o03cjyZhAdqrCcjknsw==}
     engines: {node: '>=14.6'}
     hasBin: true
     dev: false
