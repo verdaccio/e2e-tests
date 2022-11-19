@@ -49,7 +49,7 @@ importers:
       lint-staged: 11.2.6
       prettier: 2.7.1
       rimraf: 3.0.2
-      typescript: 4.8.4
+      typescript: 4.9.3
       update-ts-references: 2.4.1
     devDependencies:
       '@babel/cli': 7.19.3_@babel+core@7.20.2
@@ -93,8 +93,8 @@ importers:
       lint-staged: 11.2.6
       prettier: 2.7.1
       rimraf: 3.0.2
-      typescript: 4.8.4
-      update-ts-references: 2.4.1_typescript@4.8.4
+      typescript: 4.9.3
+      update-ts-references: 2.4.1_typescript@4.9.3
 
   e2e/cli/e2e-npm6:
     specifiers:
@@ -1742,7 +1742,7 @@ packages:
       lodash: 4.17.21
       loud-rejection: 2.2.0
       tslib: 2.4.1
-      typescript: 4.8.4
+      typescript: 4.9.3
     transitivePeerDependencies:
       - ts-jest
     dev: true
@@ -1763,7 +1763,7 @@ packages:
     dependencies:
       intl-messageformat-parser: 6.1.2
       tslib: 2.4.1
-      typescript: 4.8.4
+      typescript: 4.9.3
     dev: true
 
   /@istanbuljs/load-nyc-config/1.1.0:
@@ -3333,7 +3333,7 @@ packages:
     dev: true
 
   /depd/1.1.2:
-    resolution: {integrity: sha1-m81S4UwJd2PnSbJ0xDRu0uVgtak=}
+    resolution: {integrity: sha512-7emPTl6Dpo6JRXOXjLRxck+FlLRX5847cLKEn00PLAgc3g2hTZZgr+e4c2v6QpSmLeFP3n5yUo7ft6avBK/5jQ==}
     engines: {node: '>= 0.6'}
     dev: true
 
@@ -6244,7 +6244,7 @@ packages:
     dev: true
 
   /punycode/1.4.1:
-    resolution: {integrity: sha1-wNWmOycYgArY4esPpSachN1BhF4=}
+    resolution: {integrity: sha512-jmYNElW7yvO7TV33CjSmvSiE2yco3bV2czu/OzDKdMNVZQWfxCblURLhf+47syQRBntjfLdd/H0egrzIG+oaFQ==}
     dev: true
 
   /punycode/2.1.1:
@@ -6720,7 +6720,7 @@ packages:
     dev: true
 
   /statuses/1.5.0:
-    resolution: {integrity: sha1-Fhx9rBd2Wf2YEfQ3cfqZOBR4Yow=}
+    resolution: {integrity: sha512-OpZ3zP+jT1PI7I8nemJX4AKmAX070ZkYPVWV/AaKTJl+tXCTGyVdC1a4SL8RUQYEwk/f34ZX8UTykN68FwrqAA==}
     engines: {node: '>= 0.6'}
     dev: true
 
@@ -6876,7 +6876,7 @@ packages:
     dev: true
 
   /toposort/2.0.2:
-    resolution: {integrity: sha1-riF2gXXRVZ1IvvNUILL0li8JwzA=}
+    resolution: {integrity: sha512-0a5EOkAUp8D4moMi2W8ZF8jcga7BgZd91O/yabJCFY8az+XSzeGyTKs0Aoo897iV1Nj6guFq8orWDS96z91oGg==}
     dev: true
 
   /tough-cookie/2.4.3:
@@ -6964,8 +6964,8 @@ packages:
     resolution: {integrity: sha512-dzlvlNlt6AXU7EBSfpAscydQ7gXB+pPGsPnfJnZpiNJBDj7IaJzQlBZYGdEi4R9HmPdBv2XmWJ6YUtoTa7lmCw==}
     dev: true
 
-  /typescript/4.8.4:
-    resolution: {integrity: sha512-QCh+85mCy+h0IGff8r5XWzOVSbBO+KfeYrMQh7NJ58QujwcE22u+NUSmUxqF+un70P9GXKxa2HCNiTTMJknyjQ==}
+  /typescript/4.9.3:
+    resolution: {integrity: sha512-CIfGzTelbKNEnLpLdGFgdyKhG23CKdKgQPOBc+OUNrkJ2vr+KSzsSV5kq5iWhEQbok+quxgGzrAtGWCyU7tHnA==}
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: true
@@ -7040,7 +7040,7 @@ packages:
       picocolors: 1.0.0
     dev: true
 
-  /update-ts-references/2.4.1_typescript@4.8.4:
+  /update-ts-references/2.4.1_typescript@4.9.3:
     resolution: {integrity: sha512-t5o/ijSiFhm67hmVN0m+lOkUopV3MYYZE/lhd3bYaGTCkU+3TpnfRxP/OoxRdapzPOuZaxVBmMwjtW1lN8WoqA==}
     engines: {node: '>=10.0.0'}
     hasBin: true
@@ -7054,7 +7054,7 @@ packages:
       minimist: 1.2.7
       mkdirp: 1.0.4
       readline-sync: 1.4.10
-      typescript: 4.8.4
+      typescript: 4.9.3
     transitivePeerDependencies:
       - ts-jest
     dev: true
