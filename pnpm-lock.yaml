@@ -99,7 +99,7 @@ importers:
   e2e/cli/e2e-npm6:
     specifiers:
       '@verdaccio/test-cli-commons': workspace:1.0.1-6-next.5
-      npm: 6.14.17
+      npm: next-6
     dependencies:
       '@verdaccio/test-cli-commons': link:../../../tools/cli-commons
       npm: 6.14.17
@@ -107,7 +107,7 @@ importers:
   e2e/cli/e2e-npm7:
     specifiers:
       '@verdaccio/test-cli-commons': workspace:1.0.1-6-next.5
-      npm: 7.24.2
+      npm: next-7
     dependencies:
       '@verdaccio/test-cli-commons': link:../../../tools/cli-commons
       npm: 7.24.2
@@ -115,15 +115,15 @@ importers:
   e2e/cli/e2e-npm8:
     specifiers:
       '@verdaccio/test-cli-commons': workspace:1.0.1-6-next.5
-      npm: 8.19.2
+      npm: next-8
     dependencies:
       '@verdaccio/test-cli-commons': link:../../../tools/cli-commons
-      npm: 8.19.2
+      npm: 8.19.3
 
   e2e/cli/e2e-npm9:
     specifiers:
       '@verdaccio/test-cli-commons': workspace:1.0.1-6-next.5
-      npm: 9.1.2
+      npm: next-9
     dependencies:
       '@verdaccio/test-cli-commons': link:../../../tools/cli-commons
       npm: 9.1.2
@@ -2187,10 +2187,6 @@ packages:
     deprecated: This is a stub types definition. keyv provides its own type definitions, so you do not need this installed.
     dependencies:
       keyv: 4.5.0
-    dev: true
-
-  /@types/lodash/4.14.188:
-    resolution: {integrity: sha512-zmEmF5OIM3rb7SbLCFYoQhO4dGt2FRM9AMkxvA3LaADOF1n8in/zGJlWji9fmafLoNyz+FoL6FE0SLtGIArD7w==}
     dev: true
 
   /@types/lodash/4.14.189:
@@ -5293,6 +5289,9 @@ packages:
     engines: {node: 4.x || >=6.0.0}
     peerDependencies:
       encoding: ^0.1.0
+    peerDependenciesMeta:
+      encoding:
+        optional: true
     dependencies:
       whatwg-url: 5.0.0
     dev: true
@@ -5529,9 +5528,9 @@ packages:
       - which
       - write-file-atomic
 
-  /npm/8.19.2:
-    resolution: {integrity: sha512-MWkISVv5f7iZbfNkry5/5YBqSYJEDAKSJdL+uzSQuyLg+hgLQUyZynu3SH6bOZlvR9ZvJYk2EiJO6B1r+ynwHg==}
-    engines: {node: ^12.13.0 || ^14.15.0 || >=16}
+  /npm/8.19.3:
+    resolution: {integrity: sha512-0QjmyPtDxSyMWWD8I91QGbrgx9KzbV6C9FK1liEb/K0zppiZkr5KxXc990G+LzPwBHDfRjUBlO9T1qZ08vl9mA==}
+    engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
     hasBin: true
     dev: false
     bundledDependencies:
@@ -5542,7 +5541,6 @@ packages:
       - '@npmcli/fs'
       - '@npmcli/map-workspaces'
       - '@npmcli/package-json'
-      - '@npmcli/promise-spawn'
       - '@npmcli/run-script'
       - abbrev
       - archy
@@ -7042,7 +7040,7 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       '@babel/runtime': 7.20.1
-      '@types/lodash': 4.14.188
+      '@types/lodash': 4.14.189
       lodash: 4.17.21
       lodash-es: 4.17.21
       nanoclone: 0.2.1
