@@ -33,7 +33,7 @@ importers:
       '@babel/runtime': 7.20.1
       '@trivago/prettier-plugin-sort-imports': 3.4.0
       '@types/jest': 27.5.2
-      '@types/lodash': 4.14.189
+      '@types/lodash': 4.14.190
       '@types/node': 16.18.3
       '@verdaccio/types': 6-next
       babel-core: 7.0.0-bridge.0
@@ -77,7 +77,7 @@ importers:
       '@babel/runtime': 7.20.1
       '@trivago/prettier-plugin-sort-imports': 3.4.0_prettier@2.7.1
       '@types/jest': 27.5.2
-      '@types/lodash': 4.14.189
+      '@types/lodash': 4.14.190
       '@types/node': 16.18.3
       '@verdaccio/types': 11.0.0-6-next.17
       babel-core: 7.0.0-bridge.0_@babel+core@7.20.2
@@ -142,7 +142,7 @@ importers:
       pnpm: next-7
     dependencies:
       '@verdaccio/test-cli-commons': link:../../../tools/cli-commons
-      pnpm: 7.16.1
+      pnpm: 7.17.0
 
   e2e/cli/e2e-yarn1:
     specifiers:
@@ -1728,7 +1728,7 @@ packages:
     dependencies:
       '@formatjs/ts-transformer': 2.13.0
       '@types/json-stable-stringify': 1.0.34
-      '@types/lodash': 4.14.189
+      '@types/lodash': 4.14.190
       '@types/loud-rejection': 2.0.0
       '@types/node': 14.18.33
       '@vue/compiler-core': 3.2.41
@@ -2191,6 +2191,10 @@ packages:
 
   /@types/lodash/4.14.189:
     resolution: {integrity: sha512-kb9/98N6X8gyME9Cf7YaqIMvYGnBSWqEci6tiettE6iJWH1XdJz/PO8LB0GtLCG7x8dU3KWhZT+lA1a35127tA==}
+    dev: true
+
+  /@types/lodash/4.14.190:
+    resolution: {integrity: sha512-5iJ3FBJBvQHQ8sFhEhJfjUP+G+LalhavTkYyrAYqz5MEJG+erSv0k9KJLb6q7++17Lafk1scaTIFXcMJlwK8Mw==}
     dev: true
 
   /@types/loud-rejection/2.0.0:
@@ -3034,7 +3038,7 @@ packages:
     dev: true
 
   /concat-map/0.0.1:
-    resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=}
+    resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
     dev: true
 
   /content-disposition/0.5.4:
@@ -3252,7 +3256,7 @@ packages:
     dev: true
 
   /depd/1.1.2:
-    resolution: {integrity: sha1-m81S4UwJd2PnSbJ0xDRu0uVgtak=}
+    resolution: {integrity: sha512-7emPTl6Dpo6JRXOXjLRxck+FlLRX5847cLKEn00PLAgc3g2hTZZgr+e4c2v6QpSmLeFP3n5yUo7ft6avBK/5jQ==}
     engines: {node: '>= 0.6'}
     dev: true
 
@@ -5932,8 +5936,8 @@ packages:
     hasBin: true
     dev: false
 
-  /pnpm/7.16.1:
-    resolution: {integrity: sha512-vtAw/kJ+Slm/XdLvd3zbSA8FKBgetrk+1KQFDnyvPP0q2Pjc1f2HsA7idYs9MJewYi4o03cjyZhAdqrCcjknsw==}
+  /pnpm/7.17.0:
+    resolution: {integrity: sha512-0oy+VI/6r248MzFrr3jBTQ5qxC1wM+wP3YoGcoohPEMk+5LfQBYHsazdu8QDtuigr2jjaDi0hfg/c8k89jxiEA==}
     engines: {node: '>=14.6'}
     hasBin: true
     dev: false
@@ -6023,7 +6027,7 @@ packages:
     dev: true
 
   /punycode/1.4.1:
-    resolution: {integrity: sha1-wNWmOycYgArY4esPpSachN1BhF4=}
+    resolution: {integrity: sha512-jmYNElW7yvO7TV33CjSmvSiE2yco3bV2czu/OzDKdMNVZQWfxCblURLhf+47syQRBntjfLdd/H0egrzIG+oaFQ==}
     dev: true
 
   /punycode/2.1.1:
@@ -6484,7 +6488,7 @@ packages:
     dev: true
 
   /statuses/1.5.0:
-    resolution: {integrity: sha1-Fhx9rBd2Wf2YEfQ3cfqZOBR4Yow=}
+    resolution: {integrity: sha512-OpZ3zP+jT1PI7I8nemJX4AKmAX070ZkYPVWV/AaKTJl+tXCTGyVdC1a4SL8RUQYEwk/f34ZX8UTykN68FwrqAA==}
     engines: {node: '>= 0.6'}
     dev: true
 
@@ -6636,7 +6640,7 @@ packages:
     dev: true
 
   /toposort/2.0.2:
-    resolution: {integrity: sha1-riF2gXXRVZ1IvvNUILL0li8JwzA=}
+    resolution: {integrity: sha512-0a5EOkAUp8D4moMi2W8ZF8jcga7BgZd91O/yabJCFY8az+XSzeGyTKs0Aoo897iV1Nj6guFq8orWDS96z91oGg==}
     dev: true
 
   /tough-cookie/2.4.3:
