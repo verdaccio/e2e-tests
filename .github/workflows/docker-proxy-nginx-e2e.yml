@@ -24,7 +24,7 @@ jobs:
       with:
         node-version: 18
 
-    - name: Install dependencies
+    - name: Install verdaccio cli
       run: npm install -g verdaccio --registry=http://localhost:4873
 
     - name: Stop containers

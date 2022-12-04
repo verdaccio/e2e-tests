@@ -24,8 +24,14 @@ jobs:
       with:
         node-version: 18
 
-    - name: Install dependencies
+    - name: verdaccio cli
       run: npm install -g verdaccio --registry=http://localhost:4873
+    - name: gastby cli 
+      run:  npm install -g gatsby-cli --registry http://localhost:4873
+    - name: netlify cli 
+      run:  npm install -g netlify-cli --registry http://localhost:4873
+    - name: angular cli 
+      run:  npm install -g @angular/cli --registry http://localhost:4873
 
     - name: Stop containers
       if: always()
