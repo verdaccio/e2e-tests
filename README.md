@@ -5,6 +5,9 @@
 What is included on these test?
 
 ## With docker (docker compose)
+
+> It uses the image `verdaccio/verdaccio:5.x-next`, latest `5.x` branch changes
+
  - nginx proxy
  - apache proxy
  - using plugins
@@ -12,6 +15,8 @@ What is included on these test?
 All docker test are run with GitHub Actions 
 
 ## With npm cli
+
+> It uses the latest `npmjs` version published
 
 - Default configuration only
 - Test with all popular package managers:
