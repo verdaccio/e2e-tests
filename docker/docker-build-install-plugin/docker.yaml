@@ -7,7 +7,7 @@ plugins: /verdaccio/plugins
 web:
   title: Verdaccio Publish Config Test
 auth:
-  auth-memory:
+  auth-memory1:
     users:
       foo:
         name: foo
