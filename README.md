@@ -2,7 +2,16 @@
 
 > This is a copy of `verdaccio/verdaccio` e2e for 6.x, test are on sync
 
-## What is included on these test?
+What is included on these test?
+
+## With docker (docker compose)
+ - nginx proxy
+ - apache proxy
+ - using plugins
+ 
+All docker test are run with GitHub Actions 
+
+## With npm cli
 
 - Default configuration only
 - Test with all popular package managers:
