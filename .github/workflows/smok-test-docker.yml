@@ -18,4 +18,6 @@ jobs:
       - name: Docker test
         run: |
             docker run -d -it --rm --name verdaccio -p 4873:4873 verdaccio/verdaccio
-            npm ping verdaccio
+            mkdir project
+            cd project
+            npm install webpack --registry http://localhost:4873
