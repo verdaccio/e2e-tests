@@ -1,7 +1,5 @@
 # E2E CLI Testing for 5.x
 
-> This is a copy of `verdaccio/verdaccio` e2e for 6.x, test are on sync
-
 What is included on these test?
 
 ## With docker (docker compose)
@@ -16,6 +14,7 @@ All docker test are run with GitHub Actions
 
 ## With npm cli
 
+> A copy of `verdaccio/verdaccio` e2e for 6.x, test are on sync
 > It uses the latest `npmjs` version published
 
 - Default configuration only
