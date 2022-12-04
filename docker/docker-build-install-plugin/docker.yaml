@@ -1,5 +1,5 @@
 store:
-  memory1:
+  memory:
     limit: 1000
 
 plugins: /verdaccio/plugins
@@ -7,7 +7,7 @@ plugins: /verdaccio/plugins
 web:
   title: Verdaccio Publish Config Test
 auth:
-  auth-memory1:
+  auth-memory:
     users:
       foo:
         name: foo
