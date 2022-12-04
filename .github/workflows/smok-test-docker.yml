@@ -12,7 +12,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # tag=v3
+        with:
+          node-version: 18.x    
       - name: Docker test
         run: |
             docker run -d -it --rm --name verdaccio -p 4873:4873 verdaccio/verdaccio
-            docker run --network container:verdaccio appropriate/curl --retry 10 --retry-connrefused http://localhost:4873/ping
+            npm ping verdaccio
