@@ -23,7 +23,12 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: 18
-        
+    - name: npm setup
+      run: |
+        npm config set fetch-retries="5"
+        npm config set fetch-retry-factor="50"
+        npm config set fetch-retry-mintimeout="20000"
+        npm config set fetch-retry-maxtimeout="80000"      
     - name: verdaccio cli
       run: npm install -g verdaccio --registry=http://localhost:4873
     - name: gastby cli 
