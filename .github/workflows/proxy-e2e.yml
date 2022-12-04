@@ -17,7 +17,7 @@ jobs:
       uses: actions/checkout@v3
       
     - name: Start containers
-      run: docker-compose -f "docker/proxy/conf/nginx/docker-compose.yaml" up -d --build
+      run: docker-compose -f "./docker/proxy/conf/nginx/docker-compose.yaml" up -d --build
 
     - name: Install node
       uses: actions/setup-node@v3
@@ -29,4 +29,4 @@ jobs:
 
     - name: Stop containers
       if: always()
-      run: docker-compose -f "docker/proxy/conf/nginx/docker-compose.yaml" down
+      run: docker-compose -f "./docker/proxy/conf/nginx/docker-compose.yaml" down
