@@ -1,4 +1,9 @@
 {
   "extends": "../../tsconfig.reference.json",
   "include": ["./cypress/**/*.ts", "./*.ts"],
+  "references": [
+    {
+      "path": "../../tools/cli-commons"
+    }    
+  ]
 }

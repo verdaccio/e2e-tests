@@ -176,19 +176,15 @@ importers:
 
   e2e/ui:
     specifiers:
-      '@verdaccio/config': 6.0.0-6-next.52
-      '@verdaccio/core': 6.0.0-6-next.52
+      '@verdaccio/test-cli-commons': workspace:1.0.1-6-next.5
       cypress: 11.1.0
       debug: 4.3.4
-      fs-extra: 11.1.0
-      verdaccio: 5.18.0
+      npm: next-8
     devDependencies:
-      '@verdaccio/config': 6.0.0-6-next.52
-      '@verdaccio/core': 6.0.0-6-next.52
+      '@verdaccio/test-cli-commons': link:../../tools/cli-commons
       cypress: 11.1.0
       debug: 4.3.4
-      fs-extra: 11.1.0
-      verdaccio: 5.18.0
+      npm: 8.19.3
 
   tools/cli-commons:
     specifiers:
@@ -3926,15 +3922,6 @@ packages:
       universalify: 2.0.0
     dev: true
 
-  /fs-extra/11.1.0:
-    resolution: {integrity: sha512-0rcTq621PD5jM/e0a3EJoGC/1TC5ZBCERW82LQuwfGnCa1V8w7dpYH1yNu+SLb6E5dkeCBzKEyLGlFrnr+dUyw==}
-    engines: {node: '>=14.14'}
-    dependencies:
-      graceful-fs: 4.2.10
-      jsonfile: 6.1.0
-      universalify: 2.0.0
-    dev: true
-
   /fs-extra/9.1.0:
     resolution: {integrity: sha512-hcg3ZmepS30/7BSFqRvoo3DOMQu7IjqxO5nCDt+zM9XWjb33Wg7ziNT+Qvqbuc3+gWpzO02JubVyk2G4Zvo1OQ==}
     engines: {node: '>=10'}
@@ -5864,7 +5851,6 @@ packages:
     resolution: {integrity: sha512-0QjmyPtDxSyMWWD8I91QGbrgx9KzbV6C9FK1liEb/K0zppiZkr5KxXc990G+LzPwBHDfRjUBlO9T1qZ08vl9mA==}
     engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
     hasBin: true
-    dev: false
     bundledDependencies:
       - '@isaacs/string-locale-compare'
       - '@npmcli/arborist'

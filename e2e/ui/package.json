@@ -3,12 +3,10 @@
   "name": "@verdaccio/e2e-ui",
   "version": "2.0.0-6-next.3",
   "devDependencies": {
-    "verdaccio": "5.18.0",
-    "@verdaccio/core": "6.0.0-6-next.52",
-    "@verdaccio/config": "6.0.0-6-next.52",
+    "@verdaccio/test-cli-commons": "workspace:1.0.1-6-next.5",
+    "npm": "next-8",
     "debug": "4.3.4",
-    "cypress": "11.1.0",
-    "fs-extra": "11.1.0"
+    "cypress": "11.1.0"
   },
   "scripts": {
     "cypress:open": "cypress open",

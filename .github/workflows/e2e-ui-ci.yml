@@ -36,13 +36,10 @@ jobs:
         pnpm install
 
     - name: login    
-      run: npx npm-cli-login -u test -p test -e test@domain.test -r http://localhost:4873
+      run: npx npm-cli-login -u test -p test -e test@domain.test -r http://localhost:4873    
 
-    - name: token
-      run: cat ~/.npmrc      
-
-    # - name: verdaccio cli
-    #   run: npm install -g verdaccio --registry=http://localhost:4873
+    - name: tests
+      run: pnpm test:ui
 
     - name: Stop containers
       if: always()
