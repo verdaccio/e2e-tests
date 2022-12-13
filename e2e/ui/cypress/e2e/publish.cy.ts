@@ -1,4 +1,4 @@
-describe('publish spec', () => {
+describe.skip('publish spec', () => {
   let ctx: any = {};
   const credentials = { user: 'test', password: 'test' };
   beforeEach(async () => {
