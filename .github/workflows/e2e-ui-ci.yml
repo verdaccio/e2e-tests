@@ -38,6 +38,9 @@ jobs:
     - name: login    
       run: npx npm-cli-login -u test -p test -e test@domain.test -r http://localhost:4873    
 
+    - name: build
+      run: pnpm build
+
     - name: tests
       run: pnpm test:ui
 
