@@ -1,3 +1,4 @@
+// TODO: pending to fix
 describe.skip('publish spec', () => {
   let ctx: any = {};
   const credentials = { user: 'test', password: 'test' };

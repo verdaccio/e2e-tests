@@ -104,17 +104,15 @@ export async function prepareGenericEmptyProject(
   dependencies: any = {},
   devDependencies: any = {}
 ) {
+  const getNPMrc = (port, token, registry) => `//localhost:${port}/:_authToken=${token}
+  registry=${registry}`;
   const tempFolder = await createTempFolder('temp-folder');
   await writeFile(
     join(tempFolder, 'package.json'),
     getPackageJSON(packageName, version, dependencies, devDependencies)
   );
   await writeFile(join(tempFolder, 'README.md'), getREADME(packageName));
-  if (!token) {
-    const getNPMrc = (port, token, registry) => `//localhost:${port}/:_authToken=${token}
-  registry=${registry}`;
-    await writeFile(join(tempFolder, '.npmrc'), getNPMrc(port, token, registryDomain));
-  }
+  await writeFile(join(tempFolder, '.npmrc'), getNPMrc(port, token, registryDomain));
   return { tempFolder };
 }
 

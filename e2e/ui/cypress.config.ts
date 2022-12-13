@@ -7,6 +7,7 @@ export default defineConfig({
     setupNodeEvents(on) {
       on('task', {
         async publishScoped({ pkgName }) {
+          // TODO: this is failing on publish
           const { tempFolder } = await prepareGenericEmptyProject(
             pkgName,
             '1.0.6',
