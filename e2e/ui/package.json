@@ -6,7 +6,7 @@
     "@verdaccio/test-cli-commons": "workspace:1.0.1-6-next.5",
     "npm": "next-8",
     "debug": "4.3.4",
-    "cypress": "11.1.0"
+    "cypress": "11.2.0"
   },
   "scripts": {
     "cypress:open": "cypress open",
