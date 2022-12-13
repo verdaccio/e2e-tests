@@ -5,7 +5,7 @@ import { exec } from '@verdaccio/test-cli-commons';
 import { addRegistry } from '@verdaccio/test-cli-commons';
 
 export function getCommand() {
-  return join(__dirname, './node_modules/.bin/npm');
+  return join(__dirname, '../node_modules/.bin/npm');
 }
 
 export function npm(options: SpawnOptions, ...args: string[]) {
