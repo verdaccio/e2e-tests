@@ -1,0 +1,46 @@
+name: E2E Docker UI Cypress
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+  schedule:
+    # run every sunday
+    - cron: '0 0 * * 0'
+jobs:
+  docker:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      
+    - name: Start containers
+      run: docker-compose -f "./docker/docker-e2e-ui/docker-compose.yaml" up -d --build
+
+    - name: Install node
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Node
+      uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # tag=v3
+      with:
+        node-version-file: '.nvmrc'
+
+    - name: Install pnpm
+      run: |
+        corepack enable
+        corepack prepare --activate pnpm@latest
+        pnpm install
+
+    - name: login    
+      run: npx npm-cli-login -u test -p test -e test@domain.test -r http://localhost:4873
+
+    # - name: verdaccio cli
+    #   run: npm install -g verdaccio --registry=http://localhost:4873
+
+    - name: Stop containers
+      if: always()
+      run: docker-compose -f "./docker/docker-e2e-ui/docker-compose.yaml" down
