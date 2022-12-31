@@ -142,7 +142,7 @@ importers:
       pnpm: next-7
     dependencies:
       '@verdaccio/test-cli-commons': link:../../../tools/cli-commons
-      pnpm: 7.20.0
+      pnpm: 7.21.0
 
   e2e/cli/e2e-yarn1:
     specifiers:
@@ -199,7 +199,7 @@ importers:
       lodash: 4.17.21
       nock: 13.2.9
       verdaccio: ^5.17.0
-      yaml: 2.2.0
+      yaml: 2.2.1
     devDependencies:
       '@verdaccio/config': 6.0.0-6-next.52
       '@verdaccio/core': 6.0.0-6-next.52
@@ -212,7 +212,7 @@ importers:
       lodash: 4.17.21
       nock: 13.2.9
       verdaccio: 5.18.0
-      yaml: 2.2.0
+      yaml: 2.2.1
 
 packages:
 
@@ -6366,8 +6366,8 @@ packages:
     hasBin: true
     dev: false
 
-  /pnpm/7.20.0:
-    resolution: {integrity: sha512-klGp+P0sxw1f6OYwJtl0PcoYiIHVhMZdh9e2B8maUmzOGmAj0NL9jKaKPfIX4kKfyQcWeADm46Z+4CKtabZqSw==}
+  /pnpm/7.21.0:
+    resolution: {integrity: sha512-zDsRciscnXmp8AVD0u9eSoJrGfXywepuwMmFstsd+Vfl/wDZUxgaSaZ/6Nkx3bBftC+oBpWFkAGBRyjy58jvZg==}
     engines: {node: '>=14.6'}
     hasBin: true
     dev: false
@@ -7488,8 +7488,8 @@ packages:
     engines: {node: '>= 14'}
     dev: true
 
-  /yaml/2.2.0:
-    resolution: {integrity: sha512-auf7Gi6QwO7HW//GA9seGvTXVGWl1CM/ADWh1+RxtXr6XOxnT65ovDl9fTi4e0monEyJxCHqDpF6QnFDXmJE4g==}
+  /yaml/2.2.1:
+    resolution: {integrity: sha512-e0WHiYql7+9wr4cWMx3TVQrNwejKaEe7/rHNmQmqRjazfOP5W8PB6Jpebb5o6fIapbz9o9+2ipcaTM2ZwDI6lw==}
     engines: {node: '>= 14'}
     dev: true
 
