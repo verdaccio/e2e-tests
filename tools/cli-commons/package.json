@@ -16,7 +16,7 @@
     "lodash": "4.17.21",
     "nock": "13.2.9",
     "verdaccio": "^5.17.0",
-    "yaml": "2.2.0"
+    "yaml": "2.2.1"
   },
   "scripts": {
     "test": "jest",
