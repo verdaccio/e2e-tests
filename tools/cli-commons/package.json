@@ -15,7 +15,7 @@
     "got": "11.8.6",
     "lodash": "4.17.21",
     "nock": "13.2.9",
-    "verdaccio": "^5.17.0",
+    "verdaccio": "5.19.1",
     "yaml": "2.2.1"
   },
   "scripts": {
