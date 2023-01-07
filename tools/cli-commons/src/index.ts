@@ -1,6 +1,5 @@
 export { getDefaultConfig, ConfigBuilder } from '@verdaccio/config';
 export { constants } from '@verdaccio/core';
-export { Registry } from 'verdaccio';
 export { initialSetup, getConfigPath, Setup } from './registry';
 export {
   addNpmPrefix,
