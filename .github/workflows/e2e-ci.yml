@@ -29,7 +29,7 @@ jobs:
       - name: Install
         run: pnpm install
       - name: Cache .pnpm-store
-        uses: actions/cache@4723a57e26efda3a62cbde1812113b730952852d # v3
+        uses: actions/cache@58c146cc91c5b9e778e71775dfe9bf1442ad9a12 # v3
         with:
           path: ~/.pnpm-store
           key: pnpm-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.run_id }}-${{ github.sha }}
@@ -38,7 +38,7 @@ jobs:
       - name: build
         run: pnpm build
       - name: Cache tools
-        uses: actions/cache@4723a57e26efda3a62cbde1812113b730952852d # v3
+        uses: actions/cache@58c146cc91c5b9e778e71775dfe9bf1442ad9a12 # v3
         id: cache-tools
         with:
           path: ./tools/
@@ -62,13 +62,13 @@ jobs:
         run: corepack enable
       - name: pnpm enable
         run: corepack prepare pnpm@latest --activate
-      - uses: actions/cache@4723a57e26efda3a62cbde1812113b730952852d # v3
+      - uses: actions/cache@58c146cc91c5b9e778e71775dfe9bf1442ad9a12 # v3
         with:
           path: ~/.pnpm-store
           key: pnpm-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.run_id }}-${{ github.sha }}
       - name: Install
         run: pnpm install --frozen-lockfile
-      - uses: actions/cache@4723a57e26efda3a62cbde1812113b730952852d # v3
+      - uses: actions/cache@58c146cc91c5b9e778e71775dfe9bf1442ad9a12 # v3
         with:
           path: ./tools/
           key: pkg-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.run_id }}-${{ github.sha }}
