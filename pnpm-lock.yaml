@@ -47,7 +47,7 @@ importers:
       jest-diff: 29.3.1
       kleur: 3.0.3
       lint-staged: 11.2.6
-      prettier: 2.8.2
+      prettier: 2.8.3
       rimraf: 3.0.2
       typescript: 4.9.4
       update-ts-references: 2.4.1
@@ -75,7 +75,7 @@ importers:
       '@babel/preset-typescript': 7.18.6_@babel+core@7.20.12
       '@babel/register': 7.18.9_@babel+core@7.20.12
       '@babel/runtime': 7.20.7
-      '@trivago/prettier-plugin-sort-imports': 3.4.0_prettier@2.8.2
+      '@trivago/prettier-plugin-sort-imports': 3.4.0_prettier@2.8.3
       '@types/jest': 27.5.2
       '@types/lodash': 4.14.191
       '@types/node': 16.18.11
@@ -91,7 +91,7 @@ importers:
       jest-diff: 29.3.1
       kleur: 3.0.3
       lint-staged: 11.2.6
-      prettier: 2.8.2
+      prettier: 2.8.3
       rimraf: 3.0.2
       typescript: 4.9.4
       update-ts-references: 2.4.1_typescript@4.9.4
@@ -126,7 +126,7 @@ importers:
       npm: next-9
     dependencies:
       '@verdaccio/test-cli-commons': link:../../../tools/cli-commons
-      npm: 9.2.0
+      npm: 9.3.1
 
   e2e/cli/e2e-pnpm6:
     specifiers:
@@ -142,7 +142,7 @@ importers:
       pnpm: next-7
     dependencies:
       '@verdaccio/test-cli-commons': link:../../../tools/cli-commons
-      pnpm: 7.24.2
+      pnpm: 7.25.1
 
   e2e/cli/e2e-yarn1:
     specifiers:
@@ -2255,7 +2255,7 @@ packages:
       defer-to-connect: 2.0.1
     dev: true
 
-  /@trivago/prettier-plugin-sort-imports/3.4.0_prettier@2.8.2:
+  /@trivago/prettier-plugin-sort-imports/3.4.0_prettier@2.8.3:
     resolution: {integrity: sha512-485Iailw8X5f7KetzRka20RF1kPBEINR5LJMNwlBZWY1gRAlVnv5dZzyNPnLxSP0Qcia8HETa9Cdd8LlX9o+pg==}
     peerDependencies:
       prettier: 2.x
@@ -2268,7 +2268,7 @@ packages:
       '@vue/compiler-sfc': 3.2.45
       javascript-natural-sort: 0.7.1
       lodash: 4.17.21
-      prettier: 2.8.2
+      prettier: 2.8.3
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -6026,8 +6026,8 @@ packages:
       - which
       - write-file-atomic
 
-  /npm/9.2.0:
-    resolution: {integrity: sha512-oypVdaWGHDuV79RXLvp+B9gh6gDyAmoHKrQ0/JBYTWWx5D8/+AAxFdZC84fSIiyDdyW4qfrSyYGKhekxDOaMXQ==}
+  /npm/9.3.1:
+    resolution: {integrity: sha512-ydRVmnWEVXmc3DCM+F9BjiNj3IHkZ3Mwz5VbJYS2BpY/6d4PcKxNW+Xb0vzGeE6PkVhLcPxwhoIi+RFV2fSfEA==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
     hasBin: true
     dev: false
@@ -6090,7 +6090,6 @@ packages:
       - read
       - read-package-json
       - read-package-json-fast
-      - rimraf
       - semver
       - ssri
       - tar
@@ -6363,8 +6362,8 @@ packages:
     hasBin: true
     dev: false
 
-  /pnpm/7.24.2:
-    resolution: {integrity: sha512-XDTYvZf3xF/kaX0pcdh9GWpak9tV5uDGuNCjkN1SFa0UE350mJGpszmM/j2rVyfoOOFzVR73GNdN3Purd4rXlg==}
+  /pnpm/7.25.1:
+    resolution: {integrity: sha512-y/jlADVxyk+scBwI0ALRf8QoUMgrWyONnD1voZaPTBI+D+aIXXiFG9pMk3eLhvEfc0nK8KUnnbDDBTywd7WsMw==}
     engines: {node: '>=14.6'}
     hasBin: true
     dev: false
@@ -6382,8 +6381,8 @@ packages:
     resolution: {integrity: sha512-dLbWOa4xBn+qeWeIF60qRoB6Pk2jX5P3DIVgOQyMyvBpu931Q+8dXz8X0snJiFkQdohDDLnZQECjzsAj75hgZQ==}
     dev: true
 
-  /prettier/2.8.2:
-    resolution: {integrity: sha512-BtRV9BcncDyI2tsuS19zzhzoxD8Dh8LiCx7j7tHzrkz8GFXAexeWFdi22mjE1d16dftH2qNaytVxqiRTGlMfpw==}
+  /prettier/2.8.3:
+    resolution: {integrity: sha512-tJ/oJ4amDihPoufT5sM0Z1SKEuKay8LfVAMlbbhnnkvt6BUserZylqo2PN+p9KeljLr0OHa2rXHU1T8reeoTrw==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: true
