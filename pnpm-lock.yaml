@@ -51,7 +51,6 @@ importers:
       rimraf: 3.0.2
       typescript: 4.9.4
       update-ts-references: 2.4.1
-      verdaccio: canary-5x
     devDependencies:
       '@babel/cli': 7.20.7_@babel+core@7.20.12
       '@babel/core': 7.20.12
@@ -96,7 +95,6 @@ importers:
       rimraf: 3.0.2
       typescript: 4.9.4
       update-ts-references: 2.4.1_typescript@4.9.4
-      verdaccio: 5.19.2-1674379836658716276.0
 
   e2e/cli/e2e-npm6:
     specifiers:
@@ -200,6 +198,7 @@ importers:
       got: 11.8.5
       lodash: 4.17.21
       nock: 13.3.0
+      verdaccio: canary-5x
       yaml: 2.2.1
     devDependencies:
       '@verdaccio/config': 6.0.0-6-next.54
@@ -212,6 +211,7 @@ importers:
       got: 11.8.5
       lodash: 4.17.21
       nock: 13.3.0
+      verdaccio: 5.19.2-1674385997330138314.0
       yaml: 2.2.1
 
 packages:
@@ -7295,8 +7295,8 @@ packages:
       unix-crypt-td-js: 1.1.4
     dev: true
 
-  /verdaccio/5.19.2-1674379836658716276.0:
-    resolution: {integrity: sha512-fbLlWgnJcDqB3s9bgBp8nagcjBsYwcKxpvb1Z4ca5Ssz5vmnsG1+i969Mcdka7MUttsCoXX/o5ajn6nPS7IBag==}
+  /verdaccio/5.19.2-1674385997330138314.0:
+    resolution: {integrity: sha512-Lvj6ZpIRnejwLljZSXwpPClLjB3QP8QA+YFWxfbMMNTI15jg7PgT1q5gUuF5N9chquLMCcRDADF1I1yl0Embkw==}
     engines: {node: '>=12.18'}
     hasBin: true
     dependencies:
