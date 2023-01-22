@@ -198,7 +198,7 @@ importers:
       got: 11.8.5
       lodash: 4.17.21
       nock: 13.3.0
-      verdaccio: 5.19.2-1674385997330138314.0
+      verdaccio: 5.19.2-1674400760561232110.0
       yaml: 2.2.1
     devDependencies:
       '@verdaccio/config': 6.0.0-6-next.54
@@ -211,7 +211,7 @@ importers:
       got: 11.8.5
       lodash: 4.17.21
       nock: 13.3.0
-      verdaccio: 5.19.2-1674385997330138314.0
+      verdaccio: 5.19.2-1674400760561232110.0
       yaml: 2.2.1
 
 packages:
@@ -2955,12 +2955,6 @@ packages:
       concat-map: 0.0.1
     dev: true
 
-  /brace-expansion/2.0.1:
-    resolution: {integrity: sha512-XnAIvQ8eM+kC6aULx6wuQiwVsnzsi9d3WxzV3FpWTGA19F621kwdbsAcFKXgKUHZWsy+mY6iL1sHTxWEFCytDA==}
-    dependencies:
-      balanced-match: 1.0.2
-    dev: true
-
   /braces/3.0.2:
     resolution: {integrity: sha512-b8um+L1RzM3WDSzvhm6gIz1yfTbBt6YTlcEKAvsmqCZZFw46z626lVj9j1yEPW33H5H+lBQpZMP1k8l+78Ha0A==}
     engines: {node: '>=8'}
@@ -5574,13 +5568,6 @@ packages:
       brace-expansion: 1.1.11
     dev: true
 
-  /minimatch/5.1.6:
-    resolution: {integrity: sha512-lKwV/1brpG6mBUFHtb7NUmtABCb2WZZmm2wNiOA5hAb8VdCS4B3dtMWyvcoViccwAW/COERjXLt0zP1zXUN26g==}
-    engines: {node: '>=10'}
-    dependencies:
-      brace-expansion: 2.0.1
-    dev: true
-
   /minimist/1.2.7:
     resolution: {integrity: sha512-bzfL1YUZsP41gmu/qjrEk0Q6i2ix/cVeAhbCbqH9u3zYutS1cLg00qhrD0M2MVdCcx4Sc0UpP2eBWo9rotpq6g==}
     dev: true
@@ -7295,12 +7282,11 @@ packages:
       unix-crypt-td-js: 1.1.4
     dev: true
 
-  /verdaccio/5.19.2-1674385997330138314.0:
-    resolution: {integrity: sha512-Lvj6ZpIRnejwLljZSXwpPClLjB3QP8QA+YFWxfbMMNTI15jg7PgT1q5gUuF5N9chquLMCcRDADF1I1yl0Embkw==}
+  /verdaccio/5.19.2-1674400760561232110.0:
+    resolution: {integrity: sha512-WKiMRU/bgTtB/SZrmfGBAveG6cgVgdYC4ylMSHsHQr4wEjr9EmAVYX1LNfF1epcO+jaB+lJT5XYbzT+vUlM2TA==}
     engines: {node: '>=12.18'}
     hasBin: true
     dependencies:
-      '@verdaccio/commons-api': 10.2.0
       '@verdaccio/config': 6.0.0-6-next.54
       '@verdaccio/core': 6.0.0-6-next.54
       '@verdaccio/local-storage': 10.3.1
@@ -7330,7 +7316,6 @@ packages:
       lunr-mutable-indexes: 2.3.2
       memoizee: 0.4.15
       mime: 3.0.0
-      minimatch: 5.1.6
       mkdirp: 1.0.4
       mv: 2.1.1
       pino: 6.14.0
