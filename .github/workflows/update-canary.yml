@@ -15,7 +15,7 @@ permissions: write-all
 
 jobs:
   prepare:
-    name: Run script
+    name: Update verdaccio canary dependency
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3
