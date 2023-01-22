@@ -34,5 +34,8 @@ jobs:
       - name: Commit & Push changes
         uses: actions-js/push@156f2b10c3aa000c44dbe75ea7018f32ae999772 # tag=v1.4
         with:
-          github_token: ${{ secrets.PUSH_TOKEN }}
+          github_token: ${{ secrets.TOKEN_VERDACCIOBOT_V2 }}
           message: "chore: updated canary verdaccio"
+          branch: main
+          author_email: verdaccio.npm@gmail.com
+          author_name: verdacciobot
