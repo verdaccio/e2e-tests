@@ -11,6 +11,8 @@ on:
     branches:
       - main
 
+permissions: write-all
+
 jobs:
   prepare:
     name: Run script
