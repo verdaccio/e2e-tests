@@ -15,7 +15,9 @@
     "got": "11.8.6",
     "lodash": "4.17.21",
     "nock": "13.3.0",
-    "yaml": "2.2.1",
+    "yaml": "2.2.1"    
+  },
+  "peerDependencies": {
     "verdaccio": "canary-5x"
   },
   "scripts": {
