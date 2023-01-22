@@ -1,4 +1,4 @@
-import { cp, writeFile } from 'fs/promises';
+import fs from 'fs';
 import { join } from 'path';
 import { URL } from 'url';
 import YAML from 'yaml';
@@ -6,6 +6,9 @@ import YAML from 'yaml';
 import { Dependencies } from '@verdaccio/types';
 
 import { createTempFolder, getPackageJSON, getREADME } from './utils';
+
+const fsp = fs.promises ? fs.promises : require('fs/promises');
+const { cp, writeFile } = fsp;
 
 export function createYamlConfig(registry: string, token?: string) {
   const defaultYaml: any = {
