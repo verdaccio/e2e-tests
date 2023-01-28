@@ -1969,6 +1969,9 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     peerDependencies:
       node-notifier: ^8.0.1 || ^9.0.0 || ^10.0.0
+    peerDependenciesMeta:
+      node-notifier:
+        optional: true
     dependencies:
       '@jest/console': 29.4.1
       '@jest/reporters': 29.4.1
@@ -2059,6 +2062,9 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     peerDependencies:
       node-notifier: ^8.0.1 || ^9.0.0 || ^10.0.0
+    peerDependenciesMeta:
+      node-notifier:
+        optional: true
     dependencies:
       '@bcoe/v8-coverage': 0.2.3
       '@jest/console': 29.4.1
@@ -4658,6 +4664,9 @@ packages:
     hasBin: true
     peerDependencies:
       node-notifier: ^8.0.1 || ^9.0.0 || ^10.0.0
+    peerDependenciesMeta:
+      node-notifier:
+        optional: true
     dependencies:
       '@jest/core': 29.4.1
       '@jest/test-result': 29.4.1
@@ -4683,6 +4692,11 @@ packages:
     peerDependencies:
       '@types/node': '*'
       ts-node: '>=9.0.0'
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
+      ts-node:
+        optional: true
     dependencies:
       '@babel/core': 7.20.12
       '@jest/test-sequencer': 29.4.1
@@ -4717,6 +4731,11 @@ packages:
     peerDependencies:
       '@types/node': '*'
       ts-node: '>=9.0.0'
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
+      ts-node:
+        optional: true
     dependencies:
       '@babel/core': 7.20.12
       '@jest/test-sequencer': 29.4.1
@@ -4881,6 +4900,9 @@ packages:
     engines: {node: '>=6'}
     peerDependencies:
       jest-resolve: '*'
+    peerDependenciesMeta:
+      jest-resolve:
+        optional: true
     dependencies:
       jest-resolve: 29.4.1
     dev: true
@@ -5061,6 +5083,9 @@ packages:
     hasBin: true
     peerDependencies:
       node-notifier: ^8.0.1 || ^9.0.0 || ^10.0.0
+    peerDependenciesMeta:
+      node-notifier:
+        optional: true
     dependencies:
       '@jest/core': 29.4.1
       '@jest/types': 29.4.1
@@ -5586,9 +5611,6 @@ packages:
     engines: {node: 4.x || >=6.0.0}
     peerDependencies:
       encoding: ^0.1.0
-    peerDependenciesMeta:
-      encoding:
-        optional: true
     dependencies:
       whatwg-url: 5.0.0
     dev: true
