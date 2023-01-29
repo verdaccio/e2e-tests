@@ -198,7 +198,7 @@ importers:
       got: 11.8.5
       lodash: 4.17.21
       nock: 13.3.0
-      verdaccio: 5.19.2-1674906107059454585.0
+      verdaccio: 5.20.1-1675003025093476474.0
       yaml: 2.2.1
     devDependencies:
       '@verdaccio/config': 6.0.0-6-next.55
@@ -211,7 +211,7 @@ importers:
       got: 11.8.5
       lodash: 4.17.21
       nock: 13.3.0
-      verdaccio: 5.19.2-1674906107059454585.0
+      verdaccio: 5.20.1-1675003025093476474.0
       yaml: 2.2.1
 
 packages:
@@ -7205,8 +7205,8 @@ packages:
       - supports-color
     dev: true
 
-  /verdaccio-htpasswd/10.5.1:
-    resolution: {integrity: sha512-DCUOITs+Ta4Hep429BjopYrUw9hEJsJ1mbMP0l9Glan1S2YvTPanhtm5Ahw/joljUlt3xawKz9Gmt1QJujfMew==}
+  /verdaccio-htpasswd/10.5.2:
+    resolution: {integrity: sha512-bO5Wm8w07pWswNvwFWjNEoznuUU37CcfblcrU0Ci8c038EgTu2V47uwh4AyZ4PTK6ps9oxHqA7a1b+83sY0OkA==}
     engines: {node: '>=8'}
     dependencies:
       '@verdaccio/file-locking': 10.3.0
@@ -7216,8 +7216,8 @@ packages:
       unix-crypt-td-js: 1.1.4
     dev: true
 
-  /verdaccio/5.19.2-1674906107059454585.0:
-    resolution: {integrity: sha512-PyxlxVPMRpkRX2dnvwFOP8MlzmJR7SlIe1mT8Wah1/z4arcJ4dscj3YBwB2iBualTYr8BjSvOVRpOQgcjlGDaw==}
+  /verdaccio/5.20.1-1675003025093476474.0:
+    resolution: {integrity: sha512-z88T0cytRQLtF6Q62LnzjOHI4SpGQxIRR22Vux/ESAkXCA7E2UZ3lEtQS2zZaLYBgVQ4tD0vHCbtNRI+ilnAMw==}
     engines: {node: '>=12.18'}
     hasBin: true
     dependencies:
@@ -7261,7 +7261,7 @@ packages:
       semver: 7.3.8
       validator: 13.7.0
       verdaccio-audit: 10.2.4
-      verdaccio-htpasswd: 10.5.1
+      verdaccio-htpasswd: 10.5.2
     transitivePeerDependencies:
       - encoding
       - supports-color
