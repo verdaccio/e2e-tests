@@ -126,7 +126,7 @@ importers:
       npm: next-9
     dependencies:
       '@verdaccio/test-cli-commons': link:../../../tools/cli-commons
-      npm: 9.4.0
+      npm: 9.4.1
 
   e2e/cli/e2e-pnpm6:
     specifiers:
@@ -142,7 +142,7 @@ importers:
       pnpm: next-7
     dependencies:
       '@verdaccio/test-cli-commons': link:../../../tools/cli-commons
-      pnpm: 7.26.0
+      pnpm: 7.27.0-0
 
   e2e/cli/e2e-yarn1:
     specifiers:
@@ -163,10 +163,10 @@ importers:
   e2e/cli/e2e-yarn3:
     specifiers:
       '@verdaccio/test-cli-commons': workspace:1.0.1-6-next.5
-      '@yarnpkg/cli-dist': 3.3.1
+      '@yarnpkg/cli-dist': 3.4.1
     dependencies:
       '@verdaccio/test-cli-commons': link:../../../tools/cli-commons
-      '@yarnpkg/cli-dist': 3.3.1
+      '@yarnpkg/cli-dist': 3.4.1
 
   e2e/cli/e2e-yarn4:
     specifiers:
@@ -2673,8 +2673,8 @@ packages:
     hasBin: true
     dev: false
 
-  /@yarnpkg/cli-dist/3.3.1:
-    resolution: {integrity: sha512-OLhsQRU/zZwngMuk/PVGdfX9DOe6pF6AnsfaZLkUBPktEQeiPam0sUFUuV+6VrhfiK0s/MSsc4woFJjAtzt8vQ==}
+  /@yarnpkg/cli-dist/3.4.1:
+    resolution: {integrity: sha512-165Y6mm0chgIcjdY2MsJJbm9eYFqnpU2HN+xy6yEltngxld11EBdGCNCHXzL2pvxqlHzL2V3OnIDa7diov1wng==}
     engines: {node: '>=12 <14 || 14.2 - 14.9 || >14.10.0'}
     hasBin: true
     dev: false
@@ -5729,6 +5729,9 @@ packages:
     engines: {node: 4.x || >=6.0.0}
     peerDependencies:
       encoding: ^0.1.0
+    peerDependenciesMeta:
+      encoding:
+        optional: true
     dependencies:
       whatwg-url: 5.0.0
     dev: true
@@ -6044,8 +6047,8 @@ packages:
       - which
       - write-file-atomic
 
-  /npm/9.4.0:
-    resolution: {integrity: sha512-eT/yB9VFgnqJjMZN++RDcKPyuvEl3iM//bfJzAa3F9+x9l/x8XJUYnHAy0K6ep4JVNTxCUAp/wgy0pBicTZr5A==}
+  /npm/9.4.1:
+    resolution: {integrity: sha512-yCtrPwN/vPtc2KRyIBLdTqPMFy0R9pPurr8wJKtDvDfzICY/3IBG6t2z+zHA79pl5R8+mVH8EcJICLUeU48oQQ==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
     hasBin: true
     dev: false
@@ -6397,8 +6400,8 @@ packages:
     hasBin: true
     dev: false
 
-  /pnpm/7.26.0:
-    resolution: {integrity: sha512-ASNhFsTa9YpJoalnGa28IKMimZk/oBOt19oxvB6+iP2EVr1h+PYcsTty4mrgSE/LegWQPy4yphZinshKjxycOA==}
+  /pnpm/7.27.0-0:
+    resolution: {integrity: sha512-QMYZt0Q4nXxysP33eolNKB/dn8B+Py/cqUVerirUwq9OFJv3a586lxtclvGcsJ8P8rjpEXI8eojdZD/PrdupwA==}
     engines: {node: '>=14.6'}
     hasBin: true
     dev: false
