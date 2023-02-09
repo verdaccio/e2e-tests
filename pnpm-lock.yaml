@@ -198,7 +198,7 @@ importers:
       got: 11.8.5
       lodash: 4.17.21
       nock: 13.3.0
-      verdaccio: 5.20.2-1675720137941941219.0
+      verdaccio: 5.20.2-1675975375300579426.0
       yaml: 2.2.1
     devDependencies:
       '@verdaccio/config': 6.0.0-6-next.59
@@ -211,7 +211,7 @@ importers:
       got: 11.8.5
       lodash: 4.17.21
       nock: 13.3.0
-      verdaccio: 5.20.2-1675720137941941219.0
+      verdaccio: 5.20.2-1675975375300579426.0
       yaml: 2.2.1
 
 packages:
@@ -5686,9 +5686,6 @@ packages:
     engines: {node: 4.x || >=6.0.0}
     peerDependencies:
       encoding: ^0.1.0
-    peerDependenciesMeta:
-      encoding:
-        optional: true
     dependencies:
       whatwg-url: 5.0.0
     dev: true
@@ -7363,8 +7360,8 @@ packages:
       unix-crypt-td-js: 1.1.4
     dev: true
 
-  /verdaccio/5.20.2-1675720137941941219.0:
-    resolution: {integrity: sha512-ohEM+mw2koOtI6IlGfEnZIsTUN45U5hc5hL/7EcHHOYuieRCibHpYomX8o0UuZlBhIfrHktE1qCSNjwa0vG9Sw==}
+  /verdaccio/5.20.2-1675975375300579426.0:
+    resolution: {integrity: sha512-RmuHZ2m8RjZy6rUMYYF1ZLpCUI+hOWEAHhf30360oUv0Bw/TuEfccWtvXBl8KiAVANuwNNYMIiE9wiFAKYD/5Q==}
     engines: {node: '>=12.18'}
     hasBin: true
     dependencies:
