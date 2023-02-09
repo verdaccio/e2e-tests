@@ -59,8 +59,6 @@ jobs:
       - uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # v3
         with:
           node-version: ${{ matrix.node }}
-      - name: corepack
-        run: corepack enable
       - name: pnpm enable
         run: corepack prepare pnpm@latest --activate
       - uses: actions/cache@627f0f41f6904a5b1efbaed9f96d9eb58e92e920 # v3
