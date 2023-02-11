@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { copySync } from 'fs-extra';
 import { join } from 'path';
 import { URL } from 'url';
 import YAML from 'yaml';
@@ -52,6 +53,6 @@ export async function prepareYarnModernProject(
     getPackageJSON(packageName, version, dependencies, devDependencies)
   );
   await writeFile(join(tempFolder, 'README.md'), getREADME(packageName));
-  await copyFile(yarnBinPath, join(tempFolder, '.yarn/releases/yarn.js'));
+  copySync(yarnBinPath, join(tempFolder, '.yarn/releases/yarn.js'));
   return { tempFolder };
 }
