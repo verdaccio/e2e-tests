@@ -26,7 +26,9 @@ jobs:
       - name: corepack
         run: corepack enable
       - name: pnpm enable
-        run: corepack prepare pnpm@latest --activate      
+        run: corepack prepare pnpm@latest --activate
+      - name: registry
+        run: npm config set registry https://registry.verdaccio.org
       - name: install
         run: pnpm install
       - name: update to latest canary
