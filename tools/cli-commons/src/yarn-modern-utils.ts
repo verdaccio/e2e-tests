@@ -2,7 +2,6 @@ import fs from 'fs';
 import { join } from 'path';
 import { URL } from 'url';
 import YAML from 'yaml';
-import
 
 import { Dependencies } from '@verdaccio/types';
 
