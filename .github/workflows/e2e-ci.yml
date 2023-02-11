@@ -51,7 +51,7 @@ jobs:
       fail-fast: false
       matrix:
         pkg: [npm6, npm7, npm8, npm9, pnpm6, pnpm7, yarn1, yarn2, yarn3, yarn4]
-        node: [16, 18, 19]
+        node: [14, 16, 18, 19]
     name: ${{ matrix.pkg }}/ ubuntu-latest / ${{ matrix.node }}
     runs-on: ubuntu-latest
     steps:
@@ -63,7 +63,7 @@ jobs:
         run: corepack enable
       - name: pnpm enable
         run: corepack prepare pnpm@latest --activate
-      - uses: actions/cache@627f0f41f6904a5b1efbaed9f96d9eb58e92e920 # v3
+      - uses: actions/cache@58c146cc91c5b9e778e71775dfe9bf1442ad9a12 # v3
         with:
           path: ~/.pnpm-store
           key: pnpm-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.run_id }}-${{ github.sha }}

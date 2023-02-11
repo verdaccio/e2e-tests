@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { copySync } from 'fs-extra';
 import { join } from 'path';
 import { URL } from 'url';
 import YAML from 'yaml';
@@ -8,7 +9,7 @@ import { Dependencies } from '@verdaccio/types';
 import { createTempFolder, getPackageJSON, getREADME } from './utils';
 
 const fsp = fs.promises ? fs.promises : require('fs/promises');
-const { cp, writeFile } = fsp;
+const { writeFile, copyFile } = fsp;
 
 export function createYamlConfig(registry: string, token?: string) {
   const defaultYaml: any = {
@@ -52,6 +53,6 @@ export async function prepareYarnModernProject(
     getPackageJSON(packageName, version, dependencies, devDependencies)
   );
   await writeFile(join(tempFolder, 'README.md'), getREADME(packageName));
-  await cp(yarnBinPath, join(tempFolder, '.yarn/releases/yarn.js'), { dereference: true });
+  copySync(yarnBinPath, join(tempFolder, '.yarn/releases/yarn.js'));
   return { tempFolder };
 }
