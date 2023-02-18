@@ -50,7 +50,7 @@ importers:
       prettier: 2.8.4
       rimraf: 3.0.2
       typescript: 4.9.5
-      update-ts-references: 2.4.1
+      update-ts-references: 2.5.1
     devDependencies:
       '@babel/cli': 7.20.7_@babel+core@7.20.12
       '@babel/core': 7.20.12
@@ -94,7 +94,7 @@ importers:
       prettier: 2.8.4
       rimraf: 3.0.2
       typescript: 4.9.5
-      update-ts-references: 2.4.1_typescript@4.9.5
+      update-ts-references: 2.5.1_typescript@4.9.5
 
   e2e/cli/e2e-npm6:
     specifiers:
@@ -118,7 +118,7 @@ importers:
       npm: next-8
     dependencies:
       '@verdaccio/test-cli-commons': link:../../../tools/cli-commons
-      npm: 8.19.3
+      npm: 8.19.4
 
   e2e/cli/e2e-npm9:
     specifiers:
@@ -126,7 +126,7 @@ importers:
       npm: next-9
     dependencies:
       '@verdaccio/test-cli-commons': link:../../../tools/cli-commons
-      npm: 9.4.2
+      npm: 9.5.0
 
   e2e/cli/e2e-pnpm6:
     specifiers:
@@ -142,7 +142,7 @@ importers:
       pnpm: next-7
     dependencies:
       '@verdaccio/test-cli-commons': link:../../../tools/cli-commons
-      pnpm: 7.27.0
+      pnpm: 7.27.1
 
   e2e/cli/e2e-yarn1:
     specifiers:
@@ -184,7 +184,7 @@ importers:
       '@verdaccio/test-cli-commons': link:../../tools/cli-commons
       cypress: 11.2.0
       debug: 4.3.4
-      npm: 8.19.3
+      npm: 8.19.4
 
   tools/cli-commons:
     specifiers:
@@ -5914,8 +5914,8 @@ packages:
       - which
       - write-file-atomic
 
-  /npm/8.19.3:
-    resolution: {integrity: sha512-0QjmyPtDxSyMWWD8I91QGbrgx9KzbV6C9FK1liEb/K0zppiZkr5KxXc990G+LzPwBHDfRjUBlO9T1qZ08vl9mA==}
+  /npm/8.19.4:
+    resolution: {integrity: sha512-3HANl8i9DKnUA89P4KEgVNN28EjSeDCmvEqbzOAuxCFDzdBZzjUl99zgnGpOUumvW5lvJo2HKcjrsc+tfyv1Hw==}
     engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
     hasBin: true
     bundledDependencies:
@@ -5993,8 +5993,8 @@ packages:
       - which
       - write-file-atomic
 
-  /npm/9.4.2:
-    resolution: {integrity: sha512-dIkwrPCq4+oeNU9I4B+tO4t+5lUL04XIgizpcwDbPM9vMeoVW54g3f5725FRLp10TH/5/KQWiTziGgILoCxP7w==}
+  /npm/9.5.0:
+    resolution: {integrity: sha512-GqVETDu5xX4+drrjdZmWyxl3BVLToDamB0Wz1+k0mLcraYRVb80gOYSnSEZbHvulw4RyU/Hq6AiUfUBxmm/2gw==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
     hasBin: true
     dev: false
@@ -6345,8 +6345,8 @@ packages:
     hasBin: true
     dev: false
 
-  /pnpm/7.27.0:
-    resolution: {integrity: sha512-nvxGrxgu3oYyw7zg7DdotEnqp9r/c0/iLZHr6QewJPEkVFGSPdsxrm0HFKBkOqwCInoutFzz/mtGx+pbYV8UCw==}
+  /pnpm/7.27.1:
+    resolution: {integrity: sha512-IpBeZ+71slENbuOXwbV4U6yxOMfEWEvlVuT6+ChZ1D80oF0eHyN4h/hc13UrzVXpXI3bf7sPfRWGb8TYkrvJUA==}
     engines: {node: '>=14.6'}
     hasBin: true
     dev: false
@@ -7257,9 +7257,9 @@ packages:
       picocolors: 1.0.0
     dev: true
 
-  /update-ts-references/2.4.1_typescript@4.9.5:
-    resolution: {integrity: sha512-t5o/ijSiFhm67hmVN0m+lOkUopV3MYYZE/lhd3bYaGTCkU+3TpnfRxP/OoxRdapzPOuZaxVBmMwjtW1lN8WoqA==}
-    engines: {node: '>=10.0.0'}
+  /update-ts-references/2.5.1_typescript@4.9.5:
+    resolution: {integrity: sha512-p4PBchOsA/7XcOMiCrYmrq2Elx2XBBwdl/ytNQvsS3rE35T05uilajsBEy+HOWhLO2ALJiJfgjeBXjmyWKrwnQ==}
+    engines: {node: '>=14.0.0'}
     hasBin: true
     peerDependencies:
       typescript: '>=3.8.0'
