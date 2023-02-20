@@ -50,7 +50,7 @@ importers:
       prettier: 2.8.4
       rimraf: 3.0.2
       typescript: 4.9.5
-      update-ts-references: 2.5.1
+      update-ts-references: 2.6.1
     devDependencies:
       '@babel/cli': 7.20.7_@babel+core@7.20.12
       '@babel/core': 7.20.12
@@ -94,7 +94,7 @@ importers:
       prettier: 2.8.4
       rimraf: 3.0.2
       typescript: 4.9.5
-      update-ts-references: 2.5.1_typescript@4.9.5
+      update-ts-references: 2.6.1
 
   e2e/cli/e2e-npm6:
     specifiers:
@@ -2774,6 +2774,10 @@ packages:
     resolution: {integrity: sha512-PCVAQswWemu6UdxsDFFX/+gVeYqKAod3D3UVm91jHwynguOwAvYPhx8nNlM++NqRcK6CxxpUafjmhIdKiHibqg==}
     dev: true
 
+  /array-timsort/1.0.3:
+    resolution: {integrity: sha512-/+3GRL7dDAGEfM6TseQk/U+mi18TU2Ms9I3UlLdUMhz2hbvGNTKdj9xniwXfUqgYhHxRx0+8UnKkvlNwVU+cWQ==}
+    dev: true
+
   /array.prototype.reduce/1.0.5:
     resolution: {integrity: sha512-kDdugMl7id9COE8R7MHF5jWk7Dqt/fs4Pv+JXoICnYwqpjjjbUurz6w5fT5IG6brLdJhv6/VoHB0H7oyIBXd+Q==}
     engines: {node: '>= 0.4'}
@@ -3325,6 +3329,17 @@ packages:
     engines: {node: '>= 12'}
     dev: true
 
+  /comment-json/4.2.3:
+    resolution: {integrity: sha512-SsxdiOf064DWoZLH799Ata6u7iV658A11PlWtZATDlXPpKGJnbJZ5Z24ybixAi+LUUqJ/GKowAejtC5GFUG7Tw==}
+    engines: {node: '>= 6'}
+    dependencies:
+      array-timsort: 1.0.3
+      core-util-is: 1.0.3
+      esprima: 4.0.1
+      has-own-prop: 2.0.0
+      repeat-string: 1.6.1
+    dev: true
+
   /common-tags/1.8.2:
     resolution: {integrity: sha512-gk/Z852D2Wtb//0I+kRFNKKE9dIIVirjoqPoA1wJU+XePVXZfGeBpk45+A1rKO4Q43prqWBNY/MiIeRLbPWUaA==}
     engines: {node: '>=4.0.0'}
@@ -3357,7 +3372,7 @@ packages:
     dev: true
 
   /concat-map/0.0.1:
-    resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=}
+    resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
     dev: true
 
   /content-disposition/0.5.4:
@@ -3410,6 +3425,10 @@ packages:
 
   /core-util-is/1.0.2:
     resolution: {integrity: sha512-3lqz5YjWTYnW6dlDa5TLaTCcShfar1e40rmcJVwCBJC6mWlFuj0eCHIElmG1g5kyuJ/GD+8Wn4FFCcz4gJPfaQ==}
+    dev: true
+
+  /core-util-is/1.0.3:
+    resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
     dev: true
 
   /cors/2.8.5:
@@ -4269,6 +4288,11 @@ packages:
 
   /has-flag/4.0.0:
     resolution: {integrity: sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==}
+    engines: {node: '>=8'}
+    dev: true
+
+  /has-own-prop/2.0.0:
+    resolution: {integrity: sha512-Pq0h+hvsVm6dDEa8x82GnLSYHOzNDt7f0ddFa3FqcQlgzEiptPqL+XrOJNavjOzSYiYWIrgeVYYgGlLmnxwilQ==}
     engines: {node: '>=8'}
     dev: true
 
@@ -6509,11 +6533,6 @@ packages:
     dev: true
     optional: true
 
-  /readline-sync/1.4.10:
-    resolution: {integrity: sha512-gNva8/6UAe8QYepIQH/jQ2qn91Qj0B9sYjMBBs3QOB8F2CXcKgLxQaJRP76sWVRQt+QU+8fAkCbCvjjMFu7Ycw==}
-    engines: {node: '>= 0.8.0'}
-    dev: true
-
   /real-require/0.1.0:
     resolution: {integrity: sha512-r/H9MzAWtrv8aSVjPCMFpDMl5q66GqtmmRkRjpHTsp4zBAa+snZyiQNlMONiUmEJcsnaw0wCauJ2GWODr/aFkg==}
     engines: {node: '>= 12.13.0'}
@@ -6570,6 +6589,11 @@ packages:
     hasBin: true
     dependencies:
       jsesc: 0.5.0
+    dev: true
+
+  /repeat-string/1.6.1:
+    resolution: {integrity: sha512-PV0dzCYDNfRi1jCDbJzpW7jNNDRuCOG/jI5ctQcGKt/clZD+YcPS3yIlWuTJMmESC8aevCFmWJy5wjAFgNqN6w==}
+    engines: {node: '>=0.10'}
     dev: true
 
   /request-progress/3.0.0:
@@ -7237,21 +7261,18 @@ packages:
       picocolors: 1.0.0
     dev: true
 
-  /update-ts-references/2.5.1_typescript@4.9.5:
-    resolution: {integrity: sha512-p4PBchOsA/7XcOMiCrYmrq2Elx2XBBwdl/ytNQvsS3rE35T05uilajsBEy+HOWhLO2ALJiJfgjeBXjmyWKrwnQ==}
+  /update-ts-references/2.6.1:
+    resolution: {integrity: sha512-rv4rOfIWAdf3KWUYAaxPxNdvKwcVI+orAXb2WIHStVTvpC38SKGNtaoVZnmWzP/hk+5Jk/TTVIsK1FtvisDjdw==}
     engines: {node: '>=14.0.0'}
     hasBin: true
-    peerDependencies:
-      typescript: '>=3.8.0'
     dependencies:
       '@formatjs/cli': 2.15.0
+      comment-json: 4.2.3
       glob: 7.2.3
       js-yaml: 4.1.0
       minimatch: 3.1.2
       minimist: 1.2.7
       mkdirp: 1.0.4
-      readline-sync: 1.4.10
-      typescript: 4.9.5
     transitivePeerDependencies:
       - ts-jest
     dev: true
