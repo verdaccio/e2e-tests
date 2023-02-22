@@ -200,7 +200,7 @@ importers:
       got: 11.8.5
       lodash: 4.17.21
       nock: 13.3.0
-      verdaccio: 5.21.2-1676410567878000096.0
+      verdaccio: 5.21.2-1677048727792964425.0
       yaml: 2.2.1
     devDependencies:
       '@verdaccio/config': 6.0.0-6-next.61
@@ -213,7 +213,7 @@ importers:
       got: 11.8.5
       lodash: 4.17.21
       nock: 13.3.0
-      verdaccio: 5.21.2-1676410567878000096.0
+      verdaccio: 5.21.2-1677048727792964425.0
       yaml: 2.2.1
 
 packages:
@@ -5484,6 +5484,11 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
+  /lru-cache/7.17.0:
+    resolution: {integrity: sha512-zSxlVVwOabhVyTi6E8gYv2cr6bXK+8ifYz5/uyJb9feXX6NACVDwY4p5Ut3WC3Ivo/QhpARHU3iujx2xGAYHbQ==}
+    engines: {node: '>=12'}
+    dev: true
+
   /lunr-mutable-indexes/2.3.2:
     resolution: {integrity: sha512-Han6cdWAPPFM7C2AigS2Ofl3XjAT0yVMrUixodJEpyg71zCtZ2yzXc3s+suc/OaNt4ca6WJBEzVnEIjxCTwFMw==}
     dependencies:
@@ -7371,8 +7376,8 @@ packages:
       unix-crypt-td-js: 1.1.4
     dev: true
 
-  /verdaccio/5.21.2-1676410567878000096.0:
-    resolution: {integrity: sha512-b8jg4ghMyhI5cdDGCUcficmvsdrkyYD4TFC3hRVC/zYIcundz8Nyp99eN76Hk+abKI5sRXvjSwz9MSzAdyLBPA==}
+  /verdaccio/5.21.2-1677048727792964425.0:
+    resolution: {integrity: sha512-wyzMWWzqHmgcs4pIjXaVLy6gj/XU9dJkLz3b6sEqSK4/mmXUlE0ecSYbSjQ/hxLwYiqwFUiFEmQxdJxV804pzA==}
     engines: {node: '>=12.18'}
     hasBin: true
     dependencies:
@@ -7396,12 +7401,14 @@ packages:
       debug: 4.3.4
       envinfo: 7.8.1
       express: 4.18.2
+      express-rate-limit: 5.5.1
       fast-safe-stringify: 2.1.1
       handlebars: 4.7.7
       js-yaml: 4.1.0
       jsonwebtoken: 9.0.0
       kleur: 4.1.5
       lodash: 4.17.21
+      lru-cache: 7.17.0
       lunr-mutable-indexes: 2.3.2
       mime: 3.0.0
       mkdirp: 1.0.4
