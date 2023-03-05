@@ -142,7 +142,7 @@ importers:
       pnpm: next-7
     dependencies:
       '@verdaccio/test-cli-commons': link:../../../tools/cli-commons
-      pnpm: 7.28.0
+      pnpm: 7.29.0-1
 
   e2e/cli/e2e-yarn1:
     specifiers:
@@ -200,7 +200,7 @@ importers:
       got: 11.8.5
       lodash: 4.17.21
       nock: 13.3.0
-      verdaccio: 5.21.3-1677876972611725501.0
+      verdaccio: 5.22.0
       yaml: 2.2.1
     devDependencies:
       '@verdaccio/config': 6.0.0-6-next.63
@@ -213,7 +213,7 @@ importers:
       got: 11.8.5
       lodash: 4.17.21
       nock: 13.3.0
-      verdaccio: 5.21.3-1677876972611725501.0
+      verdaccio: 5.22.0
       yaml: 2.2.1
 
 packages:
@@ -6391,8 +6391,8 @@ packages:
     hasBin: true
     dev: false
 
-  /pnpm/7.28.0:
-    resolution: {integrity: sha512-nbuY07S2519jEjaV9KLjSFmOwh0b6KIViIdc/RCJkgco8SZa2+ikQQe4N3CfNn5By5BH0dKVbZ8Ox1Mw8wItSA==}
+  /pnpm/7.29.0-1:
+    resolution: {integrity: sha512-wev0DiT0ry2qVNH0A4EW2ANsajHFTzDH1vpx7KXdadGvEyXQD4GsGkPhhHdx45Mpa73AyPRgFVAKxZzKEzLZew==}
     engines: {node: '>=14.6'}
     hasBin: true
     dev: false
@@ -7395,8 +7395,8 @@ packages:
       unix-crypt-td-js: 1.1.4
     dev: true
 
-  /verdaccio/5.21.3-1677876972611725501.0:
-    resolution: {integrity: sha512-/AyLWDYKrbD2lwwj9NK6RltUbnXevv3Moz6+qIuDcZOvH/wNgmgE1ASKvDcjE3YYJhmapZBXRCI7pFW3nN5TSg==}
+  /verdaccio/5.22.0:
+    resolution: {integrity: sha512-UJaWTYfmu8W3cgQ51YKcamtQKgrkXmdMk9sNj4N0JQ15/582OPucVht4Vw6y+Gvet+2r+OoGbTxPxLmbT1KajQ==}
     engines: {node: '>=12.18'}
     hasBin: true
     dependencies:
