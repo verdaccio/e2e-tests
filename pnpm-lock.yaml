@@ -200,7 +200,7 @@ importers:
       got: 11.8.5
       lodash: 4.17.21
       nock: 13.3.0
-      verdaccio: 5.22.1
+      verdaccio: 5.22.2-1678226828434044361.0
       yaml: 2.2.1
     devDependencies:
       '@verdaccio/config': 6.0.0-6-next.65
@@ -213,7 +213,7 @@ importers:
       got: 11.8.5
       lodash: 4.17.21
       nock: 13.3.0
-      verdaccio: 5.22.1
+      verdaccio: 5.22.2-1678226828434044361.0
       yaml: 2.2.1
 
 packages:
@@ -7395,8 +7395,8 @@ packages:
       unix-crypt-td-js: 1.1.4
     dev: true
 
-  /verdaccio/5.22.1:
-    resolution: {integrity: sha512-rTPFsgpy9Y02ycu80tMD8P1yBY7jO1kAJZvl9djfQ12ZGHYW8zL5cUuUm2D0hv+nneA2lBtEdvbvSr9xzgHnrA==}
+  /verdaccio/5.22.2-1678226828434044361.0:
+    resolution: {integrity: sha512-VsT6wJCsCwESRwgDwcuzT8FSwqHAuYldIvTrcLsE/1XEfoMYHQ4QsmDSeB8XP+a9GvhIIl+YX4F3niGDXe7umw==}
     engines: {node: '>=12.18'}
     hasBin: true
     dependencies:
