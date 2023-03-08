@@ -142,7 +142,7 @@ importers:
       pnpm: next-7
     dependencies:
       '@verdaccio/test-cli-commons': link:../../../tools/cli-commons
-      pnpm: 7.29.0-1
+      pnpm: 7.29.0
 
   e2e/cli/e2e-yarn1:
     specifiers:
@@ -171,10 +171,10 @@ importers:
   e2e/cli/e2e-yarn4:
     specifiers:
       '@verdaccio/test-cli-commons': workspace:1.0.1-6-next.5
-      '@yarnpkg/cli-dist': 4.0.0-rc.39
+      '@yarnpkg/cli-dist': 4.0.0-rc.40
     dependencies:
       '@verdaccio/test-cli-commons': link:../../../tools/cli-commons
-      '@yarnpkg/cli-dist': 4.0.0-rc.39
+      '@yarnpkg/cli-dist': 4.0.0-rc.40
 
   e2e/ui:
     specifiers:
@@ -2650,8 +2650,8 @@ packages:
     hasBin: true
     dev: false
 
-  /@yarnpkg/cli-dist/4.0.0-rc.39:
-    resolution: {integrity: sha512-+0+bPZ8/2CSaRrG+2XE6p3noeOzaQpjBZI37ieBkG0BOc+jKGtjhJDxrO4LO1BRRdTQcPqX3nI5U1BxOMGMRfQ==}
+  /@yarnpkg/cli-dist/4.0.0-rc.40:
+    resolution: {integrity: sha512-dsKBVN/Sug7ipKvfMyOYZpNNgRTVAG9F8WR9HsaBAyOFKzAbW0e6KWCvHz20ZiNNP9xuK0ZnsX44XowlbUa0wA==}
     engines: {node: '>=14.15.0'}
     hasBin: true
     dev: false
@@ -6391,8 +6391,8 @@ packages:
     hasBin: true
     dev: false
 
-  /pnpm/7.29.0-1:
-    resolution: {integrity: sha512-wev0DiT0ry2qVNH0A4EW2ANsajHFTzDH1vpx7KXdadGvEyXQD4GsGkPhhHdx45Mpa73AyPRgFVAKxZzKEzLZew==}
+  /pnpm/7.29.0:
+    resolution: {integrity: sha512-SyJGcUK7gmLSJYjspL6iVOR9CS7ARYA7K0JmJkjn+MMxEJBUwzc0XdPBNwh5q8dxs+iR2ZQBalmI1lI24GRVOA==}
     engines: {node: '>=14.6'}
     hasBin: true
     dev: false
