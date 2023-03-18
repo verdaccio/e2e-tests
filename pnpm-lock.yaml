@@ -126,7 +126,7 @@ importers:
       npm: next-9
     dependencies:
       '@verdaccio/test-cli-commons': link:../../../tools/cli-commons
-      npm: 9.6.1
+      npm: 9.6.2
 
   e2e/cli/e2e-pnpm6:
     specifiers:
@@ -142,7 +142,7 @@ importers:
       pnpm: next-7
     dependencies:
       '@verdaccio/test-cli-commons': link:../../../tools/cli-commons
-      pnpm: 7.29.2
+      pnpm: 7.30.0
 
   e2e/cli/e2e-yarn1:
     specifiers:
@@ -163,10 +163,10 @@ importers:
   e2e/cli/e2e-yarn3:
     specifiers:
       '@verdaccio/test-cli-commons': workspace:1.0.1-6-next.5
-      '@yarnpkg/cli-dist': 3.4.1
+      '@yarnpkg/cli-dist': 3.5.0
     dependencies:
       '@verdaccio/test-cli-commons': link:../../../tools/cli-commons
-      '@yarnpkg/cli-dist': 3.4.1
+      '@yarnpkg/cli-dist': 3.5.0
 
   e2e/cli/e2e-yarn4:
     specifiers:
@@ -2705,8 +2705,8 @@ packages:
     hasBin: true
     dev: false
 
-  /@yarnpkg/cli-dist/3.4.1:
-    resolution: {integrity: sha512-165Y6mm0chgIcjdY2MsJJbm9eYFqnpU2HN+xy6yEltngxld11EBdGCNCHXzL2pvxqlHzL2V3OnIDa7diov1wng==}
+  /@yarnpkg/cli-dist/3.5.0:
+    resolution: {integrity: sha512-5wpP3M/W6GuzvjI9nl7KKKPGdo593f7BKF2m2sV4WfhKzCYcPnSfXB4T8MeTy5USIzw7WXMIPK6VSVvLzz6fHA==}
     engines: {node: '>=12 <14 || 14.2 - 14.9 || >14.10.0'}
     hasBin: true
     dev: false
@@ -6100,8 +6100,8 @@ packages:
       - which
       - write-file-atomic
 
-  /npm/9.6.1:
-    resolution: {integrity: sha512-0H8CVfQmclQydUfM+WNhx4WY4sGNFC2+JsFMyaludklz8vL+tWqIB1oAXh+12yb8uta9y5p8fbc2f1d18aU6cQ==}
+  /npm/9.6.2:
+    resolution: {integrity: sha512-TnXoXhlFkH/9wI4+aXSq0aPLwKG7Ge17t1ME4/rQt+0DZWQCRk9PwhBuX/shqdUiHeKicSLSkzWx+QZgTRE+/A==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
     hasBin: true
     dev: false
@@ -6452,8 +6452,8 @@ packages:
     hasBin: true
     dev: false
 
-  /pnpm/7.29.2:
-    resolution: {integrity: sha512-G1z1E1uKwDjhG85gJYXdycR9ND4Cy1jK3WbtqK09RofBraagz/mXdYoc0x765RurwP1Np1/Vi/uJ6fZqHUWgyw==}
+  /pnpm/7.30.0:
+    resolution: {integrity: sha512-6SUdrWSZ4qvQ4uBVg7smnabVKOFrT7DgSz2NfViG54nRii4ODB395qmHprBiv5WBdlC/jZYBn99fSfmzIMI3WQ==}
     engines: {node: '>=14.6'}
     hasBin: true
     dev: false
