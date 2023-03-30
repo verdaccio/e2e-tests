@@ -13,26 +13,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@8f4b7f84864484a7bf31766abe9204da3cbe65b3 # v3
-      
-    - name: Start containers
-      run: docker-compose -f "./docker/docker-build-install-plugin/docker-compose.yaml" up -d --build
+      - name: Checkout
+        uses: actions/checkout@8f4b7f84864484a7bf31766abe9204da3cbe65b3 # v3
 
-    - name: Install node
-      uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # v3
-      with:
-        node-version: 18
+      - name: Start containers
+        run: docker-compose -f "./docker/docker-build-install-plugin/docker-compose.yaml" up -d --build
 
-    - name: verdaccio cli
-      run: npm install -g verdaccio --registry=http://localhost:4873
-    - name: gastby cli 
-      run:  npm install -g gatsby-cli --registry http://localhost:4873
-    - name: netlify cli 
-      run:  npm install -g netlify-cli --registry http://localhost:4873
-    - name: angular cli 
-      run:  npm install -g @angular/cli --registry http://localhost:4873
+      - name: Install node
+        uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # v3
+        with:
+          node-version: 18
 
-    - name: Stop containers
-      if: always()
-      run: docker-compose -f "./docker/docker-build-install-plugin/docker-compose.yaml" down
+      - name: verdaccio cli
+        run: npm install -g verdaccio --registry=http://localhost:4873
+      - name: gastby cli
+        run: npm install -g gatsby-cli --registry http://localhost:4873
+      - name: netlify cli
+        run: npm install -g netlify-cli --registry http://localhost:4873
+      - name: angular cli
+        run: npm install -g @angular/cli --registry http://localhost:4873
+
+      - name: Stop containers
+        if: always()
+        run: docker-compose -f "./docker/docker-build-install-plugin/docker-compose.yaml" down

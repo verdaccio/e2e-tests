@@ -29,7 +29,7 @@ describe('audit a package yarn 2', () => {
     await yarn(projectFolder, 'install');
     const resp = await yarn(projectFolder, 'npm', 'audit', '--json');
     const parsedBody = JSON.parse(resp.stdout as string);
-    expect(parsedBody.advisories).toBeDefined();    
+    expect(parsedBody.advisories).toBeDefined();
   });
 
   afterAll(async () => {

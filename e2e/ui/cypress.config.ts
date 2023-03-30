@@ -1,6 +1,8 @@
 import { defineConfig } from 'cypress';
+
 import { addRegistry, prepareGenericEmptyProject } from '@verdaccio/test-cli-commons';
-import {npm} from './utils';
+
+import { npm } from './utils';
 
 export default defineConfig({
   e2e: {
