@@ -10,11 +10,11 @@ What is included on these test?
 
 > It uses the image `verdaccio/verdaccio:5.x-next`, latest `5.x` branch changes
 
- - nginx proxy
- - apache proxy
- - using plugins
- 
-All docker test are run with GitHub Actions 
+- nginx proxy
+- apache proxy
+- using plugins
+
+All docker test are run with GitHub Actions
 
 ## With npm cli
 

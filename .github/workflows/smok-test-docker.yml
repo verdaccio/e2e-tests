@@ -1,7 +1,7 @@
 name: Docker Smoke Test 5.x
 on:
   workflow_dispatch:
-  push:  
+  push:
   schedule:
     # run every sunday
     - cron: '0 0 * * 0'
@@ -16,12 +16,12 @@ jobs:
           node-version: 18
       - name: Docker test
         run: |
-            docker run -d -it --rm --name verdaccio -p 4873:4873 verdaccio/verdaccio:latest
-      - name: verdaccio cli 
-        run:  npm install -g verdaccio --registry http://localhost:4873                        
-      - name: gastby cli 
-        run:  npm install -g gatsby-cli --registry http://localhost:4873
-      - name: netlify cli 
-        run:  npm install -g netlify-cli --registry http://localhost:4873
-      - name: angular cli 
-        run:  npm install -g @angular/cli --registry http://localhost:4873
+          docker run -d -it --rm --name verdaccio -p 4873:4873 verdaccio/verdaccio:latest
+      - name: verdaccio cli
+        run: npm install -g verdaccio --registry http://localhost:4873
+      - name: gastby cli
+        run: npm install -g gatsby-cli --registry http://localhost:4873
+      - name: netlify cli
+        run: npm install -g netlify-cli --registry http://localhost:4873
+      - name: angular cli
+        run: npm install -g @angular/cli --registry http://localhost:4873

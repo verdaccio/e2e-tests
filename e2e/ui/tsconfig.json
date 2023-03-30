@@ -4,6 +4,6 @@
   "references": [
     {
       "path": "../../tools/cli-commons"
-    }    
+    }
   ]
 }

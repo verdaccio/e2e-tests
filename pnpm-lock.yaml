@@ -144,6 +144,14 @@ importers:
       '@verdaccio/test-cli-commons': link:../../../tools/cli-commons
       pnpm: 7.30.5
 
+  e2e/cli/e2e-pnpm8:
+    specifiers:
+      '@verdaccio/test-cli-commons': workspace:1.0.1-6-next.5
+      pnpm: next-8
+    dependencies:
+      '@verdaccio/test-cli-commons': link:../../../tools/cli-commons
+      pnpm: 8.1.0
+
   e2e/cli/e2e-yarn1:
     specifiers:
       '@verdaccio/test-cli-commons': workspace:1.0.1-6-next.5
@@ -3502,7 +3510,7 @@ packages:
     dev: true
 
   /concat-map/0.0.1:
-    resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
+    resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=}
     dev: true
 
   /content-disposition/0.5.4:
@@ -6492,6 +6500,12 @@ packages:
   /pnpm/7.30.5:
     resolution: {integrity: sha512-kXiH7+iGhDcm3UVhjb4pzbRYljoT2KVR8WFL37b+c15F9CuaLau0RTozrXx/9snf1JEmGICjRnMM2XArmM01sg==}
     engines: {node: '>=14.6'}
+    hasBin: true
+    dev: false
+
+  /pnpm/8.1.0:
+    resolution: {integrity: sha512-e2H73wTRxmc5fWF/6QJqbuwU6O3NRVZC1G1WFXG8EqfN/+ZBu8XVHJZwPH6Xh0DxbEoZgw8/wy2utgCDwPu4Sg==}
+    engines: {node: '>=16.14'}
     hasBin: true
     dev: false
 
