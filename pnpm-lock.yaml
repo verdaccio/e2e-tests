@@ -33,7 +33,7 @@ importers:
       '@babel/runtime': 7.21.0
       '@trivago/prettier-plugin-sort-imports': 3.4.0
       '@types/jest': 27.5.2
-      '@types/lodash': 4.14.191
+      '@types/lodash': 4.14.192
       '@types/node': 16.18.21
       '@verdaccio/types': 6-next
       babel-core: 7.0.0-bridge.0
@@ -77,7 +77,7 @@ importers:
       '@babel/runtime': 7.21.0
       '@trivago/prettier-plugin-sort-imports': 3.4.0_prettier@2.8.6
       '@types/jest': 27.5.2
-      '@types/lodash': 4.14.191
+      '@types/lodash': 4.14.192
       '@types/node': 16.18.21
       '@verdaccio/types': 11.0.0-6-next.25
       babel-core: 7.0.0-bridge.0_@babel+core@7.21.3
@@ -1955,7 +1955,7 @@ packages:
     dependencies:
       '@formatjs/ts-transformer': 2.13.0
       '@types/json-stable-stringify': 1.0.34
-      '@types/lodash': 4.14.191
+      '@types/lodash': 4.14.192
       '@types/loud-rejection': 2.0.0
       '@types/node': 14.18.34
       '@vue/compiler-core': 3.2.45
@@ -2415,8 +2415,8 @@ packages:
       keyv: 4.5.0
     dev: true
 
-  /@types/lodash/4.14.191:
-    resolution: {integrity: sha512-BdZ5BCCvho3EIXw6wUCXHe7rS53AIDPLE+JzwgT+OsJk53oBfbSmZZ7CX4VaRoN78N+TJpFi9QPlfIVNmJYWxQ==}
+  /@types/lodash/4.14.192:
+    resolution: {integrity: sha512-km+Vyn3BYm5ytMO13k9KTp27O75rbQ0NFw+U//g+PX7VZyjCioXaRFisqSIJRECljcTv73G3i6BpglNGHgUQ5A==}
     dev: true
 
   /@types/loud-rejection/2.0.0:
@@ -7689,7 +7689,7 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       '@babel/runtime': 7.21.0
-      '@types/lodash': 4.14.191
+      '@types/lodash': 4.14.192
       lodash: 4.17.21
       lodash-es: 4.17.21
       nanoclone: 0.2.1
