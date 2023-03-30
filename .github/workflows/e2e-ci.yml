@@ -21,7 +21,7 @@ jobs:
       - name: corepack
         run: corepack enable
       - name: pnpm enable
-        run: corepack prepare pnpm@latest --activate
+        run: corepack prepare pnpm@latest-7 --activate
       - name: set store
         run: |
           mkdir ~/.pnpm-store
@@ -62,7 +62,7 @@ jobs:
       - name: corepack
         run: corepack enable
       - name: pnpm enable
-        run: corepack prepare pnpm@latest --activate
+        run: corepack prepare pnpm@latest-7 --activate
       - uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8 # v3
         with:
           path: ~/.pnpm-store

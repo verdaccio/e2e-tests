@@ -32,7 +32,7 @@ jobs:
     - name: Install pnpm
       run: |
         corepack enable
-        corepack prepare --activate pnpm@latest
+        corepack prepare --activate pnpm@latest-7
         pnpm install
 
     - name: login    
