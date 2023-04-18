@@ -79,7 +79,7 @@ importers:
         version: 7.21.0
       '@trivago/prettier-plugin-sort-imports':
         specifier: 3.4.0
-        version: 3.4.0(prettier@2.8.6)
+        version: 3.4.0(prettier@2.8.7)
       '@types/jest':
         specifier: 27.5.2
         version: 27.5.2
@@ -126,8 +126,8 @@ importers:
         specifier: 11.2.6
         version: 11.2.6
       prettier:
-        specifier: 2.8.6
-        version: 2.8.6
+        specifier: 2.8.7
+        version: 2.8.7
       rimraf:
         specifier: 3.0.2
         version: 3.0.2
@@ -190,7 +190,7 @@ importers:
         version: link:../../../tools/cli-commons
       pnpm:
         specifier: next-7
-        version: 7.32.0
+        version: 7.32.1
 
   e2e/cli/e2e-pnpm8:
     dependencies:
@@ -199,7 +199,7 @@ importers:
         version: link:../../../tools/cli-commons
       pnpm:
         specifier: next-8
-        version: 8.2.0
+        version: 8.3.0
 
   e2e/cli/e2e-yarn1:
     dependencies:
@@ -2398,7 +2398,7 @@ packages:
       defer-to-connect: 2.0.1
     dev: true
 
-  /@trivago/prettier-plugin-sort-imports@3.4.0(prettier@2.8.6):
+  /@trivago/prettier-plugin-sort-imports@3.4.0(prettier@2.8.7):
     resolution: {integrity: sha512-485Iailw8X5f7KetzRka20RF1kPBEINR5LJMNwlBZWY1gRAlVnv5dZzyNPnLxSP0Qcia8HETa9Cdd8LlX9o+pg==}
     peerDependencies:
       prettier: 2.x
@@ -2411,7 +2411,7 @@ packages:
       '@vue/compiler-sfc': 3.2.45
       javascript-natural-sort: 0.7.1
       lodash: 4.17.21
-      prettier: 2.8.6
+      prettier: 2.8.7
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -6525,14 +6525,14 @@ packages:
     hasBin: true
     dev: false
 
-  /pnpm@7.32.0:
-    resolution: {integrity: sha512-XkLEMinrF4046cWGvvam7dsCKeRdJ9i2SeDiKNodoZEPmJp1KrzQe1qYC5Vs/v9qBXJqyI0vLzjoMHjXgphP6g==}
+  /pnpm@7.32.1:
+    resolution: {integrity: sha512-FvCeFKB0VhjiCku1mIIGEEs6FIXmjWHs97QGZ4iL9GqixOCuim3HSb8s+kcR0lIA3IMydX0rbyQKtIc+oLfyOg==}
     engines: {node: '>=14.6'}
     hasBin: true
     dev: false
 
-  /pnpm@8.2.0:
-    resolution: {integrity: sha512-f2/abl6GycxLgVZQtWA2zBJKMXcv2L86HGRwJ4qnS02gVzLgtFegC25qWKFtUunCY74GUwxq2A7yGAJEyOuCYg==}
+  /pnpm@8.3.0:
+    resolution: {integrity: sha512-wRS8ap/SPxBqbUMzcUNkoA0suLqk9BqMlvi8dM2FRuhwUDgqVGYLc5jQ6Ww3uqVc+84zJvN2GYmTWCubaoWPtQ==}
     engines: {node: '>=16.14'}
     hasBin: true
     dev: false
@@ -6546,8 +6546,8 @@ packages:
       source-map-js: 1.0.2
     dev: true
 
-  /prettier@2.8.6:
-    resolution: {integrity: sha512-mtuzdiBbHwPEgl7NxWlqOkithPyp4VN93V7VeHVWBF+ad3I5avc0RVDT4oImXQy9H/AqxA2NSQH8pSxHW6FYbQ==}
+  /prettier@2.8.7:
+    resolution: {integrity: sha512-yPngTo3aXUUmyuTjeTUT75txrf+aMh9FiD7q9ZE/i6r0bPb22g4FsE6Y338PQX1bmfy08i9QQCB7/rcUAVntfw==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: true
