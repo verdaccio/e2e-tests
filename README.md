@@ -96,4 +96,4 @@ Every command should test either console output or in special cases look up the 
 ### What should not included on these tests?
 
 - Anything is unrelated with client commands usage, eg: (auth permissions, third party integrations,
-  hooks, plugins)
+  hooks, plugins).
