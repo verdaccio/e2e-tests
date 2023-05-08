@@ -285,8 +285,8 @@ importers:
         specifier: 13.3.1
         version: 13.3.1
       verdaccio:
-        specifier: 5.24.2-1682312282005441849.0
-        version: 5.24.2-1682312282005441849.0
+        specifier: 5.24.2-1683491094450240269.0
+        version: 5.24.2-1683491094450240269.0
       yaml:
         specifier: 2.2.2
         version: 2.2.2
@@ -7570,8 +7570,8 @@ packages:
       - supports-color
     dev: true
 
-  /verdaccio@5.24.2-1682312282005441849.0:
-    resolution: {integrity: sha512-nrSrzbO9ApwIt3l076MSO0FzlMhsxnwnLjWco1fNGPuit9CreYvqzIAA8KaJTgHuKrqyyv8f7OtMhMojGdJPOg==}
+  /verdaccio@5.24.2-1683491094450240269.0:
+    resolution: {integrity: sha512-Lb7pjm31UJmWNKFI81MEQ+K/fvdpZXZfi8Zqe+LxFBrSnzpANTLbu+rvdPWgV7BXPljW8T0tJZ/iWNE18287yw==}
     engines: {node: '>=12.18'}
     hasBin: true
     dependencies:
