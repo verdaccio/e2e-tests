@@ -1,4 +1,8 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
+
+settings:
+  autoInstallPeers: false
+  excludeLinksFromLockfile: false
 
 overrides:
   got: 11.8.5
@@ -285,8 +289,8 @@ importers:
         specifier: 13.3.1
         version: 13.3.1
       verdaccio:
-        specifier: 5.24.2-1684080452679398570.0
-        version: 5.24.2-1684080452679398570.0
+        specifier: 5.24.2-1685451260365776567.0
+        version: 5.24.2-1685451260365776567.0
       yaml:
         specifier: 2.3.1
         version: 2.3.1
@@ -7598,8 +7602,8 @@ packages:
       - supports-color
     dev: true
 
-  /verdaccio@5.24.2-1684080452679398570.0:
-    resolution: {integrity: sha512-klMMQ9WivIE4yIMR6tbvebCb6CBZ4nXGbI+ygh4UA4JPSO3bVc6nFsJM1n+7etY8D64Dyc7rXjqoi7B0FCUyTg==}
+  /verdaccio@5.24.2-1685451260365776567.0:
+    resolution: {integrity: sha512-O9PTjYdvEUj3PYFKKYy4XH9qtgf+VekihNmDvP5TkfiNv9fBa1JyAfzphkcG7e9197Pp+GfRdRl8FXfIBE8a6A==}
     engines: {node: '>=12.18'}
     hasBin: true
     dependencies:
