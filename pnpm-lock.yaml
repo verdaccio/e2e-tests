@@ -220,8 +220,8 @@ importers:
         specifier: workspace:1.0.1-6-next.5
         version: link:../../../tools/cli-commons
       '@yarnpkg/cli-dist':
-        specifier: 2.4.2
-        version: 2.4.2
+        specifier: 4.0.0-rc.45
+        version: 4.0.0-rc.45
 
   e2e/cli/e2e-yarn3:
     dependencies:
@@ -229,8 +229,8 @@ importers:
         specifier: workspace:1.0.1-6-next.5
         version: link:../../../tools/cli-commons
       '@yarnpkg/cli-dist':
-        specifier: 3.5.0
-        version: 3.5.0
+        specifier: 4.0.0-rc.45
+        version: 4.0.0-rc.45
 
   e2e/cli/e2e-yarn4:
     dependencies:
@@ -238,8 +238,8 @@ importers:
         specifier: workspace:1.0.1-6-next.5
         version: link:../../../tools/cli-commons
       '@yarnpkg/cli-dist':
-        specifier: 4.0.0-rc.42
-        version: 4.0.0-rc.42
+        specifier: 4.0.0-rc.45
+        version: 4.0.0-rc.45
 
   e2e/ui:
     devDependencies:
@@ -2731,20 +2731,8 @@ packages:
     resolution: {integrity: sha512-7OjdcV8vQ74eiz1TZLzZP4JwqM5fA94K6yntPS5Z25r9HDuGNzaGdgvwKYq6S+MxwF0TFRwe50fIR/MYnakdkQ==}
     dev: true
 
-  /@yarnpkg/cli-dist@2.4.2:
-    resolution: {integrity: sha512-M82xg3uZnE836u68o/DpLtSQjxHUoYkuK82v4psznrFjZO3msYD6qb/wAhGD9KdkO/puwfnDhOc9imA3NDrp9g==}
-    engines: {node: '>=12 <14 || 14.2 - 14.9 || >14.10.0'}
-    hasBin: true
-    dev: false
-
-  /@yarnpkg/cli-dist@3.5.0:
-    resolution: {integrity: sha512-5wpP3M/W6GuzvjI9nl7KKKPGdo593f7BKF2m2sV4WfhKzCYcPnSfXB4T8MeTy5USIzw7WXMIPK6VSVvLzz6fHA==}
-    engines: {node: '>=12 <14 || 14.2 - 14.9 || >14.10.0'}
-    hasBin: true
-    dev: false
-
-  /@yarnpkg/cli-dist@4.0.0-rc.42:
-    resolution: {integrity: sha512-7gaPR62HQvVG2XTkSScHYUBb8pqUKG16WOOG20lc6FgXVt3Tdz444uE2pcEE5/IeEbknJyDFiTQGcoz/J3jvNQ==}
+  /@yarnpkg/cli-dist@4.0.0-rc.45:
+    resolution: {integrity: sha512-Gqhn1YBVpj1q9uHKWE1qtG6LSmUP9JBq3j/xbS1MdNS7eoPI9yZEwZe+EP9kDXb0YVvf1I4YXdmxjeR6JhQ7BA==}
     engines: {node: '>=14.15.0'}
     hasBin: true
     dev: false
