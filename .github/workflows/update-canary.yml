@@ -26,7 +26,7 @@ jobs:
       - name: corepack
         run: corepack enable
       - name: pnpm enable
-        run: corepack prepare pnpm@latest-7 --activate
+        run: corepack prepare pnpm@latest-8 --activate
       - name: registry
         run: npm config set registry https://registry.verdaccio.org
       - name: install
