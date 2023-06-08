@@ -176,7 +176,7 @@ importers:
         version: link:../../../tools/cli-commons
       npm:
         specifier: next-9
-        version: 9.7.0
+        version: 9.7.1
 
   e2e/cli/e2e-pnpm6:
     dependencies:
@@ -203,7 +203,7 @@ importers:
         version: link:../../../tools/cli-commons
       pnpm:
         specifier: next-8
-        version: 8.6.0
+        version: 8.6.1
 
   e2e/cli/e2e-yarn1:
     dependencies:
@@ -6448,8 +6448,8 @@ packages:
       - which
       - write-file-atomic
 
-  /npm@9.7.0:
-    resolution: {integrity: sha512-hHmhuHpdmPJugbT54mko0cLt/vXtWuAmzS4JeaiKKTolxFaPzcfJAg5pHDIg5XUSg8vpYrT2iYcKRJ1mPvHPHg==}
+  /npm@9.7.1:
+    resolution: {integrity: sha512-kxMviaiLX4Lfnjy2dt7EWB87v5QdLiGpy04S2ORdKLmPqFhgy8g4cgJjQfnWob4mJIaNHjBO+hk45CvLlsZZ8g==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
     hasBin: true
     dev: false
@@ -6805,8 +6805,8 @@ packages:
     hasBin: true
     dev: false
 
-  /pnpm@8.6.0:
-    resolution: {integrity: sha512-uMaWGXlvG+m5NIJaR4JEEenChbg+1AP4zVpqs4PEcZg4uH+lXMTd/X/lirKZA+TC0w0d+++y3btINcwyKsuwAA==}
+  /pnpm@8.6.1:
+    resolution: {integrity: sha512-P54j8gvb96J7h7gEOD8dr9tcs1zcQPzlkK/yIVJVRG/1lYeO5PM0Keag58OIKxrpJlFPb+pqW6deUvh7/CWS5w==}
     engines: {node: '>=16.14'}
     hasBin: true
     dev: false
