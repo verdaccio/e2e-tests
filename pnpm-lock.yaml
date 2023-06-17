@@ -289,8 +289,8 @@ importers:
         specifier: 13.3.1
         version: 13.3.1
       verdaccio:
-        specifier: 5.25.1-1686875763632406925.0
-        version: 5.25.1-1686875763632406925.0(typanion@3.12.1)
+        specifier: 5.25.1-1686986475274297641.0
+        version: 5.25.1-1686986475274297641.0(typanion@3.12.1)
       yaml:
         specifier: 2.3.1
         version: 2.3.1
@@ -3708,10 +3708,6 @@ packages:
     resolution: {integrity: sha512-Y2oEozpomLn7Q3HFP7dpww7AtMJplbM9lGZP6RDfHqmbeRjiwRg4n6VM6j4KLmRke85uWEI7JqF17f3pqdRA0g==}
     dev: true
 
-  /colorette@2.0.19:
-    resolution: {integrity: sha512-3tlv/dIP7FWvj3BsbHrGLJ6l/oKh1O3TcgBqMn+yyCagOxc23fyzDS6HypQbgxWbkpDnf52p1LuR4eWDQ/K9WQ==}
-    dev: true
-
   /colorette@2.0.20:
     resolution: {integrity: sha512-IfEDxwoWIjkeXL1eXcDiow4UbKjhLdq6/EuSVR9GMN7KVH3r9gQ83e73hsz1Nd1T3ijd5xv1wcWRYO+D6kCI2w==}
     dev: true
@@ -5753,7 +5749,7 @@ packages:
         optional: true
     dependencies:
       cli-truncate: 2.1.0
-      colorette: 2.0.19
+      colorette: 2.0.20
       enquirer: 2.3.6
       log-update: 4.0.0
       p-map: 4.0.0
@@ -7769,8 +7765,8 @@ packages:
       - supports-color
     dev: true
 
-  /verdaccio@5.25.1-1686875763632406925.0(typanion@3.12.1):
-    resolution: {integrity: sha512-oPx9eHyedVDynhHI+ZLBsKXvzxhA/TAl23PqF9qdK3p5udU8p/Yod38i2Gz4r11F+FNnZqVnJ1oPEbNRUoNIpQ==}
+  /verdaccio@5.25.1-1686986475274297641.0(typanion@3.12.1):
+    resolution: {integrity: sha512-vXeh8ViE+FhRJz1T89yqj9zq4oqlvwl50IcvkjEKRLccUfJ1LzobVtRoQBtM7k1iSCdkaWlQjtkzdsjIFOQ+hg==}
     engines: {node: '>=12.18'}
     hasBin: true
     dependencies:
