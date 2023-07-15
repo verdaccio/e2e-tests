@@ -238,8 +238,8 @@ importers:
         specifier: workspace:1.0.1-6-next.5
         version: link:../../../tools/cli-commons
       '@yarnpkg/cli-dist':
-        specifier: 4.0.0-rc.47
-        version: 4.0.0-rc.47
+        specifier: 4.0.0-rc.48
+        version: 4.0.0-rc.48
 
   e2e/ui:
     devDependencies:
@@ -2743,8 +2743,8 @@ packages:
     hasBin: true
     dev: false
 
-  /@yarnpkg/cli-dist@4.0.0-rc.47:
-    resolution: {integrity: sha512-Q7ZQ8O9TnWvMIlzY2P22OpSOnDWTaZs5wOuvPMmHqWfUDNLfHKdWFfLNsbZC5OS+6WvJ7WwcbfPbG67kavHslw==}
+  /@yarnpkg/cli-dist@4.0.0-rc.48:
+    resolution: {integrity: sha512-rB2H+Vqj/kyYtlpXi/FpyO0crq/b/lPJxuJwyhfaqrjiTY0V+5d0OdwJrnkW0b7/RtnuEdLtBW2ELXW/oT+zFg==}
     engines: {node: '>=18.12.0'}
     hasBin: true
     dev: false
