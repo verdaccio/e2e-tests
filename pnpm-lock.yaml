@@ -100,8 +100,8 @@ importers:
         specifier: 7.0.0-bridge.0
         version: 7.0.0-bridge.0(@babel/core@7.22.5)
       babel-jest:
-        specifier: 29.5.0
-        version: 29.5.0(@babel/core@7.22.5)
+        specifier: 29.6.1
+        version: 29.6.1(@babel/core@7.22.5)
       babel-plugin-dynamic-import-node:
         specifier: 2.3.3
         version: 2.3.3
@@ -118,11 +118,11 @@ importers:
         specifier: 7.0.4
         version: 7.0.4
       jest:
-        specifier: 29.5.0
-        version: 29.5.0(@types/node@16.18.36)
+        specifier: 29.6.1
+        version: 29.6.1(@types/node@16.18.36)
       jest-diff:
-        specifier: 29.5.0
-        version: 29.5.0
+        specifier: 29.6.1
+        version: 29.6.1
       kleur:
         specifier: 3.0.3
         version: 3.0.3
@@ -2956,24 +2956,6 @@ packages:
       '@babel/core': 7.22.5
     dev: true
 
-  /babel-jest@29.5.0(@babel/core@7.22.5):
-    resolution: {integrity: sha512-mA4eCDh5mSo2EcA9xQjVTpmbbNk32Zb3Q3QFQsNhaK56Q+yoXowzFodLux30HRgyOho5rsQ6B0P9QpMkvvnJ0Q==}
-    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
-    peerDependencies:
-      '@babel/core': ^7.8.0
-    dependencies:
-      '@babel/core': 7.22.5
-      '@jest/transform': 29.6.1
-      '@types/babel__core': 7.20.1
-      babel-plugin-istanbul: 6.1.1
-      babel-preset-jest: 29.5.0(@babel/core@7.22.5)
-      chalk: 4.1.2
-      graceful-fs: 4.2.11
-      slash: 3.0.0
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
-
   /babel-jest@29.6.1(@babel/core@7.22.5):
     resolution: {integrity: sha512-qu+3bdPEQC6KZSPz+4Fyjbga5OODNcp49j6GKzG1EKbkfyJBxEYGVUmVGpwCSeGouG52R4EgYMLb6p9YeEEQ4A==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
@@ -5025,16 +5007,6 @@ packages:
       pretty-format: 27.5.1
     dev: true
 
-  /jest-diff@29.5.0:
-    resolution: {integrity: sha512-LtxijLLZBduXnHSniy0WMdaHjmQnt3g5sa16W4p0HqukYTTsyTW3GD1q41TyGl5YFXj/5B2U6dlh5FM1LIMgxw==}
-    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
-    dependencies:
-      chalk: 4.1.2
-      diff-sequences: 29.4.3
-      jest-get-type: 29.4.3
-      pretty-format: 29.6.1
-    dev: true
-
   /jest-diff@29.6.1:
     resolution: {integrity: sha512-FsNCvinvl8oVxpNLttNQX7FAq7vR+gMDGj90tiP7siWw1UdakWUGqrylpsYrpvj908IYckm5Y0Q7azNAozU1Kg==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
@@ -5334,8 +5306,8 @@ packages:
       supports-color: 8.1.1
     dev: true
 
-  /jest@29.5.0(@types/node@16.18.36):
-    resolution: {integrity: sha512-juMg3he2uru1QoXX078zTa7pO85QyB9xajZc6bU+d9yEGwrKX6+vGmJQ3UdVZsvTEUARIdObzH68QItim6OSSQ==}
+  /jest@29.6.1(@types/node@16.18.36):
+    resolution: {integrity: sha512-Nirw5B4nn69rVUZtemCQhwxOBhm0nsp3hmtF4rzCeWD7BkjAXRIji7xWQfnTNbz9g0aVsBX6aZK3n+23LM6uDw==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     hasBin: true
     peerDependencies:
