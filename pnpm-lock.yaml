@@ -176,7 +176,7 @@ importers:
         version: link:../../../tools/cli-commons
       npm:
         specifier: next-9
-        version: 9.8.0
+        version: 9.8.1
 
   e2e/cli/e2e-pnpm6:
     dependencies:
@@ -194,7 +194,7 @@ importers:
         version: link:../../../tools/cli-commons
       pnpm:
         specifier: next-7
-        version: 7.33.3
+        version: 7.33.5
 
   e2e/cli/e2e-pnpm8:
     dependencies:
@@ -203,7 +203,7 @@ importers:
         version: link:../../../tools/cli-commons
       pnpm:
         specifier: next-8
-        version: 8.6.7
+        version: 8.6.9
 
   e2e/cli/e2e-yarn1:
     dependencies:
@@ -289,8 +289,8 @@ importers:
         specifier: 13.3.2
         version: 13.3.2
       verdaccio:
-        specifier: 5.26.1-1689457646.0
-        version: 5.26.1-1689457646.0(typanion@3.13.0)
+        specifier: 5.26.1-1689709941.0
+        version: 5.26.1-1689709941.0(typanion@3.13.0)
       yaml:
         specifier: 2.3.1
         version: 2.3.1
@@ -6165,8 +6165,8 @@ packages:
       - which
       - write-file-atomic
 
-  /npm@9.8.0:
-    resolution: {integrity: sha512-AXeiBAdfM5K2jvBwA7EGLKeYyt0VnhmJRnlq4k2+M0Ao9v7yKJBqF8xFPzQL8kAybzwlfpTPCZwM4uTIszb3xA==}
+  /npm@9.8.1:
+    resolution: {integrity: sha512-AfDvThQzsIXhYgk9zhbk5R+lh811lKkLAeQMMhSypf1BM7zUafeIIBzMzespeuVEJ0+LvY36oRQYf7IKLzU3rw==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
     hasBin: true
     dev: false
@@ -6174,8 +6174,10 @@ packages:
       - '@isaacs/string-locale-compare'
       - '@npmcli/arborist'
       - '@npmcli/config'
+      - '@npmcli/fs'
       - '@npmcli/map-workspaces'
       - '@npmcli/package-json'
+      - '@npmcli/promise-spawn'
       - '@npmcli/run-script'
       - abbrev
       - archy
@@ -6518,14 +6520,14 @@ packages:
     hasBin: true
     dev: false
 
-  /pnpm@7.33.3:
-    resolution: {integrity: sha512-OW5JLFmXpMqlbr3qb9wfBnJybZGtz0Y++VOGX37vNmvlQvk6kSWR0z2sPIH/TWtFC39nwBtxmvqC83gVURf6pQ==}
+  /pnpm@7.33.5:
+    resolution: {integrity: sha512-TkmfIv/+WEWqj5Rj4ThrLXLDE04OvvlAk2CthE/vApDoK0ebMusuwPMOVmB+GCDCIWeCn9YmVtQaj9DMSg9CZw==}
     engines: {node: '>=14.6'}
     hasBin: true
     dev: false
 
-  /pnpm@8.6.7:
-    resolution: {integrity: sha512-vRIWpD/L4phf9Bk2o/O2TDR8fFoJnpYrp2TKqTIZF/qZ2/rgL3qKXzHofHgbXsinwMoSEigz28sqk3pQ+yMEQQ==}
+  /pnpm@8.6.9:
+    resolution: {integrity: sha512-LPEaCGvlV4dVGeJeHqi/pCR/SETooqmScv2wcr0gTqGUebpkt1w9TIEX0awLMhLO29p7pcXfz5ZO59B70Tnc0w==}
     engines: {node: '>=16.14'}
     hasBin: true
     dev: false
@@ -7551,8 +7553,8 @@ packages:
       - supports-color
     dev: true
 
-  /verdaccio@5.26.1-1689457646.0(typanion@3.13.0):
-    resolution: {integrity: sha512-3NIfY4JOJXrp6Tgu8+AHiZcKhVU5s8C6TEKi+LpnzFglRj4McupsxPeh0EWS0NuV0iDeXNtL/sd6xNRZn12yWQ==}
+  /verdaccio@5.26.1-1689709941.0(typanion@3.13.0):
+    resolution: {integrity: sha512-jrX2we2Cxvo3BRh8ZsaU1ek9SrEvnBNFkr2BNG7wBRZthHyGFCYuYAjLiXGJMJ4ftb+zHn6iyhfjIE1I8hBxlg==}
     engines: {node: '>=12.18'}
     hasBin: true
     dependencies:
