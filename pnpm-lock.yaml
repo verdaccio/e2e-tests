@@ -88,8 +88,8 @@ importers:
         specifier: 27.5.2
         version: 27.5.2
       '@types/lodash':
-        specifier: 4.14.195
-        version: 4.14.195
+        specifier: 4.14.196
+        version: 4.14.196
       '@types/node':
         specifier: 16.18.39
         version: 16.18.39
@@ -1975,7 +1975,7 @@ packages:
     dependencies:
       '@formatjs/ts-transformer': 2.13.0
       '@types/json-stable-stringify': 1.0.34
-      '@types/lodash': 4.14.195
+      '@types/lodash': 4.14.196
       '@types/loud-rejection': 2.0.0
       '@types/node': 14.18.53
       '@vue/compiler-core': 3.3.4
@@ -2436,8 +2436,8 @@ packages:
       '@types/node': 16.18.39
     dev: true
 
-  /@types/lodash@4.14.195:
-    resolution: {integrity: sha512-Hwx9EUgdwf2GLarOjQp5ZH8ZmblzcbTBC2wtQWNKARBSxM9ezRIAUpeDTgoQRAFB0+8CNWXVA9+MaSOzOF3nPg==}
+  /@types/lodash@4.14.196:
+    resolution: {integrity: sha512-22y3o88f4a94mKljsZcanlNWPzO0uBsBdzLAngf2tp533LzZcQzb6+eZPJ+vCTt+bqF2XnvT9gejTLsAcJAJyQ==}
     dev: true
 
   /@types/loud-rejection@2.0.0:
@@ -4703,6 +4703,7 @@ packages:
   /is-extglob@2.1.1:
     resolution: {integrity: sha512-SbKbANkN603Vi4jEZv49LeVJMn4yGwsbzZworEoyEiutsN3nJYdbO36zfhGJ6QEDpOZIFkDtnq5JRxmvl3jsoQ==}
     engines: {node: '>=0.10.0'}
+    requiresBuild: true
     dev: true
 
   /is-fullwidth-code-point@3.0.0:
@@ -4718,6 +4719,7 @@ packages:
   /is-glob@4.0.3:
     resolution: {integrity: sha512-xelSayHH36ZgE7ZWhli7pW34hNbNl8Ojv5KVmkJD4hBdD3th8Tfk9vYasLM+mXWOZhFkgZfxhLSnrwRr4elSSg==}
     engines: {node: '>=0.10.0'}
+    requiresBuild: true
     dependencies:
       is-extglob: 2.1.1
     dev: true
@@ -7768,7 +7770,7 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       '@babel/runtime': 7.22.6
-      '@types/lodash': 4.14.195
+      '@types/lodash': 4.14.196
       lodash: 4.17.21
       lodash-es: 4.17.21
       nanoclone: 0.2.1
