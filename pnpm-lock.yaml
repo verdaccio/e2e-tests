@@ -203,7 +203,7 @@ importers:
         version: link:../../../tools/cli-commons
       pnpm:
         specifier: next-8
-        version: 8.6.10
+        version: 8.6.11
 
   e2e/cli/e2e-yarn1:
     dependencies:
@@ -6537,8 +6537,8 @@ packages:
     hasBin: true
     dev: false
 
-  /pnpm@8.6.10:
-    resolution: {integrity: sha512-EBlPdgrAqmIDK6lflNm8M4lueWGM4PKJIDngt6vJ1+fmzh3e0482tg52nUjiuGvkzZ2sngA181GLqknXhAHgIg==}
+  /pnpm@8.6.11:
+    resolution: {integrity: sha512-jqknppuj45tDzJsLcLqkAxytBHZXIx9JTYkGNq0/7pSRggpio9wRxTDj4NA2ilOHPlJ5BVjB5Ij5dx65woMi5A==}
     engines: {node: '>=16.14'}
     hasBin: true
     dev: false
