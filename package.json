@@ -41,7 +41,7 @@
     "@trivago/prettier-plugin-sort-imports": "3.4.0",
     "@types/jest": "27.5.2",
     "@types/lodash": "4.14.196",
-    "@types/node": "16.18.39",
+    "@types/node": "16.18.41",
     "@verdaccio/types": "6-next",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "29.6.2",
