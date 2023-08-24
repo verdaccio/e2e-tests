@@ -44,7 +44,7 @@
     "@types/node": "16.18.41",
     "@verdaccio/types": "6-next",
     "babel-core": "7.0.0-bridge.0",
-    "babel-jest": "29.6.2",
+    "babel-jest": "29.6.4",
     "babel-plugin-dynamic-import-node": "2.3.3",
     "babel-plugin-emotion": "10.2.2",
     "cross-env": "7.0.3",
