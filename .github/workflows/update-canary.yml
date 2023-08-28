@@ -32,7 +32,7 @@ jobs:
       - name: install
         run: pnpm install
       - name: update to latest canary
-        run: cd tools/cli-commons && pnpm install verdaccio@canary-5x
+        run: cd tools/cli-commons && pnpm install verdaccio@canary-6x
       - name: Commit & Push changes
         uses: actions-js/push@156f2b10c3aa000c44dbe75ea7018f32ae999772 # tag=v1.4
         with:
