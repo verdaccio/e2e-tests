@@ -203,7 +203,7 @@ importers:
         version: link:../../../tools/cli-commons
       pnpm:
         specifier: next-8
-        version: 8.7.0
+        version: 8.7.1
 
   e2e/cli/e2e-yarn1:
     dependencies:
@@ -289,8 +289,8 @@ importers:
         specifier: 13.3.3
         version: 13.3.3
       verdaccio:
-        specifier: 5.26.2-1693256679.0
-        version: 5.26.2-1693256679.0(typanion@3.13.0)
+        specifier: 5.26.2-1693688926.0
+        version: 5.26.2-1693688926.0(typanion@3.13.0)
       yaml:
         specifier: 2.3.1
         version: 2.3.1
@@ -2495,14 +2495,6 @@ packages:
     dev: true
     optional: true
 
-  /@verdaccio/commons-api@10.2.0:
-    resolution: {integrity: sha512-F/YZANu4DmpcEV0jronzI7v2fGVWkQ5Mwi+bVmV+ACJ+EzR0c9Jbhtbe5QyLUuzR97t8R5E/Xe53O0cc2LukdQ==}
-    engines: {node: '>=8'}
-    dependencies:
-      http-errors: 2.0.0
-      http-status-codes: 2.2.0
-    dev: true
-
   /@verdaccio/config@6.0.0-6-next.76:
     resolution: {integrity: sha512-iWmmi+8pDedpwbRw43K19+Ky+DBYwcQ3L9hQNkG4KrhGdJsy7it6bpcjmxrh4xX39jQ00bqyq6Hb4cCGl7zlRQ==}
     engines: {node: '>=12'}
@@ -2585,15 +2577,15 @@ packages:
       - supports-color
     dev: true
 
-  /@verdaccio/local-storage@10.3.3:
-    resolution: {integrity: sha512-/n0FH+1hxVg80YhYBfJuW7F2AuvLY2fra8/DTCilWDll9Y5yZDxwntZfcKHJLerCA4atrbJtvaqpWkoV3Q9x8w==}
+  /@verdaccio/local-storage@10.3.4:
+    resolution: {integrity: sha512-Z03h+2lJ7BGVdizcvPjrTv5Yrl3yn8OOZJz4vTf4+2r6ICc572bqOrwOnGg/ZCATJZy6k7tBBdTQfDG8vlMMKQ==}
     engines: {node: '>=8'}
     dependencies:
-      '@verdaccio/commons-api': 10.2.0
+      '@verdaccio/core': 7.0.0-next.1
       '@verdaccio/file-locking': 10.3.1
       '@verdaccio/streams': 10.2.1
-      async: 3.2.4
       debug: 4.3.4(supports-color@8.1.1)
+      globby: 11.1.0
       lodash: 4.17.21
       lowdb: 1.0.0
       mkdirp: 1.0.4
@@ -2943,6 +2935,11 @@ packages:
 
   /array-timsort@1.0.3:
     resolution: {integrity: sha512-/+3GRL7dDAGEfM6TseQk/U+mi18TU2Ms9I3UlLdUMhz2hbvGNTKdj9xniwXfUqgYhHxRx0+8UnKkvlNwVU+cWQ==}
+    dev: true
+
+  /array-union@2.1.0:
+    resolution: {integrity: sha512-HGyxoOTYUyCM6stUe6EJgnd4EoewAI7zMdfqO+kGjnlZmBDz/cR5pf8r/cR4Wq60sL/p0IkcjUEEPwS3GFrIyw==}
+    engines: {node: '>=8'}
     dev: true
 
   /array.prototype.reduce@1.0.5:
@@ -3852,6 +3849,13 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dev: true
 
+  /dir-glob@3.0.1:
+    resolution: {integrity: sha512-WkrWp9GR4KXfKGYzOLmTuGVi1UWFfws377n9cc55/tb6DuqyF6pcQ5AbiHEshaDpY9v6oaSr2XCDidGmMwdzIA==}
+    engines: {node: '>=8'}
+    dependencies:
+      path-type: 4.0.0
+    dev: true
+
   /ecc-jsbn@0.1.2:
     resolution: {integrity: sha512-eh9O+hwRHNbG4BLTjEl3nw044CkGm5X6LoaCf7LPp7UU8Qrt47JYNi6nPX8xjW97TKGKm1ouctg0QSpZe9qrnw==}
     dependencies:
@@ -4450,6 +4454,18 @@ packages:
       define-properties: 1.2.0
     dev: true
 
+  /globby@11.1.0:
+    resolution: {integrity: sha512-jhIXaOzy1sb8IyocaruWSn1TjmnBVs8Ayhcy83rmxNJ8q2uWKCAj3CnJY+KpGSXCueAPc0i05kVvVKtP1t9S3g==}
+    engines: {node: '>=10'}
+    dependencies:
+      array-union: 2.1.0
+      dir-glob: 3.0.1
+      fast-glob: 3.3.0
+      ignore: 5.2.4
+      merge2: 1.4.1
+      slash: 3.0.0
+    dev: true
+
   /gopd@1.0.1:
     resolution: {integrity: sha512-d65bNlIadxvpb/A2abVdlqKqV563juRnZ1Wtk6s1sIR8uNsXR70xqIzVqxVf1eTqDunwT2MkczEeaezCKTZhwA==}
     dependencies:
@@ -4652,6 +4668,11 @@ packages:
 
   /ieee754@1.2.1:
     resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==}
+    dev: true
+
+  /ignore@5.2.4:
+    resolution: {integrity: sha512-MAb38BcSbH0eHNBxn7ql2NH/kX33OkB3lZ1BNdh7ENeRChHTYsTvWrMubiIAMNS2llXEEgZ1MUOBtXChP3kaFQ==}
+    engines: {node: '>= 4'}
     dev: true
 
   /import-fresh@3.3.0:
@@ -6591,8 +6612,8 @@ packages:
     hasBin: true
     dev: false
 
-  /pnpm@8.7.0:
-    resolution: {integrity: sha512-HWH4wQ6KWl2/vd6g8fXvt9vVF3IjBzrslTzyMKpGQWiEuUJ6ZCHbp48orQ+T++3ji6VwgyN7NQJD3mseOoznHQ==}
+  /pnpm@8.7.1:
+    resolution: {integrity: sha512-Qbt3EhYUaXFS2k4FLQA7r2/eYz/JoDeG680/3UXG0Ga03LPuY4GgdvCLe+zO3M7ZnWG4VI4bAwk7QpJyfr5eqA==}
     engines: {node: '>=16.14'}
     hasBin: true
     dev: false
@@ -7568,15 +7589,15 @@ packages:
       - supports-color
     dev: true
 
-  /verdaccio@5.26.2-1693256679.0(typanion@3.13.0):
-    resolution: {integrity: sha512-1tNihahA8M2M7ENhA0gkyfRfGQcEn44uoypYXYtbHZh/Yw86Y1AiYE0l5uvgd6xZvYQBVbn6rwQmDx9YxZ3k+Q==}
+  /verdaccio@5.26.2-1693688926.0(typanion@3.13.0):
+    resolution: {integrity: sha512-APeNidQf68UKbPdlniiinLeqZmy3E0azHioJZo3KqGCVfgl6giwS7bX/XE4pi4PampmU7iPNNpPIqCO3FuvS8A==}
     engines: {node: '>=16'}
     hasBin: true
     dependencies:
       '@verdaccio/config': 7.0.0-next.1
       '@verdaccio/core': 7.0.0-next.1
       '@verdaccio/hooks': 7.0.0-next.1
-      '@verdaccio/local-storage': 10.3.3
+      '@verdaccio/local-storage': 10.3.4
       '@verdaccio/logger': 7.0.0-next.1
       '@verdaccio/middleware': 7.0.0-next.1
       '@verdaccio/proxy': 7.0.0-next.1
