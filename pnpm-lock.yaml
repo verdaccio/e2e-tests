@@ -292,8 +292,8 @@ importers:
         specifier: 5.26.2-1693724263.0
         version: 5.26.2-1693724263.0(typanion@3.13.0)
       yaml:
-        specifier: 2.3.1
-        version: 2.3.1
+        specifier: 2.3.2
+        version: 2.3.2
 
 packages:
 
@@ -7842,8 +7842,8 @@ packages:
     engines: {node: '>= 6'}
     dev: true
 
-  /yaml@2.3.1:
-    resolution: {integrity: sha512-2eHWfjaoXgTBC2jNM1LRef62VQa0umtvRiDSk6HSzW7RvS5YtkabJrwYLLEKWBc8a5U2PTSCs+dJjUTJdlHsWQ==}
+  /yaml@2.3.2:
+    resolution: {integrity: sha512-N/lyzTPaJasoDmfV7YTrYCI0G/3ivm/9wdG0aHuheKowWQwGTsK0Eoiw6utmzAnI6pkJa0DUVygvp3spqqEKXg==}
     engines: {node: '>= 14'}
     dev: true
 
