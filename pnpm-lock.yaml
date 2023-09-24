@@ -142,6 +142,15 @@ importers:
         specifier: 2.6.1
         version: 2.6.1
 
+  e2e/cli/e2e-npm10:
+    dependencies:
+      '@verdaccio/test-cli-commons':
+        specifier: workspace:1.0.1-6-next.5
+        version: link:../../../tools/cli-commons
+      npm:
+        specifier: next-10
+        version: 10.1.0
+
   e2e/cli/e2e-npm6:
     dependencies:
       '@verdaccio/test-cli-commons':
@@ -6137,6 +6146,81 @@ packages:
     dependencies:
       path-key: 3.1.1
     dev: true
+
+  /npm@10.1.0:
+    resolution: {integrity: sha512-pZ2xybXzNGbJFZEKNbPoEXsE38Xou9VTnxxBk+B3pz0ndsGCs7iWHoUCPSsISU2hjmkWfDkJo3bYKE8RDOg4eg==}
+    engines: {node: ^18.17.0 || >=20.5.0}
+    hasBin: true
+    dev: false
+    bundledDependencies:
+      - '@isaacs/string-locale-compare'
+      - '@npmcli/arborist'
+      - '@npmcli/config'
+      - '@npmcli/fs'
+      - '@npmcli/map-workspaces'
+      - '@npmcli/package-json'
+      - '@npmcli/promise-spawn'
+      - '@npmcli/run-script'
+      - '@sigstore/tuf'
+      - abbrev
+      - archy
+      - cacache
+      - chalk
+      - ci-info
+      - cli-columns
+      - cli-table3
+      - columnify
+      - fastest-levenshtein
+      - fs-minipass
+      - glob
+      - graceful-fs
+      - hosted-git-info
+      - ini
+      - init-package-json
+      - is-cidr
+      - json-parse-even-better-errors
+      - libnpmaccess
+      - libnpmdiff
+      - libnpmexec
+      - libnpmfund
+      - libnpmhook
+      - libnpmorg
+      - libnpmpack
+      - libnpmpublish
+      - libnpmsearch
+      - libnpmteam
+      - libnpmversion
+      - make-fetch-happen
+      - minimatch
+      - minipass
+      - minipass-pipeline
+      - ms
+      - node-gyp
+      - nopt
+      - npm-audit-report
+      - npm-install-checks
+      - npm-package-arg
+      - npm-pick-manifest
+      - npm-profile
+      - npm-registry-fetch
+      - npm-user-validate
+      - npmlog
+      - p-map
+      - pacote
+      - parse-conflict-json
+      - proc-log
+      - qrcode-terminal
+      - read
+      - semver
+      - ssri
+      - supports-color
+      - tar
+      - text-table
+      - tiny-relative-date
+      - treeverse
+      - validate-npm-package-name
+      - which
+      - write-file-atomic
 
   /npm@6.14.18:
     resolution: {integrity: sha512-p3SjqSchSuNQUqbJBgwdv0L3O6bKkaSfQrQzJsskNpNKLg0g37c5xTXFV0SqTlX9GWvoGxBELVJMRWq0J8oaLA==}
