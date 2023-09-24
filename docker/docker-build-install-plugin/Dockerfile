@@ -1,4 +1,4 @@
-FROM verdaccio/verdaccio:6.x-next
+FROM verdaccio/verdaccio:nightly-master
 ADD docker.yaml /verdaccio/conf/config.yaml  
 USER root
 RUN npm install --global verdaccio-static-token \

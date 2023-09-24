@@ -8,7 +8,7 @@ What is included on these test?
 
 ## With docker (docker compose)
 
-> It uses the image `verdaccio/verdaccio:5.x-next`, latest `5.x` branch changes
+> It uses the image `verdaccio/verdaccio:nightly-master`, latest `5.x` branch changes
 
 - nginx proxy
 - apache proxy
