@@ -1,6 +1,8 @@
-import { addRegistry, initialSetup, prepareGenericEmptyProject } from '@verdaccio/test-cli-commons';
 import fs from 'fs';
 import path from 'path';
+
+import { addRegistry, initialSetup, prepareGenericEmptyProject } from '@verdaccio/test-cli-commons';
+
 import { npm } from './utils';
 
 describe('unpublish a package', () => {
@@ -45,7 +47,7 @@ describe('unpublish a package', () => {
         ...addRegistry(registry.getRegistryUrl())
       );
       const pkgFolder = fs.existsSync(path.join(registryStorageFolder, 'storage', pkgName));
-      expect(pkgFolder).toBeFalsy();      
+      expect(pkgFolder).toBeFalsy();
     }
   );
 
