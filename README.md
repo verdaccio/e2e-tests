@@ -1,14 +1,16 @@
-# E2E CLI Testing for 5.x
+# E2E CLI Testing for 6.x
+
+> For 5.x versions, check `5.x` branch 
 
 What is included on these test?
 
 ## With Cypress
 
-- Test the UI fo latest 5.x branch docker image
+- Test the UI fo latest 6.x branch docker image
 
 ## With docker (docker compose)
 
-> It uses the image `verdaccio/verdaccio:5.x-next`, latest `5.x` branch changes
+> It uses the image `verdaccio/verdaccio:nightly-master`, latest `6.x` branch changes
 
 - nginx proxy
 - apache proxy
@@ -18,14 +20,9 @@ All docker test are run with GitHub Actions
 
 ## With npm cli
 
-> A copy of `verdaccio/verdaccio` e2e for 6.x, test are on sync
 > It uses the latest `npmjs` version published
-
 - Default configuration only
-- Test with all popular package managers:
-- `yarn classic` and `yarn modern (2, 3, 4 RC)`
-- `pnpm 6, 7`
-- `npm 6, 7, 8 and 9`
+- Test with all popular package managers
 
 ### Commands Tested
 
