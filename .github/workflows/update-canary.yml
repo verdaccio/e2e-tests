@@ -38,6 +38,6 @@ jobs:
         with:
           github_token: ${{ secrets.TOKEN_VERDACCIOBOT_V2 }}
           message: 'chore: updated canary verdaccio canary 5.x'
-          branch: main
+          branch: 5.x
           author_email: verdaccio.npm@gmail.com
           author_name: verdacciobot
