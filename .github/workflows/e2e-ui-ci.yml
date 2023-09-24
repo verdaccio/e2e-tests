@@ -1,4 +1,4 @@
-name: E2E Docker UI Cypress
+name: E2E Docker UI Cypress 6.x
 
 on:
   workflow_dispatch:

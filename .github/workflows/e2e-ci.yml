@@ -1,4 +1,4 @@
-name: E2E CLI 5.x
+name: E2E CLI 6.x
 
 on:
   workflow_dispatch:

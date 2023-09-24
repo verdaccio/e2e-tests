@@ -1,4 +1,4 @@
-name: E2E Docker Proxy Plugins Test
+name: E2E Docker Proxy Plugins Test 6.x
 
 on:
   workflow_dispatch:
