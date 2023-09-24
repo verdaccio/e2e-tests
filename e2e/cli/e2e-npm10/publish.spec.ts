@@ -1,24 +1,19 @@
-import fs from 'fs';
-import path from 'path';
-
 import { addRegistry, initialSetup, prepareGenericEmptyProject } from '@verdaccio/test-cli-commons';
 
 import { npm } from './utils';
 
-describe('unpublish a package', () => {
-  jest.setTimeout(20000);
+describe('install a package', () => {
+  jest.setTimeout(10000);
   let registry;
-  let registryStorageFolder;
 
   beforeAll(async () => {
     const setup = await initialSetup();
     registry = setup.registry;
     await registry.init();
-    registryStorageFolder = setup.tempFolder;
   });
 
-  test.each(['foo-memory', '@scope/foo-memory'])(
-    'should unpublish a package %s',
+  test.each([['verdaccio-memory', 'verdaccio', '@verdaccio/foo', '@verdaccio/some-foo']])(
+    'should publish a package %s',
     async (pkgName) => {
       const { tempFolder } = await prepareGenericEmptyProject(
         pkgName,
@@ -27,7 +22,6 @@ describe('unpublish a package', () => {
         registry.getToken(),
         registry.getRegistryUrl()
       );
-
       const resp = await npm(
         { cwd: tempFolder },
         'publish',
@@ -38,16 +32,6 @@ describe('unpublish a package', () => {
       expect(parsedBody.name).toEqual(pkgName);
       expect(parsedBody.files).toBeDefined();
       expect(parsedBody.files).toBeDefined();
-
-      await npm(
-        { cwd: tempFolder },
-        'unpublish',
-        '--json',
-        '--force',
-        ...addRegistry(registry.getRegistryUrl())
-      );
-      const pkgFolder = fs.existsSync(path.join(registryStorageFolder, 'storage', pkgName));
-      expect(pkgFolder).toBeFalsy();
     }
   );
 
