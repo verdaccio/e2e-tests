@@ -4,9 +4,8 @@ on:
   workflow_dispatch:
   pull_request:
   push:
-  schedule:
-    # run every sunday
-    - cron: '0 0 * * 0'
+    branches:
+      - 5.x
 jobs:
   docker:
     timeout-minutes: 10

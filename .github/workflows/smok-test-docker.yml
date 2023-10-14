@@ -2,9 +2,8 @@ name: Docker Smoke Test 5.x
 on:
   workflow_dispatch:
   push:
-  schedule:
-    # run every sunday
-    - cron: '0 0 * * 0'
+    branches:
+      - 5.x
 permissions:
   contents: read
 jobs:
