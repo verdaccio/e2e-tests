@@ -88,8 +88,8 @@ importers:
         specifier: 27.5.2
         version: 27.5.2
       '@types/lodash':
-        specifier: 4.14.197
-        version: 4.14.197
+        specifier: 4.14.200
+        version: 4.14.200
       '@types/node':
         specifier: 16.18.59
         version: 16.18.59
@@ -2137,7 +2137,7 @@ packages:
     dependencies:
       '@formatjs/ts-transformer': 2.13.0
       '@types/json-stable-stringify': 1.0.34
-      '@types/lodash': 4.14.197
+      '@types/lodash': 4.14.200
       '@types/loud-rejection': 2.0.0
       '@types/node': 14.18.53
       '@vue/compiler-core': 3.3.4
@@ -2593,8 +2593,8 @@ packages:
       '@types/node': 16.18.59
     dev: true
 
-  /@types/lodash@4.14.197:
-    resolution: {integrity: sha512-BMVOiWs0uNxHVlHBgzTIqJYmj+PgCo4euloGF+5m4okL3rEYzM2EEv78mw8zWSMM57dM7kVIgJ2QDvwHSoCI5g==}
+  /@types/lodash@4.14.200:
+    resolution: {integrity: sha512-YI/M/4HRImtNf3pJgbF+W6FrXovqj+T+/HpENLTooK9PnkacBsDpeP3IpHab40CClUfhNmdM2WTNP2sa2dni5Q==}
     dev: true
 
   /@types/loud-rejection@2.0.0:
@@ -8144,7 +8144,7 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       '@babel/runtime': 7.23.2
-      '@types/lodash': 4.14.197
+      '@types/lodash': 4.14.200
       lodash: 4.17.21
       lodash-es: 4.17.21
       nanoclone: 0.2.1
