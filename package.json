@@ -40,7 +40,7 @@
     "@babel/runtime": "7.23.2",
     "@trivago/prettier-plugin-sort-imports": "3.4.0",
     "@types/jest": "27.5.2",
-    "@types/lodash": "4.14.197",
+    "@types/lodash": "4.14.200",
     "@types/node": "16.18.59",
     "@verdaccio/types": "6-next",
     "babel-core": "7.0.0-bridge.0",
