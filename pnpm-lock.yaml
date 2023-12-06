@@ -298,8 +298,8 @@ importers:
         specifier: 13.4.0
         version: 13.4.0
       verdaccio:
-        specifier: 5.28.0
-        version: 5.28.0(typanion@3.13.0)
+        specifier: 5.28.1-1701808557.0
+        version: 5.28.1-1701808557.0(typanion@3.13.0)
       yaml:
         specifier: 2.3.4
         version: 2.3.4
@@ -8016,8 +8016,8 @@ packages:
       - supports-color
     dev: true
 
-  /verdaccio@5.28.0(typanion@3.13.0):
-    resolution: {integrity: sha512-wr62wKKt03ZpBf4P/qfc5gfCuiEFXLI3OsEUPw3930Qz4sYrg/MgJP5sCzGobkp1x0a0fvrVb7bChsRmPzAynQ==}
+  /verdaccio@5.28.1-1701808557.0(typanion@3.13.0):
+    resolution: {integrity: sha512-gylMIgS7ZJZv2zv/uEucrbGP8uNd0wZYSulMKXiZnSOXCpLDHvxpH3nucIIGOhAm7dzrjOhwG46SZXHk5LTxig==}
     engines: {node: '>=12.18'}
     hasBin: true
     dependencies:
