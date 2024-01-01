@@ -298,8 +298,8 @@ importers:
         specifier: 13.4.0
         version: 13.4.0
       verdaccio:
-        specifier: 5.26.2-1704063270.0
-        version: 5.26.2-1704063270.0(typanion@3.13.0)
+        specifier: 5.26.2-1704137042.0
+        version: 5.26.2-1704137042.0(typanion@3.13.0)
       yaml:
         specifier: 2.3.4
         version: 2.3.4
@@ -2688,6 +2688,23 @@ packages:
     dev: true
     optional: true
 
+  /@verdaccio/auth@7.0.0-next.5:
+    resolution: {integrity: sha512-bPEXLb3P6TGPhlBcdVyPtRegV5uJM2nwlgxkxZ81fAleUsytlwL801yeK7xfPTBZqzUw/ODma5U4fDcoaEDzlA==}
+    engines: {node: '>=18'}
+    dependencies:
+      '@verdaccio/config': 7.0.0-next.5
+      '@verdaccio/core': 7.0.0-next.5
+      '@verdaccio/loaders': 7.0.0-next.5
+      '@verdaccio/logger': 7.0.0-next.5
+      '@verdaccio/signature': 7.0.0-next.3
+      '@verdaccio/utils': 7.0.0-next.5
+      debug: 4.3.4(supports-color@8.1.1)
+      lodash: 4.17.21
+      verdaccio-htpasswd: 12.0.0-next.5
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
   /@verdaccio/config@6.0.0-6-next.76:
     resolution: {integrity: sha512-iWmmi+8pDedpwbRw43K19+Ky+DBYwcQ3L9hQNkG4KrhGdJsy7it6bpcjmxrh4xX39jQ00bqyq6Hb4cCGl7zlRQ==}
     engines: {node: '>=12'}
@@ -3847,14 +3864,6 @@ packages:
   /cookie@0.5.0:
     resolution: {integrity: sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==}
     engines: {node: '>= 0.6'}
-    dev: true
-
-  /cookies@0.9.0:
-    resolution: {integrity: sha512-mtyMqy14RsH7+IRJglGcKtRLOq0SRt0DdXVrLgc+v1e/o0TNJUpdElhgr3AAi638LO0xZwEPcRRkJ3afxvGhUw==}
-    engines: {node: '>= 0.8'}
-    dependencies:
-      depd: 2.0.0
-      keygrip: 1.1.0
     dev: true
 
   /core-js-compat@3.33.0:
@@ -5870,13 +5879,6 @@ packages:
       safe-buffer: 5.2.1
     dev: true
 
-  /keygrip@1.1.0:
-    resolution: {integrity: sha512-iYSchDJ+liQ8iwbSI2QqsQOvqv58eJCEanyJPJi+Khyu8smkcKSFUCbPwzFcL7YVtZ6eONjqRX/38caJ7QjRAQ==}
-    engines: {node: '>= 0.6'}
-    dependencies:
-      tsscmp: 1.0.6
-    dev: true
-
   /keyv@4.5.2:
     resolution: {integrity: sha512-5MHbFaKn8cNSmVW7BYnijeAVlE4cYA/SVkifVgrh7yotnfhKmjuXpDKjrABLnT0SfHWV21P8ow07OGfRrNDg8g==}
     dependencies:
@@ -7792,11 +7794,6 @@ packages:
     resolution: {integrity: sha512-7At1WUettjcSRHXCyYtTselblcHl9PJFFVKiCAy/bY97+BPZXSQ2wbq0P9s8tK2G7dFQfNnlJnPAiArVBVBsfA==}
     dev: true
 
-  /tsscmp@1.0.6:
-    resolution: {integrity: sha512-LxhtAkPDTkVCMQjt2h6eBVY28KCjikZqZfMcC15YBeNjkgUpdCfBu5HoiOTDu86v6smE8yOjyEktJ8hlbANHQA==}
-    engines: {node: '>=0.6.x'}
-    dev: true
-
   /tunnel-agent@0.6.0:
     resolution: {integrity: sha512-McnNiV1l8RYeY8tBgEpuodCC1mLUdbSN+CYBL7kJsJNInOP8UjDDEwdk6Mw60vdLLrr5NHKZhMAOSrR2NZuQ+w==}
     dependencies:
@@ -8034,11 +8031,12 @@ packages:
       - supports-color
     dev: true
 
-  /verdaccio@5.26.2-1704063270.0(typanion@3.13.0):
-    resolution: {integrity: sha512-2rwQhrJs+5RlU3eggtFKzyQRY1lvDPO/HOm+BQ3tGxE+qTgMFqeBdx/srkECGvzsKzjHtNvkv3Zs2xCwKRyF6g==}
+  /verdaccio@5.26.2-1704137042.0(typanion@3.13.0):
+    resolution: {integrity: sha512-oEN3AbKP9GvIbSOBYcZmjsvmWcC6DsJuNpk22e9DwB3ZnHEmDvUm+DMwOupkHqY8wC5JYVQ44yEoUxBGsrW2ig==}
     engines: {node: '>=18'}
     hasBin: true
     dependencies:
+      '@verdaccio/auth': 7.0.0-next.5
       '@verdaccio/config': 7.0.0-next.5
       '@verdaccio/core': 7.0.0-next.5
       '@verdaccio/hooks': 7.0.0-next.5
@@ -8057,7 +8055,6 @@ packages:
       async: 3.2.5
       clipanion: 3.2.1(typanion@3.13.0)
       compression: 1.7.4
-      cookies: 0.9.0
       cors: 2.8.5
       debug: 4.3.4(supports-color@8.1.1)
       envinfo: 7.11.0
