@@ -298,8 +298,8 @@ importers:
         specifier: 13.4.0
         version: 13.4.0
       verdaccio:
-        specifier: 5.29.1-1704063326.0
-        version: 5.29.1-1704063326.0(typanion@3.13.0)
+        specifier: 5.29.1-1704196808.0
+        version: 5.29.1-1704196808.0(typanion@3.13.0)
       yaml:
         specifier: 2.3.4
         version: 2.3.4
@@ -3840,8 +3840,8 @@ packages:
     engines: {node: '>= 0.6'}
     dev: true
 
-  /cookies@0.9.0:
-    resolution: {integrity: sha512-mtyMqy14RsH7+IRJglGcKtRLOq0SRt0DdXVrLgc+v1e/o0TNJUpdElhgr3AAi638LO0xZwEPcRRkJ3afxvGhUw==}
+  /cookies@0.9.1:
+    resolution: {integrity: sha512-TG2hpqe4ELx54QER/S3HQ9SRVnQnGBtKUz5bLQWtYAQ+o6GpgMs6sYUvaiJjVxb+UXwhRhAEP3m7LbsIZ77Hmw==}
     engines: {node: '>= 0.8'}
     dependencies:
       depd: 2.0.0
@@ -8017,8 +8017,8 @@ packages:
       - supports-color
     dev: true
 
-  /verdaccio@5.29.1-1704063326.0(typanion@3.13.0):
-    resolution: {integrity: sha512-YsBNmJ11GVr6CQbosMhz178ProQJC/3RDNHEvNKInGKGIbhRoG4JMXhNv9BKWLi2WC8mZBDC3YXI8WD14wSoJA==}
+  /verdaccio@5.29.1-1704196808.0(typanion@3.13.0):
+    resolution: {integrity: sha512-VkSw0xSaaqzycMhz+kqBB0NJzxf/0uC60Q5CBpO0h2l36o9uaALet+9NIZdwj3PsKcfgZGAdSlvZyC7RZZxEQg==}
     engines: {node: '>=12.18'}
     hasBin: true
     dependencies:
@@ -8039,7 +8039,7 @@ packages:
       async: 3.2.5
       clipanion: 3.2.1(typanion@3.13.0)
       compression: 1.7.4
-      cookies: 0.9.0
+      cookies: 0.9.1
       cors: 2.8.5
       debug: 4.3.4(supports-color@8.1.1)
       envinfo: 7.11.0
