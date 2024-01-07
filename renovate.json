@@ -3,5 +3,12 @@
   "extends": ["config:base", "schedule:daily", "helpers:pinGitHubActionDigests"],
   "prConcurrentLimit": 10,
   "major": false,
-  "baseBranches": ["main", "5.x"]
+  "baseBranches": ["main", "5.x"],
+  "pinVersions": false,
+  "packageRules": [
+    {
+      "packageNames": ["verdaccio"],
+      "enabled": false
+    }
+  ]
 }
