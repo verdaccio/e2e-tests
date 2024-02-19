@@ -94,8 +94,8 @@ importers:
         specifier: 20.11.19
         version: 20.11.19
       '@verdaccio/types':
-        specifier: 11.0.0-6-next.25
-        version: 11.0.0-6-next.25
+        specifier: 11.0.0-alpha.3
+        version: 11.0.0-alpha.3
       babel-core:
         specifier: 7.0.0-bridge.0
         version: 7.0.0-bridge.0(@babel/core@7.23.9)
@@ -2939,6 +2939,11 @@ packages:
   /@verdaccio/types@11.0.0-6-next.25:
     resolution: {integrity: sha512-bkgQjgiYbRfsqn5wElIkWG4Y9wn/f+rfuh/IJ4sfIZ7bMepMPXqHmKbqHEA6PV7jmmtdc8cBaHA5aRHOs6BoYw==}
     engines: {node: '>=12'}
+    dev: true
+
+  /@verdaccio/types@11.0.0-alpha.3:
+    resolution: {integrity: sha512-zGhXQgkKVxu5rx/8WCyINKnGkAd8pLwH8hDY02hgAlB9Vb2JxW6qAOM2WuLqq1VB2ux24Xp4iWSfdpoZOaGKSA==}
+    engines: {node: '>=10', npm: '>=6'}
     dev: true
 
   /@verdaccio/ui-theme@7.0.0-next-7.9:
