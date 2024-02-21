@@ -298,8 +298,8 @@ importers:
         specifier: 13.5.3
         version: 13.5.3
       verdaccio:
-        specifier: 5.29.2-1708179446.0
-        version: 5.29.2-1708179446.0(typanion@3.13.0)
+        specifier: 5.29.2-1708540687.0
+        version: 5.29.2-1708540687.0(typanion@3.13.0)
       yaml:
         specifier: 2.3.4
         version: 2.3.4
@@ -2775,12 +2775,12 @@ packages:
       - supports-color
     dev: true
 
-  /@verdaccio/config@7.0.0-next-7.9:
-    resolution: {integrity: sha512-fRT6Vwt8vux1S9ZMCx1p9JLAAaO2dnlIMDl/zeKv9AE0uZaf7baczVilTR0Ceo1ZCdQgngC53nGIdI2BM1aX2w==}
+  /@verdaccio/config@7.0.0-next-7.10:
+    resolution: {integrity: sha512-mB3qaf8wW4sUgS0h3Z4TXYH/V9spjjFA33kNqWl78IMJHipBddbyBvdmfh/vo/NGtfju8DrDbRZlhKCl6293Qg==}
     engines: {node: '>=12'}
     dependencies:
-      '@verdaccio/core': 7.0.0-next-7.9
-      '@verdaccio/utils': 7.0.0-next-7.9
+      '@verdaccio/core': 7.0.0-next-7.10
+      '@verdaccio/utils': 7.0.0-next-7.10
       debug: 4.3.4(supports-color@8.1.1)
       js-yaml: 4.1.0
       lodash: 4.17.21
@@ -2802,8 +2802,8 @@ packages:
       semver: 7.5.4
     dev: true
 
-  /@verdaccio/core@7.0.0-next-7.9:
-    resolution: {integrity: sha512-jnTfw0XmRuq1V0hWHwAQsYN4JVXEG2+ub0dCd29jKCLdGwp41XjnSEF7QmhX7bwKGQ0NyVowTz1XQ0LL3W8KSw==}
+  /@verdaccio/core@7.0.0-next-7.10:
+    resolution: {integrity: sha512-kS7/x5y9knbkSksHeawRV5Af8p/g0qk9GgQOZjuvOtv08kMFSttYk/eDglE9++SbvqP34+sDraUIMB/C3tZ2fw==}
     engines: {node: '>=12'}
     dependencies:
       ajv: 8.12.0
@@ -2844,21 +2844,21 @@ packages:
       - supports-color
     dev: true
 
-  /@verdaccio/logger-7@7.0.0-next-7.9:
-    resolution: {integrity: sha512-zFLaAqzH8gSvhRG8eEI7JYF/Ck0Xc8KfUOmDYKX26/9Gg9qDzpYeL7oQy0YItK7EJOcB3O2NRGEEBLb9L1c6aw==}
+  /@verdaccio/logger-7@7.0.0-next-7.10:
+    resolution: {integrity: sha512-UgbZnnapLmvcVMz7HzJhsyMTFLhVcAKTwKW/5dtaSwD2XrP721YawdTwJEPZnhcNrTcD9dUvRGfW4Dr/5QzJcg==}
     engines: {node: '>=12'}
     dependencies:
-      '@verdaccio/logger-commons': 7.0.0-next-7.9
+      '@verdaccio/logger-commons': 7.0.0-next-7.10
       pino: 7.11.0
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /@verdaccio/logger-commons@7.0.0-next-7.9:
-    resolution: {integrity: sha512-67AZgb4OubX9ODtmOYhxPwdUh5t+YxoYLzC2hHhL6x4I1dT41g8jYGY1Ikyx+BLyfIYfln6PXUKrsG4e4pXNHg==}
+  /@verdaccio/logger-commons@7.0.0-next-7.10:
+    resolution: {integrity: sha512-RTA4K6KvoCrgqA1aVP4n8IDZfUQtaza2FcPjEsBShLQg0rHFJi/5/yQg+J4MpOvYlKbrusOy9pwN86h9pCe+CA==}
     engines: {node: '>=12'}
     dependencies:
-      '@verdaccio/core': 7.0.0-next-7.9
+      '@verdaccio/core': 7.0.0-next-7.10
       '@verdaccio/logger-prettify': 7.0.0-next.1
       colorette: 2.0.20
       debug: 4.3.4(supports-color@8.1.1)
@@ -2877,14 +2877,14 @@ packages:
       sonic-boom: 3.3.0
     dev: true
 
-  /@verdaccio/middleware@7.0.0-next-7.9:
-    resolution: {integrity: sha512-tWq2Gc5SU6/nVNSpj/S02A+sRU3jCqEBpx0U/sz80cajQ8hv8hmbLCtIbksRLalQR8tHdp36KgvLqPLs+wBRMA==}
+  /@verdaccio/middleware@7.0.0-next-7.10:
+    resolution: {integrity: sha512-NBQxi6ag2zSIoUUmnQn/n0YwJDnnHqqtyV5c73YTdQV5RSPn5i2YKz+8DSA+iJYa2ff8G4fx8hOdJR+QZZQ24w==}
     engines: {node: '>=12'}
     dependencies:
-      '@verdaccio/config': 7.0.0-next-7.9
-      '@verdaccio/core': 7.0.0-next-7.9
-      '@verdaccio/url': 12.0.0-next-7.9
-      '@verdaccio/utils': 7.0.0-next-7.9
+      '@verdaccio/config': 7.0.0-next-7.10
+      '@verdaccio/core': 7.0.0-next-7.10
+      '@verdaccio/url': 12.0.0-next-7.10
+      '@verdaccio/utils': 7.0.0-next-7.10
       debug: 4.3.4(supports-color@8.1.1)
       express: 4.18.2
       express-rate-limit: 5.5.1
@@ -2915,13 +2915,13 @@ packages:
     engines: {node: '>=12', npm: '>=5'}
     dev: true
 
-  /@verdaccio/tarball@12.0.0-next-7.9:
-    resolution: {integrity: sha512-ALvWFcx8UlgCeJjB86a3SX+vLOALC6vNr2VsuR38vmTNK4iMwzzrRwUjaOdONg4aQ5dFEt0sqpxM1XXMRKdwNw==}
+  /@verdaccio/tarball@12.0.0-next-7.10:
+    resolution: {integrity: sha512-kxctkPREUpe0oRDsTelKcLsWGv2llRBcK2AlyCAX7UENKGWvVqITTk81PkVpzlwXOpcRWdLJQmEE+dtXGwLr6Q==}
     engines: {node: '>=12'}
     dependencies:
-      '@verdaccio/core': 7.0.0-next-7.9
-      '@verdaccio/url': 12.0.0-next-7.9
-      '@verdaccio/utils': 7.0.0-next-7.9
+      '@verdaccio/core': 7.0.0-next-7.10
+      '@verdaccio/url': 12.0.0-next-7.10
+      '@verdaccio/utils': 7.0.0-next-7.10
       debug: 4.3.4(supports-color@8.1.1)
       lodash: 4.17.21
     transitivePeerDependencies:
@@ -2933,15 +2933,15 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
-  /@verdaccio/ui-theme@7.0.0-next-7.9:
-    resolution: {integrity: sha512-/Rb0xoKqmRHW+3/tQC12uXdnR1lI/AuC1BnoLt4D69Ua7itJZmjJzpKjtPEoAbd7fuzY4XzKNr/1DH4ctXGt5w==}
+  /@verdaccio/ui-theme@7.0.0-next-7.10:
+    resolution: {integrity: sha512-I1War/XBg3WzzAojXDtEDjZw/1qPKW0d8EIsJD3h6Xi5Atzvz/xBTbHjgbwApjmISyDWQ8Vevp8zOtGO33zLSw==}
     dev: true
 
-  /@verdaccio/url@12.0.0-next-7.9:
-    resolution: {integrity: sha512-Dd4eH1TGg++MxJpfDyuZmIdh3FeypQlSjYyom7rJlJdy/+Hg3yIBJhKc4Exu7r28djQrUkRocI+h3xLd2HVgYQ==}
+  /@verdaccio/url@12.0.0-next-7.10:
+    resolution: {integrity: sha512-AiFG+W/H1iD+iXkh4b6zm3AsZdGdI7tiAPCHymN7jSV6dAvWTuhIEK30mmFyCSmOE0iwyn8ZN4xqsf9Qcu1emw==}
     engines: {node: '>=12'}
     dependencies:
-      '@verdaccio/core': 7.0.0-next-7.9
+      '@verdaccio/core': 7.0.0-next-7.10
       debug: 4.3.4(supports-color@8.1.1)
       lodash: 4.17.21
       validator: 13.11.0
@@ -2959,11 +2959,11 @@ packages:
       semver: 7.5.4
     dev: true
 
-  /@verdaccio/utils@7.0.0-next-7.9:
-    resolution: {integrity: sha512-gnX5dQsH6GGgrPBCBsHnFFiJU887+vpkcBOiGp7cJC0r1vIkpuO85I5iYVPODT3DcWrqLPXdv6V1VR9zrRAyHA==}
+  /@verdaccio/utils@7.0.0-next-7.10:
+    resolution: {integrity: sha512-3sGyBj0leN3RjwPJPDkdsD9j1ahzQccHPj86IlIJqUJFhAcOT/nD6z9+W3sBAiro6Q2psWyWHxBJ8H3LhtlLeA==}
     engines: {node: '>=12'}
     dependencies:
-      '@verdaccio/core': 7.0.0-next-7.9
+      '@verdaccio/core': 7.0.0-next-7.10
       lodash: 4.17.21
       minimatch: 7.4.6
       semver: 7.5.4
@@ -7955,12 +7955,12 @@ packages:
     engines: {node: '>= 0.8'}
     dev: true
 
-  /verdaccio-audit@12.0.0-next-7.9:
-    resolution: {integrity: sha512-U8Rg+AyZNFcTfHidxSCNXU1TgyICXa4rXuEKu15I99FUk8NbQKjPiVzugoFVovCeaGXi1OvfvatPjyHFJsL7FA==}
+  /verdaccio-audit@12.0.0-next-7.10:
+    resolution: {integrity: sha512-inL8J7c4y9BpFIkqLsw9yrdh8/CBKWbBrREiQHQ9ZnD7jLkHxTWsWW8jt4aUt9t2azc6eO5rUIqdo1W6VsYKeA==}
     engines: {node: '>=12'}
     dependencies:
-      '@verdaccio/config': 7.0.0-next-7.9
-      '@verdaccio/core': 7.0.0-next-7.9
+      '@verdaccio/config': 7.0.0-next-7.10
+      '@verdaccio/core': 7.0.0-next-7.10
       express: 4.18.2
       https-proxy-agent: 5.0.1
       node-fetch: 2.6.7
@@ -7969,11 +7969,11 @@ packages:
       - supports-color
     dev: true
 
-  /verdaccio-htpasswd@12.0.0-next-7.9:
-    resolution: {integrity: sha512-LfWIEHDfitUTeRE2Wi3R4upMXqrqwVvKpeZfdktKEPAMfeRj/HcYC0NOi6CEK5OWoFqUPsN4Xh7eaY4ribLPfg==}
+  /verdaccio-htpasswd@12.0.0-next-7.10:
+    resolution: {integrity: sha512-+P7kxWgWSxRyTlP+IFySwgvQjt529zXTetNmupUgYtu09qCZMffdZ74aGASuCvWa4Vcqavmytzg8McqCNheFiA==}
     engines: {node: '>=12'}
     dependencies:
-      '@verdaccio/core': 7.0.0-next-7.9
+      '@verdaccio/core': 7.0.0-next-7.10
       '@verdaccio/file-locking': 12.0.0-next.1
       apache-md5: 1.1.8
       bcryptjs: 2.4.3
@@ -7985,24 +7985,24 @@ packages:
       - supports-color
     dev: true
 
-  /verdaccio@5.29.2-1708179446.0(typanion@3.13.0):
-    resolution: {integrity: sha512-cGjzcxW8aPnQxDUfAm7l9DJjhkduAYzpwvL2AbxbVBPsE9T2+kdIrwUv0c1C6vjwDyV4hGgdmblpKSEEzjSLyA==}
+  /verdaccio@5.29.2-1708540687.0(typanion@3.13.0):
+    resolution: {integrity: sha512-dvXG1wIhygDfiyWgAR8fhket1v96aXTv7p+Sf3/r2Ff2Io1tAZWMjDHC1ipzH3idJ6XTzvcTpOG3b8eG+X7q+w==}
     engines: {node: '>=12.18'}
     hasBin: true
     dependencies:
       '@cypress/request': 3.0.1
-      '@verdaccio/config': 7.0.0-next-7.9
-      '@verdaccio/core': 7.0.0-next-7.9
+      '@verdaccio/config': 7.0.0-next-7.10
+      '@verdaccio/core': 7.0.0-next-7.10
       '@verdaccio/local-storage': 10.3.3
-      '@verdaccio/logger-7': 7.0.0-next-7.9
-      '@verdaccio/middleware': 7.0.0-next-7.9
+      '@verdaccio/logger-7': 7.0.0-next-7.10
+      '@verdaccio/middleware': 7.0.0-next-7.10
       '@verdaccio/search': 7.0.0-next.2
       '@verdaccio/signature': 7.0.0-next.3
       '@verdaccio/streams': 10.2.1
-      '@verdaccio/tarball': 12.0.0-next-7.9
-      '@verdaccio/ui-theme': 7.0.0-next-7.9
-      '@verdaccio/url': 12.0.0-next-7.9
-      '@verdaccio/utils': 7.0.0-next-7.9
+      '@verdaccio/tarball': 12.0.0-next-7.10
+      '@verdaccio/ui-theme': 7.0.0-next-7.10
+      '@verdaccio/url': 12.0.0-next-7.10
+      '@verdaccio/utils': 7.0.0-next-7.10
       JSONStream: 1.3.5
       async: 3.2.5
       clipanion: 3.2.1(typanion@3.13.0)
@@ -8026,8 +8026,8 @@ packages:
       pkginfo: 0.4.1
       semver: 7.5.4
       validator: 13.11.0
-      verdaccio-audit: 12.0.0-next-7.9
-      verdaccio-htpasswd: 12.0.0-next-7.9
+      verdaccio-audit: 12.0.0-next-7.10
+      verdaccio-htpasswd: 12.0.0-next-7.10
     transitivePeerDependencies:
       - encoding
       - supports-color
