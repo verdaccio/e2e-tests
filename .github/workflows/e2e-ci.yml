@@ -26,6 +26,11 @@ jobs:
         run: |
           mkdir ~/.pnpm-store
           pnpm config set store-dir ~/.pnpm-store
+      - name: Set up .npmrc
+        run: |
+          echo "//registry.verdaccio.org/:_authToken=${{ secrets.VERDACCIO_TOKEN }}" > .npmrc          
+      - name: registry
+        run: npm config set registry https://registry.verdaccio.org          
       - name: Install
         run: pnpm install
       - name: Cache .pnpm-store
