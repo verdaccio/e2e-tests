@@ -27,7 +27,9 @@ jobs:
         uses: actions/setup-node@1a4442cacd436585916779262731d5b162bc6ec7 # v3
         with:
           node-version-file: '.nvmrc'
-
+      - name: Set up .npmrc
+        run: |
+          echo "//registry.verdaccio.org/:_authToken=${{ secrets.VERDACCIO_TOKEN }}" > .npmrc
       - name: Install pnpm
         run: |
           corepack enable

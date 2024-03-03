@@ -31,7 +31,7 @@ jobs:
         run: npm config set registry https://registry.verdaccio.org
       - name: Set up .npmrc
         run: |
-          echo "//registry.verdaccio.org/:_authToken=${{ secrets.VERDACCIO_TOKEN }}" > .npmrc          
+          echo "//registry.verdaccio.org/:_authToken=${{ secrets.VERDACCIO_TOKEN }}" > .npmrc
       - name: install
         run: pnpm install
       - name: update to latest canary
