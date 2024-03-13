@@ -34,6 +34,8 @@ jobs:
         run: npm config set registry https://registry.verdaccio.org
       - name: install
         run: pnpm install
+      - name: restore .npmrc
+        run: git checkout .npmrc        
       - name: update to latest canary
         run: cd tools/cli-commons && pnpm install verdaccio@canary-6x
       - name: Commit & Push changes
