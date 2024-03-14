@@ -1,10 +1,11 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:base", "schedule:daily", "helpers:pinGitHubActionDigests"],
-  "prConcurrentLimit": 10,
-  "major": false,
+  "prConcurrentLimit": 2,
+  "schedule": ["before 3:00am on the 3 day of the month"],
+  "major": true,
   "baseBranches": ["main", "5.x"],
-  "pinVersions": false,
+  "pinVersions": true,
   "packageRules": [
     {
       "packageNames": ["verdaccio"],
