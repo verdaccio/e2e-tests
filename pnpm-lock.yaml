@@ -7008,7 +7008,7 @@ packages:
       quick-format-unescaped: 4.0.4
       real-require: 0.2.0
       safe-stable-stringify: 2.4.3
-      sonic-boom: 3.7.0
+      sonic-boom: 3.8.0
       thread-stream: 2.4.1
     dev: true
 
@@ -7562,12 +7562,6 @@ packages:
       ansi-styles: 4.3.0
       astral-regex: 2.0.0
       is-fullwidth-code-point: 3.0.0
-    dev: true
-
-  /sonic-boom@3.7.0:
-    resolution: {integrity: sha512-IudtNvSqA/ObjN97tfgNmOKyDOs4dNcg4cUUsHDebqsgb8wGBBwb31LIgShNO8fye0dFI52X1+tFoKKI6Rq1Gg==}
-    dependencies:
-      atomic-sleep: 1.0.0
     dev: true
 
   /sonic-boom@3.8.0:
