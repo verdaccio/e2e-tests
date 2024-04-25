@@ -29,7 +29,7 @@ jobs:
         run: corepack prepare pnpm@latest-8 --activate
       - name: Set up .npmrc
         run: |
-          echo "//registry.verdaccio.org/:_authToken=${{ secrets.VERDACCIO_TOKEN }}" > .npmrc          
+          echo "//registry.verdaccio.org/:_authToken=${{ secrets.VERDACCIO_TOKEN }}" > .npmrc
       - name: registry
         run: npm config set registry https://registry.verdaccio.org
       - name: install

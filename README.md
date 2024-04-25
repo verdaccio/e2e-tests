@@ -1,6 +1,6 @@
 # E2E CLI Testing for 6.x
 
-> For 5.x versions, check `5.x` branch 
+> For 5.x versions, check `5.x` branch
 
 What is included on these test?
 
@@ -21,23 +21,24 @@ All docker test are run with GitHub Actions
 ## With npm cli
 
 > It uses the latest `npmjs` version published
+
 - Default configuration only
 - Test with all popular package managers
 
 ### Commands Tested
 
-| cmd       | npm6 | npm7 | npm8 | npm9 | npm10 | pnpm6 | pnpm7 | yarn1 | yarn2 | yarn3 | yarn4 |
-| --------- | ---- | ---- | ---- | ---- | ----- | ----- | ----- | ----- | ----- | ----- | ----- |
-| publish   | ✅   | ✅   | ✅   | ✅   | ✅    | ✅    | ✅    | ✅    | ✅    | ✅    | ✅    |
-| info      | ✅   | ✅   | ✅   | ✅   | ✅    | ✅    | ✅    | ✅    | ✅    | ✅    | ✅    |
-| audit     | ✅   | ✅   | ✅   | ✅   | ✅    | ✅    | ✅    | ✅    | ✅    | ✅    | ❌    |
-| install   | ✅   | ✅   | ✅   | ✅   | ✅    | ✅    | ✅    | ✅    | ✅    | ✅    | ✅    |
-| deprecate | ✅   | ✅   | ✅   | ✅   | ✅    | ✅    | ✅    | ⛔    | ⛔    | ⛔    | ⛔    |
-| ping      | ✅   | ✅   | ✅   | ✅   | ✅    | ✅    | ✅    | ⛔    | ⛔    | ⛔    | ⛔    |
-| search    | ✅   | ✅   | ✅   | ✅   | ✅    | ✅    | ✅    | ⛔    | ⛔    | ⛔    | ⛔    |
-| star      | ✅   | ✅   | ✅   | ✅   | ✅    | ✅    | ✅    | ⛔    | ⛔    | ⛔    | ⛔    |
-| stars     | ✅   | ✅   | ✅   | ✅   | ✅    | ✅    | ✅    | ⛔    | ⛔    | ⛔    | ⛔    |
-| dist-tag  | ✅   | ✅   | ✅   | ✅   | ✅    | ✅    | ✅    | ✅    | ❌    | ❌    | ❌    |
+| cmd       | npm6 | npm7 | npm8 | npm9 | pnpm6 | pnpm7 | pnpm8 | pnpm9 | yarn1 | yarn2 | yarn3 | yarn4 |
+| --------- | ---- | ---- | ---- | ---- | ----- | ----- | ----- |-------| ----- | ----- | ----- | ----- |
+| publish   | ✅   | ✅   | ✅   | ✅   | ✅    | ✅    | ✅    | ✅     | ✅    | ✅    | ✅    | ✅    |
+| info      | ✅   | ✅   | ✅   | ✅   | ✅    | ✅    | ✅    | ✅     | ✅    | ✅    | ✅    | ✅    |
+| audit     | ✅   | ✅   | ✅   | ✅   | ✅    | ✅    | ✅    | ✅     | ✅    | ✅    | ✅    | ❌    |
+| install   | ✅   | ✅   | ✅   | ✅   | ✅    | ✅    | ✅    | ✅     | ✅    | ✅    | ✅    | ✅    |
+| deprecate | ✅   | ✅   | ✅   | ✅   | ✅    | ✅    | ✅    | ✅     | ⛔    | ⛔    | ⛔    | ⛔    |
+| ping      | ✅   | ✅   | ✅   | ✅   | ✅    | ✅    | ✅    | ✅     | ⛔    | ⛔    | ⛔    | ⛔    |
+| search    | ✅   | ✅   | ✅   | ✅   | ✅    | ✅    | ✅    | ✅     | ⛔    | ⛔    | ⛔    | ⛔    |
+| star      | ✅   | ✅   | ✅   | ✅   | ✅    | ✅    | ✅    | ✅     | ⛔    | ⛔    | ⛔    | ⛔    |
+| stars     | ✅   | ✅   | ✅   | ✅   | ✅    | ✅    | ✅    | ✅     | ⛔    | ⛔    | ⛔    | ⛔    |
+| dist-tag  | ✅   | ✅   | ✅   | ✅   | ✅    | ✅    | ✅    | ✅     | ✅    | ❌    | ❌    | ❌    |
 
 > notes:
 >
