@@ -1,9 +1,9 @@
 {
   "private": true,
   "name": "@verdaccio/e2e-cli-yarn4",
-  "version": "1.0.1-6-next.5",
+  "version": "1.0.1",
   "dependencies": {
-    "@yarnpkg/cli-dist": "4.1.0",
+    "@yarnpkg/cli-dist": "4.1.1",
     "@verdaccio/test-cli-commons": "workspace:1.0.1-6-next.5"
   },
   "scripts": {
