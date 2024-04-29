@@ -307,8 +307,8 @@ importers:
         specifier: 13.5.1
         version: 13.5.1
       verdaccio:
-        specifier: 6.0.0-1714033014.0
-        version: 6.0.0-1714033014.0(typanion@3.13.0)
+        specifier: 6.0.0-1714098631.0
+        version: 6.0.0-1714098631.0(typanion@3.13.0)
       yaml:
         specifier: 2.3.4
         version: 2.3.4
@@ -8033,8 +8033,8 @@ packages:
       - supports-color
     dev: true
 
-  /verdaccio@6.0.0-1714033014.0(typanion@3.13.0):
-    resolution: {integrity: sha512-VG6N5Q0gBCDXFMPpz4ViqjTUgMV976HUSFkP+lOhykr3BKXth+d1RFwccRK5vAP9/lru1/TmAAjZQveOsnqn3Q==}
+  /verdaccio@6.0.0-1714098631.0(typanion@3.13.0):
+    resolution: {integrity: sha512-Fz145A0KuXLvVS59iSzkGrtwYzwnFOZa4pvRIy81sJf8d2rAjAwjIAj1RPLiNSYiMDZt++pBiZW3Yv9Ie4w0SA==}
     engines: {node: '>=18'}
     hasBin: true
     dependencies:
@@ -8072,7 +8072,7 @@ packages:
       mkdirp: 1.0.4
       mv: 2.1.1
       pkginfo: 0.4.1
-      semver: 7.5.4
+      semver: 7.6.0
       validator: 13.11.0
       verdaccio-audit: 12.0.0-next-7.13
       verdaccio-htpasswd: 12.0.0-next-7.13
