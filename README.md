@@ -1,6 +1,7 @@
-# E2E CLI Testing for Master Branch
+# E2E CLI Testing for `master` Branch
 
 > For 5.x versions, check `5.x` branch
+> For 6.x versions, check `6.x` branch
 
 What is included on these test?
 
