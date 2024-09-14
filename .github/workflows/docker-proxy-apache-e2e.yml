@@ -1,4 +1,4 @@
-name: E2E Docker Proxy Apache Test  5.x
+name: E2E Docker Proxy Apache Test
 
 on:
   workflow_dispatch:

@@ -1,4 +1,4 @@
-name: E2E Docker Proxy Nginx Test 5.x
+name: E2E Docker Proxy Nginx Test
 
 on:
   workflow_dispatch:
