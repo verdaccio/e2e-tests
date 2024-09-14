@@ -1,4 +1,4 @@
-# E2E CLI Testing for 6.x
+# E2E CLI Testing for Master Branch
 
 > For 5.x versions, check `5.x` branch
 
@@ -6,7 +6,7 @@ What is included on these test?
 
 ## With Cypress
 
-- Test the UI fo latest 6.x branch docker image
+- Test the UI fo latest master branch docker image
 
 ## With docker (docker compose)
 
