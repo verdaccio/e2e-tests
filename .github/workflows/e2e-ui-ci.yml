@@ -9,14 +9,14 @@ on:
 jobs:
   docker:
     timeout-minutes: 10
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
 
       - name: Start containers
-        run: docker-compose -f "./docker/docker-e2e-ui/docker-compose.yaml" up -d --build
+        run: docker compose -f "./docker/docker-e2e-ui/docker-compose.yaml" up -d --build
 
       - name: Install node
         uses: actions/setup-node@1a4442cacd436585916779262731d5b162bc6ec7 # v3
@@ -49,4 +49,4 @@ jobs:
 
       - name: Stop containers
         if: always()
-        run: docker-compose -f "./docker/docker-e2e-ui/docker-compose.yaml" down
+        run: docker compose -f "./docker/docker-e2e-ui/docker-compose.yaml" down
