@@ -1,5 +1,5 @@
 ---
-name: update canary dependency 5.x
+name: update canary dependency
 
 on:
   workflow_dispatch:
