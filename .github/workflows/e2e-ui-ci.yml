@@ -1,11 +1,11 @@
-name: E2E Docker UI Cypress 5.x
+name: E2E Docker UI Cypress 6.x
 
 on:
   workflow_dispatch:
   pull_request:
   push:
     branches:
-      - 5.x
+      - 6.x
 jobs:
   docker:
     timeout-minutes: 10

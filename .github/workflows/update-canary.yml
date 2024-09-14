@@ -1,5 +1,5 @@
 ---
-name: update canary dependency 5.x
+name: update canary dependency 6.x
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ on:
   # for now, scheduled, we can enable on push master but not make much sense now
   push:
     branches:
-      - 5.x
+      - 6.x
 
 permissions: write-all
 
@@ -42,7 +42,7 @@ jobs:
         uses: actions-js/push@156f2b10c3aa000c44dbe75ea7018f32ae999772 # tag=v1.4
         with:
           github_token: ${{ secrets.TOKEN_VERDACCIOBOT_V2 }}
-          message: 'chore: updated canary verdaccio canary 5.x'
-          branch: 5.x
+          message: 'chore: updated canary verdaccio canary 6.x'
+          branch: 6.x
           author_email: verdaccio.npm@gmail.com
           author_name: verdacciobot

@@ -1,11 +1,11 @@
-name: E2E CLI 5.x
+name: E2E CLI 6.x
 
 on:
   workflow_dispatch:
   pull_request:
   push:
     branches:
-      - 5.x
+      - 6.x
 permissions:
   contents: read
 jobs:

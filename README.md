@@ -1,14 +1,14 @@
-# E2E CLI Testing for 5.x
+# E2E CLI Testing for 6.x
 
 What is included on these test?
 
 ## With Cypress
 
-- Test the UI fo latest 5.x branch docker image
+- Test the UI fo latest 6.x branch docker image
 
 ## With docker (docker compose)
 
-> It uses the image `verdaccio/verdaccio:nightly-master`, latest `5.x` branch changes
+> It uses the image `verdaccio/verdaccio:nightly-master`, latest `6.x` branch changes
 
 - nginx proxy
 - apache proxy

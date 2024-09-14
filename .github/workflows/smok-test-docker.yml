@@ -1,9 +1,9 @@
-name: Docker Smoke Test 5.x
+name: Docker Smoke Test 6.x
 on:
   workflow_dispatch:
   push:
     branches:
-      - 5.x
+      - 6.x
 permissions:
   contents: read
 jobs:
