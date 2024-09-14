@@ -16,7 +16,7 @@ permissions: write-all
 jobs:
   prepare:
     name: Update verdaccio canary dependency
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
       - name: Use Node
@@ -35,7 +35,7 @@ jobs:
       - name: install
         run: pnpm install
       - name: update to latest canary
-        run: cd tools/cli-commons && pnpm install verdaccio@canary-5x
+        run: cd tools/cli-commons && pnpm install verdaccio@canary-6x
       - name: restore .npmrc
         run: git checkout .npmrc
       - name: Commit & Push changes

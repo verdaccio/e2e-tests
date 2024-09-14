@@ -10,7 +10,7 @@ permissions:
   contents: read
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
       - name: Use Node
@@ -56,8 +56,8 @@ jobs:
       matrix:
         pkg: [npm6, npm7, npm8, npm9, npm10, pnpm6, pnpm7, pnpm8, yarn1, yarn2, yarn3]
         node: [22]
-    name: ${{ matrix.pkg }}/ ubuntu-latest / ${{ matrix.node }}
-    runs-on: ubuntu-latest
+    name: ${{ matrix.pkg }}/ ubuntu-20.04 / ${{ matrix.node }}
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
       - uses: actions/setup-node@1a4442cacd436585916779262731d5b162bc6ec7 # v3
