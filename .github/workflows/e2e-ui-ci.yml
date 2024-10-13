@@ -31,9 +31,9 @@ jobs:
 
       - name: Set up .npmrc
         run: |
-          echo "//registry.verdaccio.org/:_authToken=${{ secrets.VERDACCIO_TOKEN }}" > .npmrc
+          echo "//rg.verdaccio.org/:_authToken=${{ secrets.VERDACCIO_TOKEN }}" > .npmrc
       - name: registry
-        run: npm config set registry https://registry.verdaccio.org
+        run: npm config set registry https://rg.verdaccio.org
 
       - name: Install pnpm
         run: |
