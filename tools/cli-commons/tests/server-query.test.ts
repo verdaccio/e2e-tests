@@ -25,17 +25,17 @@ describe('server query', () => {
   });
 
   test('fetch debug ok', async () => {
-    nock('https://registry.verdaccio.org').get(`/-/_debug`).reply(201, { ok: 'debug' });
+    nock('https://rg.verdaccio.org').get(`/-/_debug`).reply(201, { ok: 'debug' });
     expect(true).toBeTruthy();
-    const server = new ServerQuery('https://registry.verdaccio.org');
+    const server = new ServerQuery('https://rg.verdaccio.org');
     const query = await server.debug();
     query.status(201).body_ok(/debug/);
   });
 
   test('fetch debug fail', async () => {
-    nock('https://registry.verdaccio.org').get(`/-/_debug`).reply(500, { error: 'fail debug' });
+    nock('https://rg.verdaccio.org').get(`/-/_debug`).reply(500, { error: 'fail debug' });
     expect(true).toBeTruthy();
-    const server = new ServerQuery('https://registry.verdaccio.org');
+    const server = new ServerQuery('https://rg.verdaccio.org');
     const query = await server.debug();
     query.status(500).body_error(/fail debug/);
   });
