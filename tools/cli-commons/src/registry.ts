@@ -1,11 +1,11 @@
 /* eslint-disable prefer-promise-reject-errors */
 import buildDebug from 'debug';
+import getPort from 'get-port';
 import { merge } from 'lodash';
+import { Registry } from './server';
 
 import { getDefaultConfig } from '@verdaccio/config';
 import { ConfigYaml } from '@verdaccio/types';
-
-import { Registry } from './server';
 
 const debug = buildDebug('verdaccio:e2e:registry-utils');
 
@@ -17,7 +17,7 @@ export type Setup = {
 const log =
   process.env.NODE_ENV === 'production'
     ? { type: 'stdout', format: 'json', level: 'warn' }
-    : { type: 'stdout', format: 'pretty', level: 'info' };
+    : { type: 'stdout', format: 'pretty', level: 'debug' };
 
 const defaultConfig = {
   ...getDefaultConfig(),
@@ -36,6 +36,7 @@ export async function initialSetup(customConfig?: ConfigYaml): Promise<Setup> {
   const { configPath, tempFolder } = await getConfigPath(config);
   debug(`configPath %o`, configPath);
   debug(`tempFolder %o`, tempFolder);
-  const registry = new Registry(configPath, { createUser: true });
+  const port = await getPort();
+  const registry = new Registry(configPath, { createUser: true, port });
   return { registry, tempFolder };
 }

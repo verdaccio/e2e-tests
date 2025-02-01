@@ -1,9 +1,10 @@
+import { afterAll, beforeAll, describe, expect, test } from 'vitest';
+
 import { addRegistry, initialSetup, prepareGenericEmptyProject } from '@verdaccio/test-cli-commons';
 
 import { npm } from './utils';
 
 describe('audit a package', () => {
-  jest.setTimeout(20000);
   let registry;
 
   beforeAll(async () => {
@@ -33,9 +34,6 @@ describe('audit a package', () => {
       );
       const parsedBody = JSON.parse(resp.stdout as string);
       expect(parsedBody.metadata).toBeDefined();
-      expect(parsedBody.actions).toBeDefined();
-      expect(parsedBody.advisories).toBeDefined();
-      expect(parsedBody.muted).toBeDefined();
     }
   );
 

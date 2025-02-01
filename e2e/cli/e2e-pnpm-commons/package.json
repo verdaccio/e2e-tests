@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "name": "@verdaccio/e2e-cli-pnpm-common",
+  "version": "1.0.2-next-8.0",
+  "dependencies": {
+    "@verdaccio/test-cli-commons": "workspace:*",
+    "pnpm": "9.15.4"
+  },
+  "main": "index.ts"  
+}
