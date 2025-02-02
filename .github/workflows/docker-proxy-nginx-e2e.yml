@@ -1,5 +1,9 @@
 name: E2E Docker Proxy Nginx Test
 
+concurrency:
+  group: docker-nginx-${{ github.ref }}
+  cancel-in-progress: true  
+
 on:
   workflow_dispatch:
   pull_request:
