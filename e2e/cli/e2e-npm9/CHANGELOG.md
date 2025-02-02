@@ -1,5 +1,35 @@
 # @verdaccio/e2e-cli-npm9
 
+## 1.0.2-next-8.0
+
+### Patch Changes
+
+- Updated dependencies
+  - @verdaccio/test-cli-commons@2.0.0-next-8.0
+
+## 1.0.1
+
+### Patch Changes
+
+- Updated dependencies [351aeeaa8]
+- Updated dependencies [d167f92e1]
+- Updated dependencies [c383eb68c]
+  - @verdaccio/test-cli-commons@1.1.0
+
+## 1.0.1-6-next.7
+
+### Patch Changes
+
+- Updated dependencies [c383eb68]
+  - @verdaccio/test-cli-commons@1.1.0-6-next.7
+
+## 1.0.1-6-next.6
+
+### Patch Changes
+
+- Updated dependencies [d167f92e]
+  - @verdaccio/test-cli-commons@1.1.0-6-next.6
+
 ## 1.0.1-6-next.5
 
 ### Patch Changes

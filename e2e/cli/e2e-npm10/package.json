@@ -1,12 +1,13 @@
 {
   "private": true,
   "name": "@verdaccio/e2e-cli-npm9",
-  "version": "1.0.1-6-next.5",
+  "version": "1.0.1",
   "dependencies": {
-    "@verdaccio/test-cli-commons": "workspace:1.0.1-6-next.5",
-    "npm": "next-10"
+    "@verdaccio/test-cli-commons": "workspace:*",
+    "@verdaccio/e2e-cli-npm-common": "workspace:*",
+    "npm": "10.9.2"
   },
   "scripts": {
-    "test": "jest"
+    "test": "vitest run --testTimeout 50000"
   }
 }
