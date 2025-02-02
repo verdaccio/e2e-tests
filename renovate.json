@@ -4,6 +4,7 @@
   "ignorePaths": ["docker/**"],
   "schedule": ["every 2 days"],
   "ignoreDeps": [
+    "verdaccio",
     "@verdaccio/test-helper",
     "pnpm",
     "yarn",
