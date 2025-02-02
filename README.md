@@ -26,29 +26,9 @@ All docker test are run with GitHub Actions
 - Default configuration only
 - Test with all popular package managers
 
-### Commands Tested
+### What commands and versions are tested?
 
-| cmd       | npm6 | npm7 | npm8 | npm9 | pnpm6 | pnpm7 | pnpm8 | pnpm9 | yarn1 | yarn2 | yarn3 | yarn4 |
-| --------- | ---- | ---- | ---- | ---- | ----- | ----- | ----- |-------| ----- | ----- | ----- | ----- |
-| publish   | ✅   | ✅   | ✅   | ✅   | ✅    | ✅    | ✅    | ✅     | ✅    | ✅    | ✅    | ✅    |
-| info      | ✅   | ✅   | ✅   | ✅   | ✅    | ✅    | ✅    | ✅     | ✅    | ✅    | ✅    | ✅    |
-| audit     | ✅   | ✅   | ✅   | ✅   | ✅    | ✅    | ✅    | ✅     | ✅    | ✅    | ✅    | ❌    |
-| install   | ✅   | ✅   | ✅   | ✅   | ✅    | ✅    | ✅    | ✅     | ✅    | ✅    | ✅    | ✅    |
-| deprecate | ✅   | ✅   | ✅   | ✅   | ✅    | ✅    | ✅    | ✅     | ⛔    | ⛔    | ⛔    | ⛔    |
-| ping      | ✅   | ✅   | ✅   | ✅   | ✅    | ✅    | ✅    | ✅     | ⛔    | ⛔    | ⛔    | ⛔    |
-| search    | ✅   | ✅   | ✅   | ✅   | ✅    | ✅    | ✅    | ✅     | ⛔    | ⛔    | ⛔    | ⛔    |
-| star      | ✅   | ✅   | ✅   | ✅   | ✅    | ✅    | ✅    | ✅     | ⛔    | ⛔    | ⛔    | ⛔    |
-| stars     | ✅   | ✅   | ✅   | ✅   | ✅    | ✅    | ✅    | ✅     | ⛔    | ⛔    | ⛔    | ⛔    |
-| dist-tag  | ✅   | ✅   | ✅   | ✅   | ✅    | ✅    | ✅    | ✅     | ✅    | ❌    | ❌    | ❌    |
-
-> notes:
->
-> - yarn search cmd exist in _modern_ but, it do not uses the search registry endpoint.
-> - yarn _modern_ has two info commands, the one used here is `yarn npm info`
-
-❌ = no tested
-✅ = tested
-⛔ = no supported
+See all details [here](https://github.com/verdaccio/verdaccio?tab=readme-ov-file#commands)
 
 ## How it works?
 
