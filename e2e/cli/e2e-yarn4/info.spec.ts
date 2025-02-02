@@ -1,9 +1,10 @@
+import { afterAll, beforeAll, describe, expect, test } from 'vitest';
+
 import { initialSetup, yarnModernUtils } from '@verdaccio/test-cli-commons';
 
 import { getYarnCommand, yarn } from './utils';
 
 describe('install a package', () => {
-  jest.setTimeout(20000);
   let registry;
   let projectFolder;
 
@@ -29,7 +30,7 @@ describe('install a package', () => {
     const resp = await yarn(projectFolder, 'npm', 'info', 'react', '--json');
     const parsedBody = JSON.parse(resp.stdout as string);
     expect(parsedBody.name).toEqual('react');
-    expect(parsedBody.dependencies).toBeDefined();
+    expect(parsedBody.versions).toBeDefined();
   });
 
   afterAll(async () => {

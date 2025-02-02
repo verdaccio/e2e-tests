@@ -11,7 +11,7 @@ web:
 
 uplinks:
   npmjs:
-    url: https://rg.verdaccio.org/
+    url: https://registry.verdaccio.org/
     max_fails: 30
     fail_timeout: 10m
     timeout: 60s
