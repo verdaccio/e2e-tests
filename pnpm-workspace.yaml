@@ -1,4 +1,0 @@
-packages:
-  - tools/*
-  - e2e/cli/*
-  - e2e/ui
