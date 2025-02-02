@@ -1,7 +1,9 @@
-# E2E CLI Testing for `master` Branch
+# E2E CLI Testing for `main=7.x` Branch
 
-> For 5.x versions, check `5.x` branch
 > For 6.x versions, check `6.x` branch
+> For 7.x versions, check `main` branch
+
+[More info about versions](https://github.com/verdaccio/verdaccio/blob/master/VERSIONS.md)
 
 What is included on these test?
 
