@@ -71,8 +71,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        pkg: [npm7, npm8, npm9, npm10, pnpm8, pnpm9, pnpm10, yarn1, yarn2, yarn3, yarn4]
-        node: [22]
+        pkg: [npm7, npm8, npm9, npm10, npm11, pnpm8, pnpm9, pnpm10, yarn1, yarn2, yarn3, yarn4]
+        node: [22]        
     name: ${{ matrix.pkg }}/ ubuntu-latest / ${{ matrix.node }}
     runs-on: ubuntu-latest
     steps:

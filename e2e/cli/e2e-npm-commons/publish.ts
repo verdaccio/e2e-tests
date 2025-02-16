@@ -17,7 +17,7 @@ export function runPublish(npm) {
       async (pkgName) => {
         const { tempFolder } = await prepareGenericEmptyProject(
           pkgName,
-          '1.0.0-patch',
+          '1.0.0',
           registry.port,
           registry.getToken(),
           registry.getRegistryUrl()
