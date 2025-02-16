@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@verdaccio/e2e-cli-npm9",
+  "name": "@verdaccio/e2e-cli-npm11",
   "version": "1.0.1",
   "dependencies": {
     "@verdaccio/test-cli-commons": "workspace:*",
