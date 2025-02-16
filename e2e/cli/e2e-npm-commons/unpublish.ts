@@ -22,7 +22,7 @@ export function runUnpublish(npm) {
       async (pkgName) => {
         const { tempFolder } = await prepareGenericEmptyProject(
           pkgName,
-          '1.0.0-beta',
+          '1.0.0',
           registry.port,
           registry.getToken(),
           registry.getRegistryUrl()
