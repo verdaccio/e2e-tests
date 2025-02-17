@@ -331,8 +331,8 @@ importers:
         specifier: 4.17.21
         version: 4.17.21
       verdaccio:
-        specifier: 7.0.0-d146790.0
-        version: 7.0.0-d146790.0(typanion@3.13.0)
+        specifier: 7.0.0-90d301d.0
+        version: 7.0.0-90d301d.0(typanion@3.13.0)
 
 packages:
 
@@ -9052,8 +9052,8 @@ packages:
       - supports-color
     dev: true
 
-  /verdaccio@7.0.0-d146790.0(typanion@3.13.0):
-    resolution: {integrity: sha512-xI4TFrNS40YWT/gWC+7cfgl6SplJ27Y4FycOEKLWgIH/TW25uy2HfSwaNg1CtndUYidFRJQvsEbhREQf3Yqacg==}
+  /verdaccio@7.0.0-90d301d.0(typanion@3.13.0):
+    resolution: {integrity: sha512-MYxVH75oZqYTK+KTzFBuwOuENfIZnRZomjjIAYDmqFnHtYA4557U4S/FFBx1xG899qjL4zfq2UvD/X7Z1U7vPA==}
     engines: {node: '>=18'}
     hasBin: true
     dependencies:
