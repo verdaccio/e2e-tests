@@ -11,7 +11,8 @@ on:
     branches:
       - 6.x
 
-permissions: write-all
+permissions:
+  contents: write
 
 jobs:
   prepare:
