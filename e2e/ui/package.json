@@ -5,7 +5,7 @@
   "devDependencies": {
     "@verdaccio/test-cli-commons": "workspace:*",
     "npm": "next-8",
-    "debug": "4.3.4",
+    "debug": "4.4.0",
     "cypress": "11.2.0"
   },
   "scripts": {
