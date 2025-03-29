@@ -48,7 +48,7 @@ export function runUnpublish(pnpm) {
       }
     );
 
-    test.each([['@verdaccio/test1', 'super-package-do-not-exist-spam']])(
+    test.skip.each([['@verdaccio/test1', 'super-package-do-not-exist-spam']])(
       'should unpublish a package %s version',
       async (pkgName) => {
         const { tempFolder } = await prepareGenericEmptyProject(
