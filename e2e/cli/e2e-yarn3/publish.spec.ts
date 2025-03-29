@@ -13,7 +13,7 @@ describe('install a packages', () => {
     registry = setup.registry;
     await registry.init();
     const { tempFolder } = await yarnModernUtils.prepareYarnModernProject(
-      'yarn-2',
+      'yarn-3',
       registry.getRegistryUrl(),
       getYarnCommand(),
       {

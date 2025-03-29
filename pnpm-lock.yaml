@@ -280,8 +280,8 @@ importers:
         specifier: workspace:*
         version: link:../../../tools/cli-commons
       '@yarnpkg/cli-dist':
-        specifier: 4.4.0
-        version: 4.4.0
+        specifier: 4.6.0
+        version: 4.6.0
 
   e2e/ui:
     devDependencies:
@@ -3489,8 +3489,8 @@ packages:
     hasBin: true
     dev: false
 
-  /@yarnpkg/cli-dist@4.4.0:
-    resolution: {integrity: sha512-1YMvFokdlHHG+xzB4d7NyzRAnfIZjfnkbY35SK3kU417WRoR9C2IKmW/ePI/WeQ2S9mxOBkETjbluD+A2K0eYg==}
+  /@yarnpkg/cli-dist@4.6.0:
+    resolution: {integrity: sha512-ox0MJJkxtma1kAzIsSboShQQOvyvef0TbmCo9ecrBpPaZ9exd/71IEZmjbHjAir8GAiiOw7B394aAsqfWEFZug==}
     engines: {node: '>=18.12.0'}
     hasBin: true
     dev: false
