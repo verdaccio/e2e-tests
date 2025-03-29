@@ -50,6 +50,14 @@ jobs:
       - name: Build Project
         run: pnpm build
 
+      - name: Cache Node Modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: modules-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            modules-${{ github.sha }}
+            modules-
       - name: Cache Tools Directory
         uses: actions/cache@v3
         with:
@@ -76,10 +84,23 @@ jobs:
         run: corepack enable
       - name: pnpm enable
         run: corepack prepare pnpm@latest-8 --activate
-      - uses: actions/cache@v3 # v3
+      - name: Restore PNPM Store Cache
+        uses: actions/cache@v3
         with:
           path: ~/.pnpm-store
-          key: pnpm-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.run_id }}-${{ github.sha }}
+          key: pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-${{ github.sha }}
+            pnpm-
+
+      - name: Restore Node Modules Cache
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: modules-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            modules-${{ github.sha }}
+            modules-
       - name: Set up .npmrc
         run: |
           echo "//rg.verdaccio.org/:_authToken=${{ secrets.VERDACCIO_TOKEN }}" > .npmrc          
