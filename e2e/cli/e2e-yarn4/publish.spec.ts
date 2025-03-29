@@ -19,7 +19,7 @@ describe('install a packages', () => {
       {
         packageName: '@scope/name',
         version: '1.0.0',
-        dependencies: { jquery: '3.6.0' },
+        dependencies: { jquery: 'latest' },
         devDependencies: {},
       },
       registry.getToken()
