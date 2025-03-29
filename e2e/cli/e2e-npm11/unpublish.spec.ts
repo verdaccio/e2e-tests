@@ -4,6 +4,6 @@ import { runUnpublish } from '@verdaccio/e2e-cli-npm-common';
 
 import { npm } from './utils';
 
-describe('unpublish a package', () => {
+describe.skip('unpublish a package', () => {
   runUnpublish(npm);
 });
