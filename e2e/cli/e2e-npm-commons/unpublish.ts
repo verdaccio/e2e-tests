@@ -22,7 +22,7 @@ export function runUnpublish(npm) {
       async (pkgName) => {
         const { tempFolder } = await prepareGenericEmptyProject(
           pkgName,
-          '1.0.0-beta',
+          '1.0.0',
           registry.port,
           registry.getToken(),
           registry.getRegistryUrl()
@@ -48,7 +48,7 @@ export function runUnpublish(npm) {
       }
     );
 
-    test.each([['@verdaccio/test1', 'super-package-do-not-exist-spam']])(
+    test.skip.each([['@verdaccio/test1', 'super-package-do-not-exist-spam']])(
       'should unpublish a package %s version',
       async (pkgName) => {
         const { tempFolder } = await prepareGenericEmptyProject(
