@@ -21,7 +21,7 @@ export function runInfo(npm) {
         ...addRegistry(registry.getRegistryUrl())
       );
       const parsedBody = JSON.parse(resp.stdout as string);
-      expect(parsedBody.name).toEqual('verdaccio');
+      expect(parsedBody.name).toEqual('verdaccio1');
       expect(parsedBody.dependencies).toBeDefined();
     });
 
