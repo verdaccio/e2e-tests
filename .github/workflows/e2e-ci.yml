@@ -115,6 +115,7 @@ jobs:
       - name: Test CLI
         run: NODE_ENV=production pnpm test --filter ...@verdaccio/e2e-cli-${{matrix.pkg}} -- --reporter=json --outputFile=vitest-report-${{ matrix.pkg }}.json
       - name: Upload vitest reports as artifacts
+        if: github.ref == 'refs/heads/6.x'
         uses: actions/upload-artifact@v4
         with:
           name: vitest-reports-${{ matrix.pkg }}
@@ -127,16 +128,19 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Download vitest reports artifacts
+        if: github.ref == 'refs/heads/6.x'
         uses: actions/download-artifact@v4
         with:
           pattern: vitest-reports-*
           path: ./reports
       - name: Move reports to commit hash folder
+        if: github.ref == 'refs/heads/6.x'
         run: |
           mkdir -p "./reports_copy/report_${{ github.sha }}/"  
           mv ./reports/* ./reports_copy/report_${{ github.sha }}/  
           rm -rf ./reports  
       - name: Deploy to GitHub Pages
+        if: github.ref == 'refs/heads/6.x'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
