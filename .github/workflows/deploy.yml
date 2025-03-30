@@ -1,0 +1,40 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - gh-pages
+  schedule: 
+    - cron: "0 12 * * 1,3,5"
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Generate Report
+        run: node ./scripts/collectReports.js
+
+      - name: Build Static Files
+        run: npm run build
+      - name: Commit & Push changes
+        uses: actions-js/push@5a7cbd780d82c0c937b5977586e641b2fd94acc5 # v1.5
+        with:
+          github_token: ${{ secrets.TOKEN_VERDACCIOBOT_V2 }}
+          message: 'chore: updated website'
+          branch: gh-pages
+          author_email: verdaccio.npm@gmail.com
+          author_name: verdacciobot
