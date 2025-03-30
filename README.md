@@ -16,7 +16,7 @@ What is included on these test?
 
 All docker test are run with GitHub Actions
 
-## With npm cli
+## With npm CLI
 
 > A copy of `verdaccio/verdaccio` e2e for 6.x, test are on sync
 > It uses the latest `npmjs` version published
