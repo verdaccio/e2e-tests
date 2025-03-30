@@ -23,6 +23,9 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
+      - name: Generate Report
+        run: node ./scripts/collectReports.js
+
       - name: Build Static Files
         run: npm run build
       - name: Commit & Push changes
