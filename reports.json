@@ -1,0 +1,5512 @@
+[
+  {
+    "commit": "0131216dcc86c19a2ba4a1dcb076347aee2ea9f8",
+    "packageManager": "npm11",
+    "numTotalTestSuites": 30,
+    "numPassedTestSuites": 30,
+    "numFailedTestSuites": 0,
+    "numPendingTestSuites": 0,
+    "numTotalTests": 17,
+    "numPassedTests": 15,
+    "numFailedTests": 0,
+    "numPendingTests": 2,
+    "numTodoTests": 0,
+    "snapshot": {
+      "added": 0,
+      "failure": false,
+      "filesAdded": 0,
+      "filesRemoved": 0,
+      "filesRemovedList": [],
+      "filesUnmatched": 0,
+      "filesUpdated": 0,
+      "matched": 0,
+      "total": 0,
+      "unchecked": 0,
+      "uncheckedKeysByFile": [],
+      "unmatched": 0,
+      "updated": 0,
+      "didUpdate": false
+    },
+    "startTime": 1743334306705,
+    "success": true,
+    "testResults": [
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "audit a package",
+              "audit a package"
+            ],
+            "fullName": "audit a package audit a package should audit a package verdaccio-memory",
+            "status": "passed",
+            "title": "should audit a package verdaccio-memory",
+            "duration": 1351.311381,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334318640,
+        "endTime": 1743334319991.3113,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm11/audit.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should deprecate a single package @verdaccio/deprecated-1",
+            "status": "passed",
+            "title": "should deprecate a single package @verdaccio/deprecated-1",
+            "duration": 1866.5115169999995,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should un-deprecate a package @verdaccio/deprecated-2",
+            "status": "passed",
+            "title": "should un-deprecate a package @verdaccio/deprecated-2",
+            "duration": 2595.7312329999995,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should deprecate a multiple packages @verdaccio/deprecated-3",
+            "status": "passed",
+            "title": "should deprecate a multiple packages @verdaccio/deprecated-3",
+            "duration": 6713.307803999999,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334309031,
+        "endTime": 1743334320207.3079,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm11/deprecate.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "dist-tag a package"
+            ],
+            "fullName": "dist-tags a package dist-tag a package should list dist-tags for @foo/foo",
+            "status": "passed",
+            "title": "should list dist-tags for @foo/foo",
+            "duration": 2122.5032480000004,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "dist-tag a package"
+            ],
+            "fullName": "dist-tags a package dist-tag a package should remove tag with dist-tags for @verdaccio/bar",
+            "status": "passed",
+            "title": "should remove tag with dist-tags for @verdaccio/bar",
+            "duration": 2143.179112,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "dist-tag a package"
+            ],
+            "fullName": "dist-tags a package dist-tag a package should add tag to package and version with dist-tags for @verdaccio/five",
+            "status": "passed",
+            "title": "should add tag to package and version with dist-tags for @verdaccio/five",
+            "duration": 2064.3261460000003,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334310139,
+        "endTime": 1743334316469.3262,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm11/dist-tags.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "info a package",
+              "install a package"
+            ],
+            "fullName": "info a package install a package should run npm info json body",
+            "status": "passed",
+            "title": "should run npm info json body",
+            "duration": 776.8937980000001,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334318575,
+        "endTime": 1743334319351.8938,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm11/info.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a project packages",
+              "install a project packages"
+            ],
+            "fullName": "install a project packages install a project packages should run npm install json body",
+            "status": "passed",
+            "title": "should run npm install json body",
+            "duration": 2083.334362,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334309064,
+        "endTime": 1743334311147.3345,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm11/install.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "ping registry",
+              "ping registry"
+            ],
+            "fullName": "ping registry ping registry should ping registry",
+            "status": "passed",
+            "title": "should ping registry",
+            "duration": 187.322995,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334321738,
+        "endTime": 1743334321925.323,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm11/ping.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "publish a package",
+              "publish a package"
+            ],
+            "fullName": "publish a package publish a package should publish a package verdaccio-memory-xxxxxx",
+            "status": "passed",
+            "title": "should publish a package verdaccio-memory-xxxxxx",
+            "duration": 924.3820250000001,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334313097,
+        "endTime": 1743334314021.382,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm11/publish.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "search a package",
+              "search a package"
+            ],
+            "fullName": "search a package search a package should search a package",
+            "status": "passed",
+            "title": "should search a package",
+            "duration": 365.78547500000013,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334316065,
+        "endTime": 1743334316430.7854,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm11/search.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should star a package @verdaccio/foo",
+            "status": "passed",
+            "title": "should star a package @verdaccio/foo",
+            "duration": 1234.2189839999999,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should unstar a package @verdaccio/bar",
+            "status": "passed",
+            "title": "should unstar a package @verdaccio/bar",
+            "duration": 1599.8994700000003,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should list stars of a user %s",
+            "status": "passed",
+            "title": "should list stars of a user %s",
+            "duration": 1469.252512,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334321224,
+        "endTime": 1743334325527.2524,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm11/star.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "unpublish a package",
+              "unpublish a package"
+            ],
+            "fullName": "unpublish a package unpublish a package should unpublish a full package @verdaccio/test1",
+            "status": "skipped",
+            "title": "should unpublish a full package @verdaccio/test1",
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "unpublish a package",
+              "unpublish a package"
+            ],
+            "fullName": "unpublish a package unpublish a package should unpublish a package @verdaccio/test1 version",
+            "status": "skipped",
+            "title": "should unpublish a package @verdaccio/test1 version",
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334306705,
+        "endTime": 1743334306705,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm11/unpublish.spec.ts"
+      }
+    ]
+  },
+  {
+    "commit": "0131216dcc86c19a2ba4a1dcb076347aee2ea9f8",
+    "packageManager": "npm7",
+    "numTotalTestSuites": 30,
+    "numPassedTestSuites": 30,
+    "numFailedTestSuites": 0,
+    "numPendingTestSuites": 0,
+    "numTotalTests": 17,
+    "numPassedTests": 16,
+    "numFailedTests": 0,
+    "numPendingTests": 1,
+    "numTodoTests": 0,
+    "snapshot": {
+      "added": 0,
+      "failure": false,
+      "filesAdded": 0,
+      "filesRemoved": 0,
+      "filesRemovedList": [],
+      "filesUnmatched": 0,
+      "filesUpdated": 0,
+      "matched": 0,
+      "total": 0,
+      "unchecked": 0,
+      "uncheckedKeysByFile": [],
+      "unmatched": 0,
+      "updated": 0,
+      "didUpdate": false
+    },
+    "startTime": 1743334295878,
+    "success": true,
+    "testResults": [
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "audit a package",
+              "audit a package"
+            ],
+            "fullName": "audit a package audit a package should audit a package verdaccio-memory",
+            "status": "passed",
+            "title": "should audit a package verdaccio-memory",
+            "duration": 1403.003404,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334309140,
+        "endTime": 1743334310543.0034,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm7/audit.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should deprecate a single package @verdaccio/deprecated-1",
+            "status": "passed",
+            "title": "should deprecate a single package @verdaccio/deprecated-1",
+            "duration": 1485.095295,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should un-deprecate a package @verdaccio/deprecated-2",
+            "status": "passed",
+            "title": "should un-deprecate a package @verdaccio/deprecated-2",
+            "duration": 2359.933921,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should deprecate a multiple packages @verdaccio/deprecated-3",
+            "status": "passed",
+            "title": "should deprecate a multiple packages @verdaccio/deprecated-3",
+            "duration": 6280.630428,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334298154,
+        "endTime": 1743334308279.6304,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm7/deprecate.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "dist-tag a package"
+            ],
+            "fullName": "dist-tags a package dist-tag a package should list dist-tags for @foo/foo",
+            "status": "passed",
+            "title": "should list dist-tags for @foo/foo",
+            "duration": 1882.8889449999997,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "dist-tag a package"
+            ],
+            "fullName": "dist-tags a package dist-tag a package should remove tag with dist-tags for @verdaccio/bar",
+            "status": "passed",
+            "title": "should remove tag with dist-tags for @verdaccio/bar",
+            "duration": 1825.5266550000001,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "dist-tag a package"
+            ],
+            "fullName": "dist-tags a package dist-tag a package should add tag to package and version with dist-tags for @verdaccio/five",
+            "status": "passed",
+            "title": "should add tag to package and version with dist-tags for @verdaccio/five",
+            "duration": 1904.541803,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334302182,
+        "endTime": 1743334307794.5417,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm7/dist-tags.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "info a package",
+              "install a package"
+            ],
+            "fullName": "info a package install a package should run npm info json body",
+            "status": "passed",
+            "title": "should run npm info json body",
+            "duration": 763.1869099999999,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334309883,
+        "endTime": 1743334310646.187,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm7/info.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a project packages",
+              "install a project packages"
+            ],
+            "fullName": "install a project packages install a project packages should run npm install json body",
+            "status": "passed",
+            "title": "should run npm install json body",
+            "duration": 1780.351904,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334298275,
+        "endTime": 1743334300055.3518,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm7/install.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "ping registry",
+              "ping registry"
+            ],
+            "fullName": "ping registry ping registry should ping registry",
+            "status": "passed",
+            "title": "should ping registry",
+            "duration": 259.76365699999997,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334312211,
+        "endTime": 1743334312470.7637,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm7/ping.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "publish a package",
+              "publish a package"
+            ],
+            "fullName": "publish a package publish a package should publish a package verdaccio-memory-xxxxxx",
+            "status": "passed",
+            "title": "should publish a package verdaccio-memory-xxxxxx",
+            "duration": 567.6590740000001,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334303891,
+        "endTime": 1743334304458.6592,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm7/publish.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "search a package",
+              "search a package"
+            ],
+            "fullName": "search a package search a package should search a package",
+            "status": "passed",
+            "title": "should search a package",
+            "duration": 499.14227700000015,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334306481,
+        "endTime": 1743334306980.1423,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm7/search.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should star a package @verdaccio/foo",
+            "status": "passed",
+            "title": "should star a package @verdaccio/foo",
+            "duration": 1168.4160190000002,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should unstar a package @verdaccio/bar",
+            "status": "passed",
+            "title": "should unstar a package @verdaccio/bar",
+            "duration": 1522.2995109999997,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should list stars of a user %s",
+            "status": "passed",
+            "title": "should list stars of a user %s",
+            "duration": 1293.2391310000003,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334310203,
+        "endTime": 1743334314187.239,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm7/star.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "unpublish a package",
+              "unpublish a package"
+            ],
+            "fullName": "unpublish a package unpublish a package should unpublish a full package @verdaccio/test1",
+            "status": "passed",
+            "title": "should unpublish a full package @verdaccio/test1",
+            "duration": 3676.017321,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "unpublish a package",
+              "unpublish a package"
+            ],
+            "fullName": "unpublish a package unpublish a package should unpublish a package @verdaccio/test1 version",
+            "status": "skipped",
+            "title": "should unpublish a package @verdaccio/test1 version",
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334298267,
+        "endTime": 1743334301943.0173,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm7/unpublish.spec.ts"
+      }
+    ]
+  },
+  {
+    "commit": "0131216dcc86c19a2ba4a1dcb076347aee2ea9f8",
+    "packageManager": "npm8",
+    "numTotalTestSuites": 30,
+    "numPassedTestSuites": 30,
+    "numFailedTestSuites": 0,
+    "numPendingTestSuites": 0,
+    "numTotalTests": 17,
+    "numPassedTests": 16,
+    "numFailedTests": 0,
+    "numPendingTests": 1,
+    "numTodoTests": 0,
+    "snapshot": {
+      "added": 0,
+      "failure": false,
+      "filesAdded": 0,
+      "filesRemoved": 0,
+      "filesRemovedList": [],
+      "filesUnmatched": 0,
+      "filesUpdated": 0,
+      "matched": 0,
+      "total": 0,
+      "unchecked": 0,
+      "uncheckedKeysByFile": [],
+      "unmatched": 0,
+      "updated": 0,
+      "didUpdate": false
+    },
+    "startTime": 1743334307368,
+    "success": true,
+    "testResults": [
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "audit a package",
+              "audit a package"
+            ],
+            "fullName": "audit a package audit a package should audit a package verdaccio-memory",
+            "status": "passed",
+            "title": "should audit a package verdaccio-memory",
+            "duration": 1396.5806190000003,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334321376,
+        "endTime": 1743334322772.5806,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm8/audit.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should deprecate a single package @verdaccio/deprecated-1",
+            "status": "passed",
+            "title": "should deprecate a single package @verdaccio/deprecated-1",
+            "duration": 1632.529481,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should un-deprecate a package @verdaccio/deprecated-2",
+            "status": "passed",
+            "title": "should un-deprecate a package @verdaccio/deprecated-2",
+            "duration": 2565.909045,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should deprecate a multiple packages @verdaccio/deprecated-3",
+            "status": "passed",
+            "title": "should deprecate a multiple packages @verdaccio/deprecated-3",
+            "duration": 7057.692788999999,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334309808,
+        "endTime": 1743334321063.6929,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm8/deprecate.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "dist-tag a package"
+            ],
+            "fullName": "dist-tags a package dist-tag a package should list dist-tags for @foo/foo",
+            "status": "passed",
+            "title": "should list dist-tags for @foo/foo",
+            "duration": 1970.821697,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "dist-tag a package"
+            ],
+            "fullName": "dist-tags a package dist-tag a package should remove tag with dist-tags for @verdaccio/bar",
+            "status": "passed",
+            "title": "should remove tag with dist-tags for @verdaccio/bar",
+            "duration": 2057.013766,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "dist-tag a package"
+            ],
+            "fullName": "dist-tags a package dist-tag a package should add tag to package and version with dist-tags for @verdaccio/five",
+            "status": "passed",
+            "title": "should add tag to package and version with dist-tags for @verdaccio/five",
+            "duration": 2029.797318,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334313575,
+        "endTime": 1743334319633.7974,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm8/dist-tags.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "info a package",
+              "install a package"
+            ],
+            "fullName": "info a package install a package should run npm info json body",
+            "status": "passed",
+            "title": "should run npm info json body",
+            "duration": 805.78465,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334321747,
+        "endTime": 1743334322552.7847,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm8/info.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a project packages",
+              "install a project packages"
+            ],
+            "fullName": "install a project packages install a project packages should run npm install json body",
+            "status": "passed",
+            "title": "should run npm install json body",
+            "duration": 1780.7535460000004,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334309740,
+        "endTime": 1743334311520.7537,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm8/install.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "ping registry",
+              "ping registry"
+            ],
+            "fullName": "ping registry ping registry should ping registry",
+            "status": "passed",
+            "title": "should ping registry",
+            "duration": 289.53793500000006,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334324316,
+        "endTime": 1743334324605.5378,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm8/ping.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "publish a package",
+              "publish a package"
+            ],
+            "fullName": "publish a package publish a package should publish a package verdaccio-memory-xxxxxx",
+            "status": "passed",
+            "title": "should publish a package verdaccio-memory-xxxxxx",
+            "duration": 635.1372100000001,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334316131,
+        "endTime": 1743334316766.1372,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm8/publish.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "search a package",
+              "search a package"
+            ],
+            "fullName": "search a package search a package should search a package",
+            "status": "passed",
+            "title": "should search a package",
+            "duration": 462.4525699999999,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334318731,
+        "endTime": 1743334319193.4526,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm8/search.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should star a package @verdaccio/foo",
+            "status": "passed",
+            "title": "should star a package @verdaccio/foo",
+            "duration": 1161.3880129999998,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should unstar a package @verdaccio/bar",
+            "status": "passed",
+            "title": "should unstar a package @verdaccio/bar",
+            "duration": 1632.564374,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should list stars of a user %s",
+            "status": "passed",
+            "title": "should list stars of a user %s",
+            "duration": 1455.380534,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334323184,
+        "endTime": 1743334327433.3806,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm8/star.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "unpublish a package",
+              "unpublish a package"
+            ],
+            "fullName": "unpublish a package unpublish a package should unpublish a full package @verdaccio/test1",
+            "status": "passed",
+            "title": "should unpublish a full package @verdaccio/test1",
+            "duration": 4382.602059000001,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "unpublish a package",
+              "unpublish a package"
+            ],
+            "fullName": "unpublish a package unpublish a package should unpublish a package @verdaccio/test1 version",
+            "status": "skipped",
+            "title": "should unpublish a package @verdaccio/test1 version",
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334309708,
+        "endTime": 1743334314090.602,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm8/unpublish.spec.ts"
+      }
+    ]
+  },
+  {
+    "commit": "0131216dcc86c19a2ba4a1dcb076347aee2ea9f8",
+    "packageManager": "npm9",
+    "numTotalTestSuites": 30,
+    "numPassedTestSuites": 30,
+    "numFailedTestSuites": 0,
+    "numPendingTestSuites": 0,
+    "numTotalTests": 17,
+    "numPassedTests": 16,
+    "numFailedTests": 0,
+    "numPendingTests": 1,
+    "numTodoTests": 0,
+    "snapshot": {
+      "added": 0,
+      "failure": false,
+      "filesAdded": 0,
+      "filesRemoved": 0,
+      "filesRemovedList": [],
+      "filesUnmatched": 0,
+      "filesUpdated": 0,
+      "matched": 0,
+      "total": 0,
+      "unchecked": 0,
+      "uncheckedKeysByFile": [],
+      "unmatched": 0,
+      "updated": 0,
+      "didUpdate": false
+    },
+    "startTime": 1743334307958,
+    "success": true,
+    "testResults": [
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "audit a package",
+              "audit a package"
+            ],
+            "fullName": "audit a package audit a package should audit a package verdaccio-memory",
+            "status": "passed",
+            "title": "should audit a package verdaccio-memory",
+            "duration": 2445.7465569999995,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334335923,
+        "endTime": 1743334338368.7466,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm9/audit.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should deprecate a single package @verdaccio/deprecated-1",
+            "status": "passed",
+            "title": "should deprecate a single package @verdaccio/deprecated-1",
+            "duration": 3408.457201,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should un-deprecate a package @verdaccio/deprecated-2",
+            "status": "passed",
+            "title": "should un-deprecate a package @verdaccio/deprecated-2",
+            "duration": 5237.628829,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should deprecate a multiple packages @verdaccio/deprecated-3",
+            "status": "passed",
+            "title": "should deprecate a multiple packages @verdaccio/deprecated-3",
+            "duration": 14536.71509,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334312360,
+        "endTime": 1743334335545.715,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm9/deprecate.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "dist-tag a package"
+            ],
+            "fullName": "dist-tags a package dist-tag a package should list dist-tags for @foo/foo",
+            "status": "passed",
+            "title": "should list dist-tags for @foo/foo",
+            "duration": 4180.324321,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "dist-tag a package"
+            ],
+            "fullName": "dist-tags a package dist-tag a package should remove tag with dist-tags for @verdaccio/bar",
+            "status": "passed",
+            "title": "should remove tag with dist-tags for @verdaccio/bar",
+            "duration": 4225.5396009999995,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "dist-tag a package"
+            ],
+            "fullName": "dist-tags a package dist-tag a package should add tag to package and version with dist-tags for @verdaccio/five",
+            "status": "passed",
+            "title": "should add tag to package and version with dist-tags for @verdaccio/five",
+            "duration": 4198.062765000001,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334319306,
+        "endTime": 1743334331913.0627,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm9/dist-tags.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "info a package",
+              "install a package"
+            ],
+            "fullName": "info a package install a package should run npm info json body",
+            "status": "passed",
+            "title": "should run npm info json body",
+            "duration": 1663.070095,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334335969,
+        "endTime": 1743334337632.07,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm9/info.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a project packages",
+              "install a project packages"
+            ],
+            "fullName": "install a project packages install a project packages should run npm install json body",
+            "status": "passed",
+            "title": "should run npm install json body",
+            "duration": 3302.9119069999997,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334312285,
+        "endTime": 1743334315587.9119,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm9/install.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "ping registry",
+              "ping registry"
+            ],
+            "fullName": "ping registry ping registry should ping registry",
+            "status": "passed",
+            "title": "should ping registry",
+            "duration": 351.0221630000001,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334340165,
+        "endTime": 1743334340516.0222,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm9/ping.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "publish a package",
+              "publish a package"
+            ],
+            "fullName": "publish a package publish a package should publish a package verdaccio-memory-xxxxxx",
+            "status": "passed",
+            "title": "should publish a package verdaccio-memory-xxxxxx",
+            "duration": 1343.7941259999998,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334325825,
+        "endTime": 1743334327168.7942,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm9/publish.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "search a package",
+              "search a package"
+            ],
+            "fullName": "search a package search a package should search a package",
+            "status": "passed",
+            "title": "should search a package",
+            "duration": 864.2269239999996,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334331152,
+        "endTime": 1743334332016.2268,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm9/search.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should star a package @verdaccio/foo",
+            "status": "passed",
+            "title": "should star a package @verdaccio/foo",
+            "duration": 1540.8017239999995,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should unstar a package @verdaccio/bar",
+            "status": "passed",
+            "title": "should unstar a package @verdaccio/bar",
+            "duration": 1796.7407979999998,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should list stars of a user %s",
+            "status": "passed",
+            "title": "should list stars of a user %s",
+            "duration": 1511.3675750000002,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334338874,
+        "endTime": 1743334343723.3677,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm9/star.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "unpublish a package",
+              "unpublish a package"
+            ],
+            "fullName": "unpublish a package unpublish a package should unpublish a full package @verdaccio/test1",
+            "status": "passed",
+            "title": "should unpublish a full package @verdaccio/test1",
+            "duration": 9452.291788999999,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "unpublish a package",
+              "unpublish a package"
+            ],
+            "fullName": "unpublish a package unpublish a package should unpublish a package @verdaccio/test1 version",
+            "status": "skipped",
+            "title": "should unpublish a package @verdaccio/test1 version",
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334312333,
+        "endTime": 1743334321785.2917,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm9/unpublish.spec.ts"
+      }
+    ]
+  },
+  {
+    "commit": "0131216dcc86c19a2ba4a1dcb076347aee2ea9f8",
+    "packageManager": "pnpm10",
+    "numTotalTestSuites": 30,
+    "numPassedTestSuites": 30,
+    "numFailedTestSuites": 0,
+    "numPendingTestSuites": 0,
+    "numTotalTests": 17,
+    "numPassedTests": 16,
+    "numFailedTests": 0,
+    "numPendingTests": 1,
+    "numTodoTests": 0,
+    "snapshot": {
+      "added": 0,
+      "failure": false,
+      "filesAdded": 0,
+      "filesRemoved": 0,
+      "filesRemovedList": [],
+      "filesUnmatched": 0,
+      "filesUpdated": 0,
+      "matched": 0,
+      "total": 0,
+      "unchecked": 0,
+      "uncheckedKeysByFile": [],
+      "unmatched": 0,
+      "updated": 0,
+      "didUpdate": false
+    },
+    "startTime": 1743334307898,
+    "success": true,
+    "testResults": [
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "audit a package",
+              "audit a package"
+            ],
+            "fullName": "audit a package audit a package should audit a package verdaccio-memory",
+            "status": "passed",
+            "title": "should audit a package verdaccio-memory",
+            "duration": 1864.384704,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334327104,
+        "endTime": 1743334328968.3848,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm10/audit.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should deprecate a single package @verdaccio/deprecated-1",
+            "status": "passed",
+            "title": "should deprecate a single package @verdaccio/deprecated-1",
+            "duration": 3175.8947070000004,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should un-deprecate a package @verdaccio/deprecated-2",
+            "status": "passed",
+            "title": "should un-deprecate a package @verdaccio/deprecated-2",
+            "duration": 4295.685044,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should deprecate a multiple packages @verdaccio/deprecated-3",
+            "status": "passed",
+            "title": "should deprecate a multiple packages @verdaccio/deprecated-3",
+            "duration": 12712.568718,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334310420,
+        "endTime": 1743334330604.5686,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm10/deprecate.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "publish a package"
+            ],
+            "fullName": "dist-tags a package publish a package should list dist-tags for @foo/foo",
+            "status": "passed",
+            "title": "should list dist-tags for @foo/foo",
+            "duration": 3603.5221730000003,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "publish a package"
+            ],
+            "fullName": "dist-tags a package publish a package should remove tag with dist-tags for @verdaccio/bar",
+            "status": "passed",
+            "title": "should remove tag with dist-tags for @verdaccio/bar",
+            "duration": 3703.7433309999997,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "publish a package"
+            ],
+            "fullName": "dist-tags a package publish a package should add tag to package and version with dist-tags for @verdaccio/five",
+            "status": "passed",
+            "title": "should add tag to package and version with dist-tags for @verdaccio/five",
+            "duration": 3939.0797299999995,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334314501,
+        "endTime": 1743334325747.0798,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm10/dist-tags.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "info a package",
+              "info a package"
+            ],
+            "fullName": "info a package info a package should run pnpm info json body",
+            "status": "passed",
+            "title": "should run pnpm info json body",
+            "duration": 1140.1505390000002,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334327957,
+        "endTime": 1743334329097.1506,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm10/info.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a project packages",
+              "install a project packages"
+            ],
+            "fullName": "install a project packages install a project packages should run npm install json body",
+            "status": "passed",
+            "title": "should run npm install json body",
+            "duration": 2083.961576,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334310405,
+        "endTime": 1743334312488.9617,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm10/install.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "ping registry",
+              "ping registry"
+            ],
+            "fullName": "ping registry ping registry should ping registry",
+            "status": "passed",
+            "title": "should ping registry",
+            "duration": 423.29834500000015,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334331268,
+        "endTime": 1743334331691.2983,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm10/ping.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "publish a package",
+              "publish a package"
+            ],
+            "fullName": "publish a package publish a package should publish a package verdaccio-memory",
+            "status": "passed",
+            "title": "should publish a package verdaccio-memory",
+            "duration": 1376.1289499999998,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334320668,
+        "endTime": 1743334322044.129,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm10/publish.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "search a package",
+              "search a package"
+            ],
+            "fullName": "search a package search a package should search a package",
+            "status": "passed",
+            "title": "should search a package",
+            "duration": 647.8929110000004,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334324297,
+        "endTime": 1743334324944.8928,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm10/search.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should star a package @verdaccio/foo",
+            "status": "passed",
+            "title": "should star a package @verdaccio/foo",
+            "duration": 1724.5152659999999,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should unstar a package @verdaccio/bar",
+            "status": "passed",
+            "title": "should unstar a package @verdaccio/bar",
+            "duration": 2629.234842,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should list stars of a user %s",
+            "status": "passed",
+            "title": "should list stars of a user %s",
+            "duration": 2271.2860929999997,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334331160,
+        "endTime": 1743334337784.2861,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm10/star.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "unpublish a package",
+              "unpublish a package"
+            ],
+            "fullName": "unpublish a package unpublish a package should unpublish a full package @verdaccio/test1",
+            "status": "passed",
+            "title": "should unpublish a full package @verdaccio/test1",
+            "duration": 8015.653098999999,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "unpublish a package",
+              "unpublish a package"
+            ],
+            "fullName": "unpublish a package unpublish a package should unpublish a package @verdaccio/test1 version",
+            "status": "skipped",
+            "title": "should unpublish a package @verdaccio/test1 version",
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334310450,
+        "endTime": 1743334318465.653,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm10/unpublish.spec.ts"
+      }
+    ]
+  },
+  {
+    "commit": "0131216dcc86c19a2ba4a1dcb076347aee2ea9f8",
+    "packageManager": "pnpm8",
+    "numTotalTestSuites": 30,
+    "numPassedTestSuites": 30,
+    "numFailedTestSuites": 0,
+    "numPendingTestSuites": 0,
+    "numTotalTests": 17,
+    "numPassedTests": 16,
+    "numFailedTests": 0,
+    "numPendingTests": 1,
+    "numTodoTests": 0,
+    "snapshot": {
+      "added": 0,
+      "failure": false,
+      "filesAdded": 0,
+      "filesRemoved": 0,
+      "filesRemovedList": [],
+      "filesUnmatched": 0,
+      "filesUpdated": 0,
+      "matched": 0,
+      "total": 0,
+      "unchecked": 0,
+      "uncheckedKeysByFile": [],
+      "unmatched": 0,
+      "updated": 0,
+      "didUpdate": false
+    },
+    "startTime": 1743334306107,
+    "success": true,
+    "testResults": [
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "audit a package",
+              "audit a package"
+            ],
+            "fullName": "audit a package audit a package should audit a package verdaccio-memory",
+            "status": "passed",
+            "title": "should audit a package verdaccio-memory",
+            "duration": 1685.1794639999998,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334323522,
+        "endTime": 1743334325207.1794,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm8/audit.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should deprecate a single package @verdaccio/deprecated-1",
+            "status": "passed",
+            "title": "should deprecate a single package @verdaccio/deprecated-1",
+            "duration": 2811.9440200000004,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should un-deprecate a package @verdaccio/deprecated-2",
+            "status": "passed",
+            "title": "should un-deprecate a package @verdaccio/deprecated-2",
+            "duration": 3922.3410170000006,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should deprecate a multiple packages @verdaccio/deprecated-3",
+            "status": "passed",
+            "title": "should deprecate a multiple packages @verdaccio/deprecated-3",
+            "duration": 11808.209707,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334308492,
+        "endTime": 1743334327034.2097,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm8/deprecate.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "publish a package"
+            ],
+            "fullName": "dist-tags a package publish a package should list dist-tags for @foo/foo",
+            "status": "passed",
+            "title": "should list dist-tags for @foo/foo",
+            "duration": 3498.5198549999996,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "publish a package"
+            ],
+            "fullName": "dist-tags a package publish a package should remove tag with dist-tags for @verdaccio/bar",
+            "status": "passed",
+            "title": "should remove tag with dist-tags for @verdaccio/bar",
+            "duration": 3713.8379990000003,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "publish a package"
+            ],
+            "fullName": "dist-tags a package publish a package should add tag to package and version with dist-tags for @verdaccio/five",
+            "status": "passed",
+            "title": "should add tag to package and version with dist-tags for @verdaccio/five",
+            "duration": 3548.3315249999996,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334312365,
+        "endTime": 1743334323125.3315,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm8/dist-tags.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "info a package",
+              "info a package"
+            ],
+            "fullName": "info a package info a package should run pnpm info json body",
+            "status": "passed",
+            "title": "should run pnpm info json body",
+            "duration": 1126.689101,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334325266,
+        "endTime": 1743334326392.6892,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm8/info.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a project packages",
+              "install a project packages"
+            ],
+            "fullName": "install a project packages install a project packages should run npm install json body",
+            "status": "passed",
+            "title": "should run npm install json body",
+            "duration": 1976.6560130000003,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334308416,
+        "endTime": 1743334310392.656,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm8/install.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "ping registry",
+              "ping registry"
+            ],
+            "fullName": "ping registry ping registry should ping registry",
+            "status": "passed",
+            "title": "should ping registry",
+            "duration": 400.43428900000004,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334328218,
+        "endTime": 1743334328618.4343,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm8/ping.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "publish a package",
+              "publish a package"
+            ],
+            "fullName": "publish a package publish a package should publish a package verdaccio-memory",
+            "status": "passed",
+            "title": "should publish a package verdaccio-memory",
+            "duration": 1240.863902,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334317397,
+        "endTime": 1743334318637.864,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm8/publish.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "search a package",
+              "search a package"
+            ],
+            "fullName": "search a package search a package should search a package",
+            "status": "passed",
+            "title": "should search a package",
+            "duration": 675.2202809999999,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334320774,
+        "endTime": 1743334321449.2202,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm8/search.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should star a package @verdaccio/foo",
+            "status": "passed",
+            "title": "should star a package @verdaccio/foo",
+            "duration": 1707.785792,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should unstar a package @verdaccio/bar",
+            "status": "passed",
+            "title": "should unstar a package @verdaccio/bar",
+            "duration": 2217.955316,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should list stars of a user %s",
+            "status": "passed",
+            "title": "should list stars of a user %s",
+            "duration": 2209.9958449999995,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334327257,
+        "endTime": 1743334333392.9958,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm8/star.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "unpublish a package",
+              "unpublish a package"
+            ],
+            "fullName": "unpublish a package unpublish a package should unpublish a full package @verdaccio/test1",
+            "status": "passed",
+            "title": "should unpublish a full package @verdaccio/test1",
+            "duration": 7009.373899,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "unpublish a package",
+              "unpublish a package"
+            ],
+            "fullName": "unpublish a package unpublish a package should unpublish a package @verdaccio/test1 version",
+            "status": "skipped",
+            "title": "should unpublish a package @verdaccio/test1 version",
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334308461,
+        "endTime": 1743334315470.3738,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm8/unpublish.spec.ts"
+      }
+    ]
+  },
+  {
+    "commit": "0131216dcc86c19a2ba4a1dcb076347aee2ea9f8",
+    "packageManager": "pnpm9",
+    "numTotalTestSuites": 30,
+    "numPassedTestSuites": 30,
+    "numFailedTestSuites": 0,
+    "numPendingTestSuites": 0,
+    "numTotalTests": 17,
+    "numPassedTests": 16,
+    "numFailedTests": 0,
+    "numPendingTests": 1,
+    "numTodoTests": 0,
+    "snapshot": {
+      "added": 0,
+      "failure": false,
+      "filesAdded": 0,
+      "filesRemoved": 0,
+      "filesRemovedList": [],
+      "filesUnmatched": 0,
+      "filesUpdated": 0,
+      "matched": 0,
+      "total": 0,
+      "unchecked": 0,
+      "uncheckedKeysByFile": [],
+      "unmatched": 0,
+      "updated": 0,
+      "didUpdate": false
+    },
+    "startTime": 1743334307402,
+    "success": true,
+    "testResults": [
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "audit a package",
+              "audit a package"
+            ],
+            "fullName": "audit a package audit a package should audit a package verdaccio-memory",
+            "status": "passed",
+            "title": "should audit a package verdaccio-memory",
+            "duration": 1893.433302,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334325589,
+        "endTime": 1743334327482.4333,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm9/audit.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should deprecate a single package @verdaccio/deprecated-1",
+            "status": "passed",
+            "title": "should deprecate a single package @verdaccio/deprecated-1",
+            "duration": 2720.876816,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should un-deprecate a package @verdaccio/deprecated-2",
+            "status": "passed",
+            "title": "should un-deprecate a package @verdaccio/deprecated-2",
+            "duration": 4185.001715000001,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should deprecate a multiple packages @verdaccio/deprecated-3",
+            "status": "passed",
+            "title": "should deprecate a multiple packages @verdaccio/deprecated-3",
+            "duration": 12040.410296,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334309831,
+        "endTime": 1743334328777.4104,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm9/deprecate.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "publish a package"
+            ],
+            "fullName": "dist-tags a package publish a package should list dist-tags for @foo/foo",
+            "status": "passed",
+            "title": "should list dist-tags for @foo/foo",
+            "duration": 3373.429294,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "publish a package"
+            ],
+            "fullName": "dist-tags a package publish a package should remove tag with dist-tags for @verdaccio/bar",
+            "status": "passed",
+            "title": "should remove tag with dist-tags for @verdaccio/bar",
+            "duration": 3722.026122,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "publish a package"
+            ],
+            "fullName": "dist-tags a package publish a package should add tag to package and version with dist-tags for @verdaccio/five",
+            "status": "passed",
+            "title": "should add tag to package and version with dist-tags for @verdaccio/five",
+            "duration": 3566.9910809999983,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334313832,
+        "endTime": 1743334324494.991,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm9/dist-tags.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "info a package",
+              "info a package"
+            ],
+            "fullName": "info a package info a package should run pnpm info json body",
+            "status": "passed",
+            "title": "should run pnpm info json body",
+            "duration": 1053.3037529999997,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334326541,
+        "endTime": 1743334327594.3037,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm9/info.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a project packages",
+              "install a project packages"
+            ],
+            "fullName": "install a project packages install a project packages should run npm install json body",
+            "status": "passed",
+            "title": "should run npm install json body",
+            "duration": 2002.9308070000002,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334309739,
+        "endTime": 1743334311741.931,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm9/install.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "ping registry",
+              "ping registry"
+            ],
+            "fullName": "ping registry ping registry should ping registry",
+            "status": "passed",
+            "title": "should ping registry",
+            "duration": 407.558446,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334329541,
+        "endTime": 1743334329948.5583,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm9/ping.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "publish a package",
+              "publish a package"
+            ],
+            "fullName": "publish a package publish a package should publish a package verdaccio-memory",
+            "status": "passed",
+            "title": "should publish a package verdaccio-memory",
+            "duration": 1321.291787,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334319266,
+        "endTime": 1743334320587.2917,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm9/publish.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "search a package",
+              "search a package"
+            ],
+            "fullName": "search a package search a package should search a package",
+            "status": "passed",
+            "title": "should search a package",
+            "duration": 699.2567370000002,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334322771,
+        "endTime": 1743334323470.2568,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm9/search.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should star a package @verdaccio/foo",
+            "status": "passed",
+            "title": "should star a package @verdaccio/foo",
+            "duration": 1682.31007,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should unstar a package @verdaccio/bar",
+            "status": "passed",
+            "title": "should unstar a package @verdaccio/bar",
+            "duration": 2296.808672,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should list stars of a user %s",
+            "status": "passed",
+            "title": "should list stars of a user %s",
+            "duration": 2127.2224450000003,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334329469,
+        "endTime": 1743334335576.2224,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm9/star.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "unpublish a package",
+              "unpublish a package"
+            ],
+            "fullName": "unpublish a package unpublish a package should unpublish a full package @verdaccio/test1",
+            "status": "passed",
+            "title": "should unpublish a full package @verdaccio/test1",
+            "duration": 7372.4730629999995,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "unpublish a package",
+              "unpublish a package"
+            ],
+            "fullName": "unpublish a package unpublish a package should unpublish a package @verdaccio/test1 version",
+            "status": "skipped",
+            "title": "should unpublish a package @verdaccio/test1 version",
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334309797,
+        "endTime": 1743334317169.4731,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm9/unpublish.spec.ts"
+      }
+    ]
+  },
+  {
+    "commit": "0131216dcc86c19a2ba4a1dcb076347aee2ea9f8",
+    "packageManager": "yarn1",
+    "numTotalTestSuites": 10,
+    "numPassedTestSuites": 10,
+    "numFailedTestSuites": 0,
+    "numPendingTestSuites": 0,
+    "numTotalTests": 7,
+    "numPassedTests": 7,
+    "numFailedTests": 0,
+    "numPendingTests": 0,
+    "numTodoTests": 0,
+    "snapshot": {
+      "added": 0,
+      "failure": false,
+      "filesAdded": 0,
+      "filesRemoved": 0,
+      "filesRemovedList": [],
+      "filesUnmatched": 0,
+      "filesUpdated": 0,
+      "matched": 0,
+      "total": 0,
+      "unchecked": 0,
+      "uncheckedKeysByFile": [],
+      "unmatched": 0,
+      "updated": 0,
+      "didUpdate": false
+    },
+    "startTime": 1743334307046,
+    "success": true,
+    "testResults": [
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "audit a package"
+            ],
+            "fullName": "audit a package should audit a package verdaccio-memory",
+            "status": "passed",
+            "title": "should audit a package verdaccio-memory",
+            "duration": 1112.307683,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334309494,
+        "endTime": 1743334310606.3076,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-yarn1/audit.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a package"
+            ],
+            "fullName": "install a package should run yarn info json body",
+            "status": "passed",
+            "title": "should run yarn info json body",
+            "duration": 645.5606560000001,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334312655,
+        "endTime": 1743334313300.5605,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-yarn1/info.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a project packages"
+            ],
+            "fullName": "install a project packages should run yarn install",
+            "status": "passed",
+            "title": "should run yarn install",
+            "duration": 1068.596672,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334311897,
+        "endTime": 1743334312965.5967,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-yarn1/install.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a package"
+            ],
+            "fullName": "install a package should publish a package verdaccio-memory",
+            "status": "passed",
+            "title": "should publish a package verdaccio-memory",
+            "duration": 598.5424680000001,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334309302,
+        "endTime": 1743334309900.5425,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-yarn1/publish.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a package"
+            ],
+            "fullName": "install a package should list tags of a package @verdaccio/bar",
+            "status": "passed",
+            "title": "should list tags of a package @verdaccio/bar",
+            "duration": 922.226776,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "install a package"
+            ],
+            "fullName": "install a package should add tag of a package @verdaccio/foo",
+            "status": "passed",
+            "title": "should add tag of a package @verdaccio/foo",
+            "duration": 1663.029599,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "install a package"
+            ],
+            "fullName": "install a package should remove tag of a package @verdaccio/third",
+            "status": "passed",
+            "title": "should remove tag of a package @verdaccio/third",
+            "duration": 2196.112892,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334309399,
+        "endTime": 1743334314180.1128,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-yarn1/tag.spec.ts"
+      }
+    ]
+  },
+  {
+    "commit": "0131216dcc86c19a2ba4a1dcb076347aee2ea9f8",
+    "packageManager": "yarn2",
+    "numTotalTestSuites": 8,
+    "numPassedTestSuites": 8,
+    "numFailedTestSuites": 0,
+    "numPendingTestSuites": 0,
+    "numTotalTests": 4,
+    "numPassedTests": 4,
+    "numFailedTests": 0,
+    "numPendingTests": 0,
+    "numTodoTests": 0,
+    "snapshot": {
+      "added": 0,
+      "failure": false,
+      "filesAdded": 0,
+      "filesRemoved": 0,
+      "filesRemovedList": [],
+      "filesUnmatched": 0,
+      "filesUpdated": 0,
+      "matched": 0,
+      "total": 0,
+      "unchecked": 0,
+      "uncheckedKeysByFile": [],
+      "unmatched": 0,
+      "updated": 0,
+      "didUpdate": false
+    },
+    "startTime": 1743334293050,
+    "success": true,
+    "testResults": [
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "audit a package yarn 2"
+            ],
+            "fullName": "audit a package yarn 2 should run yarn npm audit info json body",
+            "status": "passed",
+            "title": "should run yarn npm audit info json body",
+            "duration": 929.55546,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334295372,
+        "endTime": 1743334296301.5554,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-yarn2/audit.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a package"
+            ],
+            "fullName": "install a package should run yarn 2 info json body",
+            "status": "passed",
+            "title": "should run yarn 2 info json body",
+            "duration": 1027.0048550000001,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334295296,
+        "endTime": 1743334296323.005,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-yarn2/info.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a packages"
+            ],
+            "fullName": "install a packages should run yarn install",
+            "status": "passed",
+            "title": "should run yarn install",
+            "duration": 372.359007,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334297895,
+        "endTime": 1743334298267.359,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-yarn2/install.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a packages"
+            ],
+            "fullName": "install a packages should run yarn publish",
+            "status": "passed",
+            "title": "should run yarn publish",
+            "duration": 1472.319297,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334295208,
+        "endTime": 1743334296680.3193,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-yarn2/publish.spec.ts"
+      }
+    ]
+  },
+  {
+    "commit": "0131216dcc86c19a2ba4a1dcb076347aee2ea9f8",
+    "packageManager": "yarn3",
+    "numTotalTestSuites": 8,
+    "numPassedTestSuites": 8,
+    "numFailedTestSuites": 0,
+    "numPendingTestSuites": 0,
+    "numTotalTests": 4,
+    "numPassedTests": 4,
+    "numFailedTests": 0,
+    "numPendingTests": 0,
+    "numTodoTests": 0,
+    "snapshot": {
+      "added": 0,
+      "failure": false,
+      "filesAdded": 0,
+      "filesRemoved": 0,
+      "filesRemovedList": [],
+      "filesUnmatched": 0,
+      "filesUpdated": 0,
+      "matched": 0,
+      "total": 0,
+      "unchecked": 0,
+      "uncheckedKeysByFile": [],
+      "unmatched": 0,
+      "updated": 0,
+      "didUpdate": false
+    },
+    "startTime": 1743334304070,
+    "success": true,
+    "testResults": [
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "audit a package yarn 3"
+            ],
+            "fullName": "audit a package yarn 3 should run yarn npm audit info json body",
+            "status": "passed",
+            "title": "should run yarn npm audit info json body",
+            "duration": 1540.128662,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334306468,
+        "endTime": 1743334308008.1287,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-yarn3/audit.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a package"
+            ],
+            "fullName": "install a package should run yarn 2 info json body",
+            "status": "passed",
+            "title": "should run yarn 2 info json body",
+            "duration": 1125.4324820000002,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334306384,
+        "endTime": 1743334307509.4324,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-yarn3/info.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a packages"
+            ],
+            "fullName": "install a packages should run yarn install",
+            "status": "passed",
+            "title": "should run yarn install",
+            "duration": 473.0240799999999,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334309227,
+        "endTime": 1743334309700.0242,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-yarn3/install.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a packages"
+            ],
+            "fullName": "install a packages should run yarn publish",
+            "status": "passed",
+            "title": "should run yarn publish",
+            "duration": 1796.452605,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334306374,
+        "endTime": 1743334308170.4526,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-yarn3/publish.spec.ts"
+      }
+    ]
+  },
+  {
+    "commit": "0131216dcc86c19a2ba4a1dcb076347aee2ea9f8",
+    "packageManager": "yarn4",
+    "numTotalTestSuites": 6,
+    "numPassedTestSuites": 6,
+    "numFailedTestSuites": 0,
+    "numPendingTestSuites": 0,
+    "numTotalTests": 3,
+    "numPassedTests": 3,
+    "numFailedTests": 0,
+    "numPendingTests": 0,
+    "numTodoTests": 0,
+    "snapshot": {
+      "added": 0,
+      "failure": false,
+      "filesAdded": 0,
+      "filesRemoved": 0,
+      "filesRemovedList": [],
+      "filesUnmatched": 0,
+      "filesUpdated": 0,
+      "matched": 0,
+      "total": 0,
+      "unchecked": 0,
+      "uncheckedKeysByFile": [],
+      "unmatched": 0,
+      "updated": 0,
+      "didUpdate": false
+    },
+    "startTime": 1743334288542,
+    "success": true,
+    "testResults": [
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a package"
+            ],
+            "fullName": "install a package should run yarn 2 info json body",
+            "status": "passed",
+            "title": "should run yarn 2 info json body",
+            "duration": 1089.9713700000002,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334290825,
+        "endTime": 1743334291914.9714,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-yarn4/info.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a packages"
+            ],
+            "fullName": "install a packages should run yarn install",
+            "status": "passed",
+            "title": "should run yarn install",
+            "duration": 780.4883319999999,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334290849,
+        "endTime": 1743334291629.4883,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-yarn4/install.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a packages"
+            ],
+            "fullName": "install a packages should run yarn publish",
+            "status": "passed",
+            "title": "should run yarn publish",
+            "duration": 1381.0167689999998,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334290735,
+        "endTime": 1743334292116.0168,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-yarn4/publish.spec.ts"
+      }
+    ]
+  },
+  {
+    "commit": "886dcd366ea666b914e489facd47c77826ff7179",
+    "packageManager": "npm11",
+    "numTotalTestSuites": 30,
+    "numPassedTestSuites": 30,
+    "numFailedTestSuites": 0,
+    "numPendingTestSuites": 0,
+    "numTotalTests": 17,
+    "numPassedTests": 15,
+    "numFailedTests": 0,
+    "numPendingTests": 2,
+    "numTodoTests": 0,
+    "snapshot": {
+      "added": 0,
+      "failure": false,
+      "filesAdded": 0,
+      "filesRemoved": 0,
+      "filesRemovedList": [],
+      "filesUnmatched": 0,
+      "filesUpdated": 0,
+      "matched": 0,
+      "total": 0,
+      "unchecked": 0,
+      "uncheckedKeysByFile": [],
+      "unmatched": 0,
+      "updated": 0,
+      "didUpdate": false
+    },
+    "startTime": 1743334633225,
+    "success": true,
+    "testResults": [
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "audit a package",
+              "audit a package"
+            ],
+            "fullName": "audit a package audit a package should audit a package verdaccio-memory",
+            "status": "passed",
+            "title": "should audit a package verdaccio-memory",
+            "duration": 1599.5808220000004,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334645512,
+        "endTime": 1743334647111.5808,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm11/audit.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should deprecate a single package @verdaccio/deprecated-1",
+            "status": "passed",
+            "title": "should deprecate a single package @verdaccio/deprecated-1",
+            "duration": 2315.698433,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should un-deprecate a package @verdaccio/deprecated-2",
+            "status": "passed",
+            "title": "should un-deprecate a package @verdaccio/deprecated-2",
+            "duration": 2577.310706,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should deprecate a multiple packages @verdaccio/deprecated-3",
+            "status": "passed",
+            "title": "should deprecate a multiple packages @verdaccio/deprecated-3",
+            "duration": 6417.109108,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334635517,
+        "endTime": 1743334646828.1091,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm11/deprecate.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "dist-tag a package"
+            ],
+            "fullName": "dist-tags a package dist-tag a package should list dist-tags for @foo/foo",
+            "status": "passed",
+            "title": "should list dist-tags for @foo/foo",
+            "duration": 2327.6381359999996,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "dist-tag a package"
+            ],
+            "fullName": "dist-tags a package dist-tag a package should remove tag with dist-tags for @verdaccio/bar",
+            "status": "passed",
+            "title": "should remove tag with dist-tags for @verdaccio/bar",
+            "duration": 2053.3339770000002,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "dist-tag a package"
+            ],
+            "fullName": "dist-tags a package dist-tag a package should add tag to package and version with dist-tags for @verdaccio/five",
+            "status": "passed",
+            "title": "should add tag to package and version with dist-tags for @verdaccio/five",
+            "duration": 2404.372394000001,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334636598,
+        "endTime": 1743334643383.3723,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm11/dist-tags.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "info a package",
+              "install a package"
+            ],
+            "fullName": "info a package install a package should run npm info json body",
+            "status": "passed",
+            "title": "should run npm info json body",
+            "duration": 811.9038840000003,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334645574,
+        "endTime": 1743334646385.9038,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm11/info.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a project packages",
+              "install a project packages"
+            ],
+            "fullName": "install a project packages install a project packages should run npm install json body",
+            "status": "passed",
+            "title": "should run npm install json body",
+            "duration": 1979.219117,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334635609,
+        "endTime": 1743334637588.2192,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm11/install.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "ping registry",
+              "ping registry"
+            ],
+            "fullName": "ping registry ping registry should ping registry",
+            "status": "passed",
+            "title": "should ping registry",
+            "duration": 186.0983900000001,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334648585,
+        "endTime": 1743334648771.0984,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm11/ping.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "publish a package",
+              "publish a package"
+            ],
+            "fullName": "publish a package publish a package should publish a package verdaccio-memory-xxxxxx",
+            "status": "passed",
+            "title": "should publish a package verdaccio-memory-xxxxxx",
+            "duration": 1211.9637120000002,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334639624,
+        "endTime": 1743334640835.9636,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm11/publish.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "search a package",
+              "search a package"
+            ],
+            "fullName": "search a package search a package should search a package",
+            "status": "passed",
+            "title": "should search a package",
+            "duration": 725.3997319999999,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334642781,
+        "endTime": 1743334643506.3997,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm11/search.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should star a package @verdaccio/foo",
+            "status": "passed",
+            "title": "should star a package @verdaccio/foo",
+            "duration": 1226.025471,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should unstar a package @verdaccio/bar",
+            "status": "passed",
+            "title": "should unstar a package @verdaccio/bar",
+            "duration": 1622.33374,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should list stars of a user %s",
+            "status": "passed",
+            "title": "should list stars of a user %s",
+            "duration": 1766.8858259999997,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334648206,
+        "endTime": 1743334652821.8857,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm11/star.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "unpublish a package",
+              "unpublish a package"
+            ],
+            "fullName": "unpublish a package unpublish a package should unpublish a full package @verdaccio/test1",
+            "status": "skipped",
+            "title": "should unpublish a full package @verdaccio/test1",
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "unpublish a package",
+              "unpublish a package"
+            ],
+            "fullName": "unpublish a package unpublish a package should unpublish a package @verdaccio/test1 version",
+            "status": "skipped",
+            "title": "should unpublish a package @verdaccio/test1 version",
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334633225,
+        "endTime": 1743334633225,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm11/unpublish.spec.ts"
+      }
+    ]
+  },
+  {
+    "commit": "886dcd366ea666b914e489facd47c77826ff7179",
+    "packageManager": "npm7",
+    "numTotalTestSuites": 30,
+    "numPassedTestSuites": 30,
+    "numFailedTestSuites": 0,
+    "numPendingTestSuites": 0,
+    "numTotalTests": 17,
+    "numPassedTests": 16,
+    "numFailedTests": 0,
+    "numPendingTests": 1,
+    "numTodoTests": 0,
+    "snapshot": {
+      "added": 0,
+      "failure": false,
+      "filesAdded": 0,
+      "filesRemoved": 0,
+      "filesRemovedList": [],
+      "filesUnmatched": 0,
+      "filesUpdated": 0,
+      "matched": 0,
+      "total": 0,
+      "unchecked": 0,
+      "uncheckedKeysByFile": [],
+      "unmatched": 0,
+      "updated": 0,
+      "didUpdate": false
+    },
+    "startTime": 1743334633794,
+    "success": true,
+    "testResults": [
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "audit a package",
+              "audit a package"
+            ],
+            "fullName": "audit a package audit a package should audit a package verdaccio-memory",
+            "status": "passed",
+            "title": "should audit a package verdaccio-memory",
+            "duration": 1402.0945290000002,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334647407,
+        "endTime": 1743334648809.0945,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm7/audit.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should deprecate a single package @verdaccio/deprecated-1",
+            "status": "passed",
+            "title": "should deprecate a single package @verdaccio/deprecated-1",
+            "duration": 1390.704002,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should un-deprecate a package @verdaccio/deprecated-2",
+            "status": "passed",
+            "title": "should un-deprecate a package @verdaccio/deprecated-2",
+            "duration": 2618.8267119999996,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should deprecate a multiple packages @verdaccio/deprecated-3",
+            "status": "passed",
+            "title": "should deprecate a multiple packages @verdaccio/deprecated-3",
+            "duration": 6588.600791999999,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334636076,
+        "endTime": 1743334646674.6008,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm7/deprecate.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "dist-tag a package"
+            ],
+            "fullName": "dist-tags a package dist-tag a package should list dist-tags for @foo/foo",
+            "status": "passed",
+            "title": "should list dist-tags for @foo/foo",
+            "duration": 1776.313549,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "dist-tag a package"
+            ],
+            "fullName": "dist-tags a package dist-tag a package should remove tag with dist-tags for @verdaccio/bar",
+            "status": "passed",
+            "title": "should remove tag with dist-tags for @verdaccio/bar",
+            "duration": 1852.1259570000002,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "dist-tag a package"
+            ],
+            "fullName": "dist-tags a package dist-tag a package should add tag to package and version with dist-tags for @verdaccio/five",
+            "status": "passed",
+            "title": "should add tag to package and version with dist-tags for @verdaccio/five",
+            "duration": 1850.455707,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334639905,
+        "endTime": 1743334645384.4558,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm7/dist-tags.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "info a package",
+              "install a package"
+            ],
+            "fullName": "info a package install a package should run npm info json body",
+            "status": "passed",
+            "title": "should run npm info json body",
+            "duration": 774.609144,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334647606,
+        "endTime": 1743334648380.6091,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm7/info.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a project packages",
+              "install a project packages"
+            ],
+            "fullName": "install a project packages install a project packages should run npm install json body",
+            "status": "passed",
+            "title": "should run npm install json body",
+            "duration": 1689.042348,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334636210,
+        "endTime": 1743334637899.0422,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm7/install.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "ping registry",
+              "ping registry"
+            ],
+            "fullName": "ping registry ping registry should ping registry",
+            "status": "passed",
+            "title": "should ping registry",
+            "duration": 268.02456499999994,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334650120,
+        "endTime": 1743334650388.0247,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm7/ping.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "publish a package",
+              "publish a package"
+            ],
+            "fullName": "publish a package publish a package should publish a package verdaccio-memory-xxxxxx",
+            "status": "passed",
+            "title": "should publish a package verdaccio-memory-xxxxxx",
+            "duration": 613.6408749999998,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334642213,
+        "endTime": 1743334642826.6409,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm7/publish.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "search a package",
+              "search a package"
+            ],
+            "fullName": "search a package search a package should search a package",
+            "status": "passed",
+            "title": "should search a package",
+            "duration": 455.4236770000002,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334644940,
+        "endTime": 1743334645395.4236,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm7/search.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should star a package @verdaccio/foo",
+            "status": "passed",
+            "title": "should star a package @verdaccio/foo",
+            "duration": 1118.327068,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should unstar a package @verdaccio/bar",
+            "status": "passed",
+            "title": "should unstar a package @verdaccio/bar",
+            "duration": 1520.0338779999997,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should list stars of a user %s",
+            "status": "passed",
+            "title": "should list stars of a user %s",
+            "duration": 1330.014158,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334648782,
+        "endTime": 1743334652750.0142,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm7/star.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "unpublish a package",
+              "unpublish a package"
+            ],
+            "fullName": "unpublish a package unpublish a package should unpublish a full package @verdaccio/test1",
+            "status": "passed",
+            "title": "should unpublish a full package @verdaccio/test1",
+            "duration": 4051.517139,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "unpublish a package",
+              "unpublish a package"
+            ],
+            "fullName": "unpublish a package unpublish a package should unpublish a package @verdaccio/test1 version",
+            "status": "skipped",
+            "title": "should unpublish a package @verdaccio/test1 version",
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334636164,
+        "endTime": 1743334640215.517,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm7/unpublish.spec.ts"
+      }
+    ]
+  },
+  {
+    "commit": "886dcd366ea666b914e489facd47c77826ff7179",
+    "packageManager": "npm8",
+    "numTotalTestSuites": 30,
+    "numPassedTestSuites": 30,
+    "numFailedTestSuites": 0,
+    "numPendingTestSuites": 0,
+    "numTotalTests": 17,
+    "numPassedTests": 16,
+    "numFailedTests": 0,
+    "numPendingTests": 1,
+    "numTodoTests": 0,
+    "snapshot": {
+      "added": 0,
+      "failure": false,
+      "filesAdded": 0,
+      "filesRemoved": 0,
+      "filesRemovedList": [],
+      "filesUnmatched": 0,
+      "filesUpdated": 0,
+      "matched": 0,
+      "total": 0,
+      "unchecked": 0,
+      "uncheckedKeysByFile": [],
+      "unmatched": 0,
+      "updated": 0,
+      "didUpdate": false
+    },
+    "startTime": 1743334634149,
+    "success": true,
+    "testResults": [
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "audit a package",
+              "audit a package"
+            ],
+            "fullName": "audit a package audit a package should audit a package verdaccio-memory",
+            "status": "passed",
+            "title": "should audit a package verdaccio-memory",
+            "duration": 1446.2123450000004,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334648005,
+        "endTime": 1743334649451.2124,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm8/audit.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should deprecate a single package @verdaccio/deprecated-1",
+            "status": "passed",
+            "title": "should deprecate a single package @verdaccio/deprecated-1",
+            "duration": 1608.6785550000004,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should un-deprecate a package @verdaccio/deprecated-2",
+            "status": "passed",
+            "title": "should un-deprecate a package @verdaccio/deprecated-2",
+            "duration": 2558.827697,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should deprecate a multiple packages @verdaccio/deprecated-3",
+            "status": "passed",
+            "title": "should deprecate a multiple packages @verdaccio/deprecated-3",
+            "duration": 6914.484849,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334636421,
+        "endTime": 1743334647503.4849,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm8/deprecate.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "dist-tag a package"
+            ],
+            "fullName": "dist-tags a package dist-tag a package should list dist-tags for @foo/foo",
+            "status": "passed",
+            "title": "should list dist-tags for @foo/foo",
+            "duration": 2044.405004,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "dist-tag a package"
+            ],
+            "fullName": "dist-tags a package dist-tag a package should remove tag with dist-tags for @verdaccio/bar",
+            "status": "passed",
+            "title": "should remove tag with dist-tags for @verdaccio/bar",
+            "duration": 2034.8738170000001,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "dist-tag a package"
+            ],
+            "fullName": "dist-tags a package dist-tag a package should add tag to package and version with dist-tags for @verdaccio/five",
+            "status": "passed",
+            "title": "should add tag to package and version with dist-tags for @verdaccio/five",
+            "duration": 2098.5822829999997,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334640440,
+        "endTime": 1743334646618.5823,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm8/dist-tags.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "info a package",
+              "install a package"
+            ],
+            "fullName": "info a package install a package should run npm info json body",
+            "status": "passed",
+            "title": "should run npm info json body",
+            "duration": 829.911752,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334648729,
+        "endTime": 1743334649558.9119,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm8/info.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a project packages",
+              "install a project packages"
+            ],
+            "fullName": "install a project packages install a project packages should run npm install json body",
+            "status": "passed",
+            "title": "should run npm install json body",
+            "duration": 1832.4832970000002,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334636574,
+        "endTime": 1743334638406.4834,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm8/install.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "ping registry",
+              "ping registry"
+            ],
+            "fullName": "ping registry ping registry should ping registry",
+            "status": "passed",
+            "title": "should ping registry",
+            "duration": 284.62267799999995,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334651134,
+        "endTime": 1743334651418.6226,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm8/ping.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "publish a package",
+              "publish a package"
+            ],
+            "fullName": "publish a package publish a package should publish a package verdaccio-memory-xxxxxx",
+            "status": "passed",
+            "title": "should publish a package verdaccio-memory-xxxxxx",
+            "duration": 575.9127050000002,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334642775,
+        "endTime": 1743334643350.9126,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm8/publish.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "search a package",
+              "search a package"
+            ],
+            "fullName": "search a package search a package should search a package",
+            "status": "passed",
+            "title": "should search a package",
+            "duration": 518.473248,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334645387,
+        "endTime": 1743334645905.4731,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm8/search.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should star a package @verdaccio/foo",
+            "status": "passed",
+            "title": "should star a package @verdaccio/foo",
+            "duration": 1204.838526,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should unstar a package @verdaccio/bar",
+            "status": "passed",
+            "title": "should unstar a package @verdaccio/bar",
+            "duration": 1612.3333080000007,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should list stars of a user %s",
+            "status": "passed",
+            "title": "should list stars of a user %s",
+            "duration": 1396.8168720000003,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334649589,
+        "endTime": 1743334653803.817,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm8/star.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "unpublish a package",
+              "unpublish a package"
+            ],
+            "fullName": "unpublish a package unpublish a package should unpublish a full package @verdaccio/test1",
+            "status": "passed",
+            "title": "should unpublish a full package @verdaccio/test1",
+            "duration": 4242.347245999999,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "unpublish a package",
+              "unpublish a package"
+            ],
+            "fullName": "unpublish a package unpublish a package should unpublish a package @verdaccio/test1 version",
+            "status": "skipped",
+            "title": "should unpublish a package @verdaccio/test1 version",
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334636527,
+        "endTime": 1743334640769.3472,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm8/unpublish.spec.ts"
+      }
+    ]
+  },
+  {
+    "commit": "886dcd366ea666b914e489facd47c77826ff7179",
+    "packageManager": "npm9",
+    "numTotalTestSuites": 30,
+    "numPassedTestSuites": 30,
+    "numFailedTestSuites": 0,
+    "numPendingTestSuites": 0,
+    "numTotalTests": 17,
+    "numPassedTests": 16,
+    "numFailedTests": 0,
+    "numPendingTests": 1,
+    "numTodoTests": 0,
+    "snapshot": {
+      "added": 0,
+      "failure": false,
+      "filesAdded": 0,
+      "filesRemoved": 0,
+      "filesRemovedList": [],
+      "filesUnmatched": 0,
+      "filesUpdated": 0,
+      "matched": 0,
+      "total": 0,
+      "unchecked": 0,
+      "uncheckedKeysByFile": [],
+      "unmatched": 0,
+      "updated": 0,
+      "didUpdate": false
+    },
+    "startTime": 1743334633532,
+    "success": true,
+    "testResults": [
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "audit a package",
+              "audit a package"
+            ],
+            "fullName": "audit a package audit a package should audit a package verdaccio-memory",
+            "status": "passed",
+            "title": "should audit a package verdaccio-memory",
+            "duration": 2325.9415059999997,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334661234,
+        "endTime": 1743334663559.9414,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm9/audit.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should deprecate a single package @verdaccio/deprecated-1",
+            "status": "passed",
+            "title": "should deprecate a single package @verdaccio/deprecated-1",
+            "duration": 3022.881297,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should un-deprecate a package @verdaccio/deprecated-2",
+            "status": "passed",
+            "title": "should un-deprecate a package @verdaccio/deprecated-2",
+            "duration": 5130.104871,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should deprecate a multiple packages @verdaccio/deprecated-3",
+            "status": "passed",
+            "title": "should deprecate a multiple packages @verdaccio/deprecated-3",
+            "duration": 14571.960133999999,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334637891,
+        "endTime": 1743334660615.9602,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm9/deprecate.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "dist-tag a package"
+            ],
+            "fullName": "dist-tags a package dist-tag a package should list dist-tags for @foo/foo",
+            "status": "passed",
+            "title": "should list dist-tags for @foo/foo",
+            "duration": 4293.241333,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "dist-tag a package"
+            ],
+            "fullName": "dist-tags a package dist-tag a package should remove tag with dist-tags for @verdaccio/bar",
+            "status": "passed",
+            "title": "should remove tag with dist-tags for @verdaccio/bar",
+            "duration": 4404.350785,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "dist-tag a package"
+            ],
+            "fullName": "dist-tags a package dist-tag a package should add tag to package and version with dist-tags for @verdaccio/five",
+            "status": "passed",
+            "title": "should add tag to package and version with dist-tags for @verdaccio/five",
+            "duration": 4447.663079999998,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334645491,
+        "endTime": 1743334658635.663,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm9/dist-tags.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "info a package",
+              "install a package"
+            ],
+            "fullName": "info a package install a package should run npm info json body",
+            "status": "passed",
+            "title": "should run npm info json body",
+            "duration": 1467.4218609999998,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334662397,
+        "endTime": 1743334663864.4219,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm9/info.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a project packages",
+              "install a project packages"
+            ],
+            "fullName": "install a project packages install a project packages should run npm install json body",
+            "status": "passed",
+            "title": "should run npm install json body",
+            "duration": 3712.843973,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334637922,
+        "endTime": 1743334641634.844,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm9/install.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "ping registry",
+              "ping registry"
+            ],
+            "fullName": "ping registry ping registry should ping registry",
+            "status": "passed",
+            "title": "should ping registry",
+            "duration": 338.440732,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334665852,
+        "endTime": 1743334666190.4407,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm9/ping.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "publish a package",
+              "publish a package"
+            ],
+            "fullName": "publish a package publish a package should publish a package verdaccio-memory-xxxxxx",
+            "status": "passed",
+            "title": "should publish a package verdaccio-memory-xxxxxx",
+            "duration": 1327.4964849999997,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334651061,
+        "endTime": 1743334652388.4966,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm9/publish.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "search a package",
+              "search a package"
+            ],
+            "fullName": "search a package search a package should search a package",
+            "status": "passed",
+            "title": "should search a package",
+            "duration": 846.8561320000003,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334656247,
+        "endTime": 1743334657093.8562,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm9/search.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should star a package @verdaccio/foo",
+            "status": "passed",
+            "title": "should star a package @verdaccio/foo",
+            "duration": 1721.3393990000004,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should unstar a package @verdaccio/bar",
+            "status": "passed",
+            "title": "should unstar a package @verdaccio/bar",
+            "duration": 1881.509435,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should list stars of a user %s",
+            "status": "passed",
+            "title": "should list stars of a user %s",
+            "duration": 1492.1731929999996,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334664001,
+        "endTime": 1743334669096.173,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm9/star.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "unpublish a package",
+              "unpublish a package"
+            ],
+            "fullName": "unpublish a package unpublish a package should unpublish a full package @verdaccio/test1",
+            "status": "passed",
+            "title": "should unpublish a full package @verdaccio/test1",
+            "duration": 8963.459469000001,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "unpublish a package",
+              "unpublish a package"
+            ],
+            "fullName": "unpublish a package unpublish a package should unpublish a package @verdaccio/test1 version",
+            "status": "skipped",
+            "title": "should unpublish a package @verdaccio/test1 version",
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334637873,
+        "endTime": 1743334646836.4595,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-npm9/unpublish.spec.ts"
+      }
+    ]
+  },
+  {
+    "commit": "886dcd366ea666b914e489facd47c77826ff7179",
+    "packageManager": "pnpm10",
+    "numTotalTestSuites": 30,
+    "numPassedTestSuites": 30,
+    "numFailedTestSuites": 0,
+    "numPendingTestSuites": 0,
+    "numTotalTests": 17,
+    "numPassedTests": 16,
+    "numFailedTests": 0,
+    "numPendingTests": 1,
+    "numTodoTests": 0,
+    "snapshot": {
+      "added": 0,
+      "failure": false,
+      "filesAdded": 0,
+      "filesRemoved": 0,
+      "filesRemovedList": [],
+      "filesUnmatched": 0,
+      "filesUpdated": 0,
+      "matched": 0,
+      "total": 0,
+      "unchecked": 0,
+      "uncheckedKeysByFile": [],
+      "unmatched": 0,
+      "updated": 0,
+      "didUpdate": false
+    },
+    "startTime": 1743334635100,
+    "success": true,
+    "testResults": [
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "audit a package",
+              "audit a package"
+            ],
+            "fullName": "audit a package audit a package should audit a package verdaccio-memory",
+            "status": "passed",
+            "title": "should audit a package verdaccio-memory",
+            "duration": 1800.086542,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334653418,
+        "endTime": 1743334655218.0864,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm10/audit.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should deprecate a single package @verdaccio/deprecated-1",
+            "status": "passed",
+            "title": "should deprecate a single package @verdaccio/deprecated-1",
+            "duration": 2789.9960419999998,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should un-deprecate a package @verdaccio/deprecated-2",
+            "status": "passed",
+            "title": "should un-deprecate a package @verdaccio/deprecated-2",
+            "duration": 4065.8398659999993,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should deprecate a multiple packages @verdaccio/deprecated-3",
+            "status": "passed",
+            "title": "should deprecate a multiple packages @verdaccio/deprecated-3",
+            "duration": 12122.182415,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334637505,
+        "endTime": 1743334656484.1824,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm10/deprecate.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "publish a package"
+            ],
+            "fullName": "dist-tags a package publish a package should list dist-tags for @foo/foo",
+            "status": "passed",
+            "title": "should list dist-tags for @foo/foo",
+            "duration": 3603.513975,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "publish a package"
+            ],
+            "fullName": "dist-tags a package publish a package should remove tag with dist-tags for @verdaccio/bar",
+            "status": "passed",
+            "title": "should remove tag with dist-tags for @verdaccio/bar",
+            "duration": 3408.2099959999996,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "publish a package"
+            ],
+            "fullName": "dist-tags a package publish a package should add tag to package and version with dist-tags for @verdaccio/five",
+            "status": "passed",
+            "title": "should add tag to package and version with dist-tags for @verdaccio/five",
+            "duration": 3451.3849690000006,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334641506,
+        "endTime": 1743334651969.385,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm10/dist-tags.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "info a package",
+              "info a package"
+            ],
+            "fullName": "info a package info a package should run pnpm info json body",
+            "status": "passed",
+            "title": "should run pnpm info json body",
+            "duration": 1069.477287,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334654036,
+        "endTime": 1743334655105.4773,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm10/info.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a project packages",
+              "install a project packages"
+            ],
+            "fullName": "install a project packages install a project packages should run npm install json body",
+            "status": "passed",
+            "title": "should run npm install json body",
+            "duration": 1957.5969659999996,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334637512,
+        "endTime": 1743334639469.597,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm10/install.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "ping registry",
+              "ping registry"
+            ],
+            "fullName": "ping registry ping registry should ping registry",
+            "status": "passed",
+            "title": "should ping registry",
+            "duration": 406.684804,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334657216,
+        "endTime": 1743334657622.6848,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm10/ping.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "publish a package",
+              "publish a package"
+            ],
+            "fullName": "publish a package publish a package should publish a package verdaccio-memory",
+            "status": "passed",
+            "title": "should publish a package verdaccio-memory",
+            "duration": 1344.37889,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334646923,
+        "endTime": 1743334648267.379,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm10/publish.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "search a package",
+              "search a package"
+            ],
+            "fullName": "search a package search a package should search a package",
+            "status": "passed",
+            "title": "should search a package",
+            "duration": 983.2669660000001,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334650412,
+        "endTime": 1743334651395.2668,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm10/search.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should star a package @verdaccio/foo",
+            "status": "passed",
+            "title": "should star a package @verdaccio/foo",
+            "duration": 1699.0268660000002,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should unstar a package @verdaccio/bar",
+            "status": "passed",
+            "title": "should unstar a package @verdaccio/bar",
+            "duration": 2265.9167399999997,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should list stars of a user %s",
+            "status": "passed",
+            "title": "should list stars of a user %s",
+            "duration": 2540.3387169999987,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334657126,
+        "endTime": 1743334663632.3386,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm10/star.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "unpublish a package",
+              "unpublish a package"
+            ],
+            "fullName": "unpublish a package unpublish a package should unpublish a full package @verdaccio/test1",
+            "status": "passed",
+            "title": "should unpublish a full package @verdaccio/test1",
+            "duration": 7285.635450999999,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "unpublish a package",
+              "unpublish a package"
+            ],
+            "fullName": "unpublish a package unpublish a package should unpublish a package @verdaccio/test1 version",
+            "status": "skipped",
+            "title": "should unpublish a package @verdaccio/test1 version",
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334637522,
+        "endTime": 1743334644807.6355,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm10/unpublish.spec.ts"
+      }
+    ]
+  },
+  {
+    "commit": "886dcd366ea666b914e489facd47c77826ff7179",
+    "packageManager": "pnpm8",
+    "numTotalTestSuites": 30,
+    "numPassedTestSuites": 30,
+    "numFailedTestSuites": 0,
+    "numPendingTestSuites": 0,
+    "numTotalTests": 17,
+    "numPassedTests": 16,
+    "numFailedTests": 0,
+    "numPendingTests": 1,
+    "numTodoTests": 0,
+    "snapshot": {
+      "added": 0,
+      "failure": false,
+      "filesAdded": 0,
+      "filesRemoved": 0,
+      "filesRemovedList": [],
+      "filesUnmatched": 0,
+      "filesUpdated": 0,
+      "matched": 0,
+      "total": 0,
+      "unchecked": 0,
+      "uncheckedKeysByFile": [],
+      "unmatched": 0,
+      "updated": 0,
+      "didUpdate": false
+    },
+    "startTime": 1743334633684,
+    "success": true,
+    "testResults": [
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "audit a package",
+              "audit a package"
+            ],
+            "fullName": "audit a package audit a package should audit a package verdaccio-memory",
+            "status": "passed",
+            "title": "should audit a package verdaccio-memory",
+            "duration": 1808.914171,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334651655,
+        "endTime": 1743334653463.914,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm8/audit.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should deprecate a single package @verdaccio/deprecated-1",
+            "status": "passed",
+            "title": "should deprecate a single package @verdaccio/deprecated-1",
+            "duration": 2827.912993,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should un-deprecate a package @verdaccio/deprecated-2",
+            "status": "passed",
+            "title": "should un-deprecate a package @verdaccio/deprecated-2",
+            "duration": 3815.289763999999,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should deprecate a multiple packages @verdaccio/deprecated-3",
+            "status": "passed",
+            "title": "should deprecate a multiple packages @verdaccio/deprecated-3",
+            "duration": 11995.659446,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334636098,
+        "endTime": 1743334654737.6594,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm8/deprecate.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "publish a package"
+            ],
+            "fullName": "dist-tags a package publish a package should list dist-tags for @foo/foo",
+            "status": "passed",
+            "title": "should list dist-tags for @foo/foo",
+            "duration": 3629.486181,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "publish a package"
+            ],
+            "fullName": "dist-tags a package publish a package should remove tag with dist-tags for @verdaccio/bar",
+            "status": "passed",
+            "title": "should remove tag with dist-tags for @verdaccio/bar",
+            "duration": 3562.7497920000005,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "publish a package"
+            ],
+            "fullName": "dist-tags a package publish a package should add tag to package and version with dist-tags for @verdaccio/five",
+            "status": "passed",
+            "title": "should add tag to package and version with dist-tags for @verdaccio/five",
+            "duration": 3633.6347730000016,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334640185,
+        "endTime": 1743334651010.6348,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm8/dist-tags.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "info a package",
+              "info a package"
+            ],
+            "fullName": "info a package info a package should run pnpm info json body",
+            "status": "passed",
+            "title": "should run pnpm info json body",
+            "duration": 1082.265699,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334653192,
+        "endTime": 1743334654274.2656,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm8/info.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a project packages",
+              "install a project packages"
+            ],
+            "fullName": "install a project packages install a project packages should run npm install json body",
+            "status": "passed",
+            "title": "should run npm install json body",
+            "duration": 2005.2132379999994,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334636032,
+        "endTime": 1743334638037.2131,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm8/install.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "ping registry",
+              "ping registry"
+            ],
+            "fullName": "ping registry ping registry should ping registry",
+            "status": "passed",
+            "title": "should ping registry",
+            "duration": 419.2722060000001,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334656088,
+        "endTime": 1743334656507.2722,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm8/ping.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "publish a package",
+              "publish a package"
+            ],
+            "fullName": "publish a package publish a package should publish a package verdaccio-memory",
+            "status": "passed",
+            "title": "should publish a package verdaccio-memory",
+            "duration": 1340.5544320000001,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334645547,
+        "endTime": 1743334646887.5544,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm8/publish.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "search a package",
+              "search a package"
+            ],
+            "fullName": "search a package search a package should search a package",
+            "status": "passed",
+            "title": "should search a package",
+            "duration": 572.599528,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334648944,
+        "endTime": 1743334649516.5996,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm8/search.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should star a package @verdaccio/foo",
+            "status": "passed",
+            "title": "should star a package @verdaccio/foo",
+            "duration": 1723.0452970000001,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should unstar a package @verdaccio/bar",
+            "status": "passed",
+            "title": "should unstar a package @verdaccio/bar",
+            "duration": 2280.4590089999997,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should list stars of a user %s",
+            "status": "passed",
+            "title": "should list stars of a user %s",
+            "duration": 2110.367784,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334655499,
+        "endTime": 1743334661612.3677,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm8/star.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "unpublish a package",
+              "unpublish a package"
+            ],
+            "fullName": "unpublish a package unpublish a package should unpublish a full package @verdaccio/test1",
+            "status": "passed",
+            "title": "should unpublish a full package @verdaccio/test1",
+            "duration": 7435.882708000001,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "unpublish a package",
+              "unpublish a package"
+            ],
+            "fullName": "unpublish a package unpublish a package should unpublish a package @verdaccio/test1 version",
+            "status": "skipped",
+            "title": "should unpublish a package @verdaccio/test1 version",
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334636049,
+        "endTime": 1743334643484.8828,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm8/unpublish.spec.ts"
+      }
+    ]
+  },
+  {
+    "commit": "886dcd366ea666b914e489facd47c77826ff7179",
+    "packageManager": "pnpm9",
+    "numTotalTestSuites": 30,
+    "numPassedTestSuites": 30,
+    "numFailedTestSuites": 0,
+    "numPendingTestSuites": 0,
+    "numTotalTests": 17,
+    "numPassedTests": 16,
+    "numFailedTests": 0,
+    "numPendingTests": 1,
+    "numTodoTests": 0,
+    "snapshot": {
+      "added": 0,
+      "failure": false,
+      "filesAdded": 0,
+      "filesRemoved": 0,
+      "filesRemovedList": [],
+      "filesUnmatched": 0,
+      "filesUpdated": 0,
+      "matched": 0,
+      "total": 0,
+      "unchecked": 0,
+      "uncheckedKeysByFile": [],
+      "unmatched": 0,
+      "updated": 0,
+      "didUpdate": false
+    },
+    "startTime": 1743334633187,
+    "success": true,
+    "testResults": [
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "audit a package",
+              "audit a package"
+            ],
+            "fullName": "audit a package audit a package should audit a package verdaccio-memory",
+            "status": "passed",
+            "title": "should audit a package verdaccio-memory",
+            "duration": 1912.787088,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334651357,
+        "endTime": 1743334653269.787,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm9/audit.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should deprecate a single package @verdaccio/deprecated-1",
+            "status": "passed",
+            "title": "should deprecate a single package @verdaccio/deprecated-1",
+            "duration": 2792.315011,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should un-deprecate a package @verdaccio/deprecated-2",
+            "status": "passed",
+            "title": "should un-deprecate a package @verdaccio/deprecated-2",
+            "duration": 4017.4879229999997,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "deprecate a package",
+              "deprecate a package"
+            ],
+            "fullName": "deprecate a package deprecate a package should deprecate a multiple packages @verdaccio/deprecated-3",
+            "status": "passed",
+            "title": "should deprecate a multiple packages @verdaccio/deprecated-3",
+            "duration": 11832.729366999998,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334635500,
+        "endTime": 1743334654142.7292,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm9/deprecate.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "publish a package"
+            ],
+            "fullName": "dist-tags a package publish a package should list dist-tags for @foo/foo",
+            "status": "passed",
+            "title": "should list dist-tags for @foo/foo",
+            "duration": 3505.5049190000004,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "publish a package"
+            ],
+            "fullName": "dist-tags a package publish a package should remove tag with dist-tags for @verdaccio/bar",
+            "status": "passed",
+            "title": "should remove tag with dist-tags for @verdaccio/bar",
+            "duration": 3412.5621599999995,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "dist-tags a package",
+              "publish a package"
+            ],
+            "fullName": "dist-tags a package publish a package should add tag to package and version with dist-tags for @verdaccio/five",
+            "status": "passed",
+            "title": "should add tag to package and version with dist-tags for @verdaccio/five",
+            "duration": 3501.715980000001,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334639427,
+        "endTime": 1743334649846.716,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm9/dist-tags.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "info a package",
+              "info a package"
+            ],
+            "fullName": "info a package info a package should run pnpm info json body",
+            "status": "passed",
+            "title": "should run pnpm info json body",
+            "duration": 1103.014962,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334651865,
+        "endTime": 1743334652968.015,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm9/info.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a project packages",
+              "install a project packages"
+            ],
+            "fullName": "install a project packages install a project packages should run npm install json body",
+            "status": "passed",
+            "title": "should run npm install json body",
+            "duration": 1907.1552279999996,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334635530,
+        "endTime": 1743334637437.1553,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm9/install.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "ping registry",
+              "ping registry"
+            ],
+            "fullName": "ping registry ping registry should ping registry",
+            "status": "passed",
+            "title": "should ping registry",
+            "duration": 402.0311730000001,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334655121,
+        "endTime": 1743334655523.0312,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm9/ping.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "publish a package",
+              "publish a package"
+            ],
+            "fullName": "publish a package publish a package should publish a package verdaccio-memory",
+            "status": "passed",
+            "title": "should publish a package verdaccio-memory",
+            "duration": 1219.3563639999998,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334645165,
+        "endTime": 1743334646384.3564,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm9/publish.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "search a package",
+              "search a package"
+            ],
+            "fullName": "search a package search a package should search a package",
+            "status": "passed",
+            "title": "should search a package",
+            "duration": 691.6958749999999,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334648539,
+        "endTime": 1743334649230.6958,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm9/search.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should star a package @verdaccio/foo",
+            "status": "passed",
+            "title": "should star a package @verdaccio/foo",
+            "duration": 1712.3978749999999,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should unstar a package @verdaccio/bar",
+            "status": "passed",
+            "title": "should unstar a package @verdaccio/bar",
+            "duration": 2265.635008,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "star a package",
+              "star a package"
+            ],
+            "fullName": "star a package star a package should list stars of a user %s",
+            "status": "passed",
+            "title": "should list stars of a user %s",
+            "duration": 2122.2119200000006,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334654880,
+        "endTime": 1743334660980.212,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm9/star.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "unpublish a package",
+              "unpublish a package"
+            ],
+            "fullName": "unpublish a package unpublish a package should unpublish a full package @verdaccio/test1",
+            "status": "passed",
+            "title": "should unpublish a full package @verdaccio/test1",
+            "duration": 7475.181068,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "unpublish a package",
+              "unpublish a package"
+            ],
+            "fullName": "unpublish a package unpublish a package should unpublish a package @verdaccio/test1 version",
+            "status": "skipped",
+            "title": "should unpublish a package @verdaccio/test1 version",
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334635573,
+        "endTime": 1743334643048.1812,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-pnpm9/unpublish.spec.ts"
+      }
+    ]
+  },
+  {
+    "commit": "886dcd366ea666b914e489facd47c77826ff7179",
+    "packageManager": "yarn1",
+    "numTotalTestSuites": 10,
+    "numPassedTestSuites": 10,
+    "numFailedTestSuites": 0,
+    "numPendingTestSuites": 0,
+    "numTotalTests": 7,
+    "numPassedTests": 7,
+    "numFailedTests": 0,
+    "numPendingTests": 0,
+    "numTodoTests": 0,
+    "snapshot": {
+      "added": 0,
+      "failure": false,
+      "filesAdded": 0,
+      "filesRemoved": 0,
+      "filesRemovedList": [],
+      "filesUnmatched": 0,
+      "filesUpdated": 0,
+      "matched": 0,
+      "total": 0,
+      "unchecked": 0,
+      "uncheckedKeysByFile": [],
+      "unmatched": 0,
+      "updated": 0,
+      "didUpdate": false
+    },
+    "startTime": 1743334635288,
+    "success": true,
+    "testResults": [
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "audit a package"
+            ],
+            "fullName": "audit a package should audit a package verdaccio-memory",
+            "status": "passed",
+            "title": "should audit a package verdaccio-memory",
+            "duration": 1101.419261,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334637656,
+        "endTime": 1743334638757.4192,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-yarn1/audit.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a package"
+            ],
+            "fullName": "install a package should run yarn info json body",
+            "status": "passed",
+            "title": "should run yarn info json body",
+            "duration": 666.0073199999999,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334640665,
+        "endTime": 1743334641331.0073,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-yarn1/info.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a project packages"
+            ],
+            "fullName": "install a project packages should run yarn install",
+            "status": "passed",
+            "title": "should run yarn install",
+            "duration": 1083.1074079999999,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334640474,
+        "endTime": 1743334641557.1074,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-yarn1/install.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a package"
+            ],
+            "fullName": "install a package should publish a package verdaccio-memory",
+            "status": "passed",
+            "title": "should publish a package verdaccio-memory",
+            "duration": 912.2192869999999,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334637595,
+        "endTime": 1743334638507.2192,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-yarn1/publish.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a package"
+            ],
+            "fullName": "install a package should list tags of a package @verdaccio/bar",
+            "status": "passed",
+            "title": "should list tags of a package @verdaccio/bar",
+            "duration": 1182.023345,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "install a package"
+            ],
+            "fullName": "install a package should add tag of a package @verdaccio/foo",
+            "status": "passed",
+            "title": "should add tag of a package @verdaccio/foo",
+            "duration": 2042.2587749999998,
+            "failureMessages": [],
+            "meta": {}
+          },
+          {
+            "ancestorTitles": [
+              "install a package"
+            ],
+            "fullName": "install a package should remove tag of a package @verdaccio/third",
+            "status": "passed",
+            "title": "should remove tag of a package @verdaccio/third",
+            "duration": 2257.737771,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334637698,
+        "endTime": 1743334643179.7378,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-yarn1/tag.spec.ts"
+      }
+    ]
+  },
+  {
+    "commit": "886dcd366ea666b914e489facd47c77826ff7179",
+    "packageManager": "yarn2",
+    "numTotalTestSuites": 8,
+    "numPassedTestSuites": 8,
+    "numFailedTestSuites": 0,
+    "numPendingTestSuites": 0,
+    "numTotalTests": 4,
+    "numPassedTests": 4,
+    "numFailedTests": 0,
+    "numPendingTests": 0,
+    "numTodoTests": 0,
+    "snapshot": {
+      "added": 0,
+      "failure": false,
+      "filesAdded": 0,
+      "filesRemoved": 0,
+      "filesRemovedList": [],
+      "filesUnmatched": 0,
+      "filesUpdated": 0,
+      "matched": 0,
+      "total": 0,
+      "unchecked": 0,
+      "uncheckedKeysByFile": [],
+      "unmatched": 0,
+      "updated": 0,
+      "didUpdate": false
+    },
+    "startTime": 1743334634395,
+    "success": true,
+    "testResults": [
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "audit a package yarn 2"
+            ],
+            "fullName": "audit a package yarn 2 should run yarn npm audit info json body",
+            "status": "passed",
+            "title": "should run yarn npm audit info json body",
+            "duration": 939.5481260000001,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334636712,
+        "endTime": 1743334637651.548,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-yarn2/audit.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a package"
+            ],
+            "fullName": "install a package should run yarn 2 info json body",
+            "status": "passed",
+            "title": "should run yarn 2 info json body",
+            "duration": 961.9775559999998,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334636670,
+        "endTime": 1743334637631.9775,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-yarn2/info.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a packages"
+            ],
+            "fullName": "install a packages should run yarn install",
+            "status": "passed",
+            "title": "should run yarn install",
+            "duration": 353.4899740000001,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334639253,
+        "endTime": 1743334639606.49,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-yarn2/install.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a packages"
+            ],
+            "fullName": "install a packages should run yarn publish",
+            "status": "passed",
+            "title": "should run yarn publish",
+            "duration": 1435.7580980000002,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334636655,
+        "endTime": 1743334638090.758,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-yarn2/publish.spec.ts"
+      }
+    ]
+  },
+  {
+    "commit": "886dcd366ea666b914e489facd47c77826ff7179",
+    "packageManager": "yarn3",
+    "numTotalTestSuites": 8,
+    "numPassedTestSuites": 8,
+    "numFailedTestSuites": 0,
+    "numPendingTestSuites": 0,
+    "numTotalTests": 4,
+    "numPassedTests": 4,
+    "numFailedTests": 0,
+    "numPendingTests": 0,
+    "numTodoTests": 0,
+    "snapshot": {
+      "added": 0,
+      "failure": false,
+      "filesAdded": 0,
+      "filesRemoved": 0,
+      "filesRemovedList": [],
+      "filesUnmatched": 0,
+      "filesUpdated": 0,
+      "matched": 0,
+      "total": 0,
+      "unchecked": 0,
+      "uncheckedKeysByFile": [],
+      "unmatched": 0,
+      "updated": 0,
+      "didUpdate": false
+    },
+    "startTime": 1743334633125,
+    "success": true,
+    "testResults": [
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "audit a package yarn 3"
+            ],
+            "fullName": "audit a package yarn 3 should run yarn npm audit info json body",
+            "status": "passed",
+            "title": "should run yarn npm audit info json body",
+            "duration": 1541.575757,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334635476,
+        "endTime": 1743334637017.5757,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-yarn3/audit.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a package"
+            ],
+            "fullName": "install a package should run yarn 2 info json body",
+            "status": "passed",
+            "title": "should run yarn 2 info json body",
+            "duration": 1258.982645,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334635428,
+        "endTime": 1743334636686.9827,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-yarn3/info.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a packages"
+            ],
+            "fullName": "install a packages should run yarn install",
+            "status": "passed",
+            "title": "should run yarn install",
+            "duration": 426.75506799999994,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334638400,
+        "endTime": 1743334638826.7551,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-yarn3/install.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a packages"
+            ],
+            "fullName": "install a packages should run yarn publish",
+            "status": "passed",
+            "title": "should run yarn publish",
+            "duration": 2029.811327,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334635487,
+        "endTime": 1743334637516.8113,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-yarn3/publish.spec.ts"
+      }
+    ]
+  },
+  {
+    "commit": "886dcd366ea666b914e489facd47c77826ff7179",
+    "packageManager": "yarn4",
+    "numTotalTestSuites": 6,
+    "numPassedTestSuites": 6,
+    "numFailedTestSuites": 0,
+    "numPendingTestSuites": 0,
+    "numTotalTests": 3,
+    "numPassedTests": 3,
+    "numFailedTests": 0,
+    "numPendingTests": 0,
+    "numTodoTests": 0,
+    "snapshot": {
+      "added": 0,
+      "failure": false,
+      "filesAdded": 0,
+      "filesRemoved": 0,
+      "filesRemovedList": [],
+      "filesUnmatched": 0,
+      "filesUpdated": 0,
+      "matched": 0,
+      "total": 0,
+      "unchecked": 0,
+      "uncheckedKeysByFile": [],
+      "unmatched": 0,
+      "updated": 0,
+      "didUpdate": false
+    },
+    "startTime": 1743334635275,
+    "success": true,
+    "testResults": [
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a package"
+            ],
+            "fullName": "install a package should run yarn 2 info json body",
+            "status": "passed",
+            "title": "should run yarn 2 info json body",
+            "duration": 1049.283104,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334637595,
+        "endTime": 1743334638644.2832,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-yarn4/info.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a packages"
+            ],
+            "fullName": "install a packages should run yarn install",
+            "status": "passed",
+            "title": "should run yarn install",
+            "duration": 831.3098,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334637555,
+        "endTime": 1743334638386.3098,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-yarn4/install.spec.ts"
+      },
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [
+              "install a packages"
+            ],
+            "fullName": "install a packages should run yarn publish",
+            "status": "passed",
+            "title": "should run yarn publish",
+            "duration": 1416.1092549999998,
+            "failureMessages": [],
+            "meta": {}
+          }
+        ],
+        "startTime": 1743334637619,
+        "endTime": 1743334639035.1094,
+        "status": "passed",
+        "message": "",
+        "name": "/home/runner/work/e2e-tests/e2e-tests/e2e/cli/e2e-yarn4/publish.spec.ts"
+      }
+    ]
+  }
+]
