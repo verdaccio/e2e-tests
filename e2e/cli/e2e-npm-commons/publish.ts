@@ -12,12 +12,12 @@ export function runPublish(npm) {
       await registry.init();
     });
 
-    test.each([['verdaccio-memory', 'verdaccio', '@verdaccio/foo', '@verdaccio/some-foo']])(
+    test.each([['verdaccio-memory-xxxxxx', 'verdaccioooo', '@verdaccio/foo', '@verdaccio/some-foo']])(
       'should publish a package %s',
       async (pkgName) => {
         const { tempFolder } = await prepareGenericEmptyProject(
           pkgName,
-          '1.0.0-patch',
+          '3.0.0',
           registry.port,
           registry.getToken(),
           registry.getRegistryUrl()
