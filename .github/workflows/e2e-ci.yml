@@ -133,7 +133,7 @@ jobs:
           path: ./reports
       - name: Move reports to commit hash folder
         run: |
-          mkdir -p "./reports_copy/${{ github.sha }}/"  
+          mkdir -p "./reports_copy/report_${{ github.sha }}/"  
           mv ./reports/* ./reports_copy/report_${{ github.sha }}/  
           rm -rf ./reports  
       - name: Deploy to GitHub Pages
