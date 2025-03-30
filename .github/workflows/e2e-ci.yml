@@ -130,10 +130,16 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           pattern: vitest-reports-*
-          path: ./reports-${{ github.sha }}        
+          path: ./reports
+      - name: Move reports to commit hash folder
+        run: |
+          mkdir -p "./reports_copy/${{ github.sha }}/"  
+          mv ./reports/* ./reports_copy/report_${{ github.sha }}/  
+          rm -rf ./reports  
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: ./reports-${{ github.sha }}
+          publish_dir: ./reports_copy
+          keep_files: true
