@@ -117,7 +117,7 @@ jobs:
       - name: Upload vitest reports as artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: vitest-reports-${{ github.sha }}
+          name: vitest-reports-${{ matrix.pkg }}
           path: ./e2e/cli/e2e-${{ matrix.pkg }}/vitest-report-${{ matrix.pkg }}.json        
   collect-reports:
     needs: [e2e-cli]
