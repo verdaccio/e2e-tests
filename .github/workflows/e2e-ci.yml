@@ -12,7 +12,7 @@ on:
     branches:
       - 6.x
 permissions:
-  contents: read
+  contents: write
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -108,9 +108,32 @@ jobs:
         run: npm config set registry https://rg.verdaccio.org            
       - name: Install
         run: pnpm install --frozen-lockfile
-      - uses: actions/cache@v3 # v3
+      - uses: actions/cache@v3
         with:
           path: ./tools/
           key: pkg-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.run_id }}-${{ github.sha }}
       - name: Test CLI
-        run: NODE_ENV=production pnpm test --filter ...@verdaccio/e2e-cli-${{matrix.pkg}}
+        run: NODE_ENV=production pnpm test --filter ...@verdaccio/e2e-cli-${{matrix.pkg}} -- --reporter=json --outputFile=vitest-report-${{ matrix.pkg }}.json
+      - name: Upload vitest reports as artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: vitest-reports-${{ github.sha }}
+          path: ./e2e/cli/e2e-${{ matrix.pkg }}/vitest-report-${{ matrix.pkg }}.json        
+  collect-reports:
+    needs: [e2e-cli]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Download vitest reports artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: vitest-reports-*
+          path: ./reports-${{ github.sha }}        
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./reports-${{ github.sha }}
