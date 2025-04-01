@@ -14,7 +14,7 @@
     "got": "11.8.6",
     "js-yaml": "4.1.0",
     "lodash": "4.17.21",
-    "verdaccio": "6.1.1-abea8ce.0"
+    "verdaccio": "6.1.2-2e572ac.0"
   },
   "scripts": {
     "test": "echo no test",
