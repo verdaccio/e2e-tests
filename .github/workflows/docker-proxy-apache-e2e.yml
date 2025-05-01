@@ -13,13 +13,13 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3 # v3
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
       - name: Start containers
         run: docker compose -f "./docker/apache-verdaccio/docker-compose.yaml" up -d --build
 
       - name: Install node
-        uses: actions/setup-node@v3 # v3
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 18
       - name: verdaccio cli
