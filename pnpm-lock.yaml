@@ -343,8 +343,8 @@ importers:
         specifier: 4.17.21
         version: 4.17.21
       verdaccio:
-        specifier: 6.1.3-213bade.0
-        version: 6.1.3-213bade.0(typanion@3.14.0)
+        specifier: 6.1.3-ab6ce2b.0
+        version: 6.1.3-ab6ce2b.0(typanion@3.14.0)
 
 packages:
 
@@ -4619,6 +4619,18 @@ packages:
     dependencies:
       ms: 2.1.3
       supports-color: 8.1.1
+    dev: true
+
+  /debug@4.4.1:
+    resolution: {integrity: sha512-KcKCqiftBJcZr++7ykoDIEwSa3XWowTfNPo92BYxjXiyYEVrUQh2aLyhxBCwww+heortUFxEJYcRzosstTEBYQ==}
+    engines: {node: '>=6.0'}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
+    dependencies:
+      ms: 2.1.3
     dev: true
 
   /decompress-response@6.0.0:
@@ -9299,8 +9311,8 @@ packages:
       - supports-color
     dev: true
 
-  /verdaccio@6.1.3-213bade.0(typanion@3.14.0):
-    resolution: {integrity: sha512-u/zeqTsAEcJ3Ok87iIed0HEJnCkyF49mN43u7SjjeAPVnzGLtxlL6OgKb87+9oXFSldfBx1Q8mkCGDJTSid2QA==}
+  /verdaccio@6.1.3-ab6ce2b.0(typanion@3.14.0):
+    resolution: {integrity: sha512-HcLFaZmqedtTz6I5Xn9mE3lsJAg8Ui3nX3LYuRt/3I9Z+P4uubFafo4FqHEOAKodjx662FwmNopcdiqSWFE/Rg==}
     engines: {node: '>=18'}
     hasBin: true
     dependencies:
@@ -9324,7 +9336,7 @@ packages:
       clipanion: 4.0.0-rc.4(typanion@3.14.0)
       compression: 1.8.0
       cors: 2.8.5
-      debug: 4.4.0(supports-color@8.1.1)
+      debug: 4.4.1
       envinfo: 7.14.0
       express: 4.21.2
       handlebars: 4.7.8
