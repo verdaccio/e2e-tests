@@ -35,7 +35,7 @@ jobs:
       - name: install
         run: pnpm install
       - name: update to latest canary
-        run: cd tools/cli-commons && pnpm install verdaccio@canary-7x
+        run: cd tools/cli-commons && pnpm install verdaccio@next-8
       - name: restore .npmrc
         run: git checkout .npmrc
       - name: Commit & Push changes
