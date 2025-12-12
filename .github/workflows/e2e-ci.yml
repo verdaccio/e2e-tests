@@ -17,9 +17,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - name: Use Node
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6
         with:
           node-version-file: '.nvmrc'
       - name: corepack
@@ -39,7 +39,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Cache PNPM Store
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
+        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5
         with:
           path: ~/.pnpm-store
           key: pnpm-${{ hashFiles('pnpm-lock.yaml') }}
@@ -51,7 +51,7 @@ jobs:
         run: pnpm build
 
       - name: Cache Node Modules
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
+        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5
         with:
           path: node_modules
           key: modules-${{ hashFiles('pnpm-lock.yaml') }}
@@ -59,7 +59,7 @@ jobs:
             modules-${{ github.sha }}
             modules-
       - name: Cache Tools Directory
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
+        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5
         with:
           path: ./tools/
           key: tools-${{ hashFiles('pnpm-lock.yaml') }}
@@ -76,8 +76,8 @@ jobs:
     name: ${{ matrix.pkg }}/ ubuntu-latest / ${{ matrix.node }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+      - uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6
         with:
           node-version: ${{ matrix.node }}
       - name: corepack
@@ -85,7 +85,7 @@ jobs:
       - name: pnpm enable
         run: corepack prepare pnpm@latest-8 --activate
       - name: Restore PNPM Store Cache
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
+        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5
         with:
           path: ~/.pnpm-store
           key: pnpm-${{ hashFiles('pnpm-lock.yaml') }}
@@ -94,7 +94,7 @@ jobs:
             pnpm-
 
       - name: Restore Node Modules Cache
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
+        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5
         with:
           path: node_modules
           key: modules-${{ hashFiles('pnpm-lock.yaml') }}
@@ -108,7 +108,7 @@ jobs:
         run: npm config set registry https://rg.verdaccio.org            
       - name: Install
         run: pnpm install --frozen-lockfile
-      - uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
+      - uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5
         with:
           path: ./tools/
           key: pkg-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.run_id }}-${{ github.sha }}
@@ -116,7 +116,7 @@ jobs:
         run: NODE_ENV=production pnpm test --filter ...@verdaccio/e2e-cli-${{matrix.pkg}} -- --reporter=json --outputFile=vitest-report-${{ matrix.pkg }}.json
       - name: Upload vitest reports as artifacts
         if: github.ref == 'refs/heads/6.x'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
           name: vitest-reports-${{ matrix.pkg }}
           path: ./e2e/cli/e2e-${{ matrix.pkg }}/vitest-report-${{ matrix.pkg }}.json        
@@ -125,11 +125,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
 
       - name: Download vitest reports artifacts
         if: github.ref == 'refs/heads/6.x'
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
         with:
           pattern: vitest-reports-*
           path: ./reports
