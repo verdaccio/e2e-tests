@@ -9,9 +9,9 @@ on:
   workflow_dispatch:
   pull_request:
   push:
-  schedule:
-    # run every sunday
-    - cron: '0 0 * * 0'
+  # schedule:
+  #   # run every sunday
+  #   - cron: '0 0 * * 0'
 jobs:
   docker:
     timeout-minutes: 10
