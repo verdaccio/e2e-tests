@@ -1,8 +1,7 @@
 {
   "extends": ["config:base", "helpers:pinGitHubActionDigests"],
-  "prConcurrentLimit": 8,
-  "ignorePaths": ["docker/**"],
-  "schedule": ["every 2 days"],
+  "prConcurrentLimit": 2,
+  "ignorePaths": ["docker/**"],  
   "ignoreDeps": [
     "verdaccio",
     "@verdaccio/test-helper",
