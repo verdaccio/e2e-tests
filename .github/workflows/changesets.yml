@@ -29,6 +29,8 @@ jobs:
         run: npm i -g corepack@latest || corepack enable && corepack prepare pnpm@latest --activate
       - name: install dependencies
         run: pnpm install
+      - name: build packages
+        run: pnpm build        
       - name: create versions
         uses: changesets/action@master
         with:
