@@ -13,33 +13,41 @@ import { runAll } from './runner';
 
 const debug = buildDebug('verdaccio:e2e-cli');
 
+function parsePmSpec(filter: string): { name: string; version?: string; binPath?: string } {
+  // --pm yarn-modern@3, --pm yarn-classic@1.22.22, --pm npm=/path/to/bin
+  const eqIdx = filter.indexOf('=');
+  if (eqIdx !== -1) {
+    return { name: filter.slice(0, eqIdx).toLowerCase(), binPath: filter.slice(eqIdx + 1) };
+  }
+  const atIdx = filter.indexOf('@');
+  if (atIdx !== -1) {
+    return { name: filter.slice(0, atIdx).toLowerCase(), version: filter.slice(atIdx + 1) };
+  }
+  return { name: filter.toLowerCase() };
+}
+
 function parseAdapters(pmFilters?: string[]): PackageManagerAdapter[] {
   if (!pmFilters || pmFilters.length === 0) {
-    // Default: just npm
     return [createNpmAdapter()];
   }
 
   const adapters: PackageManagerAdapter[] = [];
 
   for (const filter of pmFilters) {
-    const [name, binPath] = filter.split('=');
-    const lowerName = name.toLowerCase();
+    const { name, version, binPath } = parsePmSpec(filter);
 
-    if (lowerName === 'npm') {
-      adapters.push(createNpmAdapter(binPath));
-    } else if (lowerName === 'pnpm') {
-      adapters.push(createPnpmAdapter(binPath));
-    } else if (lowerName === 'yarn-classic' || lowerName === 'yarn1') {
-      adapters.push(createYarnClassicAdapter(binPath));
-    } else if (lowerName.startsWith('yarn-modern') || lowerName === 'yarn') {
-      if (!binPath) {
-        throw new Error(
-          `yarn-modern requires a bin path: --pm yarn-modern=/path/to/yarn.js`
-        );
-      }
-      adapters.push(createYarnModernAdapter(binPath));
+    if (name === 'npm') {
+      adapters.push(createNpmAdapter(binPath, version));
+    } else if (name === 'pnpm') {
+      adapters.push(createPnpmAdapter(binPath, version));
+    } else if (name === 'yarn-classic' || name === 'yarn1') {
+      adapters.push(createYarnClassicAdapter(binPath, version));
+    } else if (name === 'yarn-modern' || name === 'yarn') {
+      adapters.push(createYarnModernAdapter(binPath, version));
     } else {
-      throw new Error(`Unknown package manager: "${name}". Supported: npm, pnpm, yarn-classic, yarn-modern`);
+      throw new Error(
+        `Unknown package manager: "${name}". Supported: npm, pnpm, yarn-classic, yarn-modern[@version]`
+      );
     }
   }
 
@@ -107,11 +115,14 @@ function printHelp(): void {
     -r, --registry <url>    Verdaccio registry URL (e.g. http://localhost:4873)
 
   Options:
-    --pm <name[=path]>      Package manager to test (can be repeated)
-                            Supported: npm, pnpm, yarn-classic, yarn-modern
-                            Examples: --pm npm --pm pnpm
-                                      --pm npm=/path/to/npm
-                                      --pm yarn-modern=/path/to/yarn.js
+    --pm <name[@version]>   Package manager to test (can be repeated)
+                            Supported: npm, pnpm, yarn-classic, yarn-modern (or yarn)
+                            Examples: --pm npm@10 --pm pnpm@9
+                                      --pm yarn-modern@4
+                                      --pm yarn-modern@3
+                                      --pm yarn-classic
+                                      --pm npm --pm pnpm  (uses system version)
+                            Auto-installs the requested yarn version if needed
                             Default: npm
 
     -t, --test <name>       Filter tests by name (can be repeated)

@@ -1,6 +1,5 @@
-import { SpawnOptions } from 'child_process';
+import { SpawnOptions, execSync } from 'child_process';
 import buildDebug from 'debug';
-import { join } from 'path';
 
 import { ExecOutput, PackageManagerAdapter } from '../types';
 import { exec } from '../utils/process';
@@ -23,12 +22,42 @@ const NPM_SUPPORTED_COMMANDS = new Set([
   'unstar',
 ]);
 
-export function createNpmAdapter(binPath?: string): PackageManagerAdapter {
-  const bin = binPath || 'npm';
-  debug('creating npm adapter with bin: %s', bin);
+function detectVersion(bin: string): string {
+  try {
+    return execSync(`${bin} --version`, { encoding: 'utf8', timeout: 5000 }).trim();
+  } catch {
+    return 'unknown';
+  }
+}
+
+function installNpm(version: string): string {
+  const pkg = `npm@${version}`;
+  debug('installing %s into temp dir', pkg);
+  const tmpDir = execSync('mktemp -d', { encoding: 'utf8' }).trim();
+  execSync(`npm install --prefix "${tmpDir}" ${pkg} --loglevel=error`, {
+    encoding: 'utf8',
+    timeout: 30000,
+  });
+  const bin = `${tmpDir}/node_modules/.bin/npm`;
+  const installed = detectVersion(bin);
+  debug('installed npm %s at %s', installed, bin);
+  console.log(`  Auto-installed npm ${installed}`);
+  return bin;
+}
+
+function resolveNpmBin(binPath?: string, version?: string): string {
+  if (binPath) return binPath;
+  if (version) return installNpm(version);
+  return 'npm';
+}
+
+export function createNpmAdapter(binPath?: string, version?: string): PackageManagerAdapter {
+  const bin = resolveNpmBin(binPath, version);
+  const resolved = detectVersion(bin);
+  debug('creating npm adapter with bin: %s (%s)', bin, resolved);
 
   const adapter: PackageManagerAdapter = {
-    name: `npm`,
+    name: `npm@${resolved}`,
     type: 'npm',
     bin,
     supports: NPM_SUPPORTED_COMMANDS,

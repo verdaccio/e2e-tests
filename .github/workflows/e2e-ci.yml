@@ -18,7 +18,16 @@ jobs:
       fail-fast: false
       matrix:
         verdaccio: ['5', '6']
-        pm: [npm, pnpm, yarn-classic, yarn-2, yarn-3, yarn-4]
+        pm:
+          - npm@7
+          - npm@8
+          - npm@9
+          - npm@10
+          - pnpm@9
+          - pnpm@10
+          - yarn-classic
+          - yarn-modern@3
+          - yarn-modern@4
         node: [22]
     name: verdaccio@${{ matrix.verdaccio }} / ${{ matrix.pm }} / node-${{ matrix.node }}
     runs-on: ubuntu-latest
@@ -37,21 +46,6 @@ jobs:
         run: pnpm build
       - name: Install Verdaccio
         run: npm install -g verdaccio@${{ matrix.verdaccio }}
-      - name: Setup package manager
-        run: |
-          PM="${{ matrix.pm }}"
-          case "$PM" in
-            yarn-classic)
-              # yarn 1.x is pre-installed on GitHub runners
-              echo "Using system yarn $(COREPACK_ENABLE_STRICT=0 yarn --version)"
-              ;;
-            yarn-2|yarn-3|yarn-4)
-              YARN_VERSION="${PM#yarn-}"
-              YARN_DIR=$(mktemp -d)
-              npm install --prefix "$YARN_DIR" "@yarnpkg/cli-dist@${YARN_VERSION}" --loglevel=error
-              echo "E2E_YARN_BIN=$YARN_DIR/node_modules/@yarnpkg/cli-dist/bin/yarn.js" >> $GITHUB_ENV
-              ;;
-          esac
       - name: Start Verdaccio
         run: |
           verdaccio &
@@ -60,14 +54,4 @@ jobs:
             sleep 1
           done
       - name: Run E2E tests
-        run: |
-          PM="${{ matrix.pm }}"
-          case "$PM" in
-            npm|pnpm|yarn-classic)
-              PM_ARG="$PM"
-              ;;
-            yarn-2|yarn-3|yarn-4)
-              PM_ARG="yarn-modern=${E2E_YARN_BIN}"
-              ;;
-          esac
-          node tools/e2e-cli/bin/e2e-cli.js --registry http://localhost:4873 --pm "$PM_ARG" -v
+        run: node tools/e2e-cli/bin/e2e-cli.js --registry http://localhost:4873 --pm "${{ matrix.pm }}" -v

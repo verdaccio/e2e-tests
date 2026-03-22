@@ -100,65 +100,8 @@ trap cleanup EXIT
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-# ─── Resolve PM arg (uses whatever is in PATH) ───
-resolve_pm() {
-  case "$PM" in
-    npm)
-      command -v npm >/dev/null || { echo -e "${RED}npm not found in PATH${RESET}"; exit 1; }
-      echo -e "${DIM}Using npm $(npm --version)${RESET}"
-      PM_ARG="npm"
-      ;;
-    pnpm)
-      command -v pnpm >/dev/null || { echo -e "${RED}pnpm not found in PATH${RESET}"; exit 1; }
-      echo -e "${DIM}Using pnpm $(pnpm --version)${RESET}"
-      PM_ARG="pnpm"
-      ;;
-    yarn-classic)
-      local yc_version="0"
-      if command -v yarn >/dev/null 2>&1; then
-        yc_version=$(COREPACK_ENABLE_STRICT=0 yarn --version 2>/dev/null || echo "0")
-      fi
-      local yc_major="${yc_version%%.*}"
-      if [[ "$yc_major" != "1" ]]; then
-        echo -e "${CYAN}Installing yarn classic (1.x) into temp dir...${RESET}"
-        YARN_DIR=$(mktemp -d)
-        npm install --prefix "$YARN_DIR" yarn@1 --loglevel=error
-        local yc_bin="$YARN_DIR/node_modules/.bin/yarn"
-        if [[ ! -f "$yc_bin" ]]; then
-          echo -e "${RED}Failed to install yarn@1${RESET}"
-          exit 1
-        fi
-        yc_version=$("$yc_bin" --version 2>/dev/null || echo "unknown")
-        echo -e "${DIM}Using yarn classic ${yc_version} at ${yc_bin}${RESET}"
-        PM_ARG="yarn-classic=${yc_bin}"
-      else
-        echo -e "${DIM}Using yarn ${yc_version}${RESET}"
-        PM_ARG="yarn-classic"
-      fi
-      ;;
-    yarn-modern)
-      command -v yarn >/dev/null || { echo -e "${RED}yarn not found in PATH${RESET}"; exit 1; }
-      local yarn_bin
-      yarn_bin=$(command -v yarn)
-      local ym_version
-      ym_version=$(COREPACK_ENABLE_STRICT=0 yarn --version 2>/dev/null || echo "0")
-      local ym_major="${ym_version%%.*}"
-      if [[ "$ym_major" == "1" ]]; then
-        echo -e "${YELLOW}Warning: yarn in PATH is v${ym_version} (Classic), not Berry 2+${RESET}"
-        echo -e "${YELLOW}yarn-modern tests may not work correctly. Use yarn-classic instead.${RESET}"
-      fi
-      echo -e "${DIM}Using yarn ${ym_version} at ${yarn_bin}${RESET}"
-      PM_ARG="yarn-modern=${yarn_bin}"
-      ;;
-    *)
-      echo -e "${RED}Unknown package manager: ${PM}${RESET}"
-      echo "Supported: npm, pnpm, yarn-classic, yarn-modern"
-      exit 1
-      ;;
-  esac
-}
-
-resolve_pm
+# ─── PM arg (the CLI handles detection and auto-install) ───
+PM_ARG="$PM"
 
 # ─── Kill anything on the port ───
 if lsof -i ":${PORT}" >/dev/null 2>&1; then
