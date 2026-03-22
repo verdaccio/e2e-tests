@@ -55,7 +55,7 @@ jobs:
       fail-fast: false
       matrix:
         verdaccio: ['5', '6']
-        pm: [npm, pnpm]
+        pm: [npm, pnpm, yarn-classic, yarn-2, yarn-3, yarn-4]
         node: [20, 22]
     name: verdaccio@${{ matrix.verdaccio }} / ${{ matrix.pm }} / node-${{ matrix.node }}
     runs-on: ubuntu-latest
@@ -78,20 +78,47 @@ jobs:
           key: tools-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.run_id }}-${{ github.sha }}
       - name: Install
         run: pnpm install --frozen-lockfile
-      - name: Install Verdaccio ${{ matrix.verdaccio }}
+      - name: Install Verdaccio
+        run: npm install -g verdaccio@${{ matrix.verdaccio }}
+      - name: Setup package manager
         run: |
-          if [ "${{ matrix.verdaccio }}" = "5" ]; then
-            npm install -g verdaccio@5
-          else
-            npm install -g verdaccio@6
-          fi
+          PM="${{ matrix.pm }}"
+          case "$PM" in
+            yarn-classic)
+              npm install -g yarn@1
+              ;;
+            yarn-2)
+              YARN_DIR=$(mktemp -d)
+              npm install --prefix "$YARN_DIR" @yarnpkg/cli-dist@2 --loglevel=error
+              echo "YARN_MODERN_BIN=$YARN_DIR/node_modules/@yarnpkg/cli-dist/bin/yarn.js" >> $GITHUB_ENV
+              ;;
+            yarn-3)
+              YARN_DIR=$(mktemp -d)
+              npm install --prefix "$YARN_DIR" @yarnpkg/cli-dist@3 --loglevel=error
+              echo "YARN_MODERN_BIN=$YARN_DIR/node_modules/@yarnpkg/cli-dist/bin/yarn.js" >> $GITHUB_ENV
+              ;;
+            yarn-4)
+              YARN_DIR=$(mktemp -d)
+              npm install --prefix "$YARN_DIR" @yarnpkg/cli-dist@4 --loglevel=error
+              echo "YARN_MODERN_BIN=$YARN_DIR/node_modules/@yarnpkg/cli-dist/bin/yarn.js" >> $GITHUB_ENV
+              ;;
+          esac
       - name: Start Verdaccio
         run: |
           verdaccio &
-          # wait for verdaccio to be ready
           for i in $(seq 1 30); do
             curl -s http://localhost:4873/-/ping && break
             sleep 1
           done
       - name: Run E2E tests
-        run: node tools/e2e-cli/bin/e2e-cli.js --registry http://localhost:4873 --pm ${{ matrix.pm }}
+        run: |
+          PM="${{ matrix.pm }}"
+          case "$PM" in
+            npm|pnpm|yarn-classic)
+              PM_ARG="$PM"
+              ;;
+            yarn-2|yarn-3|yarn-4)
+              PM_ARG="yarn-modern=${YARN_MODERN_BIN}"
+              ;;
+          esac
+          node tools/e2e-cli/bin/e2e-cli.js --registry http://localhost:4873 --pm "$PM_ARG"
