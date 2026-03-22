@@ -1,5 +1,6 @@
 import { defineConfig } from 'cypress';
-import { setupVerdaccioTasks } from './tools/e2e-ui/build/index.js';
+// @ts-ignore — resolved at runtime after build
+import { setupVerdaccioTasks } from './tools/e2e-ui/build/esm/index.js';
 
 const registryUrl = process.env.VERDACCIO_URL || 'http://localhost:4873';
 
