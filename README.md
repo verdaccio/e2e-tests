@@ -1,41 +1,44 @@
 # Verdaccio E2E Testing
 
-End-to-end tests for [Verdaccio](https://verdaccio.org) across all popular package managers.
+End-to-end tests for [Verdaccio](https://verdaccio.org) across all popular package managers and the web UI.
 
-## `@verdaccio/e2e-cli`
+## Packages
 
-A standalone CLI tool that runs the full Verdaccio e2e test suite against **any running registry**. No need to copy test files per branch — just point it at your Verdaccio instance.
+| Package | Description |
+|---------|-------------|
+| [`@verdaccio/e2e-cli`](tools/e2e-cli) | CLI e2e tests (publish, install, audit, etc.) |
+| [`@verdaccio/e2e-ui`](tools/e2e-ui) | Cypress UI e2e tests (home, signin, publish) |
 
-### Install
+## Quick Start
 
 ```bash
 pnpm install
-pnpm --filter @verdaccio/e2e-cli build
+pnpm build
+
+# CLI tests — run against any Verdaccio
+./scripts/run-e2e.sh 6 npm
+
+# UI tests — run Cypress against any Verdaccio
+./scripts/run-e2e-ui.sh 6
+
+# Full matrix (all PMs x Verdaccio 5+6)
+./scripts/run-e2e-matrix.sh
 ```
+
+---
+
+## `@verdaccio/e2e-cli`
+
+A standalone CLI tool that runs the full Verdaccio e2e test suite against **any running registry**. No test framework dependency — just plain `assert`.
 
 ### Usage
 
 ```bash
-# Start your Verdaccio instance first, then:
 verdaccio-e2e --registry http://localhost:4873
-
-# Test specific package managers
 verdaccio-e2e -r http://localhost:4873 --pm npm --pm pnpm
-
-# Test specific commands only
 verdaccio-e2e -r http://localhost:4873 --test publish --test install
-
-# Use a custom binary path
-verdaccio-e2e -r http://localhost:4873 --pm npm=/path/to/npm
-
-# Yarn modern requires the binary path
 verdaccio-e2e -r http://localhost:4873 --pm yarn-modern=/path/to/yarn.js
-
-# Pass an existing token instead of creating a user
-verdaccio-e2e -r http://localhost:4873 --token your-auth-token
-
-# Verbose output (debug logs)
-verdaccio-e2e -r http://localhost:4873 -v
+verdaccio-e2e -r http://localhost:4873 -v   # verbose — shows each command
 ```
 
 ### CLI Options
@@ -47,7 +50,7 @@ verdaccio-e2e -r http://localhost:4873 -v
 | `-t, --test <name>` | Filter tests by name (repeatable) | all supported |
 | `--token <token>` | Auth token (skips user creation) | auto-created |
 | `--timeout <ms>` | Per-test timeout | `50000` |
-| `-v, --verbose` | Enable debug output | `false` |
+| `-v, --verbose` | Show each command executed | `false` |
 
 ### Supported Package Managers
 
@@ -55,29 +58,25 @@ verdaccio-e2e -r http://localhost:4873 -v
 |---------|-------------|-------|
 | npm | `npm` | Uses `--registry` flag |
 | pnpm | `pnpm` | Uses `--registry` flag |
-| Yarn Classic (v1) | `yarn-classic` | Uses `--registry` and `--cwd` flags |
+| Yarn Classic (v1) | `yarn-classic` | Requires Yarn 1.x in PATH |
 | Yarn Modern (v2+) | `yarn-modern=/path/to/yarn.js` | Uses `.yarnrc.yml` for registry config |
 
 ### Tests
 
-Tests are plain async functions (no test framework dependency). Each test auto-skips when the adapter doesn't support the required command.
-
-| Test | Commands Required | npm | pnpm | yarn-classic | yarn-modern |
-|------|-------------------|-----|------|--------------|-------------|
-| publish | `publish` | yes | yes | yes | yes |
-| install | `install` | yes | yes | yes | yes |
-| info | `info` | yes | yes | yes | yes |
-| audit | `audit` | yes | yes | yes | skip |
-| deprecate | `deprecate` | yes | yes | skip | skip |
-| dist-tags | `dist-tag` | yes | yes | skip | skip |
-| ping | `ping` | yes | yes | skip | skip |
-| search | `search` | yes | yes | skip | skip |
-| star | `star` | yes | yes | skip | skip |
-| unpublish | `unpublish` | yes | yes | skip | skip |
+| Test | npm | pnpm | yarn-classic | yarn-modern |
+|------|-----|------|--------------|-------------|
+| publish | yes | yes | yes | yes |
+| install | yes | yes | yes | yes |
+| info | yes | yes | yes | yes |
+| audit | yes | yes | yes | skip |
+| deprecate | yes | yes | skip | skip |
+| dist-tags | yes | yes | skip | skip |
+| ping | yes | yes | skip | skip |
+| search | yes | yes | skip | skip |
+| star | yes | yes | skip | skip |
+| unpublish | yes | yes | skip | skip |
 
 ### Programmatic API
-
-The CLI can also be used as a library:
 
 ```ts
 import { createNpmAdapter, createPnpmAdapter, allTests, runAll } from '@verdaccio/e2e-cli';
@@ -89,71 +88,122 @@ const { results, exitCode } = await runAll(adapters, allTests, 'http://localhost
 });
 ```
 
-### How It Works
+---
 
-1. The CLI pings the registry to ensure it's reachable
-2. Creates a test user on the registry (or uses a provided `--token`)
-3. For each package manager adapter:
-   - Iterates through all test definitions
-   - Skips tests requiring commands the adapter doesn't support
-   - Each test scaffolds a temp project with `package.json` + `.npmrc` (or `.yarnrc.yml`)
-   - Runs the PM command and asserts on the output
-4. Reports results with pass/fail/skip per adapter
+## `@verdaccio/e2e-ui`
 
-### Architecture
+A Cypress plugin that provides reusable Verdaccio UI test suites. Run the same tests against any Verdaccio version without copying test files.
 
-```
-tools/e2e-cli/
-├── bin/e2e-cli.js              # CLI entry point (ESM)
-├── vite.config.ts              # Vite 8 build config (library mode)
-├── src/
-│   ├── index.ts                # CLI main + programmatic exports
-│   ├── types.ts                # PackageManagerAdapter interface, TestDefinition, etc.
-│   ├── runner.ts               # Test orchestrator with timeout
-│   ├── reporter.ts             # Colored console output (PASS/FAIL/SKIP)
-│   ├── adapters/               # One adapter per PM family
-│   │   ├── npm.ts
-│   │   ├── pnpm.ts
-│   │   ├── yarn-classic.ts
-│   │   └── yarn-modern.ts
-│   ├── tests/                  # Framework-free test definitions (assert)
-│   │   ├── publish.ts
-│   │   ├── install.ts
-│   │   ├── audit.ts
-│   │   ├── info.ts
-│   │   ├── deprecate.ts
-│   │   ├── dist-tags.ts
-│   │   ├── ping.ts
-│   │   ├── search.ts
-│   │   ├── star.ts
-│   │   └── unpublish.ts
-│   └── utils/
-│       ├── process.ts          # Child process spawn wrapper
-│       ├── project.ts          # Temp folder + package.json scaffolding
-│       └── registry-client.ts  # User creation + ping via HTTP
-```
-
-### Build
-
-Built with **Vite 8** in library mode. Pure ESM output, no Babel.
+### Install
 
 ```bash
-pnpm --filter @verdaccio/e2e-cli build   # vite build + tsc declarations
-pnpm --filter @verdaccio/e2e-cli clean   # remove build/
+npm install @verdaccio/e2e-ui cypress
 ```
 
-## Legacy Test Packages
+### Setup
 
-The `e2e/cli/` directory contains the original per-version test packages (e.g., `e2e-npm10`, `e2e-pnpm9`, `e2e-yarn4`). These use Vitest and start their own Verdaccio instance per test suite. The `@verdaccio/e2e-cli` package is the replacement — a single CLI that runs all tests against any external registry.
+**`cypress.config.ts`**
 
-## UI Tests
+```ts
+import { defineConfig } from 'cypress';
+import { setupVerdaccioTasks } from '@verdaccio/e2e-ui';
 
-Cypress-based UI tests are in `e2e/ui/`. They run against a Verdaccio Docker container.
+export default defineConfig({
+  e2e: {
+    baseUrl: 'http://localhost:4873',
+    setupNodeEvents(on) {
+      setupVerdaccioTasks(on, { registryUrl: 'http://localhost:4873' });
+    },
+  },
+});
+```
+
+**`cypress/support/e2e.ts`**
+
+```ts
+import '@verdaccio/e2e-ui/commands';
+```
+
+**`cypress/e2e/verdaccio.cy.ts`**
+
+```ts
+import { createRegistryConfig, registerAllTests } from '@verdaccio/e2e-ui';
+
+const config = createRegistryConfig({ registryUrl: 'http://localhost:4873' });
+registerAllTests(config);
+```
+
+Or pick individual suites:
+
+```ts
+import { createRegistryConfig, homeTests, signinTests } from '@verdaccio/e2e-ui';
+
+const config = createRegistryConfig({
+  registryUrl: 'http://localhost:4873',
+  title: 'My Verdaccio',           // optional, default: 'Verdaccio'
+  credentials: { user: 'admin', password: 'admin' },  // optional
+});
+
+homeTests(config);
+signinTests(config);
+```
+
+### Test Suites
+
+| Suite | Tests |
+|-------|-------|
+| `homeTests` | Page title, help card (empty registry), 404 page |
+| `signinTests` | Login, logout |
+| `publishTests` | Publish package, navigate detail, readme, dependencies, versions, uplinks |
+
+### Custom Commands
+
+Importing `@verdaccio/e2e-ui/commands` adds:
+
+| Command | Description |
+|---------|-------------|
+| `cy.getByTestId(id)` | Find element by `data-testid` attribute |
+| `cy.login(user, password)` | Login to Verdaccio UI |
+
+### Exports
+
+| Export | Description |
+|--------|-------------|
+| `setupVerdaccioTasks(on, options)` | Register Cypress tasks |
+| `createRegistryConfig(options)` | Build config with defaults |
+| `registerAllTests(config)` | Register all test suites |
+| `homeTests(config)` | Home page tests |
+| `signinTests(config)` | Login/logout tests |
+| `publishTests(config)` | Package publish + detail tests |
+
+---
+
+## Scripts
+
+| Script | Description |
+|--------|-------------|
+| `./scripts/run-e2e.sh [version] [pm]` | Run CLI tests against a Verdaccio version |
+| `./scripts/run-e2e-ui.sh [version]` | Run Cypress UI tests against a Verdaccio version |
+| `./scripts/run-e2e-matrix.sh` | Run CLI tests for all detected PMs x Verdaccio 5+6 |
+
+All scripts accept `--docker` to use Docker images instead of local npm install.
 
 ```bash
-pnpm test:ui
+./scripts/run-e2e.sh 6 npm                # CLI: verdaccio@6, npm
+./scripts/run-e2e.sh 5 pnpm               # CLI: verdaccio@5, pnpm
+./scripts/run-e2e.sh --docker 6 npm       # CLI: Docker verdaccio@6
+./scripts/run-e2e-ui.sh 6                  # UI: verdaccio@6
+./scripts/run-e2e-ui.sh --docker 6         # UI: Docker verdaccio@6
+./scripts/run-e2e-ui.sh --open             # UI: interactive Cypress
+./scripts/run-e2e-matrix.sh               # Full CLI matrix
+./scripts/run-e2e-matrix.sh --docker      # Full CLI matrix via Docker
 ```
 
-## Docker Tests
+## Build
 
-Docker Compose setups for proxy testing (nginx, apache) are in the `docker/` directory, run via GitHub Actions workflows.
+All packages built with **Vite 8** in library mode. Pure ESM, no Babel.
+
+```bash
+pnpm build        # build all tools
+pnpm clean        # clean build output
+```

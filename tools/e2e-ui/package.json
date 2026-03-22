@@ -2,7 +2,16 @@
   "name": "@verdaccio/e2e-ui",
   "version": "1.0.0",
   "type": "module",
+  "license": "MIT",
   "description": "Cypress plugin for Verdaccio UI e2e tests — run against any registry",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/verdaccio/e2e-tests",
+    "directory": "tools/e2e-ui"
+  },
+  "files": [
+    "build"
+  ],
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
   "exports": {

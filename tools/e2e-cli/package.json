@@ -2,7 +2,17 @@
   "name": "@verdaccio/e2e-cli",
   "version": "1.0.0",
   "type": "module",
+  "license": "MIT",
   "description": "CLI tool to run Verdaccio e2e tests against any running registry",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/verdaccio/e2e-tests",
+    "directory": "tools/e2e-cli"
+  },
+  "files": [
+    "build",
+    "bin"
+  ],
   "bin": {
     "verdaccio-e2e": "./bin/e2e-cli.js"
   },
