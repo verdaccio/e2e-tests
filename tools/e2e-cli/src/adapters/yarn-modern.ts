@@ -13,10 +13,15 @@ const debug = buildDebug('verdaccio:e2e-cli:yarn-modern');
 
 const YARN_MODERN_SUPPORTED_COMMANDS = new Set(['publish', 'install', 'info']);
 
+const YARN_ENV = {
+  COREPACK_ENABLE_STRICT: '0',
+  YARN_IGNORE_PATH: '1',
+};
+
 function detectVersion(bin: string): string {
   try {
     return execSync(`${bin} --version`, {
-      env: { ...process.env, COREPACK_ENABLE_STRICT: '0' },
+      env: { ...process.env, ...YARN_ENV },
       encoding: 'utf8',
       timeout: 5000,
     }).trim();
@@ -43,12 +48,10 @@ function installYarnModern(version = '4'): string {
 function resolveYarnBin(binPath?: string, version?: string): string {
   if (binPath) return binPath;
 
-  // Always install the requested version to ensure reproducibility
   if (version) {
     return installYarnModern(version);
   }
 
-  // Check if system yarn is Berry (2+)
   try {
     const systemYarn = execSync('which yarn', { encoding: 'utf8', timeout: 5000 }).trim();
     const sysVersion = detectVersion(systemYarn);
@@ -105,7 +108,7 @@ export function createYarnModernAdapter(binPath?: string, version?: string): Pac
     },
 
     exec(options: SpawnOptions, ...args: string[]): Promise<ExecOutput> {
-      const env = { ...process.env, ...options.env, COREPACK_ENABLE_STRICT: '0' };
+      const env = { ...process.env, ...options.env, ...YARN_ENV };
 
       const cmd = args[0];
       let yarnArgs: string[];

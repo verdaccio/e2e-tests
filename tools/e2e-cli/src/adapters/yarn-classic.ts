@@ -17,7 +17,7 @@ const YARN_CLASSIC_SUPPORTED_COMMANDS = new Set([
 function detectYarnVersion(bin: string): string {
   try {
     return execSync(`${bin} --version`, {
-      env: { ...process.env, COREPACK_ENABLE_STRICT: '0' },
+      env: { ...process.env, COREPACK_ENABLE_STRICT: '0', YARN_IGNORE_PATH: '1' },
       encoding: 'utf8',
       timeout: 5000,
     }).trim();
@@ -86,7 +86,12 @@ export function createYarnClassicAdapter(binPath?: string, version?: string): Pa
     },
 
     exec(options: SpawnOptions, ...args: string[]): Promise<ExecOutput> {
-      const env = { ...process.env, ...options.env, COREPACK_ENABLE_STRICT: '0' };
+      const env = {
+        ...process.env,
+        ...options.env,
+        COREPACK_ENABLE_STRICT: '0',
+        YARN_IGNORE_PATH: '1',
+      };
       return exec({ ...options, env }, bin, args);
     },
 

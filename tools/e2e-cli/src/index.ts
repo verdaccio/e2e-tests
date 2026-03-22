@@ -146,6 +146,11 @@ export async function main(argv: string[] = process.argv): Promise<void> {
     process.exit(1);
   }
 
+  // Run from a temp dir to isolate from the host project's packageManager, .yarnrc.yml, etc.
+  const { createTempFolder } = await import('./utils/project');
+  const runDir = await createTempFolder('e2e-run');
+  process.chdir(runDir);
+
   if (options.verbose) {
     const { setVerbose } = await import('./utils/process');
     setVerbose(true);
