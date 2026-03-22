@@ -1,0 +1,30 @@
+{
+  "name": "@verdaccio/e2e-ui",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Cypress plugin for Verdaccio UI e2e tests — run against any registry",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./build/index.js",
+      "types": "./build/index.d.ts"
+    },
+    "./commands": {
+      "import": "./build/commands/index.js",
+      "types": "./build/commands/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "vite build && tsc --emitDeclarationOnly -p tsconfig.build.json",
+    "clean": "rimraf build"
+  },
+  "peerDependencies": {
+    "cypress": ">=11.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "20.19.0",
+    "cypress": "11.2.0",
+    "vite": "8.0.1"
+  }
+}
