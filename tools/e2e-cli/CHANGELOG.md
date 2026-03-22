@@ -1,5 +1,11 @@
 # @verdaccio/e2e-cli
 
+## 2.3.0
+
+### Minor Changes
+
+- 92a6041: feat: add temp folder
+
 ## 2.2.0
 
 ### Minor Changes
