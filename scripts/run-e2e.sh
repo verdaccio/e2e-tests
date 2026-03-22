@@ -114,17 +114,27 @@ resolve_pm() {
       PM_ARG="pnpm"
       ;;
     yarn-classic)
-      command -v yarn >/dev/null || { echo -e "${RED}yarn not found in PATH${RESET}"; exit 1; }
-      local yc_version
-      yc_version=$(COREPACK_ENABLE_STRICT=0 yarn --version 2>/dev/null || echo "0")
+      local yc_version="0"
+      if command -v yarn >/dev/null 2>&1; then
+        yc_version=$(COREPACK_ENABLE_STRICT=0 yarn --version 2>/dev/null || echo "0")
+      fi
       local yc_major="${yc_version%%.*}"
       if [[ "$yc_major" != "1" ]]; then
-        echo -e "${RED}yarn-classic requires Yarn 1.x but found v${yc_version} (Berry)${RESET}"
-        echo -e "${RED}Use 'yarn-modern' instead, or install Yarn Classic: npm install -g yarn@1${RESET}"
-        exit 1
+        echo -e "${CYAN}Installing yarn classic (1.x) into temp dir...${RESET}"
+        YARN_DIR=$(mktemp -d)
+        npm install --prefix "$YARN_DIR" yarn@1 --loglevel=error
+        local yc_bin="$YARN_DIR/node_modules/.bin/yarn"
+        if [[ ! -f "$yc_bin" ]]; then
+          echo -e "${RED}Failed to install yarn@1${RESET}"
+          exit 1
+        fi
+        yc_version=$("$yc_bin" --version 2>/dev/null || echo "unknown")
+        echo -e "${DIM}Using yarn classic ${yc_version} at ${yc_bin}${RESET}"
+        PM_ARG="yarn-classic=${yc_bin}"
+      else
+        echo -e "${DIM}Using yarn ${yc_version}${RESET}"
+        PM_ARG="yarn-classic"
       fi
-      echo -e "${DIM}Using yarn ${yc_version}${RESET}"
-      PM_ARG="yarn-classic"
       ;;
     yarn-modern)
       command -v yarn >/dev/null || { echo -e "${RED}yarn not found in PATH${RESET}"; exit 1; }

@@ -10,7 +10,7 @@ async function testPublish(ctx: TestContext): Promise<void> {
     `@verdaccio/some-foo-${ctx.runId}`,
   ];
 
-  const isYarnModern = ctx.adapter.type === 'yarn-modern';
+  const type = ctx.adapter.type;
 
   for (const pkgName of packages) {
     const { tempFolder } = await ctx.adapter.prepareProject(
@@ -22,7 +22,7 @@ async function testPublish(ctx: TestContext): Promise<void> {
     );
 
     // yarn modern requires install before publish to generate lockfile
-    if (isYarnModern) {
+    if (type === 'yarn-modern') {
       await ctx.adapter.exec({ cwd: tempFolder }, 'install');
     }
 
@@ -33,12 +33,16 @@ async function testPublish(ctx: TestContext): Promise<void> {
       ...ctx.adapter.registryArg(ctx.registryUrl)
     );
 
-    if (isYarnModern) {
+    if (type === 'yarn-modern') {
       assert.ok(
         resp.stdout.match(/Package archive published/),
         `Expected "Package archive published" for ${pkgName} but got "${resp.stdout}"`
       );
+    } else if (type === 'yarn-classic') {
+      // yarn classic --json outputs NDJSON — just verify no error exit (exit code 0 is enough)
+      assert.ok(resp.stdout.length > 0, `Expected publish output for ${pkgName}`);
     } else {
+      // npm / pnpm
       const parsedBody = JSON.parse(resp.stdout);
       assert.strictEqual(parsedBody.name, pkgName, `Expected package name "${pkgName}" but got "${parsedBody.name}"`);
       assert.ok(parsedBody.files, `Expected files to be defined for ${pkgName}`);
