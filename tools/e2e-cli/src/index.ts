@@ -136,7 +136,8 @@ export async function main(argv: string[] = process.argv): Promise<void> {
   }
 
   if (options.verbose) {
-    process.env.DEBUG = 'verdaccio:e2e-cli:*';
+    const { setVerbose } = await import('./utils/process');
+    setVerbose(true);
   }
 
   // Ensure registry is reachable

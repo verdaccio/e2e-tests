@@ -70,4 +70,4 @@ jobs:
               PM_ARG="yarn-modern=${E2E_YARN_BIN}"
               ;;
           esac
-          node tools/e2e-cli/bin/e2e-cli.js --registry http://localhost:4873 --pm "$PM_ARG"
+          node tools/e2e-cli/bin/e2e-cli.js --registry http://localhost:4873 --pm "$PM_ARG" -v
