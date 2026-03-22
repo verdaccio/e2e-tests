@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import('../build/index.js')
+import('../build/esm/index.js')
   .then((mod) => mod.main())
   .catch((err) => {
     console.error(err);
