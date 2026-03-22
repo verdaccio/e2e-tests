@@ -4,7 +4,7 @@ plugins: /verdaccio/plugins
 
 web:
   enable: true
-  title: verdaccio-server-e2e
+  title: Verdaccio
   login: true
 
 auth:
