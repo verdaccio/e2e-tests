@@ -12,7 +12,7 @@ export function createRegistryConfig(options: VerdaccioUiOptions): RegistryConfi
     registryUrl: options.registryUrl,
     port: options.port ?? (parseInt(url.port, 10) || 4873),
     credentials: options.credentials ?? { user: 'test', password: 'test' },
-    title: options.title ?? 'verdaccio-server-e2e',
+    title: options.title ?? 'Verdaccio',
   };
 }
 

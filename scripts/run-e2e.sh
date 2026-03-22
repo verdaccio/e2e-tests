@@ -160,6 +160,13 @@ resolve_pm() {
 
 resolve_pm
 
+# ─── Kill anything on the port ───
+if lsof -i ":${PORT}" >/dev/null 2>&1; then
+  echo -e "${DIM}Killing existing process on port ${PORT}...${RESET}"
+  lsof -ti ":${PORT}" | xargs kill -9 2>/dev/null || true
+  sleep 1
+fi
+
 # ─── Start Verdaccio ───
 if [[ "$USE_DOCKER" == true ]]; then
   echo -e "${CYAN}Pulling ${DOCKER_IMAGE}...${RESET}"
@@ -185,8 +192,36 @@ else
   INSTALLED_VERSION=$("$VERDACCIO_BIN" --version 2>&1 || echo "unknown")
   echo -e "${GREEN}Installed verdaccio ${INSTALLED_VERSION}${RESET}"
 
+  # Isolated config so runs don't share storage
+  VERDACCIO_CONFIG="$VERDACCIO_DIR/config.yaml"
+  cat > "$VERDACCIO_CONFIG" <<YAML
+storage: ${VERDACCIO_DIR}/storage
+web:
+  enable: true
+  title: Verdaccio
+  login: true
+auth:
+  htpasswd:
+    file: ${VERDACCIO_DIR}/htpasswd
+uplinks:
+  npmjs:
+    url: https://registry.npmjs.org/
+packages:
+  '@*/*':
+    access: \$all
+    publish: \$authenticated
+    unpublish: \$authenticated
+    proxy: npmjs
+  '**':
+    access: \$all
+    publish: \$authenticated
+    unpublish: \$authenticated
+    proxy: npmjs
+log: { type: stdout, format: pretty, level: warn }
+YAML
+
   echo -e "${CYAN}Starting Verdaccio on port ${PORT}...${RESET}"
-  "$VERDACCIO_BIN" --listen "$PORT" &>"$VERDACCIO_DIR/verdaccio.log" &
+  "$VERDACCIO_BIN" --config "$VERDACCIO_CONFIG" --listen "$PORT" &>"$VERDACCIO_DIR/verdaccio.log" &
   VERDACCIO_PID=$!
 fi
 
@@ -224,11 +259,12 @@ pnpm --filter @verdaccio/e2e-cli build 2>&1
 echo -e "${CYAN}Running tests: ${INSTALLED_VERSION} / ${PM}${RESET}"
 echo ""
 
+set +e
 node "$PROJECT_DIR/tools/e2e-cli/bin/e2e-cli.js" \
   --registry "http://localhost:${PORT}" \
   --pm "$PM_ARG"
-
 EXIT_CODE=$?
+set -e
 echo ""
 if [[ $EXIT_CODE -eq 0 ]]; then
   echo -e "${GREEN}All tests passed!${RESET}"
