@@ -1,5 +1,11 @@
 # @verdaccio/e2e-cli
 
+## 2.1.1
+
+### Patch Changes
+
+- f2fe5f8: fix: add build folder
+
 ## 2.1.0
 
 ### Minor Changes
