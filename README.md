@@ -1,80 +1,209 @@
-# E2E CLI Testing for `main=7.x` Branch
+# Verdaccio E2E Testing
 
-> For 6.x versions, check `6.x` branch
-> For 7.x versions, check `main` branch
+End-to-end tests for [Verdaccio](https://verdaccio.org) across all popular package managers and the web UI.
 
-[More info about versions](https://github.com/verdaccio/verdaccio/blob/master/VERSIONS.md)
+## Packages
 
-What is included on these test?
+| Package | Description |
+|---------|-------------|
+| [`@verdaccio/e2e-cli`](tools/e2e-cli) | CLI e2e tests (publish, install, audit, etc.) |
+| [`@verdaccio/e2e-ui`](tools/e2e-ui) | Cypress UI e2e tests (home, signin, publish) |
 
-## With Cypress
+## Quick Start
 
-- Test the UI fo latest master branch docker image
+```bash
+pnpm install
+pnpm build
 
-## With docker (docker compose)
+# CLI tests — run against any Verdaccio
+./scripts/run-e2e.sh 6 npm
 
-> It uses the image `verdaccio/verdaccio:nightly-master`, latest `6.x` branch changes
+# UI tests — run Cypress against any Verdaccio
+./scripts/run-e2e-ui.sh 6
 
-- nginx proxy
-- apache proxy
-- using plugins
-
-All docker test are run with GitHub Actions
-
-## With npm cli
-
-> It uses the latest `npmjs` version published
-
-- Default configuration only
-- Test with all popular package managers
-
-### What commands and versions are tested?
-
-See all details [here](https://github.com/verdaccio/verdaccio?tab=readme-ov-file#commands)
-
-## How it works?
-
-Every package manager + version is a package in the monorepo.
-
-The package `@verdaccio/test-cli-commons` contains helpers used for each package manager.
-
-```ts
-import { addRegistry, initialSetup, prepareGenericEmptyProject } from '@verdaccio/test-cli-commons';
+# Full matrix (all PMs x Verdaccio 5+6)
+./scripts/run-e2e-matrix.sh
 ```
 
-The registry can be executed with the following commands, the port is automatically assigned.
+---
 
-```ts
-// setup
-const setup = await initialSetup();
-registry = setup.registry;
-await registry.init();
-// teardown
-registry.stop();
+## `@verdaccio/e2e-cli`
+
+A standalone CLI tool that runs the full Verdaccio e2e test suite against **any running registry**. No test framework dependency — just plain `assert`.
+
+### Usage
+
+```bash
+verdaccio-e2e --registry http://localhost:4873
+verdaccio-e2e -r http://localhost:4873 --pm npm --pm pnpm
+verdaccio-e2e -r http://localhost:4873 --test publish --test install
+verdaccio-e2e -r http://localhost:4873 --pm yarn-modern=/path/to/yarn.js
+verdaccio-e2e -r http://localhost:4873 -v   # verbose — shows each command
 ```
 
-The full url can be get from `registry.getRegistryUrl()`. The yarn modern does not allows the `--registry` so need a more complex step, while others is just enough adding the following to every command.
+### CLI Options
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `-r, --registry <url>` | Verdaccio registry URL **(required)** | — |
+| `--pm <name[=path]>` | Package manager to test (repeatable) | `npm` |
+| `-t, --test <name>` | Filter tests by name (repeatable) | all supported |
+| `--token <token>` | Auth token (skips user creation) | auto-created |
+| `--timeout <ms>` | Per-test timeout | `50000` |
+| `-v, --verbose` | Show each command executed | `false` |
+
+### Supported Package Managers
+
+| Adapter | `--pm` value | Notes |
+|---------|-------------|-------|
+| npm | `npm` | Uses `--registry` flag |
+| pnpm | `pnpm` | Uses `--registry` flag |
+| Yarn Classic (v1) | `yarn-classic` | Requires Yarn 1.x in PATH |
+| Yarn Modern (v2+) | `yarn-modern=/path/to/yarn.js` | Uses `.yarnrc.yml` for registry config |
+
+### Tests
+
+| Test | npm | pnpm | yarn-classic | yarn-modern |
+|------|-----|------|--------------|-------------|
+| publish | yes | yes | yes | yes |
+| install | yes | yes | yes | yes |
+| info | yes | yes | yes | yes |
+| audit | yes | yes | yes | skip |
+| deprecate | yes | yes | skip | skip |
+| dist-tags | yes | yes | skip | skip |
+| ping | yes | yes | skip | skip |
+| search | yes | yes | skip | skip |
+| star | yes | yes | skip | skip |
+| unpublish | yes | yes | skip | skip |
+
+### Programmatic API
 
 ```ts
-await yarn({ cwd: tempFolder }, 'install', ...addRegistry(registry.getRegistryUrl()));
+import { createNpmAdapter, createPnpmAdapter, allTests, runAll } from '@verdaccio/e2e-cli';
+
+const adapters = [createNpmAdapter(), createPnpmAdapter()];
+const { results, exitCode } = await runAll(adapters, allTests, 'http://localhost:4873', token, {
+  timeout: 50000,
+  concurrency: 1,
+});
 ```
 
-The most of the command allow return output in JSON format which helps with the expects.
+---
+
+## `@verdaccio/e2e-ui`
+
+A Cypress plugin that provides reusable Verdaccio UI test suites. Run the same tests against any Verdaccio version without copying test files.
+
+### Install
+
+```bash
+npm install @verdaccio/e2e-ui cypress
+```
+
+### Setup
+
+**`cypress.config.ts`**
 
 ```ts
-const resp = await yarn(
-  { cwd: tempFolder },
-  'audit',
-  '--json',
-  ...addRegistry(registry.getRegistryUrl())
-);
-const parsedBody = JSON.parse(resp.stdout as string);
-expect(parsedBody.type).toEqual('auditSummary');
+import { defineConfig } from 'cypress';
+import { setupVerdaccioTasks } from '@verdaccio/e2e-ui';
+
+export default defineConfig({
+  e2e: {
+    baseUrl: 'http://localhost:4873',
+    setupNodeEvents(on) {
+      setupVerdaccioTasks(on, { registryUrl: 'http://localhost:4873' });
+    },
+  },
+});
 ```
 
-Every command should test either console output or in special cases look up the storage manually.
+**`cypress/support/e2e.ts`**
 
-### What should not included on these tests?
+```ts
+import '@verdaccio/e2e-ui/commands';
+```
 
-- Anything is unrelated with client commands usage, eg: (auth permissions, third party integrations,
-  hooks, plugins)
+**`cypress/e2e/verdaccio.cy.ts`**
+
+```ts
+import { createRegistryConfig, registerAllTests } from '@verdaccio/e2e-ui';
+
+const config = createRegistryConfig({ registryUrl: 'http://localhost:4873' });
+registerAllTests(config);
+```
+
+Or pick individual suites:
+
+```ts
+import { createRegistryConfig, homeTests, signinTests } from '@verdaccio/e2e-ui';
+
+const config = createRegistryConfig({
+  registryUrl: 'http://localhost:4873',
+  title: 'My Verdaccio',           // optional, default: 'Verdaccio'
+  credentials: { user: 'admin', password: 'admin' },  // optional
+});
+
+homeTests(config);
+signinTests(config);
+```
+
+### Test Suites
+
+| Suite | Tests |
+|-------|-------|
+| `homeTests` | Page title, help card (empty registry), 404 page |
+| `signinTests` | Login, logout |
+| `publishTests` | Publish package, navigate detail, readme, dependencies, versions, uplinks |
+
+### Custom Commands
+
+Importing `@verdaccio/e2e-ui/commands` adds:
+
+| Command | Description |
+|---------|-------------|
+| `cy.getByTestId(id)` | Find element by `data-testid` attribute |
+| `cy.login(user, password)` | Login to Verdaccio UI |
+
+### Exports
+
+| Export | Description |
+|--------|-------------|
+| `setupVerdaccioTasks(on, options)` | Register Cypress tasks |
+| `createRegistryConfig(options)` | Build config with defaults |
+| `registerAllTests(config)` | Register all test suites |
+| `homeTests(config)` | Home page tests |
+| `signinTests(config)` | Login/logout tests |
+| `publishTests(config)` | Package publish + detail tests |
+
+---
+
+## Scripts
+
+| Script | Description |
+|--------|-------------|
+| `./scripts/run-e2e.sh [version] [pm]` | Run CLI tests against a Verdaccio version |
+| `./scripts/run-e2e-ui.sh [version]` | Run Cypress UI tests against a Verdaccio version |
+| `./scripts/run-e2e-matrix.sh` | Run CLI tests for all detected PMs x Verdaccio 5+6 |
+
+All scripts accept `--docker` to use Docker images instead of local npm install.
+
+```bash
+./scripts/run-e2e.sh 6 npm                # CLI: verdaccio@6, npm
+./scripts/run-e2e.sh 5 pnpm               # CLI: verdaccio@5, pnpm
+./scripts/run-e2e.sh --docker 6 npm       # CLI: Docker verdaccio@6
+./scripts/run-e2e-ui.sh 6                  # UI: verdaccio@6
+./scripts/run-e2e-ui.sh --docker 6         # UI: Docker verdaccio@6
+./scripts/run-e2e-ui.sh --open             # UI: interactive Cypress
+./scripts/run-e2e-matrix.sh               # Full CLI matrix
+./scripts/run-e2e-matrix.sh --docker      # Full CLI matrix via Docker
+```
+
+## Build
+
+All packages built with **Vite 8** in library mode. Pure ESM, no Babel.
+
+```bash
+pnpm build        # build all tools
+pnpm clean        # clean build output
+```

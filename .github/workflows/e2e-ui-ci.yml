@@ -1,55 +1,55 @@
-name: E2E Docker UI Cypress
+name: E2E UI Cypress
 
-on:
-  workflow_dispatch:
-  pull_request:
-  push:
-   #schedule:
-    # run every sunday
-   #  - cron: '0 0 * * 0'
+concurrency:
+  group: e2e-ui-${{ github.ref }}
+  cancel-in-progress: true
+
+on: [workflow_dispatch, pull_request]
+
+permissions:
+  contents: read
+
 jobs:
-  docker:
+  e2e-ui:
+    strategy:
+      fail-fast: false
+      matrix:
+        verdaccio: ['6']
+    name: UI / verdaccio@${{ matrix.verdaccio }}
     timeout-minutes: 10
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
-
-      - name: Start containers
-        run: docker compose -f "./docker/docker-e2e-ui/docker-compose.yaml" up -d --build
-
-      - name: Install node
-        uses: actions/setup-node@3235b876344d2a9aa001b8d1453c930bba69e610 # v3
-        with:
-          node-version: 18
-
-      - name: Node
-        uses: actions/setup-node@3235b876344d2a9aa001b8d1453c930bba69e610 # v3
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
+      - uses: actions/setup-node@3235b876344d2a9aa001b8d1453c930bba69e610 # v3
         with:
           node-version-file: '.nvmrc'
-
-      - name: Set up .npmrc
-        run: |
-          echo "//rg.verdaccio.org/:_authToken=${{ secrets.VERDACCIO_TOKEN }}" > .npmrc
-      - name: registry
-        run: npm config set registry https://rg.verdaccio.org
-
-      - name: Install pnpm
-        run: |
-          corepack enable
-          corepack prepare --activate pnpm@latest-8
-          pnpm install
-
-      - name: login
-        run: npx npm-cli-login -u test -p test -e test@domain.test -r http://localhost:4873
-
-      - name: build
+      - name: corepack
+        run: corepack enable
+      - name: pnpm enable
+        run: corepack prepare pnpm@latest-8 --activate
+      - name: Install
+        run: pnpm install --frozen-lockfile
+      - name: Build
         run: pnpm build
-
-      - name: tests
+      - name: Start Verdaccio
+        run: |
+          docker compose -f ./docker/docker-e2e-ui/docker-compose.yaml build \
+            --build-arg VERDACCIO_VERSION=${{ matrix.verdaccio }}
+          docker compose -f ./docker/docker-e2e-ui/docker-compose.yaml up -d
+          for i in $(seq 1 30); do
+            curl -s http://localhost:4873/-/ping && break
+            sleep 1
+          done
+      - name: Create test user
+        run: |
+          curl -s -X PUT \
+            -H "Content-Type: application/json" \
+            -d '{"name":"test","password":"test","_id":"org.couchdb.user:test","type":"user","roles":[]}' \
+            http://localhost:4873/-/user/org.couchdb.user:test
+      - name: Run Cypress tests
         run: pnpm test:ui
-
+        env:
+          VERDACCIO_URL: http://localhost:4873
       - name: Stop containers
         if: always()
-        run: docker compose -f "./docker/docker-e2e-ui/docker-compose.yaml" down
+        run: docker compose -f ./docker/docker-e2e-ui/docker-compose.yaml down

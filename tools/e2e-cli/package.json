@@ -1,0 +1,43 @@
+{
+  "name": "@verdaccio/e2e-cli",
+  "version": "1.0.0",
+  "type": "module",
+  "license": "MIT",
+  "description": "CLI tool to run Verdaccio e2e tests against any running registry",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/verdaccio/e2e-tests",
+    "directory": "tools/e2e-cli"
+  },
+  "files": [
+    "build",
+    "bin"
+  ],
+  "bin": {
+    "verdaccio-e2e": "./bin/e2e-cli.js"
+  },
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./build/index.js",
+      "types": "./build/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "vite build && tsc --emitDeclarationOnly -p tsconfig.build.json",
+    "clean": "rimraf build"
+  },
+  "dependencies": {
+    "debug": "4.4.0",
+    "get-port": "5.1.1",
+    "got": "11.8.6",
+    "js-yaml": "4.1.0"
+  },
+  "devDependencies": {
+    "@types/debug": "4.1.12",
+    "@types/js-yaml": "4.0.9",
+    "@types/node": "20.19.0",
+    "vite": "8.0.1"
+  }
+}
