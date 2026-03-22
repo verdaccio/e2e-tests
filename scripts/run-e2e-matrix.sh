@@ -3,7 +3,6 @@ set -euo pipefail
 
 # ─── Config ───
 VERDACCIO_VERSIONS=("5" "6")
-PACKAGE_MANAGERS=("npm" "pnpm" "yarn-classic" "yarn-2" "yarn-3" "yarn-4")
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 EXTRA_ARGS=()
 
@@ -11,6 +10,7 @@ EXTRA_ARGS=()
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 CYAN='\033[0;36m'
+YELLOW='\033[0;33m'
 BOLD='\033[1m'
 DIM='\033[2m'
 RESET='\033[0m'
@@ -18,6 +18,7 @@ RESET='\033[0m'
 usage() {
   echo ""
   echo "  Run the full Verdaccio e2e matrix locally"
+  echo "  Automatically detects which package managers are installed"
   echo ""
   echo "  Usage: $0 [--docker]"
   echo ""
@@ -25,8 +26,8 @@ usage() {
   echo "    --docker    Use Docker images instead of npm install"
   echo ""
   echo "  Examples:"
-  echo "    $0              # local install, v5+v6, npm+pnpm"
-  echo "    $0 --docker     # docker images, v5+v6, npm+pnpm"
+  echo "    $0              # local install, v5+v6, all detected PMs"
+  echo "    $0 --docker     # docker images, v5+v6, all detected PMs"
   echo ""
   exit 0
 }
@@ -48,6 +49,32 @@ done
 
 MODE="local install"
 [[ " ${EXTRA_ARGS[*]:-} " == *" --docker "* ]] && MODE="docker"
+
+# ─── Detect installed PMs ───
+PACKAGE_MANAGERS=()
+
+if command -v npm >/dev/null 2>&1; then
+  PACKAGE_MANAGERS+=("npm")
+fi
+
+if command -v pnpm >/dev/null 2>&1; then
+  PACKAGE_MANAGERS+=("pnpm")
+fi
+
+if command -v yarn >/dev/null 2>&1; then
+  YARN_VERSION=$(COREPACK_ENABLE_STRICT=0 yarn --version 2>/dev/null || echo "0")
+  YARN_MAJOR="${YARN_VERSION%%.*}"
+  if [[ "$YARN_MAJOR" == "1" ]]; then
+    PACKAGE_MANAGERS+=("yarn-classic")
+  else
+    PACKAGE_MANAGERS+=("yarn-modern")
+  fi
+fi
+
+if [[ ${#PACKAGE_MANAGERS[@]} -eq 0 ]]; then
+  echo -e "${RED}No package managers found in PATH (npm, pnpm, yarn)${RESET}"
+  exit 1
+fi
 
 TOTAL=0
 PASSED=0

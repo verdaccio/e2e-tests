@@ -33,7 +33,9 @@ export function createYarnClassicAdapter(binPath?: string): PackageManagerAdapte
     },
 
     exec(options: SpawnOptions, ...args: string[]): Promise<ExecOutput> {
-      return exec(options, bin, args);
+      // Disable corepack strict mode so it doesn't enforce the root packageManager field
+      const env = { ...process.env, ...options.env, COREPACK_ENABLE_STRICT: '0' };
+      return exec({ ...options, env }, bin, args);
     },
 
     async prepareProject(

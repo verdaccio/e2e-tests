@@ -10,6 +10,8 @@ async function testPublish(ctx: TestContext): Promise<void> {
     `@verdaccio/some-foo-${ctx.runId}`,
   ];
 
+  const isYarnModern = ctx.adapter.type === 'yarn-modern';
+
   for (const pkgName of packages) {
     const { tempFolder } = await ctx.adapter.prepareProject(
       pkgName,
@@ -19,6 +21,11 @@ async function testPublish(ctx: TestContext): Promise<void> {
       ctx.token
     );
 
+    // yarn modern requires install before publish to generate lockfile
+    if (isYarnModern) {
+      await ctx.adapter.exec({ cwd: tempFolder }, 'install');
+    }
+
     const resp = await ctx.adapter.exec(
       { cwd: tempFolder },
       'publish',
@@ -26,9 +33,16 @@ async function testPublish(ctx: TestContext): Promise<void> {
       ...ctx.adapter.registryArg(ctx.registryUrl)
     );
 
-    const parsedBody = JSON.parse(resp.stdout);
-    assert.strictEqual(parsedBody.name, pkgName, `Expected package name "${pkgName}" but got "${parsedBody.name}"`);
-    assert.ok(parsedBody.files, `Expected files to be defined for ${pkgName}`);
+    if (isYarnModern) {
+      assert.ok(
+        resp.stdout.match(/Package archive published/),
+        `Expected "Package archive published" for ${pkgName} but got "${resp.stdout}"`
+      );
+    } else {
+      const parsedBody = JSON.parse(resp.stdout);
+      assert.strictEqual(parsedBody.name, pkgName, `Expected package name "${pkgName}" but got "${parsedBody.name}"`);
+      assert.ok(parsedBody.files, `Expected files to be defined for ${pkgName}`);
+    }
   }
 }
 

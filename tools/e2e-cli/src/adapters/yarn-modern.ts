@@ -1,6 +1,6 @@
 import { SpawnOptions } from 'child_process';
 import buildDebug from 'debug';
-import { cp, writeFile } from 'fs/promises';
+import { writeFile } from 'fs/promises';
 import YAML from 'js-yaml';
 import { join } from 'path';
 import { URL } from 'url';
@@ -16,7 +16,6 @@ const YARN_MODERN_SUPPORTED_COMMANDS = new Set(['publish', 'install', 'info']);
 function createYamlConfig(registry: string, token?: string) {
   const defaultYaml: any = {
     npmRegistryServer: registry,
-    yarnPath: '.yarn/releases/yarn.js',
     enableImmutableInstalls: false,
     unsafeHttpWhitelist: ['localhost'],
   };
@@ -44,20 +43,32 @@ export function createYarnModernAdapter(binPath: string): PackageManagerAdapter 
     supports: YARN_MODERN_SUPPORTED_COMMANDS,
 
     registryArg(_url: string): string[] {
-      // yarn modern uses .yarnrc.yml, not CLI flags
       return [];
     },
 
     prefixArg(_folder: string): string[] {
-      // yarn modern uses cwd from SpawnOptions
       return [];
     },
 
     exec(options: SpawnOptions, ...args: string[]): Promise<ExecOutput> {
-      // yarn modern: the binary is inside the project folder
-      const projectFolder = options.cwd as string;
-      const yarnBin = join(projectFolder, '.yarn/releases/yarn.js');
-      return exec(options, yarnBin, args);
+      // Disable corepack strict mode so it doesn't enforce the root packageManager field
+      const env = { ...process.env, ...options.env, COREPACK_ENABLE_STRICT: '0' };
+
+      const cmd = args[0];
+      let yarnArgs: string[];
+      if (cmd === 'publish') {
+        const filtered = args.slice(1).filter(
+          (a) => a !== '--json' && !a.startsWith('--registry')
+        );
+        yarnArgs = ['npm', 'publish', ...filtered];
+      } else if (cmd === 'info') {
+        const filtered = args.slice(1).filter((a) => !a.startsWith('--registry'));
+        yarnArgs = ['npm', 'info', ...filtered];
+      } else {
+        yarnArgs = args.filter((a) => !a.startsWith('--registry'));
+      }
+
+      return exec({ ...options, env }, binPath, yarnArgs);
     },
 
     async prepareProject(
@@ -77,10 +88,6 @@ export function createYarnModernAdapter(binPath: string): PackageManagerAdapter 
         getPackageJSON(packageName, version, dependencies, devDependencies)
       );
       await writeFile(join(tempFolder, 'README.md'), getREADME(packageName));
-      await cp(binPath, join(tempFolder, '.yarn/releases/yarn.js'), {
-        dereference: true,
-        recursive: true,
-      });
       return { tempFolder };
     },
   };

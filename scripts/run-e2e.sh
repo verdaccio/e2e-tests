@@ -10,12 +10,11 @@ DOCKER_IMAGE=""
 CONTAINER_NAME="verdaccio-e2e-$$"
 VERDACCIO_PID=""
 VERDACCIO_DIR=$(mktemp -d)
-YARN_DIR=""
-PM_ARG=""
 
 # ─── Colors ───
 RED='\033[0;31m'
 GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
 CYAN='\033[0;36m'
 DIM='\033[2m'
 RESET='\033[0m'
@@ -31,21 +30,19 @@ usage() {
   echo "    --image <name>      Use a specific Docker image (implies --docker)"
   echo "    -h, --help          Show this help"
   echo ""
-  echo "  Package managers:"
+  echo "  Package managers (must be installed on your system):"
   echo "    npm                 (default)"
   echo "    pnpm"
-  echo "    yarn-classic        Yarn 1.x"
-  echo "    yarn-2              Yarn Berry 2.x"
-  echo "    yarn-3              Yarn Berry 3.x"
-  echo "    yarn-4              Yarn Berry 4.x"
+  echo "    yarn-classic        Yarn 1.x (requires 'yarn' in PATH)"
+  echo "    yarn-modern         Yarn Berry 2+ (requires 'yarn' in PATH)"
   echo ""
   echo "  Examples:"
   echo "    $0                              # verdaccio@6, npm"
   echo "    $0 5                            # verdaccio@5, npm"
   echo "    $0 6 pnpm                       # verdaccio@6, pnpm"
   echo "    $0 6 yarn-classic               # verdaccio@6, yarn v1"
-  echo "    $0 6 yarn-4                     # verdaccio@6, yarn v4"
-  echo "    $0 --docker 5 yarn-3            # docker verdaccio@5, yarn v3"
+  echo "    $0 6 yarn-modern                # verdaccio@6, yarn berry"
+  echo "    $0 --docker 5 pnpm             # docker verdaccio@5, pnpm"
   echo "    $0 --image verdaccio/verdaccio:nightly-master npm"
   echo ""
   exit 0
@@ -96,7 +93,6 @@ cleanup() {
     fi
   fi
   rm -rf "$VERDACCIO_DIR"
-  [[ -n "$YARN_DIR" ]] && rm -rf "$YARN_DIR"
 }
 trap cleanup EXIT
 
@@ -104,39 +100,54 @@ trap cleanup EXIT
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-# ─── Setup package manager ───
-setup_pm() {
+# ─── Resolve PM arg (uses whatever is in PATH) ───
+resolve_pm() {
   case "$PM" in
-    npm|pnpm)
-      PM_ARG="$PM"
+    npm)
+      command -v npm >/dev/null || { echo -e "${RED}npm not found in PATH${RESET}"; exit 1; }
+      echo -e "${DIM}Using npm $(npm --version)${RESET}"
+      PM_ARG="npm"
+      ;;
+    pnpm)
+      command -v pnpm >/dev/null || { echo -e "${RED}pnpm not found in PATH${RESET}"; exit 1; }
+      echo -e "${DIM}Using pnpm $(pnpm --version)${RESET}"
+      PM_ARG="pnpm"
       ;;
     yarn-classic)
-      echo -e "${CYAN}Installing yarn classic (v1)...${RESET}"
-      npm install -g yarn@1 --loglevel=error
+      command -v yarn >/dev/null || { echo -e "${RED}yarn not found in PATH${RESET}"; exit 1; }
+      local yc_version
+      yc_version=$(COREPACK_ENABLE_STRICT=0 yarn --version 2>/dev/null || echo "0")
+      local yc_major="${yc_version%%.*}"
+      if [[ "$yc_major" != "1" ]]; then
+        echo -e "${YELLOW}Warning: yarn in PATH is v${yc_version} (Berry), not Classic 1.x${RESET}"
+        echo -e "${YELLOW}yarn-classic tests may not work correctly. Install yarn@1 or use yarn-modern instead.${RESET}"
+      fi
+      echo -e "${DIM}Using yarn ${yc_version}${RESET}"
       PM_ARG="yarn-classic"
       ;;
-    yarn-2|yarn-3|yarn-4)
-      local yarn_version="${PM#yarn-}"
-      echo -e "${CYAN}Installing yarn ${yarn_version}.x...${RESET}"
-      YARN_DIR=$(mktemp -d)
-      npm install --prefix "$YARN_DIR" "@yarnpkg/cli-dist@${yarn_version}" --loglevel=error
-      local yarn_bin="$YARN_DIR/node_modules/@yarnpkg/cli-dist/bin/yarn.js"
-      if [[ ! -f "$yarn_bin" ]]; then
-        echo -e "${RED}Failed to install @yarnpkg/cli-dist@${yarn_version}${RESET}"
-        exit 1
+    yarn-modern)
+      command -v yarn >/dev/null || { echo -e "${RED}yarn not found in PATH${RESET}"; exit 1; }
+      local yarn_bin
+      yarn_bin=$(command -v yarn)
+      local ym_version
+      ym_version=$(COREPACK_ENABLE_STRICT=0 yarn --version 2>/dev/null || echo "0")
+      local ym_major="${ym_version%%.*}"
+      if [[ "$ym_major" == "1" ]]; then
+        echo -e "${YELLOW}Warning: yarn in PATH is v${ym_version} (Classic), not Berry 2+${RESET}"
+        echo -e "${YELLOW}yarn-modern tests may not work correctly. Use yarn-classic instead.${RESET}"
       fi
-      echo -e "${GREEN}Yarn bin: ${yarn_bin}${RESET}"
+      echo -e "${DIM}Using yarn ${ym_version} at ${yarn_bin}${RESET}"
       PM_ARG="yarn-modern=${yarn_bin}"
       ;;
     *)
       echo -e "${RED}Unknown package manager: ${PM}${RESET}"
-      echo "Supported: npm, pnpm, yarn-classic, yarn-2, yarn-3, yarn-4"
+      echo "Supported: npm, pnpm, yarn-classic, yarn-modern"
       exit 1
       ;;
   esac
 }
 
-setup_pm
+resolve_pm
 
 # ─── Start Verdaccio ───
 if [[ "$USE_DOCKER" == true ]]; then
