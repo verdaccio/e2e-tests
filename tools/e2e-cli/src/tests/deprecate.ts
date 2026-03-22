@@ -47,8 +47,10 @@ async function bumpVersion(ctx: TestContext, tempFolder: string) {
 }
 
 async function testDeprecate(ctx: TestContext): Promise<void> {
+  const id = ctx.runId;
+
   // Test 1: deprecate a single version
-  const pkgName1 = '@verdaccio/deprecated-1';
+  const pkgName1 = `@verdaccio/dep1-${id}`;
   const message = 'some message';
   const { tempFolder: tf1 } = await ctx.adapter.prepareProject(
     pkgName1,
@@ -64,7 +66,7 @@ async function testDeprecate(ctx: TestContext): Promise<void> {
   assert.strictEqual(info1.deprecated, message, 'Package should be deprecated');
 
   // Test 2: un-deprecate
-  const pkgName2 = '@verdaccio/deprecated-2';
+  const pkgName2 = `@verdaccio/dep2-${id}`;
   const { tempFolder: tf2 } = await ctx.adapter.prepareProject(
     pkgName2,
     '1.0.0',
@@ -82,7 +84,7 @@ async function testDeprecate(ctx: TestContext): Promise<void> {
   assert.strictEqual(info2b.deprecated, undefined, 'Package should be un-deprecated');
 
   // Test 3: deprecate multiple versions
-  const pkgName3 = '@verdaccio/deprecated-3';
+  const pkgName3 = `@verdaccio/dep3-${id}`;
   const { tempFolder: tf3 } = await ctx.adapter.prepareProject(
     pkgName3,
     '1.0.0',

@@ -3,12 +3,17 @@ import assert from 'assert';
 import { TestContext, TestDefinition } from '../types';
 
 async function testPublish(ctx: TestContext): Promise<void> {
-  const packages = ['verdaccio-memory', 'verdaccio', '@verdaccio/foo', '@verdaccio/some-foo'];
+  const packages = [
+    `verdaccio-memory-${ctx.runId}`,
+    `verdaccio-${ctx.runId}`,
+    `@verdaccio/foo-${ctx.runId}`,
+    `@verdaccio/some-foo-${ctx.runId}`,
+  ];
 
   for (const pkgName of packages) {
     const { tempFolder } = await ctx.adapter.prepareProject(
       pkgName,
-      '1.0.0-patch',
+      '1.0.0',
       ctx.registryUrl,
       ctx.port,
       ctx.token

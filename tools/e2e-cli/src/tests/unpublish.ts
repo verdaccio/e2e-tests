@@ -23,11 +23,13 @@ async function bumpVersion(ctx: TestContext, tempFolder: string, bump: string) {
 }
 
 async function testUnpublish(ctx: TestContext): Promise<void> {
+  const id = ctx.runId;
+
   // Test 1: unpublish a full package
-  const pkgName = '@verdaccio/unpub-test1';
+  const pkgName = `@verdaccio/unpub1-${id}`;
   const { tempFolder } = await ctx.adapter.prepareProject(
     pkgName,
-    '1.0.0-beta',
+    '1.0.0',
     ctx.registryUrl,
     ctx.port,
     ctx.token
@@ -55,10 +57,10 @@ async function testUnpublish(ctx: TestContext): Promise<void> {
   );
 
   // Test 2: unpublish a specific version
-  const pkgName2 = '@verdaccio/unpub-test2';
+  const pkgName2 = `@verdaccio/unpub2-${id}`;
   const { tempFolder: tf2 } = await ctx.adapter.prepareProject(
     pkgName2,
-    '1.0.0-beta',
+    '1.0.0',
     ctx.registryUrl,
     ctx.port,
     ctx.token
@@ -70,15 +72,15 @@ async function testUnpublish(ctx: TestContext): Promise<void> {
   const resp2 = await ctx.adapter.exec(
     { cwd: tf2 },
     'unpublish',
-    `${pkgName2}@1.0.0-beta`,
+    `${pkgName2}@1.0.0`,
     '--force',
     '--loglevel=info',
     '--json',
     ...ctx.adapter.registryArg(ctx.registryUrl)
   );
   assert.ok(
-    resp2.stdout.includes(`${pkgName2}@1.0.0-beta`),
-    `Expected unpublish output to contain "${pkgName2}@1.0.0-beta" but got "${resp2.stdout}"`
+    resp2.stdout.includes(`${pkgName2}@1.0.0`),
+    `Expected unpublish output to contain "${pkgName2}@1.0.0" but got "${resp2.stdout}"`
   );
 }
 

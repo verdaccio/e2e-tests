@@ -21,8 +21,10 @@ async function bumpVersion(ctx: TestContext, tempFolder: string) {
 }
 
 async function testDistTags(ctx: TestContext): Promise<void> {
+  const id = ctx.runId;
+
   // Test 1: list dist-tags
-  const pkgName1 = '@foo/foo';
+  const pkgName1 = `@foo/dt1-${id}`;
   const { tempFolder: tf1 } = await ctx.adapter.prepareProject(
     pkgName1,
     '1.0.0',
@@ -43,7 +45,7 @@ async function testDistTags(ctx: TestContext): Promise<void> {
   assert.strictEqual(resp1.stdout, 'beta: 1.1.0latest: 1.0.0');
 
   // Test 2: remove tag
-  const pkgName2 = '@verdaccio/bar';
+  const pkgName2 = `@verdaccio/dt2-${id}`;
   const { tempFolder: tf2 } = await ctx.adapter.prepareProject(
     pkgName2,
     '1.0.0',
@@ -65,7 +67,7 @@ async function testDistTags(ctx: TestContext): Promise<void> {
   assert.strictEqual(resp2.stdout, `-beta: ${pkgName2}@1.1.0`);
 
   // Test 3: add tag
-  const pkgName3 = '@verdaccio/five';
+  const pkgName3 = `@verdaccio/dt3-${id}`;
   const { tempFolder: tf3 } = await ctx.adapter.prepareProject(
     pkgName3,
     '1.0.0',

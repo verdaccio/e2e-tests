@@ -3,11 +3,13 @@ import assert from 'assert';
 import { TestContext, TestDefinition } from '../types';
 
 async function testStar(ctx: TestContext): Promise<void> {
+  const id = ctx.runId;
+
   // Test 1: star a package
-  const pkgName1 = '@verdaccio/star-test-foo';
+  const pkgName1 = `@verdaccio/star1-${id}`;
   const { tempFolder: tf1 } = await ctx.adapter.prepareProject(
     pkgName1,
-    '1.0.0-patch',
+    '1.0.0',
     ctx.registryUrl,
     ctx.port,
     ctx.token
@@ -29,10 +31,10 @@ async function testStar(ctx: TestContext): Promise<void> {
   );
 
   // Test 2: unstar a package
-  const pkgName2 = '@verdaccio/star-test-bar';
+  const pkgName2 = `@verdaccio/star2-${id}`;
   const { tempFolder: tf2 } = await ctx.adapter.prepareProject(
     pkgName2,
-    '1.0.0-patch',
+    '1.0.0',
     ctx.registryUrl,
     ctx.port,
     ctx.token

@@ -10,11 +10,12 @@ export type RegistryAuth = {
 
 /**
  * Creates a user on the registry and returns the auth token.
+ * Uses a unique username per run to avoid 409 conflicts.
  * Works against any running Verdaccio instance with htpasswd auth.
  */
 export async function createUser(
   registryUrl: string,
-  user = 'e2e-test-user',
+  user = `e2e-user-${Date.now()}`,
   password = 'e2e-test-password'
 ): Promise<RegistryAuth> {
   debug('creating user %s on %s', user, registryUrl);
@@ -33,20 +34,20 @@ export async function createUser(
     retry: { limit: 0 },
   });
 
-  if (response.statusCode !== 201 && response.statusCode !== 200) {
-    throw new Error(
-      `Failed to create user "${user}" on ${registryUrl}: ${response.statusCode} ${JSON.stringify(response.body)}`
-    );
-  }
-
   const body = response.body as any;
-  const token = body.token;
-  if (!token) {
-    throw new Error(`No token returned when creating user "${user}" on ${registryUrl}`);
+
+  // 409 = user already exists, the PUT still returns a token (login)
+  if (response.statusCode === 201 || response.statusCode === 200 || response.statusCode === 409) {
+    const token = body.token;
+    if (token) {
+      debug('user %s authenticated, token obtained', user);
+      return { token, user };
+    }
   }
 
-  debug('user %s created, token obtained', user);
-  return { token, user };
+  throw new Error(
+    `Failed to create/login user "${user}" on ${registryUrl}: ${response.statusCode} ${JSON.stringify(body)}`
+  );
 }
 
 /**

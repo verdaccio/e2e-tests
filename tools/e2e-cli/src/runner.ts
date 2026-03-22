@@ -29,6 +29,7 @@ async function runSingleTest(
     port,
     exec: adapter.exec.bind(adapter),
     adapter,
+    runId: `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`,
   };
 
   const start = Date.now();

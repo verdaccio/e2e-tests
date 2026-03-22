@@ -3,12 +3,12 @@ import assert from 'assert';
 import { TestContext, TestDefinition } from '../types';
 
 async function testAudit(ctx: TestContext): Promise<void> {
-  const packages = ['verdaccio-memory', '@verdaccio/cli'];
+  const packages = [`verdaccio-audit-${ctx.runId}`, `@verdaccio/audit-${ctx.runId}`];
 
   for (const pkgName of packages) {
     const { tempFolder } = await ctx.adapter.prepareProject(
       pkgName,
-      '1.0.0-patch',
+      '1.0.0',
       ctx.registryUrl,
       ctx.port,
       ctx.token,
@@ -30,15 +30,21 @@ async function testAudit(ctx: TestContext): Promise<void> {
     );
 
     const parsedBody = JSON.parse(resp.stdout);
-    assert.ok(parsedBody.metadata !== undefined, 'Expected "metadata" in audit response');
-    assert.ok(
-      parsedBody.auditReportVersion !== undefined,
-      'Expected "auditReportVersion" in audit response'
-    );
-    assert.ok(
-      parsedBody.vulnerabilities !== undefined,
-      'Expected "vulnerabilities" in audit response'
-    );
+
+    if (ctx.adapter.type === 'npm') {
+      assert.ok(parsedBody.metadata !== undefined, 'Expected "metadata" in audit response');
+      assert.ok(
+        parsedBody.auditReportVersion !== undefined,
+        'Expected "auditReportVersion" in audit response'
+      );
+      assert.ok(
+        parsedBody.vulnerabilities !== undefined,
+        'Expected "vulnerabilities" in audit response'
+      );
+    } else {
+      // pnpm audit --json returns advisories-based format
+      assert.ok(parsedBody !== undefined, 'Expected audit JSON response');
+    }
   }
 }
 

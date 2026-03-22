@@ -13,6 +13,8 @@ export type TestContext = {
   port: number;
   exec: ExecFn;
   adapter: PackageManagerAdapter;
+  /** Unique suffix for package names to avoid conflicts across runs */
+  runId: string;
 };
 
 export type TestResult = {
