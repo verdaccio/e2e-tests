@@ -1,5 +1,11 @@
 # @verdaccio/e2e-cli
 
+## 2.2.0
+
+### Minor Changes
+
+- 43b958f: feat: add versions
+
 ## 2.1.1
 
 ### Patch Changes
