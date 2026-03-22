@@ -1,4 +1,4 @@
-import { SpawnOptions } from 'child_process';
+import { SpawnOptions, execSync } from 'child_process';
 import buildDebug from 'debug';
 
 import { ExecOutput, PackageManagerAdapter } from '../types';
@@ -14,9 +14,31 @@ const YARN_CLASSIC_SUPPORTED_COMMANDS = new Set([
   'audit',
 ]);
 
+function detectYarnVersion(bin: string): string {
+  try {
+    return execSync(`${bin} --version`, {
+      env: { ...process.env, COREPACK_ENABLE_STRICT: '0' },
+      encoding: 'utf8',
+      timeout: 5000,
+    }).trim();
+  } catch {
+    return 'unknown';
+  }
+}
+
 export function createYarnClassicAdapter(binPath?: string): PackageManagerAdapter {
   const bin = binPath || 'yarn';
   debug('creating yarn classic adapter with bin: %s', bin);
+
+  const version = detectYarnVersion(bin);
+  const major = version.split('.')[0];
+  if (major !== '1') {
+    throw new Error(
+      `yarn-classic requires Yarn 1.x but found ${version}. ` +
+        `Your system yarn is Berry (v${version}). ` +
+        `Use --pm yarn-modern instead, or install Yarn Classic 1.x.`
+    );
+  }
 
   const adapter: PackageManagerAdapter = {
     name: `yarn-classic`,
@@ -33,7 +55,6 @@ export function createYarnClassicAdapter(binPath?: string): PackageManagerAdapte
     },
 
     exec(options: SpawnOptions, ...args: string[]): Promise<ExecOutput> {
-      // Disable corepack strict mode so it doesn't enforce the root packageManager field
       const env = { ...process.env, ...options.env, COREPACK_ENABLE_STRICT: '0' };
       return exec({ ...options, env }, bin, args);
     },

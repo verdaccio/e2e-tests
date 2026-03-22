@@ -119,8 +119,9 @@ resolve_pm() {
       yc_version=$(COREPACK_ENABLE_STRICT=0 yarn --version 2>/dev/null || echo "0")
       local yc_major="${yc_version%%.*}"
       if [[ "$yc_major" != "1" ]]; then
-        echo -e "${YELLOW}Warning: yarn in PATH is v${yc_version} (Berry), not Classic 1.x${RESET}"
-        echo -e "${YELLOW}yarn-classic tests may not work correctly. Install yarn@1 or use yarn-modern instead.${RESET}"
+        echo -e "${RED}yarn-classic requires Yarn 1.x but found v${yc_version} (Berry)${RESET}"
+        echo -e "${RED}Use 'yarn-modern' instead, or install Yarn Classic: npm install -g yarn@1${RESET}"
+        exit 1
       fi
       echo -e "${DIM}Using yarn ${yc_version}${RESET}"
       PM_ARG="yarn-classic"
