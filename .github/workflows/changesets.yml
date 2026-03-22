@@ -3,7 +3,7 @@ name: Changesets
 on:
   push:
     branches:
-      - master
+      - main  
 
 env:
   CI: true
@@ -14,7 +14,7 @@ jobs:
   version:
     timeout-minutes: 14
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master' && github.repository == 'verdaccio/verdaccio-aws-s3-storage'
+    if: github.ref == 'refs/heads/main' && github.repository == 'verdaccio/verdaccio-aws-s3-storage'
     steps:
       - name: checkout code repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
