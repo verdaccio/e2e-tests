@@ -1,4 +1,4 @@
-import { SpawnOptions } from 'child_process';
+import { SpawnOptions, execSync } from 'child_process';
 import buildDebug from 'debug';
 
 import { ExecOutput, PackageManagerAdapter } from '../types';
@@ -22,12 +22,42 @@ const PNPM_SUPPORTED_COMMANDS = new Set([
   'unstar',
 ]);
 
-export function createPnpmAdapter(binPath?: string): PackageManagerAdapter {
-  const bin = binPath || 'pnpm';
-  debug('creating pnpm adapter with bin: %s', bin);
+function detectVersion(bin: string): string {
+  try {
+    return execSync(`${bin} --version`, { encoding: 'utf8', timeout: 5000 }).trim();
+  } catch {
+    return 'unknown';
+  }
+}
+
+function installPnpm(version: string): string {
+  const pkg = `pnpm@${version}`;
+  debug('installing %s into temp dir', pkg);
+  const tmpDir = execSync('mktemp -d', { encoding: 'utf8' }).trim();
+  execSync(`npm install --prefix "${tmpDir}" ${pkg} --loglevel=error`, {
+    encoding: 'utf8',
+    timeout: 30000,
+  });
+  const bin = `${tmpDir}/node_modules/.bin/pnpm`;
+  const installed = detectVersion(bin);
+  debug('installed pnpm %s at %s', installed, bin);
+  console.log(`  Auto-installed pnpm ${installed}`);
+  return bin;
+}
+
+function resolvePnpmBin(binPath?: string, version?: string): string {
+  if (binPath) return binPath;
+  if (version) return installPnpm(version);
+  return 'pnpm';
+}
+
+export function createPnpmAdapter(binPath?: string, version?: string): PackageManagerAdapter {
+  const bin = resolvePnpmBin(binPath, version);
+  const resolved = detectVersion(bin);
+  debug('creating pnpm adapter with bin: %s (%s)', bin, resolved);
 
   const adapter: PackageManagerAdapter = {
-    name: `pnpm`,
+    name: `pnpm@${resolved}`,
     type: 'pnpm',
     bin,
     supports: PNPM_SUPPORTED_COMMANDS,

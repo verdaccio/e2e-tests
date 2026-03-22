@@ -1,4 +1,4 @@
-import { SpawnOptions } from 'child_process';
+import { SpawnOptions, execSync } from 'child_process';
 import buildDebug from 'debug';
 import { writeFile } from 'fs/promises';
 import YAML from 'js-yaml';
@@ -12,6 +12,58 @@ import { createTempFolder, getPackageJSON, getREADME } from '../utils/project';
 const debug = buildDebug('verdaccio:e2e-cli:yarn-modern');
 
 const YARN_MODERN_SUPPORTED_COMMANDS = new Set(['publish', 'install', 'info']);
+
+function detectVersion(bin: string): string {
+  try {
+    return execSync(`${bin} --version`, {
+      env: { ...process.env, COREPACK_ENABLE_STRICT: '0' },
+      encoding: 'utf8',
+      timeout: 5000,
+    }).trim();
+  } catch {
+    return 'unknown';
+  }
+}
+
+function installYarnModern(version = '4'): string {
+  const pkg = `@yarnpkg/cli-dist@${version}`;
+  debug('installing %s into temp dir', pkg);
+  const tmpDir = execSync('mktemp -d', { encoding: 'utf8' }).trim();
+  execSync(`npm install --prefix "${tmpDir}" ${pkg} --loglevel=error`, {
+    encoding: 'utf8',
+    timeout: 30000,
+  });
+  const bin = `${tmpDir}/node_modules/@yarnpkg/cli-dist/bin/yarn.js`;
+  const installed = detectVersion(bin);
+  debug('installed yarn modern %s at %s', installed, bin);
+  console.log(`  Auto-installed yarn modern ${installed}`);
+  return bin;
+}
+
+function resolveYarnBin(binPath?: string, version?: string): string {
+  if (binPath) return binPath;
+
+  // Always install the requested version to ensure reproducibility
+  if (version) {
+    return installYarnModern(version);
+  }
+
+  // Check if system yarn is Berry (2+)
+  try {
+    const systemYarn = execSync('which yarn', { encoding: 'utf8', timeout: 5000 }).trim();
+    const sysVersion = detectVersion(systemYarn);
+    const major = parseInt(sysVersion.split('.')[0], 10);
+    if (major >= 2) {
+      debug('using system yarn Berry %s', sysVersion);
+      return systemYarn;
+    }
+    debug('system yarn is Classic %s, auto-installing Berry', sysVersion);
+  } catch {
+    debug('no system yarn found, auto-installing Berry');
+  }
+
+  return installYarnModern();
+}
 
 function createYamlConfig(registry: string, token?: string) {
   const defaultYaml: any = {
@@ -33,13 +85,15 @@ function createYamlConfig(registry: string, token?: string) {
   return YAML.dump(defaultYaml);
 }
 
-export function createYarnModernAdapter(binPath: string): PackageManagerAdapter {
-  debug('creating yarn modern adapter with bin: %s', binPath);
+export function createYarnModernAdapter(binPath?: string, version?: string): PackageManagerAdapter {
+  const bin = resolveYarnBin(binPath, version);
+  const resolved = detectVersion(bin);
+  debug('creating yarn modern adapter with bin: %s (%s)', bin, resolved);
 
   const adapter: PackageManagerAdapter = {
-    name: `yarn-modern`,
+    name: `yarn-modern@${resolved}`,
     type: 'yarn-modern',
-    bin: binPath,
+    bin,
     supports: YARN_MODERN_SUPPORTED_COMMANDS,
 
     registryArg(_url: string): string[] {
@@ -51,7 +105,6 @@ export function createYarnModernAdapter(binPath: string): PackageManagerAdapter 
     },
 
     exec(options: SpawnOptions, ...args: string[]): Promise<ExecOutput> {
-      // Disable corepack strict mode so it doesn't enforce the root packageManager field
       const env = { ...process.env, ...options.env, COREPACK_ENABLE_STRICT: '0' };
 
       const cmd = args[0];
@@ -68,7 +121,7 @@ export function createYarnModernAdapter(binPath: string): PackageManagerAdapter 
         yarnArgs = args.filter((a) => !a.startsWith('--registry'));
       }
 
-      return exec({ ...options, env }, binPath, yarnArgs);
+      return exec({ ...options, env }, bin, yarnArgs);
     },
 
     async prepareProject(
