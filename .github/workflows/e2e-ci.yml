@@ -49,7 +49,7 @@ jobs:
               YARN_VERSION="${PM#yarn-}"
               YARN_DIR=$(mktemp -d)
               npm install --prefix "$YARN_DIR" "@yarnpkg/cli-dist@${YARN_VERSION}" --loglevel=error
-              echo "YARN_MODERN_BIN=$YARN_DIR/node_modules/@yarnpkg/cli-dist/bin/yarn.js" >> $GITHUB_ENV
+              echo "E2E_YARN_BIN=$YARN_DIR/node_modules/@yarnpkg/cli-dist/bin/yarn.js" >> $GITHUB_ENV
               ;;
           esac
       - name: Start Verdaccio
@@ -67,7 +67,7 @@ jobs:
               PM_ARG="$PM"
               ;;
             yarn-2|yarn-3|yarn-4)
-              PM_ARG="yarn-modern=${YARN_MODERN_BIN}"
+              PM_ARG="yarn-modern=${E2E_YARN_BIN}"
               ;;
           esac
           node tools/e2e-cli/bin/e2e-cli.js --registry http://localhost:4873 --pm "$PM_ARG"
