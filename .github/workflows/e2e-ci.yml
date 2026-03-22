@@ -27,7 +27,7 @@ jobs:
         run: corepack prepare pnpm@latest-8 --activate
       - name: set store
         run: |
-          mkdir ~/.pnpm-store
+          mkdir -p ~/.pnpm-store
           pnpm config set store-dir ~/.pnpm-store
       - name: Install
         run: pnpm install
@@ -35,19 +35,11 @@ jobs:
         uses: actions/cache@2f8e54208210a422b2efd51efaa6bd6d7ca8920f # v3
         with:
           path: ~/.pnpm-store
-          key: pnpm-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.run_id }}-${{ github.sha }}
+          key: pnpm-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
             pnpm-
       - name: build
         run: pnpm build
-      - name: Cache tools
-        uses: actions/cache@2f8e54208210a422b2efd51efaa6bd6d7ca8920f # v3
-        id: cache-tools
-        with:
-          path: ./tools/
-          key: tools-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.run_id }}-${{ github.sha }}
-          restore-keys: |
-            tools-
 
   e2e-cli:
     needs: [build]
@@ -68,16 +60,17 @@ jobs:
         run: corepack enable
       - name: pnpm enable
         run: corepack prepare pnpm@latest-8 --activate
-      - uses: actions/cache@2f8e54208210a422b2efd51efaa6bd6d7ca8920f # v3
+      - name: Restore pnpm cache
+        uses: actions/cache@2f8e54208210a422b2efd51efaa6bd6d7ca8920f # v3
         with:
           path: ~/.pnpm-store
-          key: pnpm-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.run_id }}-${{ github.sha }}
-      - uses: actions/cache@2f8e54208210a422b2efd51efaa6bd6d7ca8920f # v3
-        with:
-          path: ./tools/
-          key: tools-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.run_id }}-${{ github.sha }}
+          key: pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-
       - name: Install
         run: pnpm install --frozen-lockfile
+      - name: Build e2e-cli
+        run: pnpm build
       - name: Install Verdaccio
         run: npm install -g verdaccio@${{ matrix.verdaccio }}
       - name: Setup package manager
