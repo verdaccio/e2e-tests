@@ -4,13 +4,16 @@ concurrency:
   group: e2e-ui-${{ github.ref }}
   cancel-in-progress: true
 
-on: [workflow_dispatch, pull_request]
+on:
+  workflow_dispatch:
+  pull_request:
 
 permissions:
   contents: read
 
 jobs:
   e2e-ui:
+    if: github.head_ref != 'changeset-release/main'
     strategy:
       fail-fast: false
       matrix:

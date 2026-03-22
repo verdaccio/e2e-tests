@@ -13,6 +13,7 @@ permissions:
 
 jobs:
   e2e-cli:
+    if: github.head_ref != 'changeset-release/main'
     strategy:
       fail-fast: false
       matrix:
