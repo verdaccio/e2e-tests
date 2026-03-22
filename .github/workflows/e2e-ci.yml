@@ -78,21 +78,13 @@ jobs:
           PM="${{ matrix.pm }}"
           case "$PM" in
             yarn-classic)
-              npm install -g yarn@1
+              # yarn 1.x is pre-installed on GitHub runners
+              echo "Using system yarn $(COREPACK_ENABLE_STRICT=0 yarn --version)"
               ;;
-            yarn-2)
+            yarn-2|yarn-3|yarn-4)
+              YARN_VERSION="${PM#yarn-}"
               YARN_DIR=$(mktemp -d)
-              npm install --prefix "$YARN_DIR" @yarnpkg/cli-dist@2 --loglevel=error
-              echo "YARN_MODERN_BIN=$YARN_DIR/node_modules/@yarnpkg/cli-dist/bin/yarn.js" >> $GITHUB_ENV
-              ;;
-            yarn-3)
-              YARN_DIR=$(mktemp -d)
-              npm install --prefix "$YARN_DIR" @yarnpkg/cli-dist@3 --loglevel=error
-              echo "YARN_MODERN_BIN=$YARN_DIR/node_modules/@yarnpkg/cli-dist/bin/yarn.js" >> $GITHUB_ENV
-              ;;
-            yarn-4)
-              YARN_DIR=$(mktemp -d)
-              npm install --prefix "$YARN_DIR" @yarnpkg/cli-dist@4 --loglevel=error
+              npm install --prefix "$YARN_DIR" "@yarnpkg/cli-dist@${YARN_VERSION}" --loglevel=error
               echo "YARN_MODERN_BIN=$YARN_DIR/node_modules/@yarnpkg/cli-dist/bin/yarn.js" >> $GITHUB_ENV
               ;;
           esac
