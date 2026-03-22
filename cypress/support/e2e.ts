@@ -1,1 +1,1 @@
-import '@verdaccio/e2e-ui/commands';
+import '../../tools/e2e-ui/build/commands/index.js';

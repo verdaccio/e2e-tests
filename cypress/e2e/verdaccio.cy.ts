@@ -1,4 +1,4 @@
-import { createRegistryConfig, homeTests, signinTests } from '@verdaccio/e2e-ui';
+import { createRegistryConfig, homeTests, signinTests } from '../../tools/e2e-ui/build/index.js';
 
 const registryUrl = Cypress.env('VERDACCIO_URL') || 'http://localhost:4873';
 const config = createRegistryConfig({ registryUrl });
