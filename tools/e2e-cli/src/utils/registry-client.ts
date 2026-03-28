@@ -1,5 +1,4 @@
 import buildDebug from 'debug';
-import got from 'got';
 
 const debug = buildDebug('verdaccio:e2e-cli:registry-client');
 
@@ -20,24 +19,22 @@ export async function createUser(
 ): Promise<RegistryAuth> {
   debug('creating user %s on %s', user, registryUrl);
   const url = `${registryUrl}/-/user/org.couchdb.user:${encodeURIComponent(user)}`;
-  const response = await got.put(url, {
-    json: {
+  const response = await fetch(url, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
       name: user,
       password,
       _id: `org.couchdb.user:${user}`,
       type: 'user',
       roles: [],
       date: new Date().toISOString(),
-    },
-    responseType: 'json',
-    throwHttpErrors: false,
-    retry: { limit: 0 },
+    }),
   });
 
-  const body = response.body as any;
+  const body = (await response.json()) as any;
 
-  // 409 = user already exists, the PUT still returns a token (login)
-  if (response.statusCode === 201 || response.statusCode === 200 || response.statusCode === 409) {
+  if (response.status === 201 || response.status === 200 || response.status === 409) {
     const token = body.token;
     if (token) {
       debug('user %s authenticated, token obtained', user);
@@ -46,7 +43,7 @@ export async function createUser(
   }
 
   throw new Error(
-    `Failed to create/login user "${user}" on ${registryUrl}: ${response.statusCode} ${JSON.stringify(body)}`
+    `Failed to create/login user "${user}" on ${registryUrl}: ${response.status} ${JSON.stringify(body)}`
   );
 }
 
@@ -56,12 +53,13 @@ export async function createUser(
 export async function pingRegistry(registryUrl: string): Promise<boolean> {
   debug('pinging %s', registryUrl);
   try {
-    const response = await got.get(`${registryUrl}/-/ping`, {
-      throwHttpErrors: false,
-      retry: { limit: 2 },
-      timeout: { request: 5000 },
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 5000);
+    const response = await fetch(`${registryUrl}/-/ping`, {
+      signal: controller.signal,
     });
-    return response.statusCode === 200;
+    clearTimeout(timeout);
+    return response.status === 200;
   } catch {
     return false;
   }
