@@ -15,7 +15,6 @@ const external = [
   'readline',
   'url',
   'debug',
-  'got',
   'js-yaml',
   'get-port',
 ];

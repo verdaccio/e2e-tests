@@ -33,7 +33,6 @@
   "dependencies": {
     "debug": "4.4.0",
     "get-port": "5.1.1",
-    "got": "11.8.6",
     "js-yaml": "4.1.0"
   },
   "devDependencies": {

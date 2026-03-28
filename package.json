@@ -47,12 +47,6 @@
     "test:ui": "cypress run",
     "postinstall": "husky install"
   },
-  "pnpm": {
-    "overrides": {
-      "got": "11.8.5",
-      "p-cancelable": "2.1.1"
-    }
-  },
   "license": "MIT",
   "lint-staged": {
     "*.{js,jsx,ts,tsx,json,yml,yaml,md}": "prettier --write"
