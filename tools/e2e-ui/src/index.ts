@@ -3,6 +3,9 @@ import {
   publishPackage,
   PublishPackageResult,
   PublishPackageTaskInput,
+  unpublishPackage,
+  UnpublishPackageInput,
+  UnpublishPackageResult,
 } from './tasks';
 import {
   DEFAULT_SELECTORS,
@@ -21,10 +24,12 @@ export type {
   PublishPackageInput,
   PublishPackageTaskInput,
   PublishPackageResult,
+  UnpublishPackageInput,
+  UnpublishPackageResult,
 } from './tasks';
 export type { DeepPartial, Selectors, TestIds } from './testIds';
 export { DEFAULT_SELECTORS, DEFAULT_TEST_IDS } from './testIds';
-export { publishPackage, cleanupPublished } from './tasks';
+export { publishPackage, cleanupPublished, unpublishPackage } from './tasks';
 export {
   homeTests,
   signinTests,
@@ -119,6 +124,25 @@ export function setupVerdaccioTasks(
     async cleanupPublished(tempFolder: string): Promise<null> {
       await cleanupPublished(tempFolder);
       return null;
+    },
+    /**
+     * Unpublish a package from the registry so the next test starts
+     * from a clean slate. Accepts either a package name or a full input
+     * object (to reuse a prior tempFolder's token).
+     *
+     *   cy.task('unpublishPackage', '@verdaccio/pkg-scoped');
+     *   cy.task('unpublishPackage', { pkgName, tempFolder });
+     */
+    async unpublishPackage(
+      input: string | (Omit<UnpublishPackageInput, 'registryUrl'> & {
+        registryUrl?: string;
+      })
+    ): Promise<UnpublishPackageResult> {
+      const normalized =
+        typeof input === 'string'
+          ? { pkgName: input, registryUrl: config.registryUrl }
+          : { ...input, registryUrl: input.registryUrl ?? config.registryUrl };
+      return unpublishPackage(normalized);
     },
   });
 }

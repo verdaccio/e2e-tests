@@ -1,6 +1,8 @@
 import type {
   PublishPackageResult,
   PublishPackageTaskInput,
+  UnpublishPackageInput,
+  UnpublishPackageResult,
 } from './tasks';
 import type { DeepPartial, Selectors, TestIds } from './testIds';
 
@@ -115,6 +117,27 @@ declare global {
         arg: string,
         options?: Partial<Loggable & Timeoutable>
       ): Chainable<null>;
+
+      /**
+       * Unpublish a package from the registry so the next test starts
+       * from a clean slate. Accepts either a bare package name (uses
+       * the configured registry URL and mints its own throwaway token)
+       * or a full input object (reuses an existing `tempFolder`'s
+       * .npmrc for efficiency).
+       *
+       * @example
+       *   cy.task('unpublishPackage', '@verdaccio/pkg-scoped');
+       *   cy.task('unpublishPackage', { pkgName, tempFolder });
+       */
+      task(
+        event: 'unpublishPackage',
+        arg:
+          | string
+          | (Omit<UnpublishPackageInput, 'registryUrl'> & {
+              registryUrl?: string;
+            }),
+        options?: Partial<Loggable & Timeoutable>
+      ): Chainable<UnpublishPackageResult>;
 
       /**
        * Read back the registry URL and port that were passed to

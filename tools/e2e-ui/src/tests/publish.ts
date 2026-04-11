@@ -8,17 +8,14 @@ export function publishTests(config: RegistryConfig) {
 
   describe('publish', () => {
     const pkgName = '@verdaccio/pkg-scoped';
-    // Populated by the before() hook so after() can clean up. Using a
-    // module-scoped variable is simpler than juggling Cypress aliases
-    // across before/after boundaries.
+    // Per-test state so afterEach can clean up the specific publish
+    // that this test created (temp folder + registry entry).
     let tempFolder: string | null = null;
 
     /**
      * Log in once, reuse the session across every test in this suite.
-     * Without `cy.session`, each test would POST /-/verdaccio/sec/login
-     * and quickly trip Verdaccio's default userRateLimit (1000 req /
-     * 15 min). `cy.session` caches cookies + localStorage keyed on the
-     * first argument, so subsequent calls are no-ops.
+     * `cy.session` caches cookies + localStorage keyed on the first
+     * argument, so subsequent calls restore without hitting the network.
      */
     const loginOnce = () => {
       cy.session(
@@ -45,31 +42,38 @@ export function publishTests(config: RegistryConfig) {
       );
     };
 
-    before(() => {
-      cy.task('publishPackage', {
-        pkgName,
-        version: '1.0.0',
-        dependencies: { debug: '4.0.0' },
-        unique: true,
-      }).then((result: any) => {
-        tempFolder = result?.tempFolder ?? null;
-      });
-    });
-
-    after(() => {
-      if (tempFolder) {
-        cy.task('cleanupPublished', tempFolder);
-        tempFolder = null;
-      }
-    });
-
     beforeEach(() => {
       cy.intercept('POST', '/-/verdaccio/sec/login').as('sign');
       cy.intercept('GET', '/-/verdaccio/data/packages').as('pkgs');
       cy.intercept('GET', `/-/verdaccio/data/sidebar/${pkgName}`).as('sidebar');
       cy.intercept('GET', `/-/verdaccio/data/package/readme/${pkgName}`).as('readme');
+
+      // Publish a fresh copy for this test. `unique: true` appends a
+      // timestamp suffix so the version is distinct per test even when
+      // the registry briefly has a stale copy from a prior afterEach.
+      cy.task('publishPackage', {
+        pkgName,
+        version: '1.0.0',
+        dependencies: { debug: '4.0.0' },
+        unique: true,
+      }).then((result) => {
+        tempFolder = result?.tempFolder ?? null;
+      });
+
       loginOnce();
       cy.visit(config.registryUrl);
+    });
+
+    afterEach(() => {
+      // Remove the package from the registry AND the local temp folder.
+      // Run both regardless of test outcome so the next test starts
+      // clean. `unpublishPackage` treats 404 as success, so a re-run
+      // after a half-published state is still safe.
+      cy.task('unpublishPackage', { pkgName, tempFolder: tempFolder ?? undefined });
+      if (tempFolder) {
+        cy.task('cleanupPublished', tempFolder);
+      }
+      tempFolder = null;
     });
 
     it('should have one published package', () => {

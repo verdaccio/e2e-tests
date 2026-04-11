@@ -56,6 +56,8 @@ export interface TestIds {
     version: string;
   };
   package: {
+    /** Wrapper around the list of packages on the home page. */
+    itemList: string;
     /** Package name link in the package list (home + search results). */
     title: string;
     /** Readme container on the package detail page. */
@@ -133,6 +135,7 @@ export const DEFAULT_TEST_IDS: TestIds = {
     version: 'version-footer',
   },
   package: {
+    itemList: 'package-item-list',
     title: 'package-title',
     readme: 'readme',
     sidebar: 'sidebar',

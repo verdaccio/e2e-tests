@@ -255,3 +255,136 @@ export async function cleanupPublished(tempFolder: string): Promise<void> {
   }
   await rm(tempFolder, { recursive: true, force: true });
 }
+
+export interface UnpublishPackageInput {
+  registryUrl: string;
+  pkgName: string;
+  /**
+   * Temp folder returned by a previous `publishPackage` call. If
+   * provided, its existing `.npmrc` (which already carries a legacy
+   * auth token) is reused for the unpublish call — no extra throwaway
+   * user is minted. Otherwise this task creates its own.
+   */
+  tempFolder?: string;
+}
+
+export interface UnpublishPackageResult {
+  pkgName: string;
+  stdout: string;
+  stderr: string;
+  exitCode: number;
+  /**
+   * True if the package was already absent (HTTP 404 from the
+   * registry). Tests typically want to treat this as success.
+   */
+  alreadyGone: boolean;
+}
+
+function spawnNpmUnpublish(
+  cwd: string,
+  registryUrl: string,
+  pkgSpec: string
+): Promise<{ stdout: string; stderr: string; exitCode: number }> {
+  return new Promise((resolvePromise, rejectPromise) => {
+    const proc = spawn(
+      'npm',
+      [
+        'unpublish',
+        pkgSpec,
+        '--force',
+        '--registry',
+        registryUrl,
+        '--loglevel=error',
+      ],
+      {
+        cwd,
+        env: { ...process.env },
+      }
+    );
+    let stdout = '';
+    let stderr = '';
+    proc.stdout.on('data', (chunk) => {
+      stdout += chunk.toString();
+    });
+    proc.stderr.on('data', (chunk) => {
+      stderr += chunk.toString();
+    });
+    proc.on('error', rejectPromise);
+    proc.on('close', (code) => {
+      resolvePromise({ stdout, stderr, exitCode: code ?? -1 });
+    });
+  });
+}
+
+/**
+ * Unpublish a package from the target registry so subsequent tests
+ * start from a clean slate.
+ *
+ * If `tempFolder` is provided (typically from a prior `publishPackage`
+ * result), its `.npmrc` is reused so no extra throwaway user is
+ * minted. Otherwise this function creates its own temp folder + token.
+ * Either way the temp folder used by THIS call is removed on exit
+ * (but callers still own the lifecycle of a tempFolder they passed in).
+ *
+ * Treats HTTP 404 / "tarball does not exist" as success so reruns and
+ * parallel teardowns don't flap.
+ */
+export async function unpublishPackage(
+  input: UnpublishPackageInput
+): Promise<UnpublishPackageResult> {
+  let workingFolder = input.tempFolder;
+  let ownsWorkingFolder = false;
+
+  if (!workingFolder) {
+    ownsWorkingFolder = true;
+    const { token } = await obtainLegacyToken(input.registryUrl);
+    workingFolder = await mkdtemp(
+      join(tmpdir(), `verdaccio-e2e-ui-unpublish-`)
+    );
+    const registryHost = input.registryUrl.replace(/^https?:/, '');
+    await writeFile(
+      join(workingFolder, '.npmrc'),
+      [
+        `registry=${input.registryUrl}`,
+        `${registryHost}/:_authToken=${token}`,
+        '',
+      ].join('\n')
+    );
+  }
+
+  try {
+    const { stdout, stderr, exitCode } = await spawnNpmUnpublish(
+      workingFolder,
+      input.registryUrl,
+      input.pkgName
+    );
+
+    // Treat "already absent" as success. npm prints slightly different
+    // messages depending on version — match loosely.
+    const alreadyGone =
+      /404|not found|no such package|does not (exist|match)/i.test(
+        `${stderr}\n${stdout}`
+      );
+
+    if (exitCode !== 0 && !alreadyGone) {
+      throw new Error(
+        `[unpublishPackage] npm unpublish failed for ${input.pkgName} ` +
+          `(exit ${exitCode}):\n${stderr || stdout}`
+      );
+    }
+
+    return {
+      pkgName: input.pkgName,
+      stdout,
+      stderr,
+      exitCode,
+      alreadyGone,
+    };
+  } finally {
+    if (ownsWorkingFolder && workingFolder) {
+      await rm(workingFolder, { recursive: true, force: true }).catch(
+        () => undefined
+      );
+    }
+  }
+}
