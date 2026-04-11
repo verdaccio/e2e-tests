@@ -1,5 +1,11 @@
 # @verdaccio/e2e-ui
 
+## 2.3.0
+
+### Minor Changes
+
+- 8395f2a: feat: add more ui tests
+
 ## 2.2.0
 
 ### Minor Changes
