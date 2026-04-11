@@ -16,6 +16,6 @@ export default defineConfig({
   env: {
     VERDACCIO_URL: registryUrl,
   },
-  video: true,
-  screenshotOnRunFailure: true,
+  video: false,
+  screenshotOnRunFailure: false,
 });

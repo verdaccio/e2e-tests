@@ -6,6 +6,10 @@ web:
   enable: true
   title: Verdaccio
   login: true
+  # Surface the settings / translations dialog in the header so the
+  # e2e-ui settings suite has something to click on.
+  showSettings: true
+  showInfo: true
 
 auth:
   htpasswd:
@@ -18,20 +22,27 @@ uplinks:
 packages:
   '@verdaccio/*':
     access: $all
-    publish: $authenticated
+    publish: $anonymous $authenticated
+    unpublish: $anonymous $authenticated
   '@*/*':
     access: $all
-    publish: $authenticated
-    unpublish: $authenticated
+    publish: $anonymous $authenticated
+    unpublish: $anonymous $authenticated
     proxy: npmjs
   '**':
     access: $all
-    publish: $authenticated
-    unpublish: $authenticated
+    publish: $anonymous $authenticated
+    unpublish: $anonymous $authenticated
     proxy: npmjs
 
 middlewares:
   audit:
     enabled: true
+
+# Loosen the default rate limit on /-/verdaccio/sec/* endpoints so
+# cypress runs (which log in repeatedly across specs) don't hit 429.
+userRateLimit:
+  windowMs: 1000
+  max: 10000
 
 log: { type: stdout, format: json, level: info }

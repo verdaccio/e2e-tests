@@ -3,6 +3,9 @@
 import { RegistryConfig } from '../types';
 
 export function signinTests(config: RegistryConfig) {
+  const { header } = config.testIds;
+  const { loginDialog } = config.selectors;
+
   describe('sign in / sign out', () => {
     beforeEach(() => {
       cy.intercept('POST', '/-/verdaccio/sec/login').as('sign');
@@ -10,22 +13,28 @@ export function signinTests(config: RegistryConfig) {
 
     it('should login user', () => {
       cy.visit(config.registryUrl);
-      cy.login(config.credentials.user, config.credentials.password);
+      cy.login(config.credentials.user, config.credentials.password, {
+        loginButton: header.loginButton,
+        ...loginDialog,
+      });
       cy.wait('@sign');
-      cy.getByTestId('logInDialogIcon').click();
+      cy.getByTestId(header.logInDialogIcon).click();
       cy.wait(100);
-      cy.getByTestId('greetings-label').contains(config.credentials.user);
+      cy.getByTestId(header.greetingsLabel).contains(config.credentials.user);
     });
 
     it('should logout a user', () => {
       cy.visit(config.registryUrl);
-      cy.login(config.credentials.user, config.credentials.password);
+      cy.login(config.credentials.user, config.credentials.password, {
+        loginButton: header.loginButton,
+        ...loginDialog,
+      });
       cy.wait('@sign');
-      cy.getByTestId('logInDialogIcon').click();
+      cy.getByTestId(header.logInDialogIcon).click();
       cy.wait(100);
-      cy.getByTestId('logOutDialogIcon').click();
+      cy.getByTestId(header.logOutDialogIcon).click();
       cy.wait(200);
-      cy.getByTestId('header--button-login').contains('Login');
+      cy.getByTestId(header.loginButton).contains('Login');
     });
   });
 }
