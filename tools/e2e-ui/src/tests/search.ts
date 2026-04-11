@@ -54,15 +54,25 @@ export function searchTests(config: RegistryConfig) {
       );
     });
 
-    it('should clear the query and restore the default view', () => {
-      getSearchInput().clear().type('anything', { delay: 20 });
+    it('should clear the query and allow typing a new one', () => {
+      getSearchInput().clear().type('first-query', { delay: 20 });
       cy.wait(anySearchAlias(), { timeout: 10000 });
 
+      // Clearing should empty the input value. We deliberately do NOT
+      // assert on the autocomplete dropdown's empty-state text: on a
+      // registry with no packages published it lingers regardless of
+      // the input value, which previously caused a false positive.
       getSearchInput().clear();
-      // After clearing, the package list request should fire again (or
-      // the cached list should be shown — either way, the empty-state
-      // for "no match" should no longer be visible).
-      cy.contains(/no\s+(match|results|packages)/i).should('not.exist');
+      getSearchInput().should('have.value', '');
+
+      // Typing a fresh query must fire another search request so the
+      // search box is still functional after a clear.
+      getSearchInput().type('second-query', { delay: 20 });
+      cy.wait(anySearchAlias(), { timeout: 10000 }).then(
+        (interception: any) => {
+          expect(interception.request.url).to.contain('second-query');
+        }
+      );
     });
   });
 }

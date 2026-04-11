@@ -88,9 +88,41 @@ export function publishTests(config: RegistryConfig) {
       cy.getByTestId('package-title').first().click();
       cy.wait('@readme');
       cy.wait('@sidebar');
+      // `readme` is the Box wrapping the markdown body — assert both
+      // the container and the parsed markdown render.
+      cy.getByTestId('readme').should('be.visible');
       cy.get('.markdown-body').should('have.length', 1);
       // publishPackage writes a README whose body contains "e2e testing".
       cy.contains('.markdown-body', /test/);
+      // Verify the package name heading from our generated README is
+      // actually rendered through the markdown pipeline.
+      cy.contains('.markdown-body h1', pkgName).should('be.visible');
+    });
+
+    it('should render the sidebar with install commands for npm, yarn, pnpm', () => {
+      cy.wait('@pkgs');
+      cy.getByTestId('package-title').first().click();
+      cy.wait('@sidebar');
+      cy.getByTestId('sidebar').should('be.visible');
+      cy.getByTestId('installList').within(() => {
+        cy.getByTestId('installListItem-npm').should('be.visible');
+        cy.getByTestId('installListItem-yarn').should('be.visible');
+        cy.getByTestId('installListItem-pnpm').should('be.visible');
+      });
+      // The npm install line must actually contain the package name.
+      cy.getByTestId('installListItem-npm').should('contain.text', pkgName);
+    });
+
+    it('should render the sidebar keywords from the published manifest', () => {
+      cy.wait('@pkgs');
+      cy.getByTestId('package-title').first().click();
+      cy.wait('@sidebar');
+      // publishPackage writes `keywords: ['verdaccio', 'e2e', 'test']`
+      // into the generated package.json.
+      cy.getByTestId('keyword-list').should('be.visible');
+      cy.getByTestId('keyword-list').should('contain.text', 'verdaccio');
+      cy.getByTestId('keyword-list').should('contain.text', 'e2e');
+      cy.getByTestId('keyword-list').should('contain.text', 'test');
     });
 
     it('should click on dependencies tab', () => {
