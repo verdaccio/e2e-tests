@@ -13,6 +13,8 @@ import { RegistryConfig } from '../types';
  * ships with, so it's worth a direct network-level check.
  */
 export function layoutTests(config: RegistryConfig) {
+  const { header, footer } = config.testIds;
+
   describe('layout: header, footer, ui-options', () => {
     beforeEach(() => {
       cy.intercept('GET', '**/-/static/ui-options.js').as('uiOptions');
@@ -48,28 +50,27 @@ export function layoutTests(config: RegistryConfig) {
 
     describe('header', () => {
       it('should render the header container', () => {
-        cy.getByTestId('header').should('be.visible');
-        cy.getByTestId('inner-nav-bar').should('be.visible');
+        cy.getByTestId(header.container).should('be.visible');
+        cy.getByTestId(header.innerNavBar).should('be.visible');
       });
 
       it('should render the logo', () => {
         // Either the default SVG logo or a user-provided custom one.
-        // Both render to an element with a `-logo` testid suffix.
         cy.get(
-          '[data-testid="default-logo"], [data-testid="custom-logo"]'
+          `[data-testid="${header.defaultLogo}"], [data-testid="${header.customLogo}"]`
         ).should('be.visible');
       });
 
       it('should render the search container', () => {
-        cy.getByTestId('search-container').should('be.visible');
+        cy.getByTestId(header.searchContainer).should('be.visible');
       });
 
       it('should render the header-right action cluster', () => {
-        cy.getByTestId('header-right').should('be.visible');
+        cy.getByTestId(header.right).should('be.visible');
       });
 
       it('should render the login button when logged out', () => {
-        cy.getByTestId('header--button-login').should('be.visible');
+        cy.getByTestId(header.loginButton).should('be.visible');
       });
 
       it('should render the settings and info buttons', () => {
@@ -77,21 +78,21 @@ export function layoutTests(config: RegistryConfig) {
         // the ui-options response. On the default config provider
         // they default to true so no explicit registry config is
         // required.
-        cy.getByTestId('header--tooltip-settings').should('be.visible');
-        cy.getByTestId('header--tooltip-info').should('be.visible');
+        cy.getByTestId(header.settingsTooltip).should('be.visible');
+        cy.getByTestId(header.infoTooltip).should('be.visible');
       });
     });
 
     describe('footer', () => {
       it('should render the footer container', () => {
-        cy.getByTestId('footer').scrollIntoView().should('be.visible');
+        cy.getByTestId(footer.container).scrollIntoView().should('be.visible');
       });
 
       it('should render the version marker with the powered-by label', () => {
         // <PoweredBy> only renders when `configOptions.version` is
         // truthy, which Verdaccio sets automatically from its
         // package.json at startup.
-        cy.getByTestId('version-footer')
+        cy.getByTestId(footer.version)
           .scrollIntoView()
           .should('be.visible')
           .invoke('text')
@@ -100,12 +101,11 @@ export function layoutTests(config: RegistryConfig) {
 
       it('should render a logo next to the version marker', () => {
         // The footer uses the default SVG logo as the link to
-        // verdaccio.org. This is a different DOM node from the header
-        // logo, so `should('have.length.at.least', 2)` would be wrong
-        // if a custom logo is set — just check at least one exists
-        // inside the footer.
-        cy.getByTestId('footer')
-          .find('[data-testid="default-logo"], [data-testid="custom-logo"]')
+        // verdaccio.org.
+        cy.getByTestId(footer.container)
+          .find(
+            `[data-testid="${header.defaultLogo}"], [data-testid="${header.customLogo}"]`
+          )
           .should('exist');
       });
     });

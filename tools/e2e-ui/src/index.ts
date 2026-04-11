@@ -1,13 +1,29 @@
 import {
   cleanupPublished,
   publishPackage,
+  PublishPackageResult,
+  PublishPackageTaskInput,
+} from './tasks';
+import {
+  DEFAULT_SELECTORS,
+  DEFAULT_TEST_IDS,
+  mergeSelectors,
+  mergeTestIds,
+} from './testIds';
+import { RegistryConfig, RegistryTaskResult, VerdaccioUiOptions } from './types';
+
+export type {
+  RegistryConfig,
+  RegistryTaskResult,
+  VerdaccioUiOptions,
+} from './types';
+export type {
   PublishPackageInput,
+  PublishPackageTaskInput,
   PublishPackageResult,
 } from './tasks';
-import { RegistryConfig, VerdaccioUiOptions } from './types';
-
-export type { RegistryConfig, VerdaccioUiOptions } from './types';
-export type { PublishPackageInput, PublishPackageResult } from './tasks';
+export type { DeepPartial, Selectors, TestIds } from './testIds';
+export { DEFAULT_SELECTORS, DEFAULT_TEST_IDS } from './testIds';
 export { publishPackage, cleanupPublished } from './tasks';
 export {
   homeTests,
@@ -20,6 +36,17 @@ export {
 
 /**
  * Build a full RegistryConfig from user-provided options with defaults.
+ *
+ * `testIds` and `selectors` are deep-merged per section with the
+ * defaults in `./testIds`. Consumers targeting a non-default Verdaccio
+ * build can override just the fields that drifted:
+ *
+ *   createRegistryConfig({
+ *     registryUrl: 'http://localhost:4873',
+ *     testIds: {
+ *       header: { settingsTooltip: 'my-new-settings-btn' },
+ *     },
+ *   });
  */
 export function createRegistryConfig(options: VerdaccioUiOptions): RegistryConfig {
   const url = new URL(options.registryUrl);
@@ -28,6 +55,8 @@ export function createRegistryConfig(options: VerdaccioUiOptions): RegistryConfi
     port: options.port ?? (parseInt(url.port, 10) || 4873),
     credentials: options.credentials ?? { user: 'test', password: 'test' },
     title: options.title ?? 'Verdaccio',
+    testIds: mergeTestIds(DEFAULT_TEST_IDS, options.testIds),
+    selectors: mergeSelectors(DEFAULT_SELECTORS, options.selectors),
   };
 }
 
@@ -52,7 +81,7 @@ export function setupVerdaccioTasks(
   const config = createRegistryConfig(options);
 
   on('task', {
-    registry() {
+    registry(): RegistryTaskResult {
       return {
         registryUrl: config.registryUrl,
         port: config.port,
@@ -69,7 +98,7 @@ export function setupVerdaccioTasks(
      * (registryUrl, credentials). The task returns a PublishPackageResult.
      */
     async publishPackage(
-      input: Partial<PublishPackageInput> & { pkgName: string }
+      input: PublishPackageTaskInput
     ): Promise<PublishPackageResult> {
       return publishPackage({
         registryUrl: input.registryUrl ?? config.registryUrl,

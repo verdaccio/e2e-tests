@@ -18,6 +18,19 @@ export interface PublishPackageInput {
   unique?: boolean;
 }
 
+/**
+ * Shape of the argument passed to `cy.task('publishPackage', ...)`.
+ *
+ * `registryUrl` and `credentials` are optional here (they fall back to
+ * whatever was configured in `setupVerdaccioTasks`), but `pkgName` is
+ * still required — every publish needs a name.
+ */
+export type PublishPackageTaskInput = Partial<
+  Omit<PublishPackageInput, 'pkgName'>
+> & {
+  pkgName: string;
+};
+
 export interface PublishPackageResult {
   pkgName: string;
   version: string;

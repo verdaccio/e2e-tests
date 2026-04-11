@@ -20,6 +20,8 @@ import { RegistryConfig } from '../types';
  *     `header--tooltip-settings`
  */
 export function settingsTests(config: RegistryConfig) {
+  const { header } = config.testIds;
+
   describe('settings & language', () => {
     beforeEach(() => {
       cy.visit(config.registryUrl);
@@ -27,14 +29,14 @@ export function settingsTests(config: RegistryConfig) {
     });
 
     it('should open the settings dialog from the header', () => {
-      cy.getByTestId('header--tooltip-settings').click();
+      cy.getByTestId(header.settingsTooltip).click();
       cy.get('[role="dialog"]').should('be.visible');
       // Dialog title key: dialog.settings.title → "Configuration" in EN.
       cy.contains('[role="dialog"]', 'Configuration').should('be.visible');
     });
 
     it('should show both Package Managers and Translations tabs', () => {
-      cy.getByTestId('header--tooltip-settings').click();
+      cy.getByTestId(header.settingsTooltip).click();
       cy.get('[role="dialog"]').should('be.visible');
       cy.get('[role="dialog"] [role="tab"]').should('have.length', 2);
       cy.contains('[role="dialog"] [role="tab"]', 'Translations').should(
@@ -43,7 +45,7 @@ export function settingsTests(config: RegistryConfig) {
     });
 
     it('should switch to the Translations tab and list languages', () => {
-      cy.getByTestId('header--tooltip-settings').click();
+      cy.getByTestId(header.settingsTooltip).click();
       cy.get('[role="dialog"]').should('be.visible');
       cy.contains('[role="dialog"] [role="tab"]', 'Translations').click();
       // language.description text is bundled in EN — good sentinel.
@@ -57,7 +59,7 @@ export function settingsTests(config: RegistryConfig) {
     });
 
     it('should change the UI language when a language card is clicked', () => {
-      cy.getByTestId('header--tooltip-settings').click();
+      cy.getByTestId(header.settingsTooltip).click();
       cy.get('[role="dialog"]').should('be.visible');
       cy.contains('[role="dialog"] [role="tab"]', 'Translations').click();
 
@@ -84,7 +86,7 @@ export function settingsTests(config: RegistryConfig) {
     });
 
     it('should close the settings dialog with Escape', () => {
-      cy.getByTestId('header--tooltip-settings').click();
+      cy.getByTestId(header.settingsTooltip).click();
       cy.get('[role="dialog"]').should('be.visible');
       cy.get('body').type('{esc}');
       cy.get('[role="dialog"]').should('not.exist');
