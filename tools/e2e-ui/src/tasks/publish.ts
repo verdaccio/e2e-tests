@@ -31,10 +31,65 @@ function sanitizeFolderName(name: string): string {
   return name.replace(/[^a-zA-Z0-9-_]/g, '-');
 }
 
+/**
+ * Obtain a registry-API-compatible (legacy) auth token for publish.
+ *
+ * Strategy: create a throwaway user per call. `PUT /-/user/org.couchdb.user:<name>`
+ * only returns a token on CREATE (and 409s on existing users), so we
+ * guarantee success by generating a unique username each time.
+ *
+ * We need a legacy token specifically because:
+ *   - Verdaccio's default API middleware accepts legacy tokens but NOT
+ *     JWTs from `/-/verdaccio/sec/login`
+ *   - Modern npm (>= 10.x) refuses to run `npm publish` at all without
+ *     an `_authToken` entry in `.npmrc`, even against a registry that
+ *     allows `$anonymous` publish — it errors out client-side
+ *
+ * The throwaway user stays in the test registry's htpasswd store after
+ * the run, which is fine for ephemeral CI environments and local temp
+ * setups (both wipe storage between runs).
+ */
+async function obtainLegacyToken(
+  registryUrl: string
+): Promise<{ user: string; token: string }> {
+  const user = `e2e-bot-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  const password = 'e2e-bot-password';
+  const base = registryUrl.replace(/\/$/, '');
+  const url = `${base}/-/user/org.couchdb.user:${encodeURIComponent(user)}`;
+  const res = await fetch(url, {
+    method: 'PUT',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({
+      name: user,
+      password,
+      _id: `org.couchdb.user:${user}`,
+      type: 'user',
+      roles: [],
+    }),
+  });
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(
+      `[publishPackage] failed to create throwaway user "${user}" ` +
+        `(HTTP ${res.status}): ${body}`
+    );
+  }
+  const json = (await res.json()) as { token?: string };
+  if (!json.token) {
+    throw new Error(
+      `[publishPackage] user creation response did not contain a token: ${JSON.stringify(
+        json
+      )}`
+    );
+  }
+  return { user, token: json.token };
+}
+
 async function createTempProject(
   pkgName: string,
   version: string,
   registryUrl: string,
+  token: string,
   dependencies: Record<string, string>,
   devDependencies: Record<string, string>
 ): Promise<string> {
@@ -51,6 +106,13 @@ async function createTempProject(
     keywords: ['verdaccio', 'e2e', 'test'],
     author: 'Verdaccio E2E <verdaccio@example.org>',
     license: 'MIT',
+    // Scoped packages default to `restricted` access which modern npm
+    // refuses to publish anonymously. Pin it to `public` so the CLI
+    // skips that check for fixtures like `@verdaccio/pkg-scoped`.
+    publishConfig: {
+      access: 'public',
+      registry: registryUrl,
+    },
   };
   await writeFile(join(tempFolder, 'package.json'), JSON.stringify(manifest, null, 2));
   await writeFile(
@@ -62,12 +124,20 @@ async function createTempProject(
     `module.exports = ${JSON.stringify(pkgName)};\n`
   );
 
-  // `.npmrc` — point npm at the test registry. We rely on the registry
-  // allowing `$anonymous` publish (see docker/docker-e2e-ui/docker.yaml),
-  // so no `_authToken` entry is required. Modern npm won't try to
-  // authenticate if there's no token configured for the host and the
-  // server doesn't challenge.
-  const npmrc = [`registry=${registryUrl}`, ''].join('\n');
+  // `.npmrc` — include an `_authToken` scoped to the registry host so
+  // modern npm (>= 10.x) is willing to run `npm publish`. Without this
+  // the CLI errors client-side with "This command requires you to be
+  // logged in." even against a registry configured for `$anonymous`
+  // publish. The token is a legacy Verdaccio auth token obtained by
+  // creating a throwaway user via `PUT /-/user/...`.
+  const registryHost = registryUrl.replace(/^https?:/, '');
+  const npmrc = [
+    `registry=${registryUrl}`,
+    `${registryHost}/:_authToken=${token}`,
+    // Force public access for scoped packages.
+    'access=public',
+    '',
+  ].join('\n');
   await writeFile(join(tempFolder, '.npmrc'), npmrc);
 
   return tempFolder;
@@ -116,21 +186,14 @@ function spawnNpmPublish(
  * Publish a throwaway npm package to the target Verdaccio registry.
  *
  * Flow:
- *   1. Scaffold a temp project with `package.json`, `README.md`,
- *      `index.js`, and a minimal `.npmrc` pointing at the test registry.
- *   2. Spawn `npm publish` from that temp dir.
- *
- * This task assumes the target Verdaccio instance allows anonymous
- * publish (`publish: $anonymous` in the package config). That avoids
- * the mess of fetching a registry-API-compatible token: the web UI
- * `sec/login` endpoint returns a JWT that is NOT accepted by the
- * default registry API middleware, and the `PUT /-/user` endpoint only
- * returns a legacy token on first-time user creation (409 on reuse).
- * For an e2e test fixture, anonymous publish is the pragmatic choice.
+ *   1. Create a throwaway user via `PUT /-/user/...` and capture its
+ *      legacy auth token. See `obtainLegacyToken` for why.
+ *   2. Scaffold a temp project with `package.json`, `README.md`,
+ *      `index.js`, and an `.npmrc` that includes the token.
+ *   3. Spawn `npm publish` from that temp dir.
  *
  * `input.credentials` is kept on the signature for forward-compat but
- * is currently unused. If a future test needs authenticated publish we
- * can wire it back in per-package.
+ * is currently unused — each call mints its own throwaway user.
  *
  * Throws on non-zero npm exit. Returns the temp folder path on success
  * so callers can inspect or clean up.
@@ -140,10 +203,14 @@ export async function publishPackage(
 ): Promise<PublishPackageResult> {
   const baseVersion = input.version ?? '1.0.0';
   const version = input.unique ? `${baseVersion}-t${Date.now()}` : baseVersion;
+
+  const { token } = await obtainLegacyToken(input.registryUrl);
+
   const tempFolder = await createTempProject(
     input.pkgName,
     version,
     input.registryUrl,
+    token,
     input.dependencies ?? {},
     input.devDependencies ?? {}
   );

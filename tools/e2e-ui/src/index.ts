@@ -15,6 +15,7 @@ export {
   publishTests,
   searchTests,
   settingsTests,
+  layoutTests,
 } from './tests';
 
 /**
@@ -112,6 +113,7 @@ export function setupVerdaccioTasks(
 export function registerAllTests(config: RegistryConfig): void {
   homeTests(config);
   signinTests(config);
+  layoutTests(config);
   searchTests(config);
   settingsTests(config);
   publishTests(config);
@@ -124,4 +126,5 @@ import {
   publishTests,
   searchTests,
   settingsTests,
+  layoutTests,
 } from './tests';
