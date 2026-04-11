@@ -7,6 +7,7 @@ import {
   UnpublishPackageInput,
   UnpublishPackageResult,
 } from './tasks';
+import { DEFAULT_FEATURES, mergeFeatures } from './features';
 import {
   DEFAULT_SELECTORS,
   DEFAULT_TEST_IDS,
@@ -28,7 +29,9 @@ export type {
   UnpublishPackageResult,
 } from './tasks';
 export type { DeepPartial, Selectors, TestIds } from './testIds';
+export type { Features } from './features';
 export { DEFAULT_SELECTORS, DEFAULT_TEST_IDS } from './testIds';
+export { DEFAULT_FEATURES, maybeIt } from './features';
 export { publishPackage, cleanupPublished, unpublishPackage } from './tasks';
 export {
   homeTests,
@@ -62,6 +65,7 @@ export function createRegistryConfig(options: VerdaccioUiOptions): RegistryConfi
     title: options.title ?? 'Verdaccio',
     testIds: mergeTestIds(DEFAULT_TEST_IDS, options.testIds),
     selectors: mergeSelectors(DEFAULT_SELECTORS, options.selectors),
+    features: mergeFeatures(DEFAULT_FEATURES, options.features),
   };
 }
 

@@ -1,3 +1,4 @@
+import type { Features } from './features';
 import type {
   PublishPackageResult,
   PublishPackageTaskInput,
@@ -18,6 +19,11 @@ export type RegistryConfig = {
   testIds: TestIds;
   /** Fully-resolved CSS selector map (defaults merged with overrides). */
   selectors: Selectors;
+  /**
+   * Per-test feature flags — set to `false` to convert a specific
+   * test into `it.skip` without forking the suite.
+   */
+  features: Features;
 };
 
 export type VerdaccioUiOptions = {
@@ -32,6 +38,8 @@ export type VerdaccioUiOptions = {
   testIds?: DeepPartial<TestIds>;
   /** Partial override of the default CSS selector map. */
   selectors?: DeepPartial<Selectors>;
+  /** Partial override of the default feature flags. */
+  features?: DeepPartial<Features>;
 };
 
 /**

@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 
+import { maybeIt } from '../features';
 import { RegistryConfig } from '../types';
 
 /**
@@ -21,6 +22,7 @@ import { RegistryConfig } from '../types';
  */
 export function settingsTests(config: RegistryConfig) {
   const { header } = config.testIds;
+  const { features } = config;
 
   describe('settings & language', () => {
     beforeEach(() => {
@@ -58,7 +60,9 @@ export function settingsTests(config: RegistryConfig) {
       cy.contains('[role="dialog"]', 'German').should('be.visible');
     });
 
-    it('should change the UI language when a language card is clicked', () => {
+    maybeIt(features.settings.languageSwitcher)(
+      'should change the UI language when a language card is clicked',
+      () => {
       cy.getByTestId(header.settingsTooltip).click();
       cy.get('[role="dialog"]').should('be.visible');
       cy.contains('[role="dialog"] [role="tab"]', 'Translations').click();
@@ -83,7 +87,8 @@ export function settingsTests(config: RegistryConfig) {
           // And the original dialog title text should also be gone.
           cy.contains('[role="dialog"]', englishTitle).should('not.exist');
         });
-    });
+      }
+    );
 
     it('should close the settings dialog with Escape', () => {
       cy.getByTestId(header.settingsTooltip).click();

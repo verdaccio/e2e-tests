@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 
+import { maybeIt } from '../features';
 import { RegistryConfig } from '../types';
 
 /**
@@ -14,6 +15,7 @@ import { RegistryConfig } from '../types';
  */
 export function layoutTests(config: RegistryConfig) {
   const { header, footer } = config.testIds;
+  const { features } = config;
 
   describe('layout: header, footer, ui-options', () => {
     beforeEach(() => {
@@ -81,6 +83,43 @@ export function layoutTests(config: RegistryConfig) {
         cy.getByTestId(header.settingsTooltip).should('be.visible');
         cy.getByTestId(header.infoTooltip).should('be.visible');
       });
+
+      maybeIt(features.layout.themeSwitch)(
+        'should toggle between light and dark mode',
+        () => {
+          // Cypress clears localStorage between tests (testIsolation),
+          // so each test starts from whatever the client default is.
+          // On CI the default is light (the Electron headless browser
+          // reports `prefers-color-scheme: light`).
+          //
+          // `handleToggleDarkLightMode` in HeaderRight wraps
+          // `setIsDarkMode` in a 300ms setTimeout, so we assert with
+          // Cypress's built-in retryability (no `cy.wait(ms)` needed —
+          // the `.should('be.visible')` retry window covers it).
+
+          // Start: light mode → the "light" icon button is rendered.
+          cy.getByTestId(header.themeSwitchLight).should('be.visible').click();
+
+          // After the debounced flip, the "dark" variant replaces it.
+          cy.getByTestId(header.themeSwitchDark, { timeout: 5000 }).should(
+            'be.visible'
+          );
+          cy.getByTestId(header.themeSwitchLight).should('not.exist');
+
+          // localStorage.darkMode is the source of truth (see
+          // useLocalStorage('darkMode', …) in ThemeProvider).
+          cy.window().its('localStorage').invoke('getItem', 'darkMode')
+            .should('eq', 'true');
+
+          // Toggle back so subsequent tests don't inherit dark state
+          // via a stale cache (testIsolation clears localStorage, but
+          // being explicit keeps the assertion symmetric).
+          cy.getByTestId(header.themeSwitchDark).click();
+          cy.getByTestId(header.themeSwitchLight, { timeout: 5000 }).should(
+            'be.visible'
+          );
+        }
+      );
     });
 
     describe('footer', () => {

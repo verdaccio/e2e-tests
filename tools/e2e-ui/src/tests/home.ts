@@ -4,6 +4,13 @@ import { RegistryConfig } from '../types';
 
 export function homeTests(config: RegistryConfig) {
   const { home, header, package: pkg } = config.testIds;
+  const { features } = config;
+
+  // Only register the `with a published package` nested describe when
+  // the corresponding feature flag is on. Using a plain `if` is simpler
+  // than wrapping `describe` itself in `describe.skip`, and it avoids
+  // emitting a pending describe block in reports.
+  const registerPublishedPackageBlock = features.home.publishedPackageRendering;
 
   describe('home', () => {
     beforeEach(() => {
@@ -88,7 +95,10 @@ export function homeTests(config: RegistryConfig) {
     // we can verify the home page actually renders the list (not just
     // the empty state) and cleans up after each test so the outer
     // "empty registry" assertions above keep working in isolation.
-    describe('with a published package', () => {
+    //
+    // Gated on `features.home.publishedPackageRendering` so builds
+    // where this shape doesn't apply can skip it without forking.
+    (registerPublishedPackageBlock ? describe : describe.skip)('with a published package', () => {
       const pkgName = '@verdaccio/home-fixture';
       let tempFolder: string | null = null;
 

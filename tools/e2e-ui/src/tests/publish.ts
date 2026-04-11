@@ -1,13 +1,20 @@
 /// <reference types="cypress" />
 
+import { maybeIt } from '../features';
 import { RegistryConfig } from '../types';
 
 export function publishTests(config: RegistryConfig) {
   const { header, package: pkg } = config.testIds;
   const { markdownBody, loginDialog } = config.selectors;
+  const { features } = config;
 
   describe('publish', () => {
     const pkgName = '@verdaccio/pkg-scoped';
+    // Single source of truth for the dependency the publish fixture
+    // writes into its package.json. The dependencies-tab assertion
+    // reads these back to verify the UI rendered both fields.
+    const depName = 'debug';
+    const depVersion = '4.0.0';
     // Per-test state so afterEach can clean up the specific publish
     // that this test created (temp folder + registry entry).
     let tempFolder: string | null = null;
@@ -54,7 +61,7 @@ export function publishTests(config: RegistryConfig) {
       cy.task('publishPackage', {
         pkgName,
         version: '1.0.0',
-        dependencies: { debug: '4.0.0' },
+        dependencies: { [depName]: depVersion },
         unique: true,
       }).then((result) => {
         tempFolder = result?.tempFolder ?? null;
@@ -133,9 +140,22 @@ export function publishTests(config: RegistryConfig) {
       cy.getByTestId(pkg.dependenciesTab).click();
       cy.wait(100);
       cy.getByTestId(pkg.dependencies).should('have.length', 1);
-      // The dep is rendered with its name as testid. This is a dynamic
-      // Verdaccio convention (not configurable via testIds map).
-      cy.getByTestId('debug').children().invoke('text').should('match', /debug/);
+
+      // The dep Chip uses the dep name as its data-testid (dynamic
+      // Verdaccio convention, see DependencyBlock.tsx:68), and its
+      // label is `"${name}: ${version}"` via the `dependencies.
+      // dependency-block` i18n key. Assert BOTH fields are rendered.
+      cy.getByTestId(depName)
+        .should('be.visible')
+        .and('contain.text', depName)
+        .and('contain.text', depVersion);
+
+      // Also verify the Chip text matches the exact "name: version"
+      // format so a regression in the label template would fail here
+      // rather than pass via a loose substring match.
+      cy.getByTestId(depName)
+        .invoke('text')
+        .should('match', new RegExp(`${depName}\\s*:\\s*${depVersion}`));
     });
 
     it('should click on versions tab', () => {
@@ -162,5 +182,65 @@ export function publishTests(config: RegistryConfig) {
       cy.getByTestId(pkg.uplinksTab).click();
       cy.getByTestId(pkg.noUplinks).should('be.visible');
     });
+
+    // ── Action-bar FABs: tarball download + raw viewer ─────────────
+    // Both buttons live in the sidebar ActionBar. They're gated on
+    // `web.showDownloadTarball` / `web.showRaw` (both default to true
+    // in the ui-theme's AppConfigurationProvider) and each test is
+    // also guarded by a feature flag so branches that ship a
+    // different action bar can skip cleanly.
+
+    maybeIt(features.publish.downloadTarball)(
+      'should fetch the tarball when the download button is clicked',
+      () => {
+        // The download provider hits the package manifest's dist.tarball
+        // URL directly. For our published fixture the filename looks
+        // like `pkg-scoped-1.0.0-t<ts>.tgz`, served from
+        // `/<pkg>/-/<filename>.tgz`. Intercept before clicking.
+        cy.intercept('GET', '**/pkg-scoped-*.tgz').as('tarballFetch');
+
+        cy.wait('@pkgs');
+        cy.getByTestId(pkg.title).first().click();
+        cy.wait('@sidebar');
+
+        cy.getByTestId(pkg.downloadTarballBtn)
+          .should('be.visible')
+          .click();
+
+        // The fetch should fire and return 200. We can't assert on the
+        // actual file landing on disk — Cypress doesn't track OS-level
+        // downloads — but a successful GET proves the end-to-end path
+        // from click → download provider → registry.
+        cy.wait('@tarballFetch', { timeout: 10000 })
+          .its('response.statusCode')
+          .should('eq', 200);
+      }
+    );
+
+    maybeIt(features.publish.rawViewer)(
+      'should open the raw manifest viewer when the raw button is clicked',
+      () => {
+        cy.wait('@pkgs');
+        cy.getByTestId(pkg.title).first().click();
+        cy.wait('@sidebar');
+
+        // RawViewer is a full-screen MUI Dialog — initially unmounted
+        // because `isOpen=false` keeps Dialog closed and Cypress won't
+        // find it. Clicking the FAB flips `isOpen` to true.
+        cy.getByTestId(pkg.rawBtn).should('be.visible').click();
+
+        cy.getByTestId(pkg.rawViewerDialog, { timeout: 5000 }).should(
+          'be.visible'
+        );
+        // The ReactJson viewer renders the package manifest — the
+        // package name should appear somewhere in the serialized JSON.
+        cy.getByTestId(pkg.rawViewerDialog).should('contain.text', pkgName);
+
+        // Close via the X button and confirm the dialog goes away so
+        // subsequent tests don't inherit an open overlay.
+        cy.getByTestId(pkg.closeRawViewer).click();
+        cy.getByTestId(pkg.rawViewerDialog).should('not.exist');
+      }
+    );
   });
 }
