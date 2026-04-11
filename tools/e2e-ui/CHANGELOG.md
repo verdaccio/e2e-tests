@@ -1,5 +1,19 @@
 # @verdaccio/e2e-ui
 
+## 2.2.0
+
+### Minor Changes
+
+- 6b43c92: Add configurable test-id/selector overrides, new test suites, and a reusable publish task.
+
+  - **New test suites**: `searchTests`, `settingsTests` (opens the settings dialog and switches language), `layoutTests` (header, footer, `/-/static/ui-options.js` health check).
+  - **Configurable selectors**: every `data-testid` used by the suites lives in `TestIds` / `Selectors` and can be overridden per-section via `createRegistryConfig({ testIds, selectors })`. Exports `DEFAULT_TEST_IDS` and `DEFAULT_SELECTORS`.
+  - **`publishPackage` task**: `cy.task('publishPackage', { pkgName, version, dependencies, unique })` publishes a throwaway package to the target registry so downstream specs have real data to assert on. Creates a throwaway user per call to obtain a legacy auth token, scaffolds a temp project with an `.npmrc`, spawns `npm publish --tag latest`. Pair with `cy.task('cleanupPublished', tempFolder)` in `after()`.
+  - **Strongly typed tasks**: `cy.task('publishPackage', …)` and `cy.task('cleanupPublished', …)` are now typed via ambient `Cypress.Chainable` augmentation — unknown task names fail at compile time and return values are fully typed.
+  - **`cy.login` selector overrides**: accepts an optional third argument `{ loginButton, usernameInput, passwordInput, submitButton }` so non-default Verdaccio builds can redirect the form interactions without forking the suite.
+  - **`publishTests` re-enabled**: the previously dormant publish suite now runs end-to-end and asserts the readme container, markdown body, sidebar (install commands for npm/yarn/pnpm, keyword list), and the dependencies/versions/uplinks tabs. Uses `cy.session` to memoize login across the suite.
+  - **README**: added with quick-start, suite table, configuration, publish task, and the minimum Verdaccio `config.yaml` requirements (`showSettings`, `userRateLimit`, publish ACL).
+
 ## 2.1.1
 
 ### Patch Changes
