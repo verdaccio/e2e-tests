@@ -45,6 +45,8 @@
     "ci:version:install": "pnpm install --frozen-lockfile=false",
     "ci:publish": "changeset publish",    
     "test:ui": "cypress run",
+    "test:ui:local": "./scripts/run-e2e-ui.sh",
+    "test:ui:local:open": "./scripts/run-e2e-ui.sh --open",
     "postinstall": "husky install"
   },
   "license": "MIT",

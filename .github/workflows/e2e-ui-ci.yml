@@ -17,8 +17,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        verdaccio: ['6']
-    name: UI / verdaccio@${{ matrix.verdaccio }}
+        include:
+          - source: docker
+            verdaccio: '6'
+          - source: npm
+            verdaccio: '6'
+    name: UI / ${{ matrix.source }} verdaccio@${{ matrix.verdaccio }}
     timeout-minutes: 10
     runs-on: ubuntu-latest
     steps:
@@ -34,11 +38,26 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Build
         run: pnpm build
-      - name: Start Verdaccio
+      - name: Start Verdaccio (docker)
+        if: matrix.source == 'docker'
         run: |
           docker compose -f ./docker/docker-e2e-ui/docker-compose.yaml build \
             --build-arg VERDACCIO_VERSION=${{ matrix.verdaccio }}
           docker compose -f ./docker/docker-e2e-ui/docker-compose.yaml up -d
+          for i in $(seq 1 30); do
+            curl -s http://localhost:4873/-/ping && break
+            sleep 1
+          done
+      - name: Start Verdaccio (npm)
+        if: matrix.source == 'npm'
+        run: |
+          npm install -g verdaccio@${{ matrix.verdaccio }}
+          mkdir -p "$RUNNER_TEMP/verdaccio"
+          cp ./docker/docker-e2e-ui/docker.yaml "$RUNNER_TEMP/verdaccio/config.yaml"
+          sed -i "s|/verdaccio|$RUNNER_TEMP/verdaccio|g" "$RUNNER_TEMP/verdaccio/config.yaml"
+          nohup verdaccio --config "$RUNNER_TEMP/verdaccio/config.yaml" \
+            > "$RUNNER_TEMP/verdaccio/verdaccio.log" 2>&1 &
+          echo $! > "$RUNNER_TEMP/verdaccio/verdaccio.pid"
           for i in $(seq 1 30); do
             curl -s http://localhost:4873/-/ping && break
             sleep 1
@@ -54,5 +73,12 @@ jobs:
         env:
           VERDACCIO_URL: http://localhost:4873
       - name: Stop containers
-        if: always()
+        if: always() && matrix.source == 'docker'
         run: docker compose -f ./docker/docker-e2e-ui/docker-compose.yaml down
+      - name: Stop Verdaccio (npm)
+        if: always() && matrix.source == 'npm'
+        run: |
+          if [ -f "$RUNNER_TEMP/verdaccio/verdaccio.pid" ]; then
+            kill "$(cat "$RUNNER_TEMP/verdaccio/verdaccio.pid")" || true
+          fi
+          cat "$RUNNER_TEMP/verdaccio/verdaccio.log" || true
