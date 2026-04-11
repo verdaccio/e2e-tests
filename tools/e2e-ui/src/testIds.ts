@@ -42,6 +42,14 @@ export interface TestIds {
     settingsTooltip: string;
     /** Info icon that opens the registry info dialog. */
     infoTooltip: string;
+    /**
+     * Theme switch button shown while in LIGHT mode (clicking it
+     * flips to dark). The underlying component swaps between this
+     * and `themeSwitchDark` based on `isDarkMode`.
+     */
+    themeSwitchLight: string;
+    /** Theme switch button shown while in DARK mode. */
+    themeSwitchDark: string;
     /** Menu icon shown after login (opens the logged-in menu). */
     logInDialogIcon: string;
     /** "Log out" entry inside the logged-in menu. */
@@ -54,6 +62,18 @@ export interface TestIds {
     container: string;
     /** "Powered by" version text on the right side of the footer. */
     version: string;
+  };
+  login: {
+    /** Login dialog container (the MUI Dialog root). */
+    dialog: string;
+    /** DialogContent wrapper inside the login dialog. */
+    dialogContent: string;
+    /**
+     * Error banner shown inside the login dialog when the server
+     * rejects credentials (or any other `errors.root` message the form
+     * sets). Renders inside the `LoginDialogFormError` component.
+     */
+    error: string;
   };
   package: {
     /** Wrapper around the list of packages on the home page. */
@@ -86,6 +106,14 @@ export interface TestIds {
     uplinksTab: string;
     /** Empty-state message when the package has no uplinks. */
     noUplinks: string;
+    /** Action-bar tarball download FAB. */
+    downloadTarballBtn: string;
+    /** Action-bar "view raw manifest" FAB. */
+    rawBtn: string;
+    /** Full-screen dialog that opens when `rawBtn` is clicked. */
+    rawViewerDialog: string;
+    /** Close button inside the raw viewer dialog. */
+    closeRawViewer: string;
   };
 }
 
@@ -126,6 +154,8 @@ export const DEFAULT_TEST_IDS: TestIds = {
     loginButton: 'header--button-login',
     settingsTooltip: 'header--tooltip-settings',
     infoTooltip: 'header--tooltip-info',
+    themeSwitchLight: 'header--button--light',
+    themeSwitchDark: 'header--button--dark',
     logInDialogIcon: 'logInDialogIcon',
     logOutDialogIcon: 'logOutDialogIcon',
     greetingsLabel: 'greetings-label',
@@ -133,6 +163,11 @@ export const DEFAULT_TEST_IDS: TestIds = {
   footer: {
     container: 'footer',
     version: 'version-footer',
+  },
+  login: {
+    dialog: 'login--dialog',
+    dialogContent: 'dialogContentLogin',
+    error: 'error',
   },
   package: {
     itemList: 'package-item-list',
@@ -150,6 +185,10 @@ export const DEFAULT_TEST_IDS: TestIds = {
     tagLatest: 'tag-latest',
     uplinksTab: 'uplinks-tab',
     noUplinks: 'no-uplinks',
+    downloadTarballBtn: 'download-tarball-btn',
+    rawBtn: 'raw-btn',
+    rawViewerDialog: 'rawViewer--dialog',
+    closeRawViewer: 'close-raw-viewer',
   },
 };
 
@@ -187,6 +226,7 @@ export function mergeTestIds(
     home: { ...defaults.home, ...overrides.home },
     header: { ...defaults.header, ...overrides.header },
     footer: { ...defaults.footer, ...overrides.footer },
+    login: { ...defaults.login, ...overrides.login },
     package: { ...defaults.package, ...overrides.package },
   };
 }

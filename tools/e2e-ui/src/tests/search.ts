@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 
+import { maybeIt } from '../features';
 import { RegistryConfig } from '../types';
 
 /**
@@ -11,6 +12,9 @@ import { RegistryConfig } from '../types';
  * a real package in the registry should live in publishTests instead.
  */
 export function searchTests(config: RegistryConfig) {
+  const { features } = config;
+  const { package: pkg } = config.testIds;
+
   describe('search', () => {
     beforeEach(() => {
       // Verdaccio's search endpoint — covers both the web API and the
@@ -71,6 +75,107 @@ export function searchTests(config: RegistryConfig) {
       cy.wait(anySearchAlias(), { timeout: 10000 }).then(
         (interception: any) => {
           expect(interception.request.url).to.contain('second-query');
+        }
+      );
+    });
+
+    // ── Rendering assertions that require real package data ────────
+    // Publishes a throwaway package before each test and unpublishes
+    // after so the outer "no results" test still sees a clean registry.
+    // The search query uses a substring of the package name to avoid
+    // scope-parsing issues with `@` / `/` characters in the URL.
+    describe('with a published package', () => {
+      const pkgName = '@verdaccio/search-fixture';
+      // Unique slug we can type into the search box — must be a
+      // substring of pkgName so Verdaccio's search matches it.
+      const pkgSlug = 'search-fixture';
+      let tempFolder: string | null = null;
+
+      beforeEach(() => {
+        cy.task('publishPackage', {
+          pkgName,
+          version: '1.0.0',
+          unique: true,
+        }).then((result) => {
+          tempFolder = result?.tempFolder ?? null;
+        });
+        cy.visit(config.registryUrl);
+      });
+
+      afterEach(() => {
+        cy.task('unpublishPackage', {
+          pkgName,
+          tempFolder: tempFolder ?? undefined,
+        });
+        if (tempFolder) {
+          cy.task('cleanupPublished', tempFolder);
+        }
+        tempFolder = null;
+      });
+
+      maybeIt(features.search.resultsDropdown)(
+        'should display the matching package in the results dropdown',
+        () => {
+        getSearchInput().clear().type(pkgSlug, { delay: 30 });
+
+        // Wait for the search request to resolve with results.
+        cy.wait(anySearchAlias(), { timeout: 10000 }).then(
+          (interception: any) => {
+            expect(interception.request.url).to.contain(pkgSlug);
+          }
+        );
+
+        // MUI Autocomplete opens a listbox with role="listbox" when
+        // there are matching options. Each result renders with
+        // role="option". No data-testids on the dropdown itself, so
+        // we lean on the ARIA roles which are stable across MUI
+        // versions.
+        cy.get('[role="listbox"]', { timeout: 5000 }).should('be.visible');
+        cy.get('[role="listbox"] [role="option"]').should(
+          'have.length.at.least',
+          1
+        );
+        // The result item must contain the full package name.
+        cy.contains('[role="listbox"] [role="option"]', pkgName).should(
+          'be.visible'
+        );
+        }
+      );
+
+      maybeIt(features.search.resultClickNavigation)(
+        'should navigate to the package detail page when a result is clicked',
+        () => {
+          // Intercept the two data endpoints that the detail route
+          // fetches on mount. Waiting on these is the most reliable
+          // way to know the router actually resolved the new page
+          // (not just changed the URL).
+          cy.intercept('GET', `/-/verdaccio/data/sidebar/${pkgName}`).as(
+            'detailSidebar'
+          );
+          cy.intercept(
+            'GET',
+            `/-/verdaccio/data/package/readme/${pkgName}`
+          ).as('detailReadme');
+
+          getSearchInput().clear().type(pkgSlug, { delay: 30 });
+          cy.wait(anySearchAlias(), { timeout: 10000 });
+
+          cy.contains('[role="listbox"] [role="option"]', pkgName)
+            .should('be.visible')
+            .click();
+
+          // Verdaccio routes package detail under /-/web/detail/<pkg>.
+          cy.location('pathname').should('contain', '/-/web/detail');
+          cy.location('pathname').should('contain', 'search-fixture');
+
+          // Wait for the detail page's own fetches to settle so
+          // assertions don't race the async content.
+          cy.wait('@detailSidebar', { timeout: 10000 });
+          cy.wait('@detailReadme', { timeout: 10000 });
+
+          // Detail page rendered both panes end-to-end.
+          cy.getByTestId(pkg.sidebar).should('be.visible');
+          cy.getByTestId(pkg.readme).should('be.visible');
         }
       );
     });
