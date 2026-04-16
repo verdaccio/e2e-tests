@@ -45,4 +45,10 @@ userRateLimit:
   windowMs: 1000
   max: 10000
 
+# Exposes the Change Password page (/-/web/change-password). Without
+# this flag the React component redirects to `/` on mount, and the
+# 07-change-password cypress spec fails at its navigation check.
+flags:
+  changePassword: true
+
 log: { type: stdout, format: json, level: info }

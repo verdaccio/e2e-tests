@@ -74,6 +74,31 @@ export interface Features {
      */
     rawViewer: boolean;
   };
+  changePassword: {
+    /**
+     * Whether to run the happy-path test (submit valid change,
+     * expect navigation to the success page, then restore the
+     * original password in `after()`).
+     *
+     * The suite targets /-/web/change-password, which renders only
+     * when the server is configured with `flags.changePassword: true`.
+     * Disable on registries that do not enable the flag.
+     */
+    happyPath: boolean;
+    /**
+     * Whether to run the client-side validation tests (submit button
+     * stays disabled while fields are empty / mismatched confirm).
+     * Depends on the yup `changePasswordSchema`.
+     */
+    validation: boolean;
+    /**
+     * Whether to run the "wrong old password shows error banner" test.
+     * Depends on the server rejecting the call and the onSubmit catch
+     * block surfacing `"Failed to change password"` via
+     * `LoginDialogFormError`.
+     */
+    wrongOldPassword: boolean;
+  };
 }
 
 /** Defaults: all flags on. */
@@ -98,6 +123,11 @@ export const DEFAULT_FEATURES: Features = {
     downloadTarball: true,
     rawViewer: true,
   },
+  changePassword: {
+    happyPath: true,
+    validation: true,
+    wrongOldPassword: true,
+  },
 };
 
 import type { DeepPartial } from './testIds';
@@ -118,6 +148,7 @@ export function mergeFeatures(
     signin: { ...defaults.signin, ...overrides.signin },
     layout: { ...defaults.layout, ...overrides.layout },
     publish: { ...defaults.publish, ...overrides.publish },
+    changePassword: { ...defaults.changePassword, ...overrides.changePassword },
   };
 }
 

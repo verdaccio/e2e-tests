@@ -32,6 +32,17 @@ declare global {
        */
       getByTestId(selector: string, ...args: any[]): Chainable<JQuery<HTMLElement>>;
       /**
+       * Find a form input whose associated <label> text matches `text`.
+       *
+       * Used by suites that target pages without stable `id`/testid
+       * selectors on their inputs (e.g. the ChangePassword form).
+       * Resolves the label's `for` attribute and returns the input
+       * it points to, so `.type(...)` / `.clear()` work directly.
+       *
+       * `text` may be a string (substring match) or a RegExp.
+       */
+      getByLabel(text: string | RegExp): Chainable<JQuery<HTMLElement>>;
+      /**
        * Login to Verdaccio UI. Selectors default to Verdaccio 6.x
        * conventions; pass `selectors` to override any subset for
        * non-default builds.
@@ -47,6 +58,21 @@ declare global {
 
 Cypress.Commands.add('getByTestId', (selector: string, ...args: any[]) => {
   return cy.get(`[data-testid=${selector}]`, ...args);
+});
+
+Cypress.Commands.add('getByLabel', (text: string | RegExp) => {
+  // Resolve the associated input via the label's `for` attribute, which
+  // MUI TextField sets to the auto-generated input id. Scoping through
+  // `contains()` returns the <label> element itself.
+  return cy.contains('label', text).then(($label) => {
+    const inputId = $label.attr('for');
+    if (!inputId) {
+      throw new Error(
+        `getByLabel: matching label has no "for" attribute (text=${String(text)})`
+      );
+    }
+    return cy.get(`#${inputId}`);
+  });
 });
 
 Cypress.Commands.add(
