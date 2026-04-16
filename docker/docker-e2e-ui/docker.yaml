@@ -48,7 +48,14 @@ userRateLimit:
 # Exposes the Change Password page (/-/web/change-password). Without
 # this flag the React component redirects to `/` on mount, and the
 # 07-change-password cypress spec fails at its navigation check.
-flags:
+#
+# Using the legacy `experiments:` key (5.x) instead of the newer `flags:`
+# because the `verdaccio:6` docker image's bundled `@verdaccio/middleware`
+# only spreads `...config.experiments` into the client-side UI options
+# object. The `...config.flags` spread was added later and has not yet
+# shipped in a tagged image. Current 6.x treats both keys equivalently,
+# so this stays correct once the image catches up.
+experiments:
   changePassword: true
 
 log: { type: stdout, format: json, level: info }
