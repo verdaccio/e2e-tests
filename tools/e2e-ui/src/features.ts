@@ -83,6 +83,16 @@ export interface Features {
      * The suite targets /-/web/change-password, which renders only
      * when the server is configured with `flags.changePassword: true`.
      * Disable on registries that do not enable the flag.
+     *
+     * Also disable on **published verdaccio 6.x** (all lines through
+     * 6.5.0): the reset_password handler in
+     * `verdaccio/build/api/web/api/user.js` ships with an inverted
+     * conditional — `validatePassword(...) === false` gates the
+     * `auth.changePassword(...)` call, so a *valid* new password
+     * always returns HTTP 400 (`PASSWORD_VALIDATION`). The bug is
+     * fixed on the development branch but has not been released
+     * in any 6.x tag, so the happy path cannot succeed against an
+     * `npm install verdaccio@6` runtime.
      */
     happyPath: boolean;
     /**

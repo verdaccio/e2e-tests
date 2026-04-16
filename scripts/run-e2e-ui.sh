@@ -198,6 +198,16 @@ packages:
 userRateLimit:
   windowMs: 1000
   max: 10000
+# Exposes the Change Password page (/-/web/change-password). Without
+# this flag the React component redirects to \`/\` on mount and the
+# change-password cypress spec self-skips via its before() hook.
+#
+# Using the legacy \`experiments:\` key (5.x) instead of the newer \`flags:\`
+# because the bundled \`@verdaccio/middleware\` in the \`verdaccio:6\`
+# image only spreads \`...config.experiments\` into the client-side
+# ui-options object. Mirrors docker/docker-e2e-ui/docker.yaml.
+experiments:
+  changePassword: true
 log: { type: stdout, format: pretty, level: warn }
 YAML
 

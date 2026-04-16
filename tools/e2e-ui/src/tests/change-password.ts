@@ -12,19 +12,23 @@ import { RegistryConfig } from '../types';
  * directly to the page, and drives the form.
  *
  * Selector strategy: the ChangePassword form does not ship stable
- * `id`/testid attributes on its inputs, so the suite locates fields
- * via their rendered label text using `cy.getByLabel`. The English
- * labels come from `@verdaccio/ui-i18n` (`security.changePassword.*`
- * in `crowdin/ui.json`):
+ * `id`/testid attributes on its inputs, but every field is registered
+ * via react-hook-form's `register('<name>')`, which sets a stable
+ * `name` attribute on the underlying `<input>`. The labels themselves
+ * are `t('security.changePassword.*')` calls — when the i18n bundle
+ * hasn't finished loading (or isn't loaded at all on this route), MUI
+ * renders the literal i18n key as the label, so any selector that
+ * matches on visible label text silently misses every field and the
+ * form stays empty (which would also make the mismatch test "pass"
+ * for the wrong reason: the submit button is disabled because the
+ * form is empty, not because yup rejected the mismatch).
  *
- *   Username             → "Username"
- *   Old / Current        → "Current Password"
- *   New password         → "New Password"
- *   Confirm              → "Confirm New Password"
- *   Submit button        → "Change Password"
- *
- * Regexes below deliberately allow wording drift (e.g. the historical
- * "Old Password" variant).
+ * The stable, i18n-independent contract from ChangePassword.tsx is:
+ *   register('username')         → input[name="username"]
+ *   register('oldPassword')      → input[name="oldPassword"]
+ *   register('newPassword')      → input[name="newPassword"]
+ *   register('confirmPassword')  → input[name="confirmPassword"]
+ *   submit button                → form button[type="submit"]
  */
 export function changePasswordTests(config: RegistryConfig) {
   const { header, login } = config.testIds;
@@ -94,9 +98,9 @@ export function changePasswordTests(config: RegistryConfig) {
       // If flags.changePassword is off server-side, the component's
       // useEffect redirects to `/` and this assertion times out — which
       // is the correct signal that the registry is misconfigured.
-      // Scope the match to the submit button + form heading so stray
-      // "Change Password" text elsewhere on the page can't satisfy it.
-      cy.contains('button', /Change Password/i, { timeout: 5000 }).should('be.visible');
+      // Use the stable `type="submit"` selector so the assertion is
+      // independent of whether the i18n bundle has resolved by now.
+      cy.get('form button[type="submit"]', { timeout: 5000 }).should('be.visible');
     });
 
     after(() => {
@@ -111,11 +115,11 @@ export function changePasswordTests(config: RegistryConfig) {
       });
       cy.wait('@signChangePwdRestore').its('response.statusCode').should('eq', 200);
       cy.visit(CHANGE_PASSWORD_PATH);
-      cy.getByLabel(/Username/i).type(user);
-      cy.getByLabel(/Current Password|Old Password/i).type(currentPassword);
-      cy.getByLabel(/^New Password$/i).type(password);
-      cy.getByLabel(/Confirm( New)? Password/i).type(password);
-      cy.contains('button', /Change Password/i).click();
+      cy.get('input[name="username"]').type(user);
+      cy.get('input[name="oldPassword"]').type(currentPassword);
+      cy.get('input[name="newPassword"]').type(password);
+      cy.get('input[name="confirmPassword"]').type(password);
+      cy.get('form button[type="submit"]').click();
       currentPassword = password;
     });
 
@@ -124,19 +128,19 @@ export function changePasswordTests(config: RegistryConfig) {
     maybeIt(features.changePassword.validation)(
       'should disable the submit button while the form is empty',
       () => {
-        cy.contains('button', /Change Password/i).should('be.disabled');
+        cy.get('form button[type="submit"]').should('be.disabled');
       }
     );
 
     maybeIt(features.changePassword.validation)(
       'should keep submit disabled when new and confirm passwords mismatch',
       () => {
-        cy.getByLabel(/Username/i).type(user);
-        cy.getByLabel(/Current Password|Old Password/i).type(currentPassword);
-        cy.getByLabel(/^New Password$/i).type('newSecretPass123');
-        cy.getByLabel(/Confirm( New)? Password/i).type('different-value');
+        cy.get('input[name="username"]').type(user);
+        cy.get('input[name="oldPassword"]').type(currentPassword);
+        cy.get('input[name="newPassword"]').type('newSecretPass123');
+        cy.get('input[name="confirmPassword"]').type('different-value');
         // yup schema rejects mismatch → isValid stays false → button disabled.
-        cy.contains('button', /Change Password/i).should('be.disabled');
+        cy.get('form button[type="submit"]').should('be.disabled');
       }
     );
 
@@ -146,11 +150,11 @@ export function changePasswordTests(config: RegistryConfig) {
       'should show an error banner when the old password is wrong',
       () => {
         cy.intercept('PUT', '/-/verdaccio/sec/reset_password').as('reset');
-        cy.getByLabel(/Username/i).type(user);
-        cy.getByLabel(/Current Password|Old Password/i).type('definitely-wrong-xyz');
-        cy.getByLabel(/^New Password$/i).type('newSecretPass123');
-        cy.getByLabel(/Confirm( New)? Password/i).type('newSecretPass123');
-        cy.contains('button', /Change Password/i)
+        cy.get('input[name="username"]').type(user);
+        cy.get('input[name="oldPassword"]').type('definitely-wrong-xyz');
+        cy.get('input[name="newPassword"]').type('newSecretPass123');
+        cy.get('input[name="confirmPassword"]').type('newSecretPass123');
+        cy.get('form button[type="submit"]')
           .should('not.be.disabled')
           .click();
         // Server rejects (htpasswd → plain Error → handler returns 4xx).
@@ -172,11 +176,11 @@ export function changePasswordTests(config: RegistryConfig) {
         const newPassword = `${currentPassword}-rotated`;
         cy.intercept('PUT', '/-/verdaccio/sec/reset_password').as('reset');
 
-        cy.getByLabel(/Username/i).type(user);
-        cy.getByLabel(/Current Password|Old Password/i).type(currentPassword);
-        cy.getByLabel(/^New Password$/i).type(newPassword);
-        cy.getByLabel(/Confirm( New)? Password/i).type(newPassword);
-        cy.contains('button', /Change Password/i)
+        cy.get('input[name="username"]').type(user);
+        cy.get('input[name="oldPassword"]').type(currentPassword);
+        cy.get('input[name="newPassword"]').type(newPassword);
+        cy.get('input[name="confirmPassword"]').type(newPassword);
+        cy.get('form button[type="submit"]')
           .should('not.be.disabled')
           .click();
 
