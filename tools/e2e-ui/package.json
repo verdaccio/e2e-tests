@@ -1,6 +1,6 @@
 {
   "name": "@verdaccio/e2e-ui",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "type": "module",
   "license": "MIT",
   "description": "Cypress plugin for Verdaccio UI e2e tests — run against any registry",
