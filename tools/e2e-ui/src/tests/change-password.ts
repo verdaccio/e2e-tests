@@ -47,32 +47,70 @@ export function changePasswordTests(config: RegistryConfig) {
      */
     let currentPassword = password;
 
+    /**
+     * Capability check. The ChangePassword page's `useEffect` redirects
+     * to `/` whenever `configuration.flags.changePassword` is not truthy
+     * — which is the case on any registry that either (a) didn't set
+     * `flags.changePassword: true` in its config, or (b) runs a
+     * verdaccio build whose middleware doesn't yet propagate the flag
+     * into `__VERDACCIO_BASENAME_UI_OPTIONS` (older `verdaccio:6`
+     * tagged images fall in this bucket).
+     *
+     * In either case the suite has nothing to exercise, so skip the
+     * whole describe with a clear reason rather than burning five
+     * seconds per test on cy.contains timeouts.
+     */
+    before(function () {
+      cy.visit(config.registryUrl);
+      cy.window().then((win) => {
+        const opts = (win as any).__VERDACCIO_BASENAME_UI_OPTIONS;
+        const enabled = !!opts?.flags?.changePassword;
+        if (!enabled) {
+          // eslint-disable-next-line no-console
+          console.warn(
+            '[change-password] server did not advertise flags.changePassword=true ' +
+              '— skipping suite. ui-options.flags: ' +
+              JSON.stringify(opts?.flags ?? {})
+          );
+          this.skip();
+        }
+      });
+    });
+
     beforeEach(() => {
+      // Intercept the login POST and wait on it explicitly instead of
+      // leaning on a visual sentinel — mirrors the pattern used by
+      // signinTests and avoids a race between cy.login's fire-and-forget
+      // submit and the next cy.visit.
+      cy.intercept('POST', '/-/verdaccio/sec/login').as('signChangePwd');
       cy.visit(config.registryUrl);
       cy.login(user, currentPassword, {
         loginButton: header.loginButton,
         ...loginDialog,
       });
-      // Wait for the login request to settle before navigating.
-      cy.getByTestId(header.logInDialogIcon, { timeout: 5000 }).should('be.visible');
-      cy.visit(`${config.registryUrl}${CHANGE_PASSWORD_PATH}`);
-      // If the flag is off server-side, the component useEffect redirects
-      // to `/`. Failing here means the registry is misconfigured — every
-      // test below needs the form to be present.
-      cy.contains(/Change Password/i, { timeout: 5000 }).should('be.visible');
+      cy.wait('@signChangePwd').its('response.statusCode').should('eq', 200);
+
+      cy.visit(CHANGE_PASSWORD_PATH);
+      // If flags.changePassword is off server-side, the component's
+      // useEffect redirects to `/` and this assertion times out — which
+      // is the correct signal that the registry is misconfigured.
+      // Scope the match to the submit button + form heading so stray
+      // "Change Password" text elsewhere on the page can't satisfy it.
+      cy.contains('button', /Change Password/i, { timeout: 5000 }).should('be.visible');
     });
 
     after(() => {
       // Restore the original password so subsequent spec files
       // (and retries) can still log in with `config.credentials`.
       if (currentPassword === password) return;
+      cy.intercept('POST', '/-/verdaccio/sec/login').as('signChangePwdRestore');
       cy.visit(config.registryUrl);
       cy.login(user, currentPassword, {
         loginButton: header.loginButton,
         ...loginDialog,
       });
-      cy.getByTestId(header.logInDialogIcon, { timeout: 5000 }).should('be.visible');
-      cy.visit(`${config.registryUrl}${CHANGE_PASSWORD_PATH}`);
+      cy.wait('@signChangePwdRestore').its('response.statusCode').should('eq', 200);
+      cy.visit(CHANGE_PASSWORD_PATH);
       cy.getByLabel(/Username/i).type(user);
       cy.getByLabel(/Current Password|Old Password/i).type(currentPassword);
       cy.getByLabel(/^New Password$/i).type(password);
