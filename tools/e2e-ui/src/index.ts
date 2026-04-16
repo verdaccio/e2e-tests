@@ -40,6 +40,7 @@ export {
   searchTests,
   settingsTests,
   layoutTests,
+  changePasswordTests,
 } from './tests';
 
 /**
@@ -174,6 +175,7 @@ export function registerAllTests(config: RegistryConfig): void {
   searchTests(config);
   settingsTests(config);
   publishTests(config);
+  changePasswordTests(config);
 }
 
 // Re-export for convenience
@@ -184,4 +186,5 @@ import {
   searchTests,
   settingsTests,
   layoutTests,
+  changePasswordTests,
 } from './tests';

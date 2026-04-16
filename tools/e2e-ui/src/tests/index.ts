@@ -4,3 +4,4 @@ export { publishTests } from './publish';
 export { searchTests } from './search';
 export { settingsTests } from './settings';
 export { layoutTests } from './layout';
+export { changePasswordTests } from './change-password';
