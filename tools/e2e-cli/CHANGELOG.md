@@ -1,5 +1,13 @@
 # @verdaccio/e2e-cli
 
+## 2.5.0
+
+### Minor Changes
+
+- c59d6cb: add login e2e for yarn
+- 3f6c864: feat: add deprecate support for yarn modern adapter using @verdaccio/yarn-plugin-npm-deprecate
+- 20b0092: feat: add ping support for yarn modern adapter using @verdaccio/yarn-plugin-npm-ping
+
 ## 2.4.0
 
 ### Minor Changes
