@@ -149,13 +149,29 @@ export function createYarnModernAdapter(binPath?: string, version?: string): Pac
         getPackageJSON(packageName, version, dependencies, devDependencies)
       );
       await writeFile(join(tempFolder, 'README.md'), getREADME(packageName));
-      debug('importing @verdaccio/yarn-import npm-ping into %s', tempFolder);
-      await exec({ cwd: tempFolder, env: { ...process.env, ...YARN_ENV } }, 'npx', [
-        '-y',
-        '@verdaccio/yarn-import',
-        'npm-ping',
-      ]);
       return { tempFolder };
+    },
+
+    async importPlugin(cwd: string, pluginName: string): Promise<void> {
+      debug('downloading %s plugin bundle', pluginName);
+      const tmpDir = execSync('mktemp -d', { encoding: 'utf8' }).trim();
+      const pkg = `@verdaccio/yarn-plugin-${pluginName}`;
+      execSync(`npm pack ${pkg} --pack-destination "${tmpDir}"`, {
+        encoding: 'utf8',
+        timeout: 30000,
+        stdio: 'pipe',
+      });
+      execSync(`tar xzf "${tmpDir}"/*.tgz -C "${tmpDir}"`, {
+        encoding: 'utf8',
+        stdio: 'pipe',
+      });
+      const bundlePath = join(tmpDir, 'package/bundles/@yarnpkg/plugin-npm-ping.js');
+      debug('importing plugin from %s into %s', bundlePath, cwd);
+      await exec({ cwd, env: { ...process.env, ...YARN_ENV } }, bin, [
+        'plugin',
+        'import',
+        bundlePath,
+      ]);
     },
   };
 

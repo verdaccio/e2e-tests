@@ -16,6 +16,9 @@ async function testPing(ctx: TestContext): Promise<void> {
       ctx.token
     );
     cwd = tempFolder;
+    if (ctx.adapter.importPlugin) {
+      await ctx.adapter.importPlugin(tempFolder, 'npm-ping');
+    }
   }
 
   const jsonFlag = type === 'yarn-modern' ? [] : ['--json'];
