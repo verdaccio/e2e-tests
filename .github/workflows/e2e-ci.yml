@@ -25,6 +25,7 @@ jobs:
           - npm@10
           - pnpm@9
           - pnpm@10
+          - pnpm@11.0.0-rc.2
           - yarn-classic
           - yarn-modern@3
           - yarn-modern@4

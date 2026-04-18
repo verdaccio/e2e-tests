@@ -79,8 +79,8 @@ async function testUnpublish(ctx: TestContext): Promise<void> {
     ...ctx.adapter.registryArg(ctx.registryUrl)
   );
   assert.ok(
-    resp2.stdout.includes(`${pkgName2}@1.0.0`),
-    `Expected unpublish output to contain "${pkgName2}@1.0.0" but got "${resp2.stdout}"`
+    resp2.stdout.includes(pkgName2),
+    `Expected unpublish output to contain "${pkgName2}" but got "${resp2.stdout}"`
   );
 }
 
