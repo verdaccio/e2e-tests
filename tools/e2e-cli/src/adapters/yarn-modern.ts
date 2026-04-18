@@ -11,7 +11,7 @@ import { createTempFolder, getPackageJSON, getREADME } from '../utils/project';
 
 const debug = buildDebug('verdaccio:e2e-cli:yarn-modern');
 
-const YARN_MODERN_SUPPORTED_COMMANDS = new Set(['publish', 'install', 'info', 'ping', 'deprecate']);
+const YARN_MODERN_SUPPORTED_COMMANDS = new Set(['publish', 'install', 'info', 'ping', 'deprecate', 'login']);
 
 const YARN_ENV = {
   COREPACK_ENABLE_STRICT: '0',
@@ -130,6 +130,16 @@ export function createYarnModernAdapter(binPath?: string, version?: string): Pac
           (a) => !a.startsWith('--registry')
         );
         yarnArgs = ['npm', 'deprecate', ...filtered];
+      } else if (cmd === 'login') {
+        const filtered = args.slice(1).filter(
+          (a) => !a.startsWith('--registry')
+        );
+        yarnArgs = ['npm', 'login', ...filtered];
+      } else if (cmd === 'whoami') {
+        const filtered = args.slice(1).filter(
+          (a) => !a.startsWith('--registry')
+        );
+        yarnArgs = ['npm', 'whoami', ...filtered];
       } else {
         yarnArgs = args.filter((a) => !a.startsWith('--registry'));
       }

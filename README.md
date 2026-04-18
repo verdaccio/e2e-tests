@@ -71,6 +71,7 @@ verdaccio-e2e -r http://localhost:4873 -v   # verbose — shows each command
 | audit | yes | yes | yes | skip |
 | deprecate | yes | yes | skip | yes |
 | dist-tags | yes | yes | skip | skip |
+| login | skip | skip | skip | yes |
 | ping | yes | yes | skip | yes |
 | search | yes | yes | skip | skip |
 | star | yes | yes | skip | skip |

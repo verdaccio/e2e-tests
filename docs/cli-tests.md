@@ -52,6 +52,18 @@ Three sub-tests covering deprecate, un-deprecate, and multi-version deprecation.
 
 - **yarn-modern**: imports `@verdaccio/yarn-plugin-npm-deprecate` via `importPlugin`, runs `install` before each publish, and omits `--json` on the deprecate command.
 
+## login
+
+Tests user creation and authentication via non-interactive legacy auth (yarn-modern only).
+
+| Sub-test | Assertion |
+|----------|-----------|
+| 1. Create new user + whoami | Runs `yarn npm login --auth-type=legacy` with `--user`, `--password`, `--email` to create a new user. Asserts output contains "Logged in" or "token saved". Then runs `yarn npm whoami` and asserts it returns the created username. |
+| 2. Login existing user + whoami | Logs in again with the same credentials (authenticates existing user, not creating). Asserts login succeeds and `whoami` returns the same username. |
+
+- **yarn-modern**: imports `@verdaccio/yarn-plugin-npm-login` via `importPlugin`. Uses fully non-interactive flags.
+- **npm/pnpm**: not implemented (npm login requires TTY interaction).
+
 ## dist-tags
 
 Three sub-tests covering listing, removing, and adding dist-tags.
