@@ -11,7 +11,7 @@ import { createTempFolder, getPackageJSON, getREADME } from '../utils/project';
 
 const debug = buildDebug('verdaccio:e2e-cli:yarn-modern');
 
-const YARN_MODERN_SUPPORTED_COMMANDS = new Set(['publish', 'install', 'info']);
+const YARN_MODERN_SUPPORTED_COMMANDS = new Set(['publish', 'install', 'info', 'ping']);
 
 const YARN_ENV = {
   COREPACK_ENABLE_STRICT: '0',
@@ -120,6 +120,11 @@ export function createYarnModernAdapter(binPath?: string, version?: string): Pac
       } else if (cmd === 'info') {
         const filtered = args.slice(1).filter((a) => !a.startsWith('--registry'));
         yarnArgs = ['npm', 'info', ...filtered];
+      } else if (cmd === 'ping') {
+        const filtered = args.slice(1).filter(
+          (a) => !a.startsWith('--registry')
+        );
+        yarnArgs = ['npm', 'ping', ...filtered];
       } else {
         yarnArgs = args.filter((a) => !a.startsWith('--registry'));
       }
@@ -144,6 +149,12 @@ export function createYarnModernAdapter(binPath?: string, version?: string): Pac
         getPackageJSON(packageName, version, dependencies, devDependencies)
       );
       await writeFile(join(tempFolder, 'README.md'), getREADME(packageName));
+      debug('importing @verdaccio/yarn-import npm-ping into %s', tempFolder);
+      await exec({ cwd: tempFolder, env: { ...process.env, ...YARN_ENV } }, 'npx', [
+        '-y',
+        '@verdaccio/yarn-import',
+        'npm-ping',
+      ]);
       return { tempFolder };
     },
   };
