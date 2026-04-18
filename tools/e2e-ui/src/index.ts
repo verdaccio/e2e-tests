@@ -1,3 +1,5 @@
+import { appendFileSync } from 'fs';
+
 import {
   cleanupPublished,
   publishPackage,
@@ -89,6 +91,41 @@ export function setupVerdaccioTasks(
   options: VerdaccioUiOptions
 ): void {
   const config = createRegistryConfig(options);
+
+  // GitHub Actions Step Summary
+  on('after:run', (results) => {
+    const summaryFile = process.env.GITHUB_STEP_SUMMARY;
+    if (!summaryFile || !results || !('runs' in results)) return;
+
+    const cypressResults = results as CypressCommandLine.CypressRunResult;
+    const lines: string[] = [];
+
+    lines.push('## UI E2E Test Results\n');
+    lines.push('| Spec | Tests | Passing | Failing | Pending | Duration |');
+    lines.push('|------|-------|---------|---------|---------|----------|');
+
+    for (const run of cypressResults.runs) {
+      const specName = run.spec.relative || run.spec.name;
+      const stats = run.stats;
+      const icon = stats.failures > 0 ? '❌' : '✅';
+      const dur = stats.duration ? `${(stats.duration / 1000).toFixed(1)}s` : '-';
+      lines.push(
+        `| ${icon} ${specName} | ${stats.tests} | ${stats.passes} | ${stats.failures} | ${stats.pending} | ${dur} |`
+      );
+    }
+
+    lines.push('');
+    const totals = cypressResults.totalTests ?? 0;
+    const passed = cypressResults.totalPassed ?? 0;
+    const failed = cypressResults.totalFailed ?? 0;
+    const pending = cypressResults.totalPending ?? 0;
+    const emoji = failed > 0 ? '❌' : '✅';
+    lines.push(
+      `${emoji} **${passed} passed**, **${failed} failed**, **${pending} pending** (${totals} total)\n`
+    );
+
+    appendFileSync(summaryFile, lines.join('\n'));
+  });
 
   on('task', {
     registry(): RegistryTaskResult {
