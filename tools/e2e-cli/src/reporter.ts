@@ -43,6 +43,18 @@ export function reportSuiteStart(adapterName: string): void {
   console.log(`\n${COLORS.bold}${COLORS.cyan}${adapterName}${COLORS.reset}`);
 }
 
+export function reportSubTest(label: string): void {
+  process.stdout.write(
+    `    ${COLORS.dim}●${COLORS.reset} ${label}\n`
+  );
+}
+
+export function reportSubTestResult(label: string, passed: boolean, duration?: number): void {
+  const icon = passed ? `${COLORS.green}✓${COLORS.reset}` : `${COLORS.red}✗${COLORS.reset}`;
+  const dur = duration !== undefined ? ` ${COLORS.dim}(${formatDuration(duration)})${COLORS.reset}` : '';
+  process.stdout.write(`    ${icon} ${label}${dur}\n`);
+}
+
 export function reportSkipped(testName: string): void {
   console.log(`  ${COLORS.yellow}SKIP${COLORS.reset} ${testName}`);
 }

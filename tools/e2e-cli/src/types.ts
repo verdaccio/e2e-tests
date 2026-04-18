@@ -15,6 +15,8 @@ export type TestContext = {
   adapter: PackageManagerAdapter;
   /** Unique suffix for package names to avoid conflicts across runs */
   runId: string;
+  /** Report a sub-test step. Runs the callback and reports pass/fail. */
+  subTest: (label: string, fn: () => Promise<void>) => Promise<void>;
 };
 
 export type TestResult = {

@@ -70,88 +70,76 @@ async function testLogin(ctx: TestContext): Promise<void> {
   const password1 = 'test-password-123';
   const email1 = `${user1}@test.example.com`;
 
-  // Test 1: create a new user via yarn npm login, verify with whoami
-  debug('--- test 1: create new user via login + whoami ---');
-  const tf1 = await prepareLoginProject(ctx, `verdaccio-login1-${id}`);
-
-  const loginResp = await yarnLogin(ctx, tf1, user1, password1, email1);
-  debug('login output: %s', loginResp.stdout);
-  assert.ok(
-    loginResp.stdout.includes('Logged in') || loginResp.stdout.includes('token saved'),
-    `Expected login success message but got "${loginResp.stdout}"`
-  );
-
-  const who1 = await yarnWhoami(ctx, tf1);
-  assert.ok(who1.includes(user1), `Expected yarn whoami "${user1}" but got "${who1}"`);
-
-  // Test 2: login again with the same user (authenticate existing user)
-  debug('--- test 2: login with existing user ---');
-  const tf2 = await prepareLoginProject(ctx, `verdaccio-login2-${id}`);
-
-  const loginResp2 = await yarnLogin(ctx, tf2, user1, password1, email1);
-  assert.ok(
-    loginResp2.stdout.includes('Logged in') || loginResp2.stdout.includes('token saved'),
-    `Expected login success for existing user but got "${loginResp2.stdout}"`
-  );
-
-  const who2 = await yarnWhoami(ctx, tf2);
-  assert.ok(who2.includes(user1), `Expected "${user1}" but got "${who2}"`);
-
-  // Test 3: wrong password — should fail
-  debug('--- test 3: wrong password ---');
-  const tf3 = await prepareLoginProject(ctx, `verdaccio-login3-${id}`);
-
-  let loginFailed = false;
-  try {
-    await yarnLogin(ctx, tf3, user1, 'wrong-password', email1);
-  } catch (err) {
-    loginFailed = true;
-    debug('login correctly failed: %s', (err as Error).message);
-  }
-  assert.ok(loginFailed, 'Login with wrong password should have failed');
-
-  // Test 4: login then publish — prove the token works end-to-end
-  debug('--- test 4: login then publish ---');
-  const pkgName = `@verdaccio/login-pub-${id}`;
-  const tf4 = await createTempFolder(`login-pub-${id}`);
-  const yamlContent = YAML.dump({
-    npmRegistryServer: ctx.registryUrl,
-    enableImmutableInstalls: false,
-    unsafeHttpWhitelist: ['localhost'],
+  await ctx.subTest('create new user + whoami', async () => {
+    const tf = await prepareLoginProject(ctx, `verdaccio-login1-${id}`);
+    const loginResp = await yarnLogin(ctx, tf, user1, password1, email1);
+    assert.ok(
+      loginResp.stdout.includes('Logged in') || loginResp.stdout.includes('token saved'),
+      `Expected login success message but got "${loginResp.stdout}"`
+    );
+    const who = await yarnWhoami(ctx, tf);
+    assert.ok(who.includes(user1), `Expected whoami "${user1}" but got "${who}"`);
   });
-  await writeFile(join(tf4, '.yarnrc.yml'), yamlContent);
-  await writeFile(join(tf4, 'package.json'), getPackageJSON(pkgName, '1.0.0'));
-  await writeFile(join(tf4, 'README.md'), getREADME(pkgName));
-  if (ctx.adapter.importPlugin) {
-    await ctx.adapter.importPlugin(tf4, 'npm-login');
-  }
 
-  await yarnLogin(ctx, tf4, user1, password1, email1);
+  await ctx.subTest('login existing user', async () => {
+    const tf = await prepareLoginProject(ctx, `verdaccio-login2-${id}`);
+    const loginResp = await yarnLogin(ctx, tf, user1, password1, email1);
+    assert.ok(
+      loginResp.stdout.includes('Logged in') || loginResp.stdout.includes('token saved'),
+      `Expected login success for existing user but got "${loginResp.stdout}"`
+    );
+    const who = await yarnWhoami(ctx, tf);
+    assert.ok(who.includes(user1), `Expected "${user1}" but got "${who}"`);
+  });
 
-  debug('publishing %s after login', pkgName);
-  await ctx.adapter.exec({ cwd: tf4 }, 'install');
-  const pubResp = await ctx.adapter.exec({ cwd: tf4 }, 'publish');
-  debug('publish output: %s', pubResp.stdout);
-  assert.ok(
-    pubResp.stdout.includes('Package archive published'),
-    `Expected publish success but got "${pubResp.stdout}"`
-  );
+  await ctx.subTest('wrong password fails', async () => {
+    const tf = await prepareLoginProject(ctx, `verdaccio-login3-${id}`);
+    let loginFailed = false;
+    try {
+      await yarnLogin(ctx, tf, user1, 'wrong-password', email1);
+    } catch {
+      loginFailed = true;
+    }
+    assert.ok(loginFailed, 'Login with wrong password should have failed');
+  });
 
-  // Test 5: switch users — login as A, then B, whoami returns B
-  debug('--- test 5: switch users ---');
-  const user2 = `login-b-${id}`;
-  const password2 = 'other-password-456';
-  const email2 = `${user2}@test.example.com`;
-  const tf5 = await prepareLoginProject(ctx, `verdaccio-login5-${id}`);
+  await ctx.subTest('login then publish', async () => {
+    const pkgName = `@verdaccio/login-pub-${id}`;
+    const tf = await createTempFolder(`login-pub-${id}`);
+    const yamlContent = YAML.dump({
+      npmRegistryServer: ctx.registryUrl,
+      enableImmutableInstalls: false,
+      unsafeHttpWhitelist: ['localhost'],
+    });
+    await writeFile(join(tf, '.yarnrc.yml'), yamlContent);
+    await writeFile(join(tf, 'package.json'), getPackageJSON(pkgName, '1.0.0'));
+    await writeFile(join(tf, 'README.md'), getREADME(pkgName));
+    if (ctx.adapter.importPlugin) {
+      await ctx.adapter.importPlugin(tf, 'npm-login');
+    }
+    await yarnLogin(ctx, tf, user1, password1, email1);
+    await ctx.adapter.exec({ cwd: tf }, 'install');
+    const pubResp = await ctx.adapter.exec({ cwd: tf }, 'publish');
+    assert.ok(
+      pubResp.stdout.includes('Package archive published'),
+      `Expected publish success but got "${pubResp.stdout}"`
+    );
+  });
 
-  await yarnLogin(ctx, tf5, user1, password1, email1);
-  const who5a = await yarnWhoami(ctx, tf5);
-  assert.ok(who5a.includes(user1), `Expected "${user1}" but got "${who5a}"`);
+  await ctx.subTest('switch users', async () => {
+    const user2 = `login-b-${id}`;
+    const password2 = 'other-password-456';
+    const email2 = `${user2}@test.example.com`;
+    const tf = await prepareLoginProject(ctx, `verdaccio-login5-${id}`);
 
-  // Switch to user2
-  await yarnLogin(ctx, tf5, user2, password2, email2);
-  const who5b = await yarnWhoami(ctx, tf5);
-  assert.ok(who5b.includes(user2), `Expected "${user2}" after switch but got "${who5b}"`);
+    await yarnLogin(ctx, tf, user1, password1, email1);
+    const who1 = await yarnWhoami(ctx, tf);
+    assert.ok(who1.includes(user1), `Expected "${user1}" but got "${who1}"`);
+
+    await yarnLogin(ctx, tf, user2, password2, email2);
+    const who2 = await yarnWhoami(ctx, tf);
+    assert.ok(who2.includes(user2), `Expected "${user2}" after switch but got "${who2}"`);
+  });
 }
 
 export const loginTest: TestDefinition = {

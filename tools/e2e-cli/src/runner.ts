@@ -2,7 +2,7 @@ import buildDebug from 'debug';
 import { URL } from 'url';
 
 import { PackageManagerAdapter, SuiteResult, TestContext, TestDefinition, TestResult } from './types';
-import { reportSkipped, reportSuiteStart, reportSummary, reportTestResult, reportTestStart } from './reporter';
+import { reportSkipped, reportSubTest, reportSubTestResult, reportSuiteStart, reportSummary, reportTestResult, reportTestStart } from './reporter';
 
 const debug = buildDebug('verdaccio:e2e-cli:runner');
 
@@ -30,6 +30,17 @@ async function runSingleTest(
     exec: adapter.exec.bind(adapter),
     adapter,
     runId: `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`,
+    async subTest(label: string, fn: () => Promise<void>): Promise<void> {
+      reportSubTest(label);
+      const subStart = Date.now();
+      try {
+        await fn();
+        reportSubTestResult(label, true, Date.now() - subStart);
+      } catch (err) {
+        reportSubTestResult(label, false, Date.now() - subStart);
+        throw err;
+      }
+    },
   };
 
   const start = Date.now();
