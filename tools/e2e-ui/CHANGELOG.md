@@ -1,5 +1,11 @@
 # @verdaccio/e2e-ui
 
+## 2.4.1
+
+### Patch Changes
+
+- a6947dd: fix: add summary
+
 ## 2.4.0
 
 ### Minor Changes
