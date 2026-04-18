@@ -33,14 +33,14 @@ async function prepareLoginProject(
   return tempFolder;
 }
 
-async function login(
+async function yarnLogin(
   ctx: TestContext,
   cwd: string,
   user: string,
   password: string,
   email: string
 ) {
-  debug('logging in as %s', user);
+  debug('yarn npm login as %s', user);
   return ctx.adapter.exec(
     { cwd },
     'login',
@@ -51,9 +51,9 @@ async function login(
   );
 }
 
-async function whoami(ctx: TestContext, cwd: string): Promise<string> {
+async function yarnWhoami(ctx: TestContext, cwd: string): Promise<string> {
   const resp = await ctx.adapter.exec({ cwd }, 'whoami');
-  debug('whoami output: %s', resp.stdout);
+  debug('yarn npm whoami: %s', resp.stdout);
   return resp.stdout;
 }
 
@@ -70,38 +70,32 @@ async function testLogin(ctx: TestContext): Promise<void> {
   const password1 = 'test-password-123';
   const email1 = `${user1}@test.example.com`;
 
-  // Test 1: create a new user via login, verify with whoami
+  // Test 1: create a new user via yarn npm login, verify with whoami
   debug('--- test 1: create new user via login + whoami ---');
   const tf1 = await prepareLoginProject(ctx, `verdaccio-login1-${id}`);
 
-  const loginResp = await login(ctx, tf1, user1, password1, email1);
+  const loginResp = await yarnLogin(ctx, tf1, user1, password1, email1);
   debug('login output: %s', loginResp.stdout);
   assert.ok(
     loginResp.stdout.includes('Logged in') || loginResp.stdout.includes('token saved'),
     `Expected login success message but got "${loginResp.stdout}"`
   );
 
-  const who1 = await whoami(ctx, tf1);
-  assert.ok(
-    who1.includes(user1),
-    `Expected whoami to return "${user1}" but got "${who1}"`
-  );
+  const who1 = await yarnWhoami(ctx, tf1);
+  assert.ok(who1.includes(user1), `Expected yarn whoami "${user1}" but got "${who1}"`);
 
   // Test 2: login again with the same user (authenticate existing user)
   debug('--- test 2: login with existing user ---');
   const tf2 = await prepareLoginProject(ctx, `verdaccio-login2-${id}`);
 
-  const loginResp2 = await login(ctx, tf2, user1, password1, email1);
+  const loginResp2 = await yarnLogin(ctx, tf2, user1, password1, email1);
   assert.ok(
     loginResp2.stdout.includes('Logged in') || loginResp2.stdout.includes('token saved'),
     `Expected login success for existing user but got "${loginResp2.stdout}"`
   );
 
-  const who2 = await whoami(ctx, tf2);
-  assert.ok(
-    who2.includes(user1),
-    `Expected whoami to return "${user1}" but got "${who2}"`
-  );
+  const who2 = await yarnWhoami(ctx, tf2);
+  assert.ok(who2.includes(user1), `Expected "${user1}" but got "${who2}"`);
 
   // Test 3: wrong password — should fail
   debug('--- test 3: wrong password ---');
@@ -109,7 +103,7 @@ async function testLogin(ctx: TestContext): Promise<void> {
 
   let loginFailed = false;
   try {
-    await login(ctx, tf3, user1, 'wrong-password', email1);
+    await yarnLogin(ctx, tf3, user1, 'wrong-password', email1);
   } catch (err) {
     loginFailed = true;
     debug('login correctly failed: %s', (err as Error).message);
@@ -132,10 +126,8 @@ async function testLogin(ctx: TestContext): Promise<void> {
     await ctx.adapter.importPlugin(tf4, 'npm-login');
   }
 
-  // Login as user1 (already exists from test 1)
-  await login(ctx, tf4, user1, password1, email1);
+  await yarnLogin(ctx, tf4, user1, password1, email1);
 
-  // Publish using the token obtained from login
   debug('publishing %s after login', pkgName);
   await ctx.adapter.exec({ cwd: tf4 }, 'install');
   const pubResp = await ctx.adapter.exec({ cwd: tf4 }, 'publish');
@@ -152,14 +144,13 @@ async function testLogin(ctx: TestContext): Promise<void> {
   const email2 = `${user2}@test.example.com`;
   const tf5 = await prepareLoginProject(ctx, `verdaccio-login5-${id}`);
 
-  // Login as user1 first
-  await login(ctx, tf5, user1, password1, email1);
-  const who5a = await whoami(ctx, tf5);
+  await yarnLogin(ctx, tf5, user1, password1, email1);
+  const who5a = await yarnWhoami(ctx, tf5);
   assert.ok(who5a.includes(user1), `Expected "${user1}" but got "${who5a}"`);
 
   // Switch to user2
-  await login(ctx, tf5, user2, password2, email2);
-  const who5b = await whoami(ctx, tf5);
+  await yarnLogin(ctx, tf5, user2, password2, email2);
+  const who5b = await yarnWhoami(ctx, tf5);
   assert.ok(who5b.includes(user2), `Expected "${user2}" after switch but got "${who5b}"`);
 }
 

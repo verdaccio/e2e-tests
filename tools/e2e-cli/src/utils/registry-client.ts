@@ -1,4 +1,5 @@
 import buildDebug from 'debug';
+import { ping } from '@verdaccio/registry-cli';
 
 const debug = buildDebug('verdaccio:e2e-cli:registry-client');
 
@@ -49,17 +50,13 @@ export async function createUser(
 
 /**
  * Ping the registry to check it's alive.
+ * Uses @verdaccio/registry-cli ping.
  */
 export async function pingRegistry(registryUrl: string): Promise<boolean> {
   debug('pinging %s', registryUrl);
   try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 5000);
-    const response = await fetch(`${registryUrl}/-/ping`, {
-      signal: controller.signal,
-    });
-    clearTimeout(timeout);
-    return response.status === 200;
+    const result = await ping(registryUrl);
+    return result.ok;
   } catch {
     return false;
   }

@@ -62,6 +62,9 @@ importers:
 
   tools/e2e-cli:
     dependencies:
+      '@verdaccio/registry-cli':
+        specifier: ^1.1.0
+        version: 1.1.0
       debug:
         specifier: 4.4.0
         version: 4.4.0(supports-color@8.1.1)
@@ -1491,6 +1494,12 @@ packages:
       '@types/node': 20.19.0
     dev: true
     optional: true
+
+  /@verdaccio/registry-cli@1.1.0:
+    resolution: {integrity: sha512-YXgHbKKQKTRH0ilt058i4IaU5rkyqzWjQXI+zrlGmtaRLbHXqMcHczq1PtkaT3pkQdIGohPelcjQX8gsUH+KDA==}
+    engines: {node: '>=24'}
+    hasBin: true
+    dev: false
 
   /@verdaccio/types@13.0.0-next-8.2:
     resolution: {integrity: sha512-I3FmPyRMlE7xjVaeBqZ/9q/+npF18tGe4O7e0yg/qGhx47wRAOJ1+zy0XvxPi5CU8Oe9FXzCqWrl9CH2+m+WgA==}
