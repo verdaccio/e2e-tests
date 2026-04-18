@@ -11,7 +11,7 @@ import { createTempFolder, getPackageJSON, getREADME } from '../utils/project';
 
 const debug = buildDebug('verdaccio:e2e-cli:yarn-modern');
 
-const YARN_MODERN_SUPPORTED_COMMANDS = new Set(['publish', 'install', 'info', 'ping']);
+const YARN_MODERN_SUPPORTED_COMMANDS = new Set(['publish', 'install', 'info', 'ping', 'deprecate']);
 
 const YARN_ENV = {
   COREPACK_ENABLE_STRICT: '0',
@@ -78,7 +78,7 @@ function createYamlConfig(registry: string, token?: string) {
   if (typeof token === 'string') {
     const url = new URL(registry);
     defaultYaml.npmRegistries = {
-      [`//${url.hostname}:${url.port}`]: {
+      [registry]: {
         npmAlwaysAuth: true,
         npmAuthToken: token,
       },
@@ -125,6 +125,11 @@ export function createYarnModernAdapter(binPath?: string, version?: string): Pac
           (a) => !a.startsWith('--registry')
         );
         yarnArgs = ['npm', 'ping', ...filtered];
+      } else if (cmd === 'deprecate') {
+        const filtered = args.slice(1).filter(
+          (a) => !a.startsWith('--registry')
+        );
+        yarnArgs = ['npm', 'deprecate', ...filtered];
       } else {
         yarnArgs = args.filter((a) => !a.startsWith('--registry'));
       }
@@ -165,7 +170,7 @@ export function createYarnModernAdapter(binPath?: string, version?: string): Pac
         encoding: 'utf8',
         stdio: 'pipe',
       });
-      const bundlePath = join(tmpDir, 'package/bundles/@yarnpkg/plugin-npm-ping.js');
+      const bundlePath = join(tmpDir, `package/bundles/@yarnpkg/plugin-${pluginName}.js`);
       debug('importing plugin from %s into %s', bundlePath, cwd);
       await exec({ cwd, env: { ...process.env, ...YARN_ENV } }, bin, [
         'plugin',

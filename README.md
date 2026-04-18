@@ -69,12 +69,14 @@ verdaccio-e2e -r http://localhost:4873 -v   # verbose — shows each command
 | install | yes | yes | yes | yes |
 | info | yes | yes | yes | yes |
 | audit | yes | yes | yes | skip |
-| deprecate | yes | yes | skip | skip |
+| deprecate | yes | yes | skip | yes |
 | dist-tags | yes | yes | skip | skip |
-| ping | yes | yes | skip | skip |
+| ping | yes | yes | skip | yes |
 | search | yes | yes | skip | skip |
 | star | yes | yes | skip | skip |
 | unpublish | yes | yes | skip | skip |
+
+See [docs/cli-tests.md](docs/cli-tests.md) for detailed descriptions of what each test asserts.
 
 ### Programmatic API
 
