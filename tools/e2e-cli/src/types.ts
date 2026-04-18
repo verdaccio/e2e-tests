@@ -15,6 +15,15 @@ export type TestContext = {
   adapter: PackageManagerAdapter;
   /** Unique suffix for package names to avoid conflicts across runs */
   runId: string;
+  /** Report a sub-test step. Runs the callback and reports pass/fail. */
+  subTest: (label: string, fn: () => Promise<void>) => Promise<void>;
+};
+
+export type SubTestResult = {
+  label: string;
+  passed: boolean;
+  duration: number;
+  error?: string;
 };
 
 export type TestResult = {
@@ -22,6 +31,7 @@ export type TestResult = {
   passed: boolean;
   duration: number;
   error?: string;
+  subTests?: SubTestResult[];
 };
 
 export type SuiteResult = {

@@ -5,6 +5,7 @@ import { deprecateTest } from './deprecate';
 import { distTagsTest } from './dist-tags';
 import { infoTest } from './info';
 import { installTest } from './install';
+import { loginTest } from './login';
 import { pingTest } from './ping';
 import { publishTest } from './publish';
 import { searchTest } from './search';
@@ -18,6 +19,7 @@ export const allTests: TestDefinition[] = [
   infoTest,
   deprecateTest,
   distTagsTest,
+  loginTest,
   pingTest,
   searchTest,
   starTest,
@@ -31,6 +33,7 @@ export {
   infoTest,
   deprecateTest,
   distTagsTest,
+  loginTest,
   pingTest,
   searchTest,
   starTest,
