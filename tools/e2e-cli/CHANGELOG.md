@@ -1,5 +1,11 @@
 # @verdaccio/e2e-cli
 
+## 2.6.0
+
+### Minor Changes
+
+- 881408e: feat: add pnpm v11 support with version-aware command handling
+
 ## 2.5.0
 
 ### Minor Changes
