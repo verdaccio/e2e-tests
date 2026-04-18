@@ -17,18 +17,24 @@ function formatDuration(ms: number): string {
 
 export function reportTestStart(adapterName: string, testName: string): void {
   process.stdout.write(
-    `  ${COLORS.dim}running${COLORS.reset} ${adapterName} > ${testName}...`
+    `  ${COLORS.dim}running${COLORS.reset} ${adapterName} > ${testName}...\n`
   );
 }
 
-export function reportTestResult(result: TestResult): void {
+export function reportTestResult(result: TestResult, hasSubTests = false): void {
   if (result.passed) {
-    process.stdout.write(
-      `\r  ${COLORS.green}PASS${COLORS.reset} ${result.name} ${COLORS.dim}(${formatDuration(result.duration)})${COLORS.reset}\n`
-    );
+    if (!hasSubTests) {
+      process.stdout.write(
+        `  ${COLORS.green}✓${COLORS.reset} ${result.name} ${COLORS.dim}${formatDuration(result.duration)}${COLORS.reset}\n`
+      );
+    } else {
+      process.stdout.write(
+        `  ${COLORS.green}PASS${COLORS.reset} ${result.name} ${COLORS.dim}${formatDuration(result.duration)}${COLORS.reset}\n`
+      );
+    }
   } else {
     process.stdout.write(
-      `\r  ${COLORS.red}FAIL${COLORS.reset} ${result.name} ${COLORS.dim}(${formatDuration(result.duration)})${COLORS.reset}\n`
+      `  ${COLORS.red}FAIL${COLORS.reset} ${result.name} ${COLORS.dim}${formatDuration(result.duration)}${COLORS.reset}\n`
     );
     if (result.error) {
       const lines = result.error.split('\n');
@@ -43,15 +49,9 @@ export function reportSuiteStart(adapterName: string): void {
   console.log(`\n${COLORS.bold}${COLORS.cyan}${adapterName}${COLORS.reset}`);
 }
 
-export function reportSubTest(label: string): void {
-  process.stdout.write(
-    `    ${COLORS.dim}●${COLORS.reset} ${label}\n`
-  );
-}
-
 export function reportSubTestResult(label: string, passed: boolean, duration?: number): void {
   const icon = passed ? `${COLORS.green}✓${COLORS.reset}` : `${COLORS.red}✗${COLORS.reset}`;
-  const dur = duration !== undefined ? ` ${COLORS.dim}(${formatDuration(duration)})${COLORS.reset}` : '';
+  const dur = duration !== undefined ? ` ${COLORS.dim}${formatDuration(duration)}${COLORS.reset}` : '';
   process.stdout.write(`    ${icon} ${label}${dur}\n`);
 }
 
