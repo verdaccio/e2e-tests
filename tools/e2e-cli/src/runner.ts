@@ -1,7 +1,7 @@
 import buildDebug from 'debug';
 import { URL } from 'url';
 
-import { PackageManagerAdapter, SuiteResult, TestContext, TestDefinition, TestResult } from './types';
+import { PackageManagerAdapter, SubTestResult, SuiteResult, TestContext, TestDefinition, TestResult } from './types';
 import { reportSkipped, reportSubTestResult, reportSuiteStart, reportSummary, reportTestResult, reportTestStart } from './reporter';
 
 const debug = buildDebug('verdaccio:e2e-cli:runner');
@@ -24,6 +24,7 @@ async function runSingleTest(
 ): Promise<TestResult & { hasSubTests: boolean }> {
   const port = getPort(registryUrl);
   let hasSubTests = false;
+  const subResults: SubTestResult[] = [];
   const ctx: TestContext = {
     registryUrl,
     token,
@@ -36,9 +37,14 @@ async function runSingleTest(
       const subStart = Date.now();
       try {
         await fn();
-        reportSubTestResult(label, true, Date.now() - subStart);
+        const duration = Date.now() - subStart;
+        subResults.push({ label, passed: true, duration });
+        reportSubTestResult(label, true, duration);
       } catch (err) {
-        reportSubTestResult(label, false, Date.now() - subStart);
+        const duration = Date.now() - subStart;
+        const error = err instanceof Error ? err.message : String(err);
+        subResults.push({ label, passed: false, duration, error });
+        reportSubTestResult(label, false, duration);
         throw err;
       }
     },
@@ -54,6 +60,7 @@ async function runSingleTest(
         duration: Date.now() - start,
         error: `Test timed out after ${timeout}ms`,
         hasSubTests,
+        subTests: subResults.length > 0 ? subResults : undefined,
       });
     }, timeout);
 
@@ -66,6 +73,7 @@ async function runSingleTest(
           passed: true,
           duration: Date.now() - start,
           hasSubTests,
+          subTests: subResults.length > 0 ? subResults : undefined,
         });
       })
       .catch((err) => {
@@ -76,6 +84,7 @@ async function runSingleTest(
           duration: Date.now() - start,
           error: err instanceof Error ? err.message : String(err),
           hasSubTests,
+          subTests: subResults.length > 0 ? subResults : undefined,
         });
       });
   });

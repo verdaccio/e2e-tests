@@ -19,11 +19,19 @@ export type TestContext = {
   subTest: (label: string, fn: () => Promise<void>) => Promise<void>;
 };
 
+export type SubTestResult = {
+  label: string;
+  passed: boolean;
+  duration: number;
+  error?: string;
+};
+
 export type TestResult = {
   name: string;
   passed: boolean;
   duration: number;
   error?: string;
+  subTests?: SubTestResult[];
 };
 
 export type SuiteResult = {

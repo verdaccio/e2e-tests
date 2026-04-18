@@ -1,3 +1,5 @@
+import { appendFileSync } from 'fs';
+
 import { SuiteResult, TestResult } from './types';
 
 const COLORS = {
@@ -40,6 +42,11 @@ export function reportTestResult(result: TestResult, hasSubTests = false): void 
       const lines = result.error.split('\n');
       for (const line of lines) {
         console.log(`    ${COLORS.red}${line}${COLORS.reset}`);
+      }
+      // GitHub Actions annotation
+      if (process.env.GITHUB_ACTIONS) {
+        const msg = result.error.split('\n')[0];
+        console.log(`::error title=E2E ${result.name}::${msg}`);
       }
     }
   }
@@ -91,4 +98,59 @@ export function reportSummary(results: SuiteResult[]): void {
     `${COLORS.yellow}${totalSkipped} skipped${COLORS.reset} ` +
     `${COLORS.dim}(${formatDuration(totalDuration)})${COLORS.reset}`);
   console.log(`${COLORS.bold}${'='.repeat(50)}${COLORS.reset}\n`);
+
+  // GitHub Actions Job Summary
+  const summaryFile = process.env.GITHUB_STEP_SUMMARY;
+  if (summaryFile) {
+    writeGitHubSummary(summaryFile, results);
+  }
+}
+
+function writeGitHubSummary(summaryFile: string, results: SuiteResult[]): void {
+  const lines: string[] = [];
+
+  lines.push('## E2E Test Results\n');
+
+  for (const suite of results) {
+    const status = suite.failed > 0 ? '❌' : '✅';
+    lines.push(`### ${status} ${suite.adapter}\n`);
+    lines.push('| Test | Status | Duration |');
+    lines.push('|------|--------|----------|');
+
+    for (const test of suite.tests) {
+      const icon = test.passed ? '✅' : '❌';
+      const dur = formatDuration(test.duration);
+
+      if (test.subTests && test.subTests.length > 0) {
+        // Parent row
+        lines.push(`| **${test.name}** | ${icon} | ${dur} |`);
+        // Sub-test rows
+        for (const sub of test.subTests) {
+          const subIcon = sub.passed ? '✅' : '❌';
+          const subDur = formatDuration(sub.duration);
+          const label = sub.passed ? sub.label : `${sub.label}: ${sub.error?.split('\n')[0] ?? ''}`;
+          lines.push(`| &nbsp;&nbsp;&nbsp;&nbsp;${label} | ${subIcon} | ${subDur} |`);
+        }
+      } else {
+        const label = test.passed ? test.name : `${test.name}: ${test.error?.split('\n')[0] ?? ''}`;
+        lines.push(`| ${label} | ${icon} | ${dur} |`);
+      }
+    }
+
+    lines.push('');
+  }
+
+  let totalPassed = 0;
+  let totalFailed = 0;
+  let totalSkipped = 0;
+  for (const suite of results) {
+    totalPassed += suite.passed;
+    totalFailed += suite.failed;
+    totalSkipped += suite.skipped;
+  }
+
+  const emoji = totalFailed > 0 ? '❌' : '✅';
+  lines.push(`${emoji} **${totalPassed} passed**, **${totalFailed} failed**, **${totalSkipped} skipped**\n`);
+
+  appendFileSync(summaryFile, lines.join('\n'));
 }
