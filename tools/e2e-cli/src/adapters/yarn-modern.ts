@@ -78,7 +78,7 @@ function createYamlConfig(registry: string, token?: string) {
   if (typeof token === 'string') {
     const url = new URL(registry);
     defaultYaml.npmRegistries = {
-      [`//${url.hostname}:${url.port}`]: {
+      [registry]: {
         npmAlwaysAuth: true,
         npmAuthToken: token,
       },

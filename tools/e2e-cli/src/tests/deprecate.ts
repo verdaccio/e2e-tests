@@ -118,7 +118,8 @@ async function testDeprecate(ctx: TestContext): Promise<void> {
     await bumpVersion(ctx, tf3);
     await publishPkg(ctx, tf3, pkgName3);
   }
-  await deprecate(ctx, tf3, pkgName3, message);
+  const deprecateAll = ctx.adapter.type === 'yarn-modern' ? `${pkgName3}@*` : pkgName3;
+  await deprecate(ctx, tf3, deprecateAll, message);
   for (const v of ['1.0.0', '1.1.0', '1.2.0', '1.3.0']) {
     const info = await getInfo(ctx, tf3, `${pkgName3}@${v}`);
     assert.strictEqual(info.deprecated, message, `Version ${v} should be deprecated`);
