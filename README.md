@@ -63,19 +63,21 @@ verdaccio-e2e -r http://localhost:4873 -v   # verbose — shows each command
 
 ### Tests
 
-| Test | npm | pnpm | yarn-classic | yarn-modern |
-|------|-----|------|--------------|-------------|
-| publish | yes | yes | yes | yes |
-| install | yes | yes | yes | yes |
-| info | yes | yes | yes | yes |
-| audit | yes | yes | yes | skip |
-| deprecate | yes | yes | skip | yes |
-| dist-tags | yes | yes | skip | skip |
-| login | skip | skip | skip | yes |
-| ping | yes | yes | skip | yes |
-| search | yes | yes | skip | skip |
-| star | yes | yes | skip | skip |
-| unpublish | yes | yes | skip | skip |
+| Test | npm | pnpm ≤10 | pnpm ≥11 | yarn-classic | yarn-modern |
+|------|-----|----------|----------|--------------|-------------|
+| publish | yes | yes | yes | yes | yes |
+| install | yes | yes | yes | yes | yes |
+| info | yes | yes | yes | yes | yes |
+| audit | yes | yes | yes | yes | skip |
+| deprecate | yes | yes | yes | skip | yes |
+| dist-tags | yes | yes | skip | skip | skip |
+| login | skip | skip | skip | skip | yes |
+| ping | yes | yes | skip | skip | yes |
+| search | yes | yes | skip | skip | skip |
+| star | yes | yes | skip | skip | skip |
+| unpublish | yes | yes | yes | skip | skip |
+
+> **pnpm ≥11 notes:** pnpm v11 reimplemented many commands natively and removed `ping`, `search`, `star`, and `dist-tag`. Un-deprecate uses the new `pnpm undeprecate` command (other package managers use `deprecate pkg ""` with an empty message).
 
 See [docs/cli-tests.md](docs/cli-tests.md) for detailed descriptions of what each test asserts.
 

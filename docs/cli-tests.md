@@ -47,7 +47,7 @@ Three sub-tests covering deprecate, un-deprecate, and multi-version deprecation.
 | Sub-test | Assertion |
 |----------|-----------|
 | 1. Deprecate single version | Publishes `dep1@1.0.0`, deprecates it. `info` returns `deprecated: "some message"`. |
-| 2. Un-deprecate | Publishes `dep2@1.0.0`, deprecates it, verifies `deprecated` is set, then un-deprecates with an empty string. Asserts `deprecated` is `undefined`. |
+| 2. Un-deprecate | Publishes `dep2@1.0.0`, deprecates it, verifies `deprecated` is set, then un-deprecates. Asserts `deprecated` is `undefined`. **pnpm ≥11**: uses the native `pnpm undeprecate` command. Other PMs pass an empty string to `deprecate`. |
 | 3. Deprecate all versions | Publishes `dep3` at 4 versions (1.0.0 - 1.3.0), deprecates all by passing the bare package name. Asserts all 4 versions have `deprecated` set. Then publishes 1.4.0 and asserts it is **not** deprecated. |
 
 - **yarn-modern**: imports `@verdaccio/yarn-plugin-npm-deprecate` via `importPlugin`, runs `install` before each publish, and omits `--json` on the deprecate command.
