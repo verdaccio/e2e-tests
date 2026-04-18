@@ -65,6 +65,8 @@ export interface PackageManagerAdapter {
     dependencies?: Record<string, string>,
     devDependencies?: Record<string, string>
   ): Promise<{ tempFolder: string }>;
+  /** Import a Verdaccio yarn plugin into a project (yarn-modern only) */
+  importPlugin?(cwd: string, pluginName: string): Promise<void>;
 }
 
 export type CliOptions = {

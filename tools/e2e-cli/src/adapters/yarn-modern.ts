@@ -11,7 +11,7 @@ import { createTempFolder, getPackageJSON, getREADME } from '../utils/project';
 
 const debug = buildDebug('verdaccio:e2e-cli:yarn-modern');
 
-const YARN_MODERN_SUPPORTED_COMMANDS = new Set(['publish', 'install', 'info']);
+const YARN_MODERN_SUPPORTED_COMMANDS = new Set(['publish', 'install', 'info', 'ping']);
 
 const YARN_ENV = {
   COREPACK_ENABLE_STRICT: '0',
@@ -120,6 +120,11 @@ export function createYarnModernAdapter(binPath?: string, version?: string): Pac
       } else if (cmd === 'info') {
         const filtered = args.slice(1).filter((a) => !a.startsWith('--registry'));
         yarnArgs = ['npm', 'info', ...filtered];
+      } else if (cmd === 'ping') {
+        const filtered = args.slice(1).filter(
+          (a) => !a.startsWith('--registry')
+        );
+        yarnArgs = ['npm', 'ping', ...filtered];
       } else {
         yarnArgs = args.filter((a) => !a.startsWith('--registry'));
       }
@@ -145,6 +150,28 @@ export function createYarnModernAdapter(binPath?: string, version?: string): Pac
       );
       await writeFile(join(tempFolder, 'README.md'), getREADME(packageName));
       return { tempFolder };
+    },
+
+    async importPlugin(cwd: string, pluginName: string): Promise<void> {
+      debug('downloading %s plugin bundle', pluginName);
+      const tmpDir = execSync('mktemp -d', { encoding: 'utf8' }).trim();
+      const pkg = `@verdaccio/yarn-plugin-${pluginName}`;
+      execSync(`npm pack ${pkg} --pack-destination "${tmpDir}"`, {
+        encoding: 'utf8',
+        timeout: 30000,
+        stdio: 'pipe',
+      });
+      execSync(`tar xzf "${tmpDir}"/*.tgz -C "${tmpDir}"`, {
+        encoding: 'utf8',
+        stdio: 'pipe',
+      });
+      const bundlePath = join(tmpDir, 'package/bundles/@yarnpkg/plugin-npm-ping.js');
+      debug('importing plugin from %s into %s', bundlePath, cwd);
+      await exec({ cwd, env: { ...process.env, ...YARN_ENV } }, bin, [
+        'plugin',
+        'import',
+        bundlePath,
+      ]);
     },
   };
 
