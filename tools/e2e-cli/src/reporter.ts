@@ -50,9 +50,11 @@ export function reportSuiteStart(adapterName: string): void {
 }
 
 export function reportSubTestResult(label: string, passed: boolean, duration?: number): void {
-  const icon = passed ? `${COLORS.green}✓${COLORS.reset}` : `${COLORS.red}✗${COLORS.reset}`;
+  const icon = passed
+    ? `${COLORS.bold}${COLORS.green}✓${COLORS.reset}`
+    : `${COLORS.bold}${COLORS.red}✗${COLORS.reset}`;
   const dur = duration !== undefined ? ` ${COLORS.dim}${formatDuration(duration)}${COLORS.reset}` : '';
-  process.stdout.write(`    ${icon} ${label}${dur}\n`);
+  process.stdout.write(`\n    ${icon} ${COLORS.bold}${label}${COLORS.reset}${dur}\n\n`);
 }
 
 export function reportSkipped(testName: string): void {
