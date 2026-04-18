@@ -54,12 +54,15 @@ Three sub-tests covering deprecate, un-deprecate, and multi-version deprecation.
 
 ## login
 
-Tests user creation and authentication via non-interactive legacy auth (yarn-modern only).
+Tests user creation, authentication, error handling, and token usage via non-interactive legacy auth (yarn-modern only).
 
 | Sub-test | Assertion |
 |----------|-----------|
 | 1. Create new user + whoami | Runs `yarn npm login --auth-type=legacy` with `--user`, `--password`, `--email` to create a new user. Asserts output contains "Logged in" or "token saved". Then runs `yarn npm whoami` and asserts it returns the created username. |
 | 2. Login existing user + whoami | Logs in again with the same credentials (authenticates existing user, not creating). Asserts login succeeds and `whoami` returns the same username. |
+| 3. Wrong password | Attempts login with incorrect password. Asserts the command fails (non-zero exit code). |
+| 4. Login then publish | Logs in as an existing user, then publishes a package using the token obtained from login. Asserts publish output contains "Package archive published". Proves the token is functional end-to-end. |
+| 5. Switch users | Logs in as user A, verifies `whoami` returns A. Then logs in as user B, verifies `whoami` now returns B. Proves the token gets replaced on re-login. |
 
 - **yarn-modern**: imports `@verdaccio/yarn-plugin-npm-login` via `importPlugin`. Uses fully non-interactive flags.
 - **npm/pnpm**: not implemented (npm login requires TTY interaction).
