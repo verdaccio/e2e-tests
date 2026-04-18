@@ -76,6 +76,8 @@ verdaccio-e2e -r http://localhost:4873 -v   # verbose — shows each command
 | star | yes | yes | skip | skip |
 | unpublish | yes | yes | skip | skip |
 
+See [docs/cli-tests.md](docs/cli-tests.md) for detailed descriptions of what each test asserts.
+
 ### Programmatic API
 
 ```ts

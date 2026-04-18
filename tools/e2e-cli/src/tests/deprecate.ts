@@ -1,5 +1,7 @@
 import assert from 'assert';
 import buildDebug from 'debug';
+import { readFile, writeFile } from 'fs/promises';
+import { join } from 'path';
 
 import { TestContext, TestDefinition } from '../types';
 
@@ -54,12 +56,23 @@ async function getInfo(ctx: TestContext, tempFolder: string, pkgName: string) {
 
 async function bumpVersion(ctx: TestContext, tempFolder: string) {
   debug('bumping version (minor) in %s', tempFolder);
-  await ctx.adapter.exec(
-    { cwd: tempFolder },
-    'version',
-    'minor',
-    ...ctx.adapter.registryArg(ctx.registryUrl)
-  );
+  if (ctx.adapter.type === 'yarn-modern') {
+    // Bump version by editing package.json directly to avoid
+    // requiring the version plugin (not bundled in Yarn 3)
+    const pkgPath = join(tempFolder, 'package.json');
+    const pkg = JSON.parse(await readFile(pkgPath, 'utf8'));
+    const [major, minor, patch] = pkg.version.split('.').map(Number);
+    pkg.version = `${major}.${minor + 1}.${patch}`;
+    debug('bumped %s to %s', pkgPath, pkg.version);
+    await writeFile(pkgPath, JSON.stringify(pkg, null, 2));
+  } else {
+    await ctx.adapter.exec(
+      { cwd: tempFolder },
+      'version',
+      'minor',
+      ...ctx.adapter.registryArg(ctx.registryUrl)
+    );
+  }
 }
 
 async function prepareDeprecateProject(
