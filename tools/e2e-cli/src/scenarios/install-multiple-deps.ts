@@ -21,6 +21,30 @@ const debug = buildDebug('verdaccio:e2e-cli:scenario:install-multiple-deps');
 
 const SEED_PACKAGES_COUNT = 5;
 
+/**
+ * Parse `info --json` output across all adapters.
+ * Yarn classic wraps the result in NDJSON lines with `{ type: "inspect", data: { ... } }`.
+ */
+function parseInfoOutput(stdout: string, adapterType: string): any {
+  if (adapterType === 'yarn-classic') {
+    // Yarn classic outputs NDJSON — find the "inspect" line that holds package data
+    const lines = stdout.split('\n').filter(Boolean);
+    for (const line of lines) {
+      try {
+        const obj = JSON.parse(line);
+        if (obj.type === 'inspect' && obj.data) {
+          return obj.data;
+        }
+      } catch {
+        // skip non-JSON lines
+      }
+    }
+    // Fallback: try parsing the whole output
+    return JSON.parse(stdout);
+  }
+  return JSON.parse(stdout);
+}
+
 async function publishSeedPackage(
   ctx: TestContext,
   pkgName: string,
@@ -126,7 +150,7 @@ async function testInstallMultipleDeps(ctx: TestContext): Promise<void> {
         '--json',
         ...ctx.adapter.registryArg(ctx.registryUrl)
       );
-      const info = JSON.parse(resp.stdout);
+      const info = parseInfoOutput(resp.stdout, ctx.adapter.type);
       assert.strictEqual(info.name, name, `Expected package name "${name}"`);
       assert.strictEqual(info.version, '1.0.0', `Expected version 1.0.0 for ${name}`);
     }
@@ -140,7 +164,7 @@ async function testInstallMultipleDeps(ctx: TestContext): Promise<void> {
       '--json',
       ...ctx.adapter.registryArg(ctx.registryUrl)
     );
-    const midInfo = JSON.parse(resp.stdout);
+    const midInfo = parseInfoOutput(resp.stdout, ctx.adapter.type);
     assert.strictEqual(midInfo.name, midName);
 
     const deps = midInfo.dependencies || {};
@@ -198,7 +222,7 @@ async function testInstallMultipleDeps(ctx: TestContext): Promise<void> {
       '--json',
       ...ctx.adapter.registryArg(ctx.registryUrl)
     );
-    const leafInfo = JSON.parse(leafResp.stdout);
+    const leafInfo = parseInfoOutput(leafResp.stdout, ctx.adapter.type);
 
     // dist-tags.latest should be 2.0.0
     assert.strictEqual(
