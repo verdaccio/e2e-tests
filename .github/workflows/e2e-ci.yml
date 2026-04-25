@@ -47,11 +47,41 @@ jobs:
         run: pnpm build
       - name: Install Verdaccio
         run: npm install -g verdaccio@${{ matrix.verdaccio }}
+      - name: Generate Verdaccio config
+        run: |
+          mkdir -p /tmp/verdaccio-storage
+          cat > /tmp/verdaccio-config.yaml <<'YAML'
+          storage: /tmp/verdaccio-storage
+          auth:
+            htpasswd:
+              file: /tmp/verdaccio-htpasswd
+          uplinks:
+            npmjs:
+              url: https://registry.npmjs.org/
+          packages:
+            '@*/*':
+              access: $all
+              publish: $authenticated
+              unpublish: $authenticated
+              proxy: npmjs
+            '**':
+              access: $all
+              publish: $authenticated
+              unpublish: $authenticated
+              proxy: npmjs
+          log: { type: stdout, format: pretty, level: warn }
+          YAML
       - name: Start Verdaccio
         run: |
-          verdaccio &
+          verdaccio --config /tmp/verdaccio-config.yaml --listen 4873 &
           for i in $(seq 1 30); do
-            curl -s http://localhost:4873/-/ping && break
+            if curl -s http://localhost:4873/-/ping; then
+              break
+            fi
+            if [ "$i" -eq 30 ]; then
+              echo "Verdaccio failed to start after 30s"
+              exit 1
+            fi
             sleep 1
           done
       - name: Run E2E tests
