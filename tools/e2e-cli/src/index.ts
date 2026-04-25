@@ -126,8 +126,9 @@ function printHelp(): void {
                             Default: npm
 
     -t, --test <name>       Filter tests by name (can be repeated)
-                            Available: publish, install, audit, info, deprecate,
+                            Available: publish, install, ci, audit, info, deprecate,
                                        dist-tags, ping, search, star, unpublish
+                            Scenarios: scenario:install-multiple-deps
                             Default: all supported by the PM
 
     --token <token>         Auth token (skips user creation)
@@ -197,6 +198,7 @@ export async function main(argv: string[] = process.argv): Promise<void> {
 
 // Re-export for programmatic usage
 export { allTests } from './tests';
+export { allScenarios } from './scenarios';
 export { createNpmAdapter, createPnpmAdapter, createYarnClassicAdapter, createYarnModernAdapter } from './adapters';
 export { runAll, runSuite } from './runner';
 export type { PackageManagerAdapter, TestDefinition, TestContext, CliOptions } from './types';

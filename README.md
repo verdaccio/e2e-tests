@@ -67,6 +67,7 @@ verdaccio-e2e -r http://localhost:4873 -v   # verbose — shows each command
 |------|-----|----------|----------|--------------|-------------|
 | publish | yes | yes | yes | yes | yes |
 | install | yes | yes | yes | yes | yes |
+| ci | yes | yes | yes | yes | yes |
 | info | yes | yes | yes | yes | yes |
 | audit | yes | yes | yes | yes | skip |
 | deprecate | yes | yes | yes | skip | yes |
@@ -79,6 +80,29 @@ verdaccio-e2e -r http://localhost:4873 -v   # verbose — shows each command
 
 > **pnpm ≥11 notes:** pnpm v11 reimplemented many commands natively and removed `ping`, `search`, `star`, and `dist-tag`. Un-deprecate uses the new `pnpm undeprecate` command (other package managers use `deprecate pkg ""` with an empty message).
 
+### Scenarios
+
+Scenarios are complex, multi-step tests that simulate real-world workflows beyond single-command operations. They exercise the registry under realistic conditions — many parallel requests, transitive dependency resolution, version updates, etc.
+
+| Scenario | Description | Requires |
+|----------|-------------|----------|
+| `scenario:install-multiple-deps` | Publishes a tree of packages (leaf, shared, intermediate with transitive deps), installs them all in a consumer project, verifies metadata, then publishes updated versions and re-installs with semver ranges | `publish`, `install`, `info` |
+
+Run a specific scenario:
+
+```bash
+verdaccio-e2e -r http://localhost:4873 -t scenario:install-multiple-deps
+```
+
+#### `scenario:install-multiple-deps`
+
+Simulates a realistic `npm install` that triggers many parallel registry requests. The test has four phases:
+
+1. **Publish seed packages** — publishes 5 leaf packages, a shared package, and an intermediate package that depends on some leaves + shared (8 packages total)
+2. **Install all dependencies** — creates a consumer project that depends on all packages (including transitive overlap via the intermediate), runs `install`
+3. **Verify installed packages** — asserts every package is in the registry with correct name, version, and dependency metadata
+4. **Update and re-install** — publishes v2.0.0 of selected packages, creates a new consumer using `^` ranges, installs, and verifies `dist-tags.latest` reflects the update
+
 See [docs/cli-tests.md](docs/cli-tests.md) for detailed descriptions of what each test asserts.
 
 ### Programmatic API
@@ -89,6 +113,17 @@ import { createNpmAdapter, createPnpmAdapter, allTests, runAll } from '@verdacci
 const adapters = [createNpmAdapter(), createPnpmAdapter()];
 const { results, exitCode } = await runAll(adapters, allTests, 'http://localhost:4873', token, {
   timeout: 50000,
+  concurrency: 1,
+});
+```
+
+Run only scenarios:
+
+```ts
+import { createNpmAdapter, allScenarios, runAll } from '@verdaccio/e2e-cli';
+
+const { results, exitCode } = await runAll([createNpmAdapter()], allScenarios, 'http://localhost:4873', token, {
+  timeout: 120000,
   concurrency: 1,
 });
 ```
