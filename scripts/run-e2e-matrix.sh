@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # ─── Config ───
-VERDACCIO_VERSIONS=("5" "6")
+VERDACCIO_VERSIONS=("5" "6" "next-7")
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 EXTRA_ARGS=()
 
@@ -26,8 +26,8 @@ usage() {
   echo "    --docker    Use Docker images instead of npm install"
   echo ""
   echo "  Examples:"
-  echo "    $0              # local install, v5+v6, all detected PMs"
-  echo "    $0 --docker     # docker images, v5+v6, all detected PMs"
+  echo "    $0              # local install, v5+v6+next-7, all detected PMs"
+  echo "    $0 --docker     # docker images, v5+v6+next-7, all detected PMs"
   echo ""
   exit 0
 }

@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        verdaccio: ['5', '6']
+        verdaccio: ['5', '6', 'next-7']
         pm:
           - npm@7
           - npm@8

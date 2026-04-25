@@ -52,6 +52,10 @@ async function publishSeedPackage(
 async function testInstallMultipleDeps(ctx: TestContext): Promise<void> {
   const id = ctx.runId;
 
+  // Shared project folder used as cwd for info commands across subtests.
+  // Yarn modern requires a project context (package.json + .yarnrc.yml) for `yarn npm info`.
+  let projectCwd = '';
+
   // --- Phase 1: Publish a tree of seed packages ---
   await ctx.subTest('publish seed packages', async () => {
     // Leaf packages (no dependencies of their own)
@@ -100,6 +104,8 @@ async function testInstallMultipleDeps(ctx: TestContext): Promise<void> {
       consumerDeps
     );
 
+    projectCwd = tempFolder;
+
     debug('installing %d dependencies in consumer project', Object.keys(consumerDeps).length);
 
     const args = ['install', ...ctx.adapter.registryArg(ctx.registryUrl)];
@@ -114,7 +120,7 @@ async function testInstallMultipleDeps(ctx: TestContext): Promise<void> {
     for (let i = 1; i <= SEED_PACKAGES_COUNT; i++) {
       const name = `@verdaccio/seed-${id}-${i}`;
       const resp = await ctx.adapter.exec(
-        {},
+        { cwd: projectCwd },
         'info',
         name,
         '--json',
@@ -128,7 +134,7 @@ async function testInstallMultipleDeps(ctx: TestContext): Promise<void> {
     // Verify intermediate package has correct dependencies in registry metadata
     const midName = `@verdaccio/seed-mid-${id}`;
     const resp = await ctx.adapter.exec(
-      {},
+      { cwd: projectCwd },
       'info',
       midName,
       '--json',
@@ -186,7 +192,7 @@ async function testInstallMultipleDeps(ctx: TestContext): Promise<void> {
 
     // Verify that the registry now serves both versions
     const leafResp = await ctx.adapter.exec(
-      {},
+      { cwd: tempFolder },
       'info',
       leafName,
       '--json',
