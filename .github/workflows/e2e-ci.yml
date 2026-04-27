@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        verdaccio: ['5', '6']
+        verdaccio: ['5', '6', 'next-7']
         pm:
           - npm@7
           - npm@8
@@ -29,14 +29,13 @@ jobs:
           - yarn-classic
           - yarn-modern@3
           - yarn-modern@4
-        node: [22]
-    name: verdaccio@${{ matrix.verdaccio }} / ${{ matrix.pm }} / node-${{ matrix.node }}
+    name: verdaccio@${{ matrix.verdaccio }} / ${{ matrix.pm }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
         with:
-          node-version: ${{ matrix.node }}
+          node-version-file: '.nvmrc'
       - name: corepack
         run: corepack enable
       - name: pnpm enable
@@ -47,11 +46,41 @@ jobs:
         run: pnpm build
       - name: Install Verdaccio
         run: npm install -g verdaccio@${{ matrix.verdaccio }}
+      - name: Generate Verdaccio config
+        run: |
+          mkdir -p /tmp/verdaccio-storage
+          cat > /tmp/verdaccio-config.yaml <<'YAML'
+          storage: /tmp/verdaccio-storage
+          auth:
+            htpasswd:
+              file: /tmp/verdaccio-htpasswd
+          uplinks:
+            npmjs:
+              url: https://registry.npmjs.org/
+          packages:
+            '@*/*':
+              access: $all
+              publish: $authenticated
+              unpublish: $authenticated
+              proxy: npmjs
+            '**':
+              access: $all
+              publish: $authenticated
+              unpublish: $authenticated
+              proxy: npmjs
+          log: { type: stdout, format: pretty, level: warn }
+          YAML
       - name: Start Verdaccio
         run: |
-          verdaccio &
+          verdaccio --config /tmp/verdaccio-config.yaml --listen 4873 &
           for i in $(seq 1 30); do
-            curl -s http://localhost:4873/-/ping && break
+            if curl -s http://localhost:4873/-/ping; then
+              break
+            fi
+            if [ "$i" -eq 30 ]; then
+              echo "Verdaccio failed to start after 30s"
+              exit 1
+            fi
             sleep 1
           done
       - name: Run E2E tests

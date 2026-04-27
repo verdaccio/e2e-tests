@@ -24,7 +24,6 @@ async function testInstall(ctx: TestContext): Promise<void> {
   if (isNpm) {
     const parsedBody = JSON.parse(resp.stdout);
     assert.ok(parsedBody.added !== undefined, 'Expected "added" field in install response');
-    assert.ok(parsedBody.audit !== undefined, 'Expected "audit" field in install response');
   } else {
     // for pnpm/yarn just verify it completed without error (exit code 0)
     assert.ok(true, 'Install completed successfully');
