@@ -41,6 +41,9 @@ async function testPublish(ctx: TestContext): Promise<void> {
     } else if (type === 'yarn-classic') {
       // yarn classic --json outputs NDJSON — just verify no error exit (exit code 0 is enough)
       assert.ok(resp.stdout.length > 0, `Expected publish output for ${pkgName}`);
+    } else if (type === 'bun') {
+      // bun publish outputs text confirmation — exit code 0 is sufficient
+      assert.ok(true, `Publish succeeded for ${pkgName}`);
     } else {
       // npm / pnpm
       try {

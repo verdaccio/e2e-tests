@@ -1,6 +1,8 @@
 import buildDebug from 'debug';
 
 import {
+  createBunAdapter,
+  createDenoAdapter,
   createNpmAdapter,
   createPnpmAdapter,
   createYarnClassicAdapter,
@@ -44,9 +46,13 @@ function parseAdapters(pmFilters?: string[]): PackageManagerAdapter[] {
       adapters.push(createYarnClassicAdapter(binPath, version));
     } else if (name === 'yarn-modern' || name === 'yarn') {
       adapters.push(createYarnModernAdapter(binPath, version));
+    } else if (name === 'bun') {
+      adapters.push(createBunAdapter(binPath, version));
+    } else if (name === 'deno') {
+      adapters.push(createDenoAdapter(binPath, version));
     } else {
       throw new Error(
-        `Unknown package manager: "${name}". Supported: npm, pnpm, yarn-classic, yarn-modern[@version]`
+        `Unknown package manager: "${name}". Supported: npm, pnpm, yarn-classic, yarn-modern, bun, deno`
       );
     }
   }
@@ -116,11 +122,12 @@ function printHelp(): void {
 
   Options:
     --pm <name[@version]>   Package manager to test (can be repeated)
-                            Supported: npm, pnpm, yarn-classic, yarn-modern (or yarn)
+                            Supported: npm, pnpm, yarn-classic, yarn-modern (or yarn), bun, deno
                             Examples: --pm npm@10 --pm pnpm@9
                                       --pm yarn-modern@4
                                       --pm yarn-modern@3
                                       --pm yarn-classic
+                                      --pm bun
                                       --pm npm --pm pnpm  (uses system version)
                             Auto-installs the requested yarn version if needed
                             Default: npm
@@ -199,6 +206,6 @@ export async function main(argv: string[] = process.argv): Promise<void> {
 // Re-export for programmatic usage
 export { allTests } from './tests';
 export { allScenarios } from './scenarios';
-export { createNpmAdapter, createPnpmAdapter, createYarnClassicAdapter, createYarnModernAdapter } from './adapters';
+export { createBunAdapter, createDenoAdapter, createNpmAdapter, createPnpmAdapter, createYarnClassicAdapter, createYarnModernAdapter } from './adapters';
 export { runAll, runSuite } from './runner';
 export type { PackageManagerAdapter, TestDefinition, TestContext, CliOptions } from './types';

@@ -30,6 +30,10 @@ async function testInfo(ctx: TestContext): Promise<void> {
       }
     });
     assert.ok(dataLine, 'Expected yarn info NDJSON to contain an "inspect" entry');
+  } else if (ctx.adapter.type === 'deno') {
+    // deno info npm:<pkg> outputs a text dependency tree
+    const output = resp.stdout + resp.stderr;
+    assert.ok(output.includes('npm:verdaccio'), 'Expected deno info output to reference npm:verdaccio');
   } else {
     const parsedBody = JSON.parse(resp.stdout);
     assert.strictEqual(parsedBody.name, 'verdaccio', 'Expected package name "verdaccio"');

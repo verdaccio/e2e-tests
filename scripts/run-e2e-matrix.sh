@@ -71,8 +71,16 @@ if command -v yarn >/dev/null 2>&1; then
   fi
 fi
 
+if command -v bun >/dev/null 2>&1; then
+  PACKAGE_MANAGERS+=("bun")
+fi
+
+if command -v deno >/dev/null 2>&1; then
+  PACKAGE_MANAGERS+=("deno")
+fi
+
 if [[ ${#PACKAGE_MANAGERS[@]} -eq 0 ]]; then
-  echo -e "${RED}No package managers found in PATH (npm, pnpm, yarn)${RESET}"
+  echo -e "${RED}No package managers found in PATH (npm, pnpm, yarn, bun, deno)${RESET}"
   exit 1
 fi
 

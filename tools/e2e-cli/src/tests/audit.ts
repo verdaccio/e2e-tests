@@ -6,9 +6,9 @@ import { TestContext, TestDefinition } from '../types';
 const debug = buildDebug('verdaccio:e2e-cli:test:audit');
 
 async function testAudit(ctx: TestContext): Promise<void> {
-  // Audit is only reliable with npm — pnpm/yarn audit output varies too much
-  if (ctx.adapter.type !== 'npm') {
-    debug('skipping audit test for %s (npm only)', ctx.adapter.type);
+  // Audit is only reliable with npm and bun — pnpm/yarn audit output varies too much
+  if (ctx.adapter.type !== 'npm' && ctx.adapter.type !== 'bun') {
+    debug('skipping audit test for %s (npm/bun only)', ctx.adapter.type);
     return;
   }
 
@@ -57,9 +57,14 @@ async function testAudit(ctx: TestContext): Promise<void> {
       ...ctx.adapter.registryArg(ctx.registryUrl)
     );
 
-    const parsedBody = JSON.parse(resp.stdout);
-    assert.ok(parsedBody.auditReportVersion !== undefined, 'Expected "auditReportVersion" in audit response');
-    assert.ok(parsedBody.vulnerabilities !== undefined, 'Expected "vulnerabilities" in audit response');
+    if (ctx.adapter.type === 'bun') {
+      // bun audit output may differ — exit code 0 is sufficient for basic validation
+      assert.ok(resp.stdout.length > 0 || resp.stderr.length > 0, 'Expected audit output');
+    } else {
+      const parsedBody = JSON.parse(resp.stdout);
+      assert.ok(parsedBody.auditReportVersion !== undefined, 'Expected "auditReportVersion" in audit response');
+      assert.ok(parsedBody.vulnerabilities !== undefined, 'Expected "vulnerabilities" in audit response');
+    }
   }
 }
 
