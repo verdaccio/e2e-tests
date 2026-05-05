@@ -24,14 +24,6 @@ function resolveDenoBin(binPath?: string): string {
   return 'deno';
 }
 
-function extractRegistryFromArgs(args: string[]): string | undefined {
-  const idx = args.indexOf('--registry');
-  if (idx !== -1 && idx + 1 < args.length) {
-    return args[idx + 1];
-  }
-  return undefined;
-}
-
 export function createDenoAdapter(binPath?: string, _version?: string): PackageManagerAdapter {
   const bin = resolveDenoBin(binPath);
   const resolved = detectVersion(bin);
@@ -43,9 +35,9 @@ export function createDenoAdapter(binPath?: string, _version?: string): PackageM
     bin,
     supports: DENO_SUPPORTED_COMMANDS,
 
-    registryArg(url: string): string[] {
-      // deno uses NPM_CONFIG_REGISTRY env var, but for install it also accepts --registry
-      return ['--registry', url];
+    registryArg(_url: string): string[] {
+      // deno reads the registry from .npmrc (written by prepareProject), no CLI flag needed
+      return [];
     },
 
     prefixArg(folder: string): string[] {
@@ -56,17 +48,17 @@ export function createDenoAdapter(binPath?: string, _version?: string): PackageM
       const cmd = args[0];
 
       if (cmd === 'info') {
-        // deno info npm:<pkg> — pass registry via env var, strip --json and --registry flags
+        // deno info npm:<pkg> --node-modules-dir=auto
         const pkgName = args[1];
-        const registryUrl = extractRegistryFromArgs(args);
-        const filteredArgs = ['info', `npm:${pkgName}`].concat(
-          args.slice(2).filter((a) => a !== '--json' && a !== '--registry' && !a.startsWith('http'))
+        const filteredArgs = ['info', `npm:${pkgName}`, '--node-modules-dir=auto'].concat(
+          args.slice(2).filter((a) => a !== '--json')
         );
-        const env = { ...process.env, ...((options.env as Record<string, string>) || {}) };
-        if (registryUrl) {
-          env.NPM_CONFIG_REGISTRY = registryUrl;
-        }
-        return exec({ ...options, env }, bin, filteredArgs);
+        return exec(options, bin, filteredArgs);
+      }
+
+      if (cmd === 'install') {
+        // deno install — reads registry from .npmrc, no extra flags needed
+        return exec(options, bin, ['install']);
       }
 
       return exec(options, bin, args);

@@ -48,17 +48,16 @@ export function createBunAdapter(binPath?: string, _version?: string): PackageMa
 
     exec(options: SpawnOptions, ...args: string[]): Promise<ExecOutput> {
       const cmd = args[0];
-      // bun uses `bun pm publish` not `bun publish`
-      // bun info is `bun pm info <pkg>`
-      // bun audit is `bun audit`
-      if (cmd === 'publish') {
-        args = ['publish', ...args.slice(1)];
-      } else if (cmd === 'info') {
-        // bun info <pkg> outputs JSON when --json is passed
-        args = ['info', ...args.slice(1)];
-      } else if (cmd === 'audit') {
-        args = ['audit', ...args.slice(1)];
+
+      if (cmd === 'info') {
+        // bun info <pkg> reads registry from .npmrc, strip --registry <url>
+        const pkgName = args[1];
+        const filteredArgs = args.slice(2).filter((a) => a !== '--registry');
+        // also remove the URL that follows --registry
+        const cleaned = filteredArgs.filter((a) => !a.startsWith('http'));
+        return exec(options, bin, ['info', pkgName, ...cleaned]);
       }
+
       return exec(options, bin, args);
     },
 
