@@ -44,10 +44,10 @@ jobs:
         run: corepack prepare pnpm@latest-8 --activate
       - name: Setup Bun
         if: startsWith(matrix.pm, 'bun')
-        uses: oven-sh/setup-bun@735343b667d3e6f658f3391e2a2c94e68b048a4a # v2
+        uses: oven-sh/setup-bun@v2
       - name: Setup Deno
         if: startsWith(matrix.pm, 'deno')
-        uses: denoland/setup-deno@909cc5acb0fdd60627fb858598759246509fa755 # v2
+        uses: denoland/setup-deno@v2
       - name: Install
         run: pnpm install --frozen-lockfile
       - name: Build
