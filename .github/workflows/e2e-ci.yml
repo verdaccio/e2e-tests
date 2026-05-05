@@ -29,6 +29,8 @@ jobs:
           - yarn-classic
           - yarn-modern@3
           - yarn-modern@4
+          - bun
+          - deno
     name: verdaccio@${{ matrix.verdaccio }} / ${{ matrix.pm }}
     runs-on: ubuntu-latest
     steps:
@@ -40,6 +42,12 @@ jobs:
         run: corepack enable
       - name: pnpm enable
         run: corepack prepare pnpm@latest-8 --activate
+      - name: Setup Bun
+        if: startsWith(matrix.pm, 'bun')
+        uses: oven-sh/setup-bun@v2
+      - name: Setup Deno
+        if: startsWith(matrix.pm, 'deno')
+        uses: denoland/setup-deno@v2
       - name: Install
         run: pnpm install --frozen-lockfile
       - name: Build
