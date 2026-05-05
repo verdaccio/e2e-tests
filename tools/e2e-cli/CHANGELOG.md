@@ -1,5 +1,14 @@
 # @verdaccio/e2e-cli
 
+## 2.8.0
+
+### Minor Changes
+
+- 4986546: Add Bun and Deno package manager adapters for e2e CLI tests
+
+  - Bun: supports publish, install, info, and audit commands
+  - Deno: supports install and info commands (reads registry from .npmrc)
+
 ## 2.7.0
 
 ### Minor Changes
