@@ -36,12 +36,21 @@ function getCiArgs(ctx: TestContext): string[] {
     case 'yarn-modern':
       // `yarn install --immutable`
       return ['install', '--immutable'];
+    case 'bun':
+      // `bun install --frozen-lockfile`
+      return ['install', '--frozen-lockfile', ...ctx.adapter.registryArg(ctx.registryUrl)];
     default:
       return ['ci', ...ctx.adapter.registryArg(ctx.registryUrl)];
   }
 }
 
 async function testCi(ctx: TestContext): Promise<void> {
+  // deno doesn't have a CI/frozen-lockfile equivalent
+  if (ctx.adapter.type === 'deno') {
+    debug('skipping ci test for deno (no ci command)');
+    return;
+  }
+
   const { tempFolder } = await ctx.adapter.prepareProject(
     `ci-test-${ctx.runId}`,
     '1.0.0',

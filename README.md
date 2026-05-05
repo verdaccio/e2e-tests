@@ -36,6 +36,7 @@ A standalone CLI tool that runs the full Verdaccio e2e test suite against **any 
 ```bash
 verdaccio-e2e --registry http://localhost:4873
 verdaccio-e2e -r http://localhost:4873 --pm npm --pm pnpm
+verdaccio-e2e -r http://localhost:4873 --pm bun --pm deno
 verdaccio-e2e -r http://localhost:4873 --test publish --test install
 verdaccio-e2e -r http://localhost:4873 --pm yarn-modern=/path/to/yarn.js
 verdaccio-e2e -r http://localhost:4873 -v   # verbose — shows each command
@@ -60,25 +61,31 @@ verdaccio-e2e -r http://localhost:4873 -v   # verbose — shows each command
 | pnpm | `pnpm` | Uses `--registry` flag |
 | Yarn Classic (v1) | `yarn-classic` | Requires Yarn 1.x in PATH |
 | Yarn Modern (v2+) | `yarn-modern=/path/to/yarn.js` | Uses `.yarnrc.yml` for registry config |
+| Bun | `bun` | Uses `--registry` flag (except `info` which reads `.npmrc`) |
+| Deno | `deno` | Reads registry from `.npmrc`, install and info only |
 
 ### Tests
 
-| Test | npm | pnpm ≤10 | pnpm ≥11 | yarn-classic | yarn-modern |
-|------|-----|----------|----------|--------------|-------------|
-| publish | yes | yes | yes | yes | yes |
-| install | yes | yes | yes | yes | yes |
-| ci | yes | yes | yes | yes | yes |
-| info | yes | yes | yes | yes | yes |
-| audit | yes | yes | yes | yes | skip |
-| deprecate | yes | yes | yes | skip | yes |
-| dist-tags | yes | yes | skip | skip | skip |
-| login | skip | skip | skip | skip | yes |
-| ping | yes | yes | skip | skip | yes |
-| search | yes | yes | skip | skip | skip |
-| star | yes | yes | skip | skip | skip |
-| unpublish | yes | yes | yes | skip | skip |
+| Test | npm | pnpm ≤10 | pnpm ≥11 | yarn-classic | yarn-modern | bun | deno |
+|------|-----|----------|----------|--------------|-------------|-----|------|
+| publish | yes | yes | yes | yes | yes | yes | skip |
+| install | yes | yes | yes | yes | yes | yes | yes |
+| ci | yes | yes | yes | yes | yes | yes | skip |
+| info | yes | yes | yes | yes | yes | yes | yes |
+| audit | yes | yes | yes | yes | skip | yes | skip |
+| deprecate | yes | yes | yes | skip | yes | skip | skip |
+| dist-tags | yes | yes | skip | skip | skip | skip | skip |
+| login | skip | skip | skip | skip | yes | skip | skip |
+| ping | yes | yes | skip | skip | yes | skip | skip |
+| search | yes | yes | skip | skip | skip | skip | skip |
+| star | yes | yes | skip | skip | skip | skip | skip |
+| unpublish | yes | yes | yes | skip | skip | skip | skip |
 
 > **pnpm ≥11 notes:** pnpm v11 reimplemented many commands natively and removed `ping`, `search`, `star`, and `dist-tag`. Un-deprecate uses the new `pnpm undeprecate` command (other package managers use `deprecate pkg ""` with an empty message).
+>
+> **Bun notes:** `bun info` reads the registry from `.npmrc` (does not accept `--registry`). All other commands use `--registry`.
+>
+> **Deno notes:** Deno reads the registry entirely from `.npmrc`. Only `install` and `info` are supported. `deno info` uses `npm:<pkg>` specifiers with `--node-modules-dir=auto`.
 
 ### Scenarios
 
@@ -108,9 +115,9 @@ See [docs/cli-tests.md](docs/cli-tests.md) for detailed descriptions of what eac
 ### Programmatic API
 
 ```ts
-import { createNpmAdapter, createPnpmAdapter, allTests, runAll } from '@verdaccio/e2e-cli';
+import { createNpmAdapter, createPnpmAdapter, createBunAdapter, createDenoAdapter, allTests, runAll } from '@verdaccio/e2e-cli';
 
-const adapters = [createNpmAdapter(), createPnpmAdapter()];
+const adapters = [createNpmAdapter(), createPnpmAdapter(), createBunAdapter(), createDenoAdapter()];
 const { results, exitCode } = await runAll(adapters, allTests, 'http://localhost:4873', token, {
   timeout: 50000,
   concurrency: 1,
