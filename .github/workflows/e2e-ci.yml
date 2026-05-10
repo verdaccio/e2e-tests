@@ -44,7 +44,7 @@ jobs:
         run: corepack prepare pnpm@latest-8 --activate
       - name: Setup Bun
         if: startsWith(matrix.pm, 'bun')
-        uses: oven-sh/setup-bun@v2
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
       - name: Setup Deno
         if: startsWith(matrix.pm, 'deno')
         uses: denoland/setup-deno@v2
