@@ -47,7 +47,7 @@ jobs:
         uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
       - name: Setup Deno
         if: startsWith(matrix.pm, 'deno')
-        uses: denoland/setup-deno@v2
+        uses: denoland/setup-deno@667a34cdef165d8d2b2e98dde39547c9daac7282 # v2.0.4
       - name: Install
         run: pnpm install --frozen-lockfile
       - name: Build

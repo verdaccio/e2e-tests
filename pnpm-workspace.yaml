@@ -1,2 +1,13 @@
 packages:
-  - tools/*
+ - tools/*
+allowBuilds:
+  '@parcel/watcher': true
+  cypress: true
+  esbuild: true
+  msw: true
+  unrs-resolver: true
+minimumReleaseAge: 10080
+minimumReleaseAgeExclude:
+  - '@verdaccio/*'
+  - 'verdaccio-*'
+saveExact: true
