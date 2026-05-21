@@ -3,11 +3,17 @@ name: Changesets
 on:
   push:
     branches:
-      - main  
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
 
 env:
   CI: true
   PNPM_CACHE_FOLDER: .pnpm-store
+  NPM_CONFIG_PROVENANCE: 'true'
 
 jobs:
   # Update package versions from changesets.
@@ -17,12 +23,12 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.repository == 'verdaccio/e2e-tests'
     steps:
       - name: checkout code repository
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
 
       - name: setup node.js
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version-file: '.nvmrc'
       - name: install pnpm
@@ -30,18 +36,16 @@ jobs:
       - name: install dependencies
         run: pnpm install
       - name: build packages
-        run: pnpm build        
+        run: pnpm build
       - name: create versions
-        uses: changesets/action@41adcfa1f4c9a2f03ee74a426a8878a2b8cf7b85 # master
+        uses: changesets/action@63a615b9cd06ba9a3e6d13796c7fbcb080a60a0b
         with:
           version: pnpm ci:version
           commit: 'build: release packages'
           title: 'build: release packages'
           publish: pnpm ci:publish
           createGithubReleases: true
-          setupGitUser: false
+          setupGitUser: true
         env:
           GITHUB_TOKEN: ${{ secrets.CHANGESET_RELEASE_TOKEN }}
-          NPM_TOKEN: ${{ secrets.REGISTRY_AUTH_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.REGISTRY_AUTH_TOKEN }}
           NPM_CONFIG_REGISTRY: https://registry.npmjs.org

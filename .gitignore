@@ -6,3 +6,4 @@ videos/
 screenshots/
 .idea/
 cypress/downloads/*.tgz
+.claude

@@ -11,3 +11,4 @@ minimumReleaseAgeExclude:
   - '@verdaccio/*'
   - 'verdaccio-*'
 saveExact: true
+ignoreScripts: true
