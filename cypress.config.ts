@@ -1,4 +1,5 @@
 import { defineConfig } from 'cypress';
+
 // @ts-ignore — resolved at runtime after build
 import { setupVerdaccioTasks } from './tools/e2e-ui/build/esm/index.js';
 

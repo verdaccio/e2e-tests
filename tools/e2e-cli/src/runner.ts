@@ -1,8 +1,22 @@
 import buildDebug from 'debug';
 import { URL } from 'url';
 
-import { PackageManagerAdapter, SubTestResult, SuiteResult, TestContext, TestDefinition, TestResult } from './types';
-import { reportSkipped, reportSubTestResult, reportSuiteStart, reportSummary, reportTestResult, reportTestStart } from './reporter';
+import {
+  reportSkipped,
+  reportSubTestResult,
+  reportSuiteStart,
+  reportSummary,
+  reportTestResult,
+  reportTestStart,
+} from './reporter';
+import {
+  PackageManagerAdapter,
+  SubTestResult,
+  SuiteResult,
+  TestContext,
+  TestDefinition,
+  TestResult,
+} from './types';
 
 const debug = buildDebug('verdaccio:e2e-cli:runner');
 

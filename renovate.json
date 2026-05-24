@@ -25,22 +25,13 @@
       "groupSlug": "all-verdaccio"
     },
     {
-      "matchPackageNames": [
-        "@trivago/**",
-        "prettier",
-        "husky",
-        "lint-staged"
-      ],
+      "matchPackageNames": ["@trivago/**", "prettier"],
       "matchUpdateTypes": ["minor", "patch", "major"],
       "groupName": "all linting dependencies",
       "groupSlug": "all-linting"
     },
     {
-      "matchPackageNames": [
-        "vitest",
-        "@vitest/**",
-        "cypress"
-      ],
+      "matchPackageNames": ["cypress"],
       "matchUpdateTypes": ["minor", "patch", "major"],
       "groupName": "all test dependencies",
       "groupSlug": "all-test"
@@ -64,14 +55,7 @@
       "groupSlug": "all-build"
     },
     {
-      "matchPackageNames": [
-        "debug",
-        "get-port",
-        "js-yaml",
-        "kleur",
-        "cross-env",
-        "rimraf"
-      ],
+      "matchPackageNames": ["debug", "get-port", "js-yaml", "rimraf"],
       "matchUpdateTypes": ["minor", "patch"],
       "groupName": "utility dependencies",
       "groupSlug": "all-utils"

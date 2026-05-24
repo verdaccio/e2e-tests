@@ -1,4 +1,5 @@
 import buildDebug from 'debug';
+
 import { ping } from '@verdaccio/registry-cli';
 
 const debug = buildDebug('verdaccio:e2e-cli:registry-client');

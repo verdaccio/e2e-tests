@@ -1,28 +1,29 @@
 import { appendFileSync } from 'fs';
 
-import {
-  cleanupPublished,
-  publishPackage,
-  PublishPackageResult,
-  PublishPackageTaskInput,
-  unpublishPackage,
-  UnpublishPackageInput,
-  UnpublishPackageResult,
-} from './tasks';
 import { DEFAULT_FEATURES, mergeFeatures } from './features';
 import {
-  DEFAULT_SELECTORS,
-  DEFAULT_TEST_IDS,
-  mergeSelectors,
-  mergeTestIds,
-} from './testIds';
+  PublishPackageResult,
+  PublishPackageTaskInput,
+  UnpublishPackageInput,
+  UnpublishPackageResult,
+  cleanupPublished,
+  publishPackage,
+  unpublishPackage,
+} from './tasks';
+import { DEFAULT_SELECTORS, DEFAULT_TEST_IDS, mergeSelectors, mergeTestIds } from './testIds';
+// Re-export for convenience
+import {
+  changePasswordTests,
+  homeTests,
+  layoutTests,
+  publishTests,
+  searchTests,
+  settingsTests,
+  signinTests,
+} from './tests';
 import { RegistryConfig, RegistryTaskResult, VerdaccioUiOptions } from './types';
 
-export type {
-  RegistryConfig,
-  RegistryTaskResult,
-  VerdaccioUiOptions,
-} from './types';
+export type { RegistryConfig, RegistryTaskResult, VerdaccioUiOptions } from './types';
 export type {
   PublishPackageInput,
   PublishPackageTaskInput,
@@ -86,10 +87,7 @@ export function createRegistryConfig(options: VerdaccioUiOptions): RegistryConfi
  *     },
  *   });
  */
-export function setupVerdaccioTasks(
-  on: Cypress.PluginEvents,
-  options: VerdaccioUiOptions
-): void {
+export function setupVerdaccioTasks(on: Cypress.PluginEvents, options: VerdaccioUiOptions): void {
   const config = createRegistryConfig(options);
 
   // GitHub Actions Step Summary
@@ -144,9 +142,7 @@ export function setupVerdaccioTasks(
      * Any field not provided falls back to the values configured here
      * (registryUrl, credentials). The task returns a PublishPackageResult.
      */
-    async publishPackage(
-      input: PublishPackageTaskInput
-    ): Promise<PublishPackageResult> {
+    async publishPackage(input: PublishPackageTaskInput): Promise<PublishPackageResult> {
       return publishPackage({
         registryUrl: input.registryUrl ?? config.registryUrl,
         credentials: input.credentials ?? config.credentials,
@@ -176,9 +172,11 @@ export function setupVerdaccioTasks(
      *   cy.task('unpublishPackage', { pkgName, tempFolder });
      */
     async unpublishPackage(
-      input: string | (Omit<UnpublishPackageInput, 'registryUrl'> & {
-        registryUrl?: string;
-      })
+      input:
+        | string
+        | (Omit<UnpublishPackageInput, 'registryUrl'> & {
+            registryUrl?: string;
+          })
     ): Promise<UnpublishPackageResult> {
       const normalized =
         typeof input === 'string'
@@ -214,14 +212,3 @@ export function registerAllTests(config: RegistryConfig): void {
   publishTests(config);
   changePasswordTests(config);
 }
-
-// Re-export for convenience
-import {
-  homeTests,
-  signinTests,
-  publishTests,
-  searchTests,
-  settingsTests,
-  layoutTests,
-  changePasswordTests,
-} from './tests';

@@ -217,10 +217,7 @@ export type DeepPartial<T> = {
  * The shape is fixed and small, so we enumerate sections by hand
  * rather than relying on a recursive generic merger.
  */
-export function mergeTestIds(
-  defaults: TestIds,
-  overrides?: DeepPartial<TestIds>
-): TestIds {
+export function mergeTestIds(defaults: TestIds, overrides?: DeepPartial<TestIds>): TestIds {
   if (!overrides) return defaults;
   return {
     home: { ...defaults.home, ...overrides.home },
@@ -232,10 +229,7 @@ export function mergeTestIds(
 }
 
 /** Same idea as `mergeTestIds`, for the CSS-selector block. */
-export function mergeSelectors(
-  defaults: Selectors,
-  overrides?: DeepPartial<Selectors>
-): Selectors {
+export function mergeSelectors(defaults: Selectors, overrides?: DeepPartial<Selectors>): Selectors {
   if (!overrides) return defaults;
   return {
     markdownBody: overrides.markdownBody ?? defaults.markdownBody,

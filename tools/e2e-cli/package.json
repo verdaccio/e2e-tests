@@ -39,7 +39,7 @@
   "devDependencies": {
     "@types/debug": "4.1.12",
     "@types/js-yaml": "4.0.9",
-    "@types/node": "20.19.0",
+    "@types/node": "24.12.4",
     "vite": "8.0.1"
   }
 }

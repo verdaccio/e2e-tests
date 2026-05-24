@@ -18,9 +18,7 @@ function formatDuration(ms: number): string {
 }
 
 export function reportTestStart(adapterName: string, testName: string): void {
-  process.stdout.write(
-    `  ${COLORS.dim}running${COLORS.reset} ${adapterName} > ${testName}...\n`
-  );
+  process.stdout.write(`  ${COLORS.dim}running${COLORS.reset} ${adapterName} > ${testName}...\n`);
 }
 
 export function reportTestResult(result: TestResult, hasSubTests = false): void {
@@ -60,7 +58,8 @@ export function reportSubTestResult(label: string, passed: boolean, duration?: n
   const icon = passed
     ? `${COLORS.bold}${COLORS.green}✓${COLORS.reset}`
     : `${COLORS.bold}${COLORS.red}✗${COLORS.reset}`;
-  const dur = duration !== undefined ? ` ${COLORS.dim}${formatDuration(duration)}${COLORS.reset}` : '';
+  const dur =
+    duration !== undefined ? ` ${COLORS.dim}${formatDuration(duration)}${COLORS.reset}` : '';
   process.stdout.write(`\n    ${icon} ${COLORS.bold}${label}${COLORS.reset}${dur}\n\n`);
 }
 
@@ -93,10 +92,12 @@ export function reportSummary(results: SuiteResult[]): void {
     totalDuration += suite.duration;
   }
 
-  console.log(`\n  Total: ${COLORS.green}${totalPassed} passed${COLORS.reset}, ` +
-    `${COLORS.red}${totalFailed} failed${COLORS.reset}, ` +
-    `${COLORS.yellow}${totalSkipped} skipped${COLORS.reset} ` +
-    `${COLORS.dim}(${formatDuration(totalDuration)})${COLORS.reset}`);
+  console.log(
+    `\n  Total: ${COLORS.green}${totalPassed} passed${COLORS.reset}, ` +
+      `${COLORS.red}${totalFailed} failed${COLORS.reset}, ` +
+      `${COLORS.yellow}${totalSkipped} skipped${COLORS.reset} ` +
+      `${COLORS.dim}(${formatDuration(totalDuration)})${COLORS.reset}`
+  );
   console.log(`${COLORS.bold}${'='.repeat(50)}${COLORS.reset}\n`);
 
   // GitHub Actions Job Summary
@@ -150,7 +151,9 @@ function writeGitHubSummary(summaryFile: string, results: SuiteResult[]): void {
   }
 
   const emoji = totalFailed > 0 ? '❌' : '✅';
-  lines.push(`${emoji} **${totalPassed} passed**, **${totalFailed} failed**, **${totalSkipped} skipped**\n`);
+  lines.push(
+    `${emoji} **${totalPassed} passed**, **${totalFailed} failed**, **${totalSkipped} skipped**\n`
+  );
 
   appendFileSync(summaryFile, lines.join('\n'));
 }

@@ -1,5 +1,4 @@
 /// <reference types="cypress" />
-
 import { maybeIt } from '../features';
 import { RegistryConfig } from '../types';
 
@@ -53,9 +52,7 @@ export function searchTests(config: RegistryConfig) {
 
       // The UI may render "No Match", "No results", or similar — match
       // loosely rather than binding to one exact string.
-      cy.contains(/no\s+(match|results|packages)/i, { timeout: 5000 }).should(
-        'be.visible'
-      );
+      cy.contains(/no\s+(match|results|packages)/i, { timeout: 5000 }).should('be.visible');
     });
 
     it('should clear the query and allow typing a new one', () => {
@@ -72,11 +69,9 @@ export function searchTests(config: RegistryConfig) {
       // Typing a fresh query must fire another search request so the
       // search box is still functional after a clear.
       getSearchInput().type('second-query', { delay: 20 });
-      cy.wait(anySearchAlias(), { timeout: 10000 }).then(
-        (interception: any) => {
-          expect(interception.request.url).to.contain('second-query');
-        }
-      );
+      cy.wait(anySearchAlias(), { timeout: 10000 }).then((interception: any) => {
+        expect(interception.request.url).to.contain('second-query');
+      });
     });
 
     // ── Rendering assertions that require real package data ────────
@@ -116,29 +111,22 @@ export function searchTests(config: RegistryConfig) {
       maybeIt(features.search.resultsDropdown)(
         'should display the matching package in the results dropdown',
         () => {
-        getSearchInput().clear().type(pkgSlug, { delay: 30 });
+          getSearchInput().clear().type(pkgSlug, { delay: 30 });
 
-        // Wait for the search request to resolve with results.
-        cy.wait(anySearchAlias(), { timeout: 10000 }).then(
-          (interception: any) => {
+          // Wait for the search request to resolve with results.
+          cy.wait(anySearchAlias(), { timeout: 10000 }).then((interception: any) => {
             expect(interception.request.url).to.contain(pkgSlug);
-          }
-        );
+          });
 
-        // MUI Autocomplete opens a listbox with role="listbox" when
-        // there are matching options. Each result renders with
-        // role="option". No data-testids on the dropdown itself, so
-        // we lean on the ARIA roles which are stable across MUI
-        // versions.
-        cy.get('[role="listbox"]', { timeout: 5000 }).should('be.visible');
-        cy.get('[role="listbox"] [role="option"]').should(
-          'have.length.at.least',
-          1
-        );
-        // The result item must contain the full package name.
-        cy.contains('[role="listbox"] [role="option"]', pkgName).should(
-          'be.visible'
-        );
+          // MUI Autocomplete opens a listbox with role="listbox" when
+          // there are matching options. Each result renders with
+          // role="option". No data-testids on the dropdown itself, so
+          // we lean on the ARIA roles which are stable across MUI
+          // versions.
+          cy.get('[role="listbox"]', { timeout: 5000 }).should('be.visible');
+          cy.get('[role="listbox"] [role="option"]').should('have.length.at.least', 1);
+          // The result item must contain the full package name.
+          cy.contains('[role="listbox"] [role="option"]', pkgName).should('be.visible');
         }
       );
 
@@ -149,20 +137,13 @@ export function searchTests(config: RegistryConfig) {
           // fetches on mount. Waiting on these is the most reliable
           // way to know the router actually resolved the new page
           // (not just changed the URL).
-          cy.intercept('GET', `/-/verdaccio/data/sidebar/${pkgName}`).as(
-            'detailSidebar'
-          );
-          cy.intercept(
-            'GET',
-            `/-/verdaccio/data/package/readme/${pkgName}`
-          ).as('detailReadme');
+          cy.intercept('GET', `/-/verdaccio/data/sidebar/${pkgName}`).as('detailSidebar');
+          cy.intercept('GET', `/-/verdaccio/data/package/readme/${pkgName}`).as('detailReadme');
 
           getSearchInput().clear().type(pkgSlug, { delay: 30 });
           cy.wait(anySearchAlias(), { timeout: 10000 });
 
-          cy.contains('[role="listbox"] [role="option"]', pkgName)
-            .should('be.visible')
-            .click();
+          cy.contains('[role="listbox"] [role="option"]', pkgName).should('be.visible').click();
 
           // Verdaccio routes package detail under /-/web/detail/<pkg>.
           cy.location('pathname').should('contain', '/-/web/detail');

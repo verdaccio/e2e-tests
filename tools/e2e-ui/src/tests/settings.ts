@@ -1,5 +1,4 @@
 /// <reference types="cypress" />
-
 import { maybeIt } from '../features';
 import { RegistryConfig } from '../types';
 
@@ -41,9 +40,7 @@ export function settingsTests(config: RegistryConfig) {
       cy.getByTestId(header.settingsTooltip).click();
       cy.get('[role="dialog"]').should('be.visible');
       cy.get('[role="dialog"] [role="tab"]').should('have.length', 2);
-      cy.contains('[role="dialog"] [role="tab"]', 'Translations').should(
-        'be.visible'
-      );
+      cy.contains('[role="dialog"] [role="tab"]', 'Translations').should('be.visible');
     });
 
     it('should switch to the Translations tab and list languages', () => {
@@ -51,10 +48,9 @@ export function settingsTests(config: RegistryConfig) {
       cy.get('[role="dialog"]').should('be.visible');
       cy.contains('[role="dialog"] [role="tab"]', 'Translations').click();
       // language.description text is bundled in EN — good sentinel.
-      cy.contains(
-        '[role="dialog"]',
-        /this is the configuration details for the language/i
-      ).should('be.visible');
+      cy.contains('[role="dialog"]', /this is the configuration details for the language/i).should(
+        'be.visible'
+      );
       // Sanity-check a couple of language cards are rendered.
       cy.contains('[role="dialog"]', 'English').should('be.visible');
       cy.contains('[role="dialog"]', 'German').should('be.visible');
@@ -63,30 +59,28 @@ export function settingsTests(config: RegistryConfig) {
     maybeIt(features.settings.languageSwitcher)(
       'should change the UI language when a language card is clicked',
       () => {
-      cy.getByTestId(header.settingsTooltip).click();
-      cy.get('[role="dialog"]').should('be.visible');
-      cy.contains('[role="dialog"] [role="tab"]', 'Translations').click();
+        cy.getByTestId(header.settingsTooltip).click();
+        cy.get('[role="dialog"]').should('be.visible');
+        cy.contains('[role="dialog"] [role="tab"]', 'Translations').click();
 
-      // Before switching, capture the current dialog title so we can
-      // assert it changes. This avoids hard-coding the German string.
-      cy.contains('[role="dialog"]', 'Configuration')
-        .invoke('text')
-        .then((englishTitle) => {
-          // Click the German card. We scope to the dialog + the MUI
-          // card class to avoid matching other "German" text.
-          cy.contains('[role="dialog"] .MuiCard-root', 'German').click({
-            force: true,
+        // Before switching, capture the current dialog title so we can
+        // assert it changes. This avoids hard-coding the German string.
+        cy.contains('[role="dialog"]', 'Configuration')
+          .invoke('text')
+          .then((englishTitle) => {
+            // Click the German card. We scope to the dialog + the MUI
+            // card class to avoid matching other "German" text.
+            cy.contains('[role="dialog"] .MuiCard-root', 'German').click({
+              force: true,
+            });
+
+            // The English tab label "Translations" must no longer be
+            // present anywhere in the dialog — strongest proof the
+            // language actually switched.
+            cy.contains('[role="dialog"] [role="tab"]', 'Translations').should('not.exist');
+            // And the original dialog title text should also be gone.
+            cy.contains('[role="dialog"]', englishTitle).should('not.exist');
           });
-
-          // The English tab label "Translations" must no longer be
-          // present anywhere in the dialog — strongest proof the
-          // language actually switched.
-          cy.contains('[role="dialog"] [role="tab"]', 'Translations').should(
-            'not.exist'
-          );
-          // And the original dialog title text should also be gone.
-          cy.contains('[role="dialog"]', englishTitle).should('not.exist');
-        });
       }
     );
 

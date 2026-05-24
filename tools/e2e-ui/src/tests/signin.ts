@@ -1,5 +1,4 @@
 /// <reference types="cypress" />
-
 import { maybeIt } from '../features';
 import { RegistryConfig } from '../types';
 
@@ -79,10 +78,7 @@ export function signinTests(config: RegistryConfig) {
         // The form sets errors.root which renders via LoginDialogFormError
         // with a fixed English string ("Invalid username or password").
         cy.getByTestId(login.error, { timeout: 5000 }).should('be.visible');
-        cy.getByTestId(login.error).should(
-          'contain.text',
-          'Invalid username or password'
-        );
+        cy.getByTestId(login.error).should('contain.text', 'Invalid username or password');
         // Dialog should still be open so the user can retry.
         cy.getByTestId(login.dialog).should('be.visible');
       }

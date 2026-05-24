@@ -67,10 +67,7 @@ declare global {
       /**
        * Find an element by its `data-testid` attribute.
        */
-      getByTestId(
-        selector: string,
-        ...args: any[]
-      ): Chainable<JQuery<HTMLElement>>;
+      getByTestId(selector: string, ...args: any[]): Chainable<JQuery<HTMLElement>>;
 
       /**
        * Log in to the Verdaccio UI via the login dialog.

@@ -1,5 +1,4 @@
 /// <reference types="cypress" />
-
 import { RegistryConfig } from '../types';
 
 export function homeTests(config: RegistryConfig) {
@@ -55,19 +54,15 @@ export function homeTests(config: RegistryConfig) {
     it('should display instructions on help card', () => {
       cy.wait('@pkgs');
       cy.getByTestId(home.helpCard, { timeout: 10000 }).should('be.visible');
-      cy.getByTestId(home.helpCard).contains(
-        `npm adduser --registry ${config.registryUrl}`
-      );
-      cy.getByTestId(home.helpCard).contains(
-        `npm publish --registry ${config.registryUrl}`
-      );
+      cy.getByTestId(home.helpCard).contains(`npm adduser --registry ${config.registryUrl}`);
+      cy.getByTestId(home.helpCard).contains(`npm publish --registry ${config.registryUrl}`);
     });
 
     it('should render the header logo and login button', () => {
       cy.getByTestId(header.container).should('be.visible');
-      cy.get(
-        `[data-testid="${header.defaultLogo}"], [data-testid="${header.customLogo}"]`
-      ).should('be.visible');
+      cy.get(`[data-testid="${header.defaultLogo}"], [data-testid="${header.customLogo}"]`).should(
+        'be.visible'
+      );
       cy.getByTestId(header.loginButton).should('be.visible');
     });
 
@@ -75,9 +70,7 @@ export function homeTests(config: RegistryConfig) {
       // Land on the 404 page, then click the logo — URL should reset.
       cy.visit(`${config.registryUrl}/-/web/detail/@verdaccio/not-found`);
       cy.getByTestId(home.notFound, { timeout: 10000 }).should('be.visible');
-      cy.get(
-        `[data-testid="${header.defaultLogo}"], [data-testid="${header.customLogo}"]`
-      )
+      cy.get(`[data-testid="${header.defaultLogo}"], [data-testid="${header.customLogo}"]`)
         .first()
         .click();
       cy.location('pathname').should('eq', '/');
@@ -133,9 +126,7 @@ export function homeTests(config: RegistryConfig) {
 
       it('should show the published package name in the list', () => {
         cy.wait('@pkgs');
-        cy.contains(`[data-testid="${pkg.title}"]`, pkgName).should(
-          'be.visible'
-        );
+        cy.contains(`[data-testid="${pkg.title}"]`, pkgName).should('be.visible');
       });
     });
   });

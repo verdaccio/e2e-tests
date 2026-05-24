@@ -48,7 +48,11 @@ async function testPublish(ctx: TestContext): Promise<void> {
       // npm / pnpm
       try {
         const parsedBody = JSON.parse(resp.stdout);
-        assert.strictEqual(parsedBody.name, pkgName, `Expected package name "${pkgName}" but got "${parsedBody.name}"`);
+        assert.strictEqual(
+          parsedBody.name,
+          pkgName,
+          `Expected package name "${pkgName}" but got "${parsedBody.name}"`
+        );
         assert.ok(parsedBody.files, `Expected files to be defined for ${pkgName}`);
       } catch {
         // pnpm v11+ native publish doesn't output JSON — exit code 0 is sufficient

@@ -62,8 +62,14 @@ async function testAudit(ctx: TestContext): Promise<void> {
       assert.ok(resp.stdout.length > 0 || resp.stderr.length > 0, 'Expected audit output');
     } else {
       const parsedBody = JSON.parse(resp.stdout);
-      assert.ok(parsedBody.auditReportVersion !== undefined, 'Expected "auditReportVersion" in audit response');
-      assert.ok(parsedBody.vulnerabilities !== undefined, 'Expected "vulnerabilities" in audit response');
+      assert.ok(
+        parsedBody.auditReportVersion !== undefined,
+        'Expected "auditReportVersion" in audit response'
+      );
+      assert.ok(
+        parsedBody.vulnerabilities !== undefined,
+        'Expected "vulnerabilities" in audit response'
+      );
     }
   }
 }

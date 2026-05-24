@@ -11,7 +11,14 @@ import { createTempFolder, getPackageJSON, getREADME } from '../utils/project';
 
 const debug = buildDebug('verdaccio:e2e-cli:yarn-modern');
 
-const YARN_MODERN_SUPPORTED_COMMANDS = new Set(['publish', 'install', 'info', 'ping', 'deprecate', 'login']);
+const YARN_MODERN_SUPPORTED_COMMANDS = new Set([
+  'publish',
+  'install',
+  'info',
+  'ping',
+  'deprecate',
+  'login',
+]);
 
 const YARN_ENV = {
   COREPACK_ENABLE_STRICT: '0',
@@ -142,32 +149,22 @@ export function createYarnModernAdapter(binPath?: string, version?: string): Pac
       const cmd = args[0];
       let yarnArgs: string[];
       if (cmd === 'publish') {
-        const filtered = args.slice(1).filter(
-          (a) => a !== '--json' && !a.startsWith('--registry')
-        );
+        const filtered = args.slice(1).filter((a) => a !== '--json' && !a.startsWith('--registry'));
         yarnArgs = ['npm', 'publish', ...filtered];
       } else if (cmd === 'info') {
         const filtered = args.slice(1).filter((a) => !a.startsWith('--registry'));
         yarnArgs = ['npm', 'info', ...filtered];
       } else if (cmd === 'ping') {
-        const filtered = args.slice(1).filter(
-          (a) => !a.startsWith('--registry')
-        );
+        const filtered = args.slice(1).filter((a) => !a.startsWith('--registry'));
         yarnArgs = ['npm', 'ping', ...filtered];
       } else if (cmd === 'deprecate') {
-        const filtered = args.slice(1).filter(
-          (a) => !a.startsWith('--registry')
-        );
+        const filtered = args.slice(1).filter((a) => !a.startsWith('--registry'));
         yarnArgs = ['npm', 'deprecate', ...filtered];
       } else if (cmd === 'login') {
-        const filtered = args.slice(1).filter(
-          (a) => !a.startsWith('--registry')
-        );
+        const filtered = args.slice(1).filter((a) => !a.startsWith('--registry'));
         yarnArgs = ['npm', 'login', ...filtered];
       } else if (cmd === 'whoami') {
-        const filtered = args.slice(1).filter(
-          (a) => !a.startsWith('--registry')
-        );
+        const filtered = args.slice(1).filter((a) => !a.startsWith('--registry'));
         yarnArgs = ['npm', 'whoami', ...filtered];
       } else {
         yarnArgs = args.filter((a) => !a.startsWith('--registry'));

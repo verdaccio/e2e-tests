@@ -7,7 +7,7 @@ module.exports = {
   bracketSpacing: true,
   trailingComma: 'es5',
   semi: true,
-  plugins: [require('@trivago/prettier-plugin-sort-imports')],
+  plugins: ['@trivago/prettier-plugin-sort-imports'],
   importOrder: ['^@verdaccio/(.*)$', '^[./]'],
   importOrderSeparation: true,
   importOrderParserPlugins: ['typescript', 'classProperties', 'jsx'],

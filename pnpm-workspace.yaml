@@ -1,5 +1,5 @@
 packages:
- - tools/*
+  - tools/*
 allowBuilds:
   '@parcel/watcher': true
   cypress: true

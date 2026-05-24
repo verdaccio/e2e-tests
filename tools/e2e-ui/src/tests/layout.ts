@@ -1,5 +1,4 @@
 /// <reference types="cypress" />
-
 import { maybeIt } from '../features';
 import { RegistryConfig } from '../types';
 
@@ -25,15 +24,12 @@ export function layoutTests(config: RegistryConfig) {
     });
 
     it('should load /-/static/ui-options.js with HTTP 200', () => {
-      cy.wait('@uiOptions', { timeout: 10000 })
-        .its('response.statusCode')
-        .should('eq', 200);
+      cy.wait('@uiOptions', { timeout: 10000 }).its('response.statusCode').should('eq', 200);
     });
 
     it('should serve ui-options.js with a JavaScript content-type', () => {
       cy.wait('@uiOptions', { timeout: 10000 }).then((interception: any) => {
-        const contentType =
-          interception.response?.headers?.['content-type'] || '';
+        const contentType = interception.response?.headers?.['content-type'] || '';
         // Verdaccio serves this as `application/javascript` (possibly
         // with a charset suffix). Match loosely so small header tweaks
         // don't break the test.
@@ -45,9 +41,7 @@ export function layoutTests(config: RegistryConfig) {
       cy.wait('@uiOptions', { timeout: 10000 });
       // ui-options.js sets this global before the React app boots, so
       // by the time the body is visible it should already be populated.
-      cy.window()
-        .its('__VERDACCIO_BASENAME_UI_OPTIONS')
-        .should('be.an', 'object');
+      cy.window().its('__VERDACCIO_BASENAME_UI_OPTIONS').should('be.an', 'object');
     });
 
     describe('header', () => {
@@ -84,42 +78,34 @@ export function layoutTests(config: RegistryConfig) {
         cy.getByTestId(header.infoTooltip).should('be.visible');
       });
 
-      maybeIt(features.layout.themeSwitch)(
-        'should toggle between light and dark mode',
-        () => {
-          // Cypress clears localStorage between tests (testIsolation),
-          // so each test starts from whatever the client default is.
-          // On CI the default is light (the Electron headless browser
-          // reports `prefers-color-scheme: light`).
-          //
-          // `handleToggleDarkLightMode` in HeaderRight wraps
-          // `setIsDarkMode` in a 300ms setTimeout, so we assert with
-          // Cypress's built-in retryability (no `cy.wait(ms)` needed —
-          // the `.should('be.visible')` retry window covers it).
+      maybeIt(features.layout.themeSwitch)('should toggle between light and dark mode', () => {
+        // Cypress clears localStorage between tests (testIsolation),
+        // so each test starts from whatever the client default is.
+        // On CI the default is light (the Electron headless browser
+        // reports `prefers-color-scheme: light`).
+        //
+        // `handleToggleDarkLightMode` in HeaderRight wraps
+        // `setIsDarkMode` in a 300ms setTimeout, so we assert with
+        // Cypress's built-in retryability (no `cy.wait(ms)` needed —
+        // the `.should('be.visible')` retry window covers it).
 
-          // Start: light mode → the "light" icon button is rendered.
-          cy.getByTestId(header.themeSwitchLight).should('be.visible').click();
+        // Start: light mode → the "light" icon button is rendered.
+        cy.getByTestId(header.themeSwitchLight).should('be.visible').click();
 
-          // After the debounced flip, the "dark" variant replaces it.
-          cy.getByTestId(header.themeSwitchDark, { timeout: 5000 }).should(
-            'be.visible'
-          );
-          cy.getByTestId(header.themeSwitchLight).should('not.exist');
+        // After the debounced flip, the "dark" variant replaces it.
+        cy.getByTestId(header.themeSwitchDark, { timeout: 5000 }).should('be.visible');
+        cy.getByTestId(header.themeSwitchLight).should('not.exist');
 
-          // localStorage.darkMode is the source of truth (see
-          // useLocalStorage('darkMode', …) in ThemeProvider).
-          cy.window().its('localStorage').invoke('getItem', 'darkMode')
-            .should('eq', 'true');
+        // localStorage.darkMode is the source of truth (see
+        // useLocalStorage('darkMode', …) in ThemeProvider).
+        cy.window().its('localStorage').invoke('getItem', 'darkMode').should('eq', 'true');
 
-          // Toggle back so subsequent tests don't inherit dark state
-          // via a stale cache (testIsolation clears localStorage, but
-          // being explicit keeps the assertion symmetric).
-          cy.getByTestId(header.themeSwitchDark).click();
-          cy.getByTestId(header.themeSwitchLight, { timeout: 5000 }).should(
-            'be.visible'
-          );
-        }
-      );
+        // Toggle back so subsequent tests don't inherit dark state
+        // via a stale cache (testIsolation clears localStorage, but
+        // being explicit keeps the assertion symmetric).
+        cy.getByTestId(header.themeSwitchDark).click();
+        cy.getByTestId(header.themeSwitchLight, { timeout: 5000 }).should('be.visible');
+      });
     });
 
     describe('footer', () => {
@@ -142,9 +128,7 @@ export function layoutTests(config: RegistryConfig) {
         // The footer uses the default SVG logo as the link to
         // verdaccio.org.
         cy.getByTestId(footer.container)
-          .find(
-            `[data-testid="${header.defaultLogo}"], [data-testid="${header.customLogo}"]`
-          )
+          .find(`[data-testid="${header.defaultLogo}"], [data-testid="${header.customLogo}"]`)
           .should('exist');
       });
     });

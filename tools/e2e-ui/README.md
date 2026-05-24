@@ -14,6 +14,7 @@ pnpm add -D @verdaccio/e2e-ui cypress
 
 ```ts
 import { defineConfig } from 'cypress';
+
 import { setupVerdaccioTasks } from '@verdaccio/e2e-ui';
 
 const registryUrl = process.env.VERDACCIO_URL || 'http://localhost:4873';
@@ -51,23 +52,23 @@ homeTests(config);
 
 ## Available suites
 
-| Export | Covers |
-|---|---|
-| `homeTests` | Empty-registry landing page, help card, 404 |
-| `signinTests` | Login dialog, greeting, logout |
-| `layoutTests` | `/-/static/ui-options.js` health, header chrome, footer |
-| `searchTests` | Search input, query fires, empty state, clear |
-| `settingsTests` | Settings dialog, language picker, language switch |
-| `publishTests` | Publishes via `cy.task`, asserts readme / sidebar / tabs |
+| Export          | Covers                                                   |
+| --------------- | -------------------------------------------------------- |
+| `homeTests`     | Empty-registry landing page, help card, 404              |
+| `signinTests`   | Login dialog, greeting, logout                           |
+| `layoutTests`   | `/-/static/ui-options.js` health, header chrome, footer  |
+| `searchTests`   | Search input, query fires, empty state, clear            |
+| `settingsTests` | Settings dialog, language picker, language switch        |
+| `publishTests`  | Publishes via `cy.task`, asserts readme / sidebar / tabs |
 
 ## Configuration
 
 ```ts
 createRegistryConfig({
   registryUrl: 'http://localhost:4873',
-  credentials: { user: 'test', password: 'test' },    // optional
+  credentials: { user: 'test', password: 'test' }, // optional
   testIds: { header: { settingsTooltip: 'my-btn' } }, // optional per-field override
-  selectors: { loginDialog: { submitButton: '#go' } },// optional per-field override
+  selectors: { loginDialog: { submitButton: '#go' } }, // optional per-field override
 });
 ```
 
@@ -104,11 +105,11 @@ temp project with an `.npmrc` carrying the legacy auth token, spawns
 web:
   enable: true
   login: true
-  showSettings: true  # required by settingsTests
+  showSettings: true # required by settingsTests
 
 userRateLimit:
   windowMs: 1000
-  max: 10000          # default (1000 / 15min) is too tight for a full suite run
+  max: 10000 # default (1000 / 15min) is too tight for a full suite run
 
 packages:
   '**':

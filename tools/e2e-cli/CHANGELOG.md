@@ -5,7 +5,6 @@
 ### Minor Changes
 
 - 4986546: Add Bun and Deno package manager adapters for e2e CLI tests
-
   - Bun: supports publish, install, info, and audit commands
   - Deno: supports install and info commands (reads registry from .npmrc)
 
@@ -14,7 +13,6 @@
 ### Minor Changes
 
 - 5d67472: Add ci test, install-multiple-deps scenario, and audit test improvements
-
   - Add `ci` test that verifies lockfile-based install (npm ci, pnpm --frozen-lockfile, yarn --frozen-lockfile/--immutable)
   - Add `scenario:install-multiple-deps` scenario that publishes a dependency tree and installs them in a consumer project
   - Restrict audit test to npm only and skip gracefully when the registry does not support the audit endpoint

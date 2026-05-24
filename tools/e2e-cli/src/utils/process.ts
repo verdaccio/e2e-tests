@@ -1,7 +1,7 @@
 import { SpawnOptions, spawn } from 'child_process';
 import buildDebug from 'debug';
-import { createInterface } from 'readline';
 import { basename } from 'path';
+import { createInterface } from 'readline';
 
 import { ExecOutput } from '../types';
 
@@ -28,13 +28,19 @@ function shortCmd(cmd: string, args: string[]): string {
   return `${bin} ${args.join(' ')}`;
 }
 
-export async function exec(options: SpawnOptions, cmd: string, args: string[]): Promise<ExecOutput> {
+export async function exec(
+  options: SpawnOptions,
+  cmd: string,
+  args: string[]
+): Promise<ExecOutput> {
   debug('start exec %o %o %o', options, cmd, args ? args.join(' ') : '');
   let stdout = '';
   let stderr = '';
 
   if (_verbose) {
-    const cwd = options.cwd ? ` ${COLORS.dim}(cwd: ${basename(String(options.cwd))})${COLORS.reset}` : '';
+    const cwd = options.cwd
+      ? ` ${COLORS.dim}(cwd: ${basename(String(options.cwd))})${COLORS.reset}`
+      : '';
     process.stdout.write(`      ${COLORS.cyan}$${COLORS.reset} ${shortCmd(cmd, args)}${cwd}\n`);
   }
 
@@ -85,7 +91,9 @@ export async function exec(options: SpawnOptions, cmd: string, args: string[]): 
         const status = code
           ? `${COLORS.red}exit ${code}${COLORS.reset}`
           : `${COLORS.green}ok${COLORS.reset}`;
-        process.stdout.write(`      ${COLORS.dim}  -> ${status} ${COLORS.dim}(${duration}ms)${COLORS.reset}\n`);
+        process.stdout.write(
+          `      ${COLORS.dim}  -> ${status} ${COLORS.dim}(${duration}ms)${COLORS.reset}\n`
+        );
       }
 
       if (!code) {
