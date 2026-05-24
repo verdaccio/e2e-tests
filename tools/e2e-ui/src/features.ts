@@ -1,3 +1,5 @@
+import type { DeepPartial } from './testIds';
+
 /**
  * Per-test feature flags for enabling/disabling individual test cases
  * in the e2e-ui suites.
@@ -140,16 +142,11 @@ export const DEFAULT_FEATURES: Features = {
   },
 };
 
-import type { DeepPartial } from './testIds';
-
 /**
  * Merge user overrides into the default feature flags. Per-section,
  * one level deep — matching the style of `mergeTestIds`.
  */
-export function mergeFeatures(
-  defaults: Features,
-  overrides?: DeepPartial<Features>
-): Features {
+export function mergeFeatures(defaults: Features, overrides?: DeepPartial<Features>): Features {
   if (!overrides) return defaults;
   return {
     search: { ...defaults.search, ...overrides.search },

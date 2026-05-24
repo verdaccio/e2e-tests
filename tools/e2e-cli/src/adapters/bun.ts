@@ -7,12 +7,7 @@ import { prepareGenericEmptyProject } from '../utils/project';
 
 const debug = buildDebug('verdaccio:e2e-cli:bun');
 
-const BUN_SUPPORTED_COMMANDS = new Set([
-  'publish',
-  'install',
-  'info',
-  'audit',
-]);
+const BUN_SUPPORTED_COMMANDS = new Set(['publish', 'install', 'info', 'audit']);
 
 function detectVersion(bin: string): string {
   try {

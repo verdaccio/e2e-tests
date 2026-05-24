@@ -1,5 +1,4 @@
 /// <reference types="cypress" />
-
 import { maybeIt } from '../features';
 import { RegistryConfig } from '../types';
 
@@ -154,9 +153,7 @@ export function changePasswordTests(config: RegistryConfig) {
         cy.get('input[name="oldPassword"]').type('definitely-wrong-xyz');
         cy.get('input[name="newPassword"]').type('newSecretPass123');
         cy.get('input[name="confirmPassword"]').type('newSecretPass123');
-        cy.get('form button[type="submit"]')
-          .should('not.be.disabled')
-          .click();
+        cy.get('form button[type="submit"]').should('not.be.disabled').click();
         // Server rejects (htpasswd → plain Error → handler returns 4xx).
         cy.wait('@reset').its('response.statusCode').should('not.eq', 200);
         // onSubmit's catch sets errors.root → rendered via LoginDialogFormError.
@@ -180,9 +177,7 @@ export function changePasswordTests(config: RegistryConfig) {
         cy.get('input[name="oldPassword"]').type(currentPassword);
         cy.get('input[name="newPassword"]').type(newPassword);
         cy.get('input[name="confirmPassword"]').type(newPassword);
-        cy.get('form button[type="submit"]')
-          .should('not.be.disabled')
-          .click();
+        cy.get('form button[type="submit"]').should('not.be.disabled').click();
 
         cy.wait('@reset').its('response.statusCode').should('eq', 200);
         // Post-submit the component navigates to Route.SUCCESS with a

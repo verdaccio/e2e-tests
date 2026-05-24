@@ -7,12 +7,7 @@ import { prepareGenericEmptyProject } from '../utils/project';
 
 const debug = buildDebug('verdaccio:e2e-cli:yarn-classic');
 
-const YARN_CLASSIC_SUPPORTED_COMMANDS = new Set([
-  'publish',
-  'install',
-  'info',
-  'audit',
-]);
+const YARN_CLASSIC_SUPPORTED_COMMANDS = new Set(['publish', 'install', 'info', 'audit']);
 
 function detectYarnVersion(bin: string): string {
   try {
@@ -66,7 +61,10 @@ function resolveYarnClassicBin(binPath?: string, version?: string): string {
   return installYarnClassic();
 }
 
-export function createYarnClassicAdapter(binPath?: string, version?: string): PackageManagerAdapter {
+export function createYarnClassicAdapter(
+  binPath?: string,
+  version?: string
+): PackageManagerAdapter {
   const bin = resolveYarnClassicBin(binPath, version);
   const resolved = detectYarnVersion(bin);
   debug('creating yarn classic adapter with bin: %s (%s)', bin, resolved);

@@ -47,11 +47,7 @@ declare global {
        * conventions; pass `selectors` to override any subset for
        * non-default builds.
        */
-      login(
-        user: string,
-        password: string,
-        selectors?: LoginSelectors
-      ): Chainable<void>;
+      login(user: string, password: string, selectors?: LoginSelectors): Chainable<void>;
     }
   }
 }
@@ -67,33 +63,25 @@ Cypress.Commands.add('getByLabel', (text: string | RegExp) => {
   return cy.contains('label', text).then(($label) => {
     const inputId = $label.attr('for');
     if (!inputId) {
-      throw new Error(
-        `getByLabel: matching label has no "for" attribute (text=${String(text)})`
-      );
+      throw new Error(`getByLabel: matching label has no "for" attribute (text=${String(text)})`);
     }
     return cy.get(`#${inputId}`);
   });
 });
 
-Cypress.Commands.add(
-  'login',
-  (user: string, password: string, selectors: LoginSelectors = {}) => {
-    const loginButton = selectors.loginButton ?? DEFAULT_LOGIN_SELECTORS.loginButton;
-    const usernameInput =
-      selectors.usernameInput ?? DEFAULT_LOGIN_SELECTORS.usernameInput;
-    const passwordInput =
-      selectors.passwordInput ?? DEFAULT_LOGIN_SELECTORS.passwordInput;
-    const submitButton =
-      selectors.submitButton ?? DEFAULT_LOGIN_SELECTORS.submitButton;
+Cypress.Commands.add('login', (user: string, password: string, selectors: LoginSelectors = {}) => {
+  const loginButton = selectors.loginButton ?? DEFAULT_LOGIN_SELECTORS.loginButton;
+  const usernameInput = selectors.usernameInput ?? DEFAULT_LOGIN_SELECTORS.usernameInput;
+  const passwordInput = selectors.passwordInput ?? DEFAULT_LOGIN_SELECTORS.passwordInput;
+  const submitButton = selectors.submitButton ?? DEFAULT_LOGIN_SELECTORS.submitButton;
 
-    cy.getByTestId(loginButton).click();
-    cy.wait(300);
-    cy.get(usernameInput).type(user);
-    cy.wait(200);
-    cy.get(passwordInput).type(password);
-    cy.wait(500);
-    cy.get(submitButton).click();
-  }
-);
+  cy.getByTestId(loginButton).click();
+  cy.wait(300);
+  cy.get(usernameInput).type(user);
+  cy.wait(200);
+  cy.get(passwordInput).type(password);
+  cy.wait(500);
+  cy.get(submitButton).click();
+});
 
 export {};

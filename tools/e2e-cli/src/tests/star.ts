@@ -14,11 +14,7 @@ async function testStar(ctx: TestContext): Promise<void> {
     ctx.port,
     ctx.token
   );
-  await ctx.adapter.exec(
-    { cwd: tf1 },
-    'publish',
-    ...ctx.adapter.registryArg(ctx.registryUrl)
-  );
+  await ctx.adapter.exec({ cwd: tf1 }, 'publish', ...ctx.adapter.registryArg(ctx.registryUrl));
   const resp1 = await ctx.adapter.exec(
     { cwd: tf1 },
     'star',
@@ -39,11 +35,7 @@ async function testStar(ctx: TestContext): Promise<void> {
     ctx.port,
     ctx.token
   );
-  await ctx.adapter.exec(
-    { cwd: tf2 },
-    'publish',
-    ...ctx.adapter.registryArg(ctx.registryUrl)
-  );
+  await ctx.adapter.exec({ cwd: tf2 }, 'publish', ...ctx.adapter.registryArg(ctx.registryUrl));
   await ctx.adapter.exec(
     { cwd: tf2 },
     'star',

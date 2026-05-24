@@ -1,8 +1,8 @@
 import assert from 'assert';
 import buildDebug from 'debug';
 import { writeFile } from 'fs/promises';
-import { join } from 'path';
 import YAML from 'js-yaml';
+import { join } from 'path';
 
 import { TestContext, TestDefinition } from '../types';
 import { createTempFolder, getPackageJSON, getREADME } from '../utils/project';
@@ -13,10 +13,7 @@ const debug = buildDebug('verdaccio:e2e-cli:test:login');
  * Creates a project with registry config but WITHOUT auth token,
  * so whoami will use the token saved by login to ~/.yarnrc.yml.
  */
-async function prepareLoginProject(
-  ctx: TestContext,
-  name: string
-): Promise<string> {
+async function prepareLoginProject(ctx: TestContext, name: string): Promise<string> {
   debug('preparing project for %s (no auth token)', name);
   const tempFolder = await createTempFolder(name);
   const yamlContent = YAML.dump({

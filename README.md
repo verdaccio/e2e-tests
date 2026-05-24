@@ -4,10 +4,10 @@ End-to-end tests for [Verdaccio](https://verdaccio.org) across all popular packa
 
 ## Packages
 
-| Package | Description |
-|---------|-------------|
+| Package                               | Description                                   |
+| ------------------------------------- | --------------------------------------------- |
 | [`@verdaccio/e2e-cli`](tools/e2e-cli) | CLI e2e tests (publish, install, audit, etc.) |
-| [`@verdaccio/e2e-ui`](tools/e2e-ui) | Cypress UI e2e tests (home, signin, publish) |
+| [`@verdaccio/e2e-ui`](tools/e2e-ui)   | Cypress UI e2e tests (home, signin, publish)  |
 
 ## Quick Start
 
@@ -44,42 +44,42 @@ verdaccio-e2e -r http://localhost:4873 -v   # verbose — shows each command
 
 ### CLI Options
 
-| Option | Description | Default |
-|--------|-------------|---------|
-| `-r, --registry <url>` | Verdaccio registry URL **(required)** | — |
-| `--pm <name[=path]>` | Package manager to test (repeatable) | `npm` |
-| `-t, --test <name>` | Filter tests by name (repeatable) | all supported |
-| `--token <token>` | Auth token (skips user creation) | auto-created |
-| `--timeout <ms>` | Per-test timeout | `50000` |
-| `-v, --verbose` | Show each command executed | `false` |
+| Option                 | Description                           | Default       |
+| ---------------------- | ------------------------------------- | ------------- |
+| `-r, --registry <url>` | Verdaccio registry URL **(required)** | —             |
+| `--pm <name[=path]>`   | Package manager to test (repeatable)  | `npm`         |
+| `-t, --test <name>`    | Filter tests by name (repeatable)     | all supported |
+| `--token <token>`      | Auth token (skips user creation)      | auto-created  |
+| `--timeout <ms>`       | Per-test timeout                      | `50000`       |
+| `-v, --verbose`        | Show each command executed            | `false`       |
 
 ### Supported Package Managers
 
-| Adapter | `--pm` value | Notes |
-|---------|-------------|-------|
-| npm | `npm` | Uses `--registry` flag |
-| pnpm | `pnpm` | Uses `--registry` flag |
-| Yarn Classic (v1) | `yarn-classic` | Requires Yarn 1.x in PATH |
-| Yarn Modern (v2+) | `yarn-modern=/path/to/yarn.js` | Uses `.yarnrc.yml` for registry config |
-| Bun | `bun` | Uses `--registry` flag (except `info` which reads `.npmrc`) |
-| Deno | `deno` | Reads registry from `.npmrc`, install and info only |
+| Adapter           | `--pm` value                   | Notes                                                       |
+| ----------------- | ------------------------------ | ----------------------------------------------------------- |
+| npm               | `npm`                          | Uses `--registry` flag                                      |
+| pnpm              | `pnpm`                         | Uses `--registry` flag                                      |
+| Yarn Classic (v1) | `yarn-classic`                 | Requires Yarn 1.x in PATH                                   |
+| Yarn Modern (v2+) | `yarn-modern=/path/to/yarn.js` | Uses `.yarnrc.yml` for registry config                      |
+| Bun               | `bun`                          | Uses `--registry` flag (except `info` which reads `.npmrc`) |
+| Deno              | `deno`                         | Reads registry from `.npmrc`, install and info only         |
 
 ### Tests
 
-| Test | npm | pnpm ≤10 | pnpm ≥11 | yarn-classic | yarn-modern | bun | deno |
-|------|-----|----------|----------|--------------|-------------|-----|------|
-| publish | yes | yes | yes | yes | yes | yes | skip |
-| install | yes | yes | yes | yes | yes | yes | yes |
-| ci | yes | yes | yes | yes | yes | yes | skip |
-| info | yes | yes | yes | yes | yes | yes | yes |
-| audit | yes | yes | yes | yes | skip | yes | skip |
-| deprecate | yes | yes | yes | skip | yes | skip | skip |
-| dist-tags | yes | yes | skip | skip | skip | skip | skip |
-| login | skip | skip | skip | skip | yes | skip | skip |
-| ping | yes | yes | skip | skip | yes | skip | skip |
-| search | yes | yes | skip | skip | skip | skip | skip |
-| star | yes | yes | skip | skip | skip | skip | skip |
-| unpublish | yes | yes | yes | skip | skip | skip | skip |
+| Test      | npm  | pnpm ≤10 | pnpm ≥11 | yarn-classic | yarn-modern | bun  | deno |
+| --------- | ---- | -------- | -------- | ------------ | ----------- | ---- | ---- |
+| publish   | yes  | yes      | yes      | yes          | yes         | yes  | skip |
+| install   | yes  | yes      | yes      | yes          | yes         | yes  | yes  |
+| ci        | yes  | yes      | yes      | yes          | yes         | yes  | skip |
+| info      | yes  | yes      | yes      | yes          | yes         | yes  | yes  |
+| audit     | yes  | yes      | yes      | yes          | skip        | yes  | skip |
+| deprecate | yes  | yes      | yes      | skip         | yes         | skip | skip |
+| dist-tags | yes  | yes      | skip     | skip         | skip        | skip | skip |
+| login     | skip | skip     | skip     | skip         | yes         | skip | skip |
+| ping      | yes  | yes      | skip     | skip         | yes         | skip | skip |
+| search    | yes  | yes      | skip     | skip         | skip        | skip | skip |
+| star      | yes  | yes      | skip     | skip         | skip        | skip | skip |
+| unpublish | yes  | yes      | yes      | skip         | skip        | skip | skip |
 
 > **pnpm ≥11 notes:** pnpm v11 reimplemented many commands natively and removed `ping`, `search`, `star`, and `dist-tag`. Un-deprecate uses the new `pnpm undeprecate` command (other package managers use `deprecate pkg ""` with an empty message).
 >
@@ -91,8 +91,8 @@ verdaccio-e2e -r http://localhost:4873 -v   # verbose — shows each command
 
 Scenarios are complex, multi-step tests that simulate real-world workflows beyond single-command operations. They exercise the registry under realistic conditions — many parallel requests, transitive dependency resolution, version updates, etc.
 
-| Scenario | Description | Requires |
-|----------|-------------|----------|
+| Scenario                         | Description                                                                                                                                                                                                    | Requires                     |
+| -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- |
 | `scenario:install-multiple-deps` | Publishes a tree of packages (leaf, shared, intermediate with transitive deps), installs them all in a consumer project, verifies metadata, then publishes updated versions and re-installs with semver ranges | `publish`, `install`, `info` |
 
 Run a specific scenario:
@@ -115,7 +115,14 @@ See [docs/cli-tests.md](docs/cli-tests.md) for detailed descriptions of what eac
 ### Programmatic API
 
 ```ts
-import { createNpmAdapter, createPnpmAdapter, createBunAdapter, createDenoAdapter, allTests, runAll } from '@verdaccio/e2e-cli';
+import {
+  allTests,
+  createBunAdapter,
+  createDenoAdapter,
+  createNpmAdapter,
+  createPnpmAdapter,
+  runAll,
+} from '@verdaccio/e2e-cli';
 
 const adapters = [createNpmAdapter(), createPnpmAdapter(), createBunAdapter(), createDenoAdapter()];
 const { results, exitCode } = await runAll(adapters, allTests, 'http://localhost:4873', token, {
@@ -127,12 +134,18 @@ const { results, exitCode } = await runAll(adapters, allTests, 'http://localhost
 Run only scenarios:
 
 ```ts
-import { createNpmAdapter, allScenarios, runAll } from '@verdaccio/e2e-cli';
+import { allScenarios, createNpmAdapter, runAll } from '@verdaccio/e2e-cli';
 
-const { results, exitCode } = await runAll([createNpmAdapter()], allScenarios, 'http://localhost:4873', token, {
-  timeout: 120000,
-  concurrency: 1,
-});
+const { results, exitCode } = await runAll(
+  [createNpmAdapter()],
+  allScenarios,
+  'http://localhost:4873',
+  token,
+  {
+    timeout: 120000,
+    concurrency: 1,
+  }
+);
 ```
 
 ---
@@ -153,6 +166,7 @@ npm install @verdaccio/e2e-ui cypress
 
 ```ts
 import { defineConfig } from 'cypress';
+
 import { setupVerdaccioTasks } from '@verdaccio/e2e-ui';
 
 export default defineConfig({
@@ -187,8 +201,8 @@ import { createRegistryConfig, homeTests, signinTests } from '@verdaccio/e2e-ui'
 
 const config = createRegistryConfig({
   registryUrl: 'http://localhost:4873',
-  title: 'My Verdaccio',           // optional, default: 'Verdaccio'
-  credentials: { user: 'admin', password: 'admin' },  // optional
+  title: 'My Verdaccio', // optional, default: 'Verdaccio'
+  credentials: { user: 'admin', password: 'admin' }, // optional
 });
 
 homeTests(config);
@@ -197,41 +211,41 @@ signinTests(config);
 
 ### Test Suites
 
-| Suite | Tests |
-|-------|-------|
-| `homeTests` | Page title, help card (empty registry), 404 page |
-| `signinTests` | Login, logout |
+| Suite          | Tests                                                                     |
+| -------------- | ------------------------------------------------------------------------- |
+| `homeTests`    | Page title, help card (empty registry), 404 page                          |
+| `signinTests`  | Login, logout                                                             |
 | `publishTests` | Publish package, navigate detail, readme, dependencies, versions, uplinks |
 
 ### Custom Commands
 
 Importing `@verdaccio/e2e-ui/commands` adds:
 
-| Command | Description |
-|---------|-------------|
-| `cy.getByTestId(id)` | Find element by `data-testid` attribute |
-| `cy.login(user, password)` | Login to Verdaccio UI |
+| Command                    | Description                             |
+| -------------------------- | --------------------------------------- |
+| `cy.getByTestId(id)`       | Find element by `data-testid` attribute |
+| `cy.login(user, password)` | Login to Verdaccio UI                   |
 
 ### Exports
 
-| Export | Description |
-|--------|-------------|
-| `setupVerdaccioTasks(on, options)` | Register Cypress tasks |
-| `createRegistryConfig(options)` | Build config with defaults |
-| `registerAllTests(config)` | Register all test suites |
-| `homeTests(config)` | Home page tests |
-| `signinTests(config)` | Login/logout tests |
-| `publishTests(config)` | Package publish + detail tests |
+| Export                             | Description                    |
+| ---------------------------------- | ------------------------------ |
+| `setupVerdaccioTasks(on, options)` | Register Cypress tasks         |
+| `createRegistryConfig(options)`    | Build config with defaults     |
+| `registerAllTests(config)`         | Register all test suites       |
+| `homeTests(config)`                | Home page tests                |
+| `signinTests(config)`              | Login/logout tests             |
+| `publishTests(config)`             | Package publish + detail tests |
 
 ---
 
 ## Scripts
 
-| Script | Description |
-|--------|-------------|
-| `./scripts/run-e2e.sh [version] [pm]` | Run CLI tests against a Verdaccio version |
-| `./scripts/run-e2e-ui.sh [version]` | Run Cypress UI tests against a Verdaccio version |
-| `./scripts/run-e2e-matrix.sh` | Run CLI tests for all detected PMs x Verdaccio 5+6+next-7 |
+| Script                                | Description                                               |
+| ------------------------------------- | --------------------------------------------------------- |
+| `./scripts/run-e2e.sh [version] [pm]` | Run CLI tests against a Verdaccio version                 |
+| `./scripts/run-e2e-ui.sh [version]`   | Run Cypress UI tests against a Verdaccio version          |
+| `./scripts/run-e2e-matrix.sh`         | Run CLI tests for all detected PMs x Verdaccio 5+6+next-7 |
 
 All scripts accept `--docker` to use Docker images instead of local npm install.
 

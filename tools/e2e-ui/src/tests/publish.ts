@@ -1,5 +1,4 @@
 /// <reference types="cypress" />
-
 import { maybeIt } from '../features';
 import { RegistryConfig } from '../types';
 
@@ -203,17 +202,13 @@ export function publishTests(config: RegistryConfig) {
         cy.getByTestId(pkg.title).first().click();
         cy.wait('@sidebar');
 
-        cy.getByTestId(pkg.downloadTarballBtn)
-          .should('be.visible')
-          .click();
+        cy.getByTestId(pkg.downloadTarballBtn).should('be.visible').click();
 
         // The fetch should fire and return 200. We can't assert on the
         // actual file landing on disk — Cypress doesn't track OS-level
         // downloads — but a successful GET proves the end-to-end path
         // from click → download provider → registry.
-        cy.wait('@tarballFetch', { timeout: 10000 })
-          .its('response.statusCode')
-          .should('eq', 200);
+        cy.wait('@tarballFetch', { timeout: 10000 }).its('response.statusCode').should('eq', 200);
       }
     );
 
@@ -229,9 +224,7 @@ export function publishTests(config: RegistryConfig) {
         // find it. Clicking the FAB flips `isOpen` to true.
         cy.getByTestId(pkg.rawBtn).should('be.visible').click();
 
-        cy.getByTestId(pkg.rawViewerDialog, { timeout: 5000 }).should(
-          'be.visible'
-        );
+        cy.getByTestId(pkg.rawViewerDialog, { timeout: 5000 }).should('be.visible');
         // The ReactJson viewer renders the package manifest — the
         // package name should appear somewhere in the serialized JSON.
         cy.getByTestId(pkg.rawViewerDialog).should('contain.text', pkgName);

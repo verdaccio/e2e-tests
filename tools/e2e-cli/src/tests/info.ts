@@ -1,15 +1,18 @@
 import assert from 'assert';
+import { writeFile } from 'fs/promises';
+import { join } from 'path';
 
 import { TestContext, TestDefinition } from '../types';
 import { createTempFolder } from '../utils/project';
-import { writeFile } from 'fs/promises';
-import { join } from 'path';
 
 async function testInfo(ctx: TestContext): Promise<void> {
   // Create a minimal temp project so yarn modern has a project context
   // and yarn classic doesn't pick up the repo's packageManager field
   const tempFolder = await createTempFolder('info-test');
-  await writeFile(join(tempFolder, 'package.json'), JSON.stringify({ name: 'info-test', version: '1.0.0' }));
+  await writeFile(
+    join(tempFolder, 'package.json'),
+    JSON.stringify({ name: 'info-test', version: '1.0.0' })
+  );
 
   const resp = await ctx.adapter.exec(
     { cwd: tempFolder },

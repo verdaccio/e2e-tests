@@ -212,7 +212,11 @@ async function testInstallMultipleDeps(ctx: TestContext): Promise<void> {
       consumerDeps
     );
 
-    await ctx.adapter.exec({ cwd: tempFolder }, 'install', ...ctx.adapter.registryArg(ctx.registryUrl));
+    await ctx.adapter.exec(
+      { cwd: tempFolder },
+      'install',
+      ...ctx.adapter.registryArg(ctx.registryUrl)
+    );
 
     // Verify that the registry now serves both versions
     const leafResp = await ctx.adapter.exec(

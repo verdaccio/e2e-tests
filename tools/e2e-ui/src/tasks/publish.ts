@@ -25,9 +25,7 @@ export interface PublishPackageInput {
  * whatever was configured in `setupVerdaccioTasks`), but `pkgName` is
  * still required — every publish needs a name.
  */
-export type PublishPackageTaskInput = Partial<
-  Omit<PublishPackageInput, 'pkgName'>
-> & {
+export type PublishPackageTaskInput = Partial<Omit<PublishPackageInput, 'pkgName'>> & {
   pkgName: string;
 };
 
@@ -62,9 +60,7 @@ function sanitizeFolderName(name: string): string {
  * the run, which is fine for ephemeral CI environments and local temp
  * setups (both wipe storage between runs).
  */
-async function obtainLegacyToken(
-  registryUrl: string
-): Promise<{ user: string; token: string }> {
+async function obtainLegacyToken(registryUrl: string): Promise<{ user: string; token: string }> {
   const user = `e2e-bot-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
   const password = 'e2e-bot-password';
   const base = registryUrl.replace(/\/$/, '');
@@ -90,9 +86,7 @@ async function obtainLegacyToken(
   const json = (await res.json()) as { token?: string };
   if (!json.token) {
     throw new Error(
-      `[publishPackage] user creation response did not contain a token: ${JSON.stringify(
-        json
-      )}`
+      `[publishPackage] user creation response did not contain a token: ${JSON.stringify(json)}`
     );
   }
   return { user, token: json.token };
@@ -132,10 +126,7 @@ async function createTempProject(
     join(tempFolder, 'README.md'),
     `# ${pkgName}\n\nPublished by @verdaccio/e2e-ui for e2e testing.\n`
   );
-  await writeFile(
-    join(tempFolder, 'index.js'),
-    `module.exports = ${JSON.stringify(pkgName)};\n`
-  );
+  await writeFile(join(tempFolder, 'index.js'), `module.exports = ${JSON.stringify(pkgName)};\n`);
 
   // `.npmrc` — include an `_authToken` scoped to the registry host so
   // modern npm (>= 10.x) is willing to run `npm publish`. Without this
@@ -167,14 +158,7 @@ function spawnNpmPublish(
     // prerelease version." For non-prerelease versions it's a no-op.
     const proc = spawn(
       'npm',
-      [
-        'publish',
-        '--registry',
-        registryUrl,
-        '--tag',
-        'latest',
-        '--loglevel=error',
-      ],
+      ['publish', '--registry', registryUrl, '--tag', 'latest', '--loglevel=error'],
       {
         cwd,
         env: { ...process.env },
@@ -211,9 +195,7 @@ function spawnNpmPublish(
  * Throws on non-zero npm exit. Returns the temp folder path on success
  * so callers can inspect or clean up.
  */
-export async function publishPackage(
-  input: PublishPackageInput
-): Promise<PublishPackageResult> {
+export async function publishPackage(input: PublishPackageInput): Promise<PublishPackageResult> {
   const baseVersion = input.version ?? '1.0.0';
   const version = input.unique ? `${baseVersion}-t${Date.now()}` : baseVersion;
 
@@ -227,10 +209,7 @@ export async function publishPackage(
     input.dependencies ?? {},
     input.devDependencies ?? {}
   );
-  const { stdout, stderr, exitCode } = await spawnNpmPublish(
-    tempFolder,
-    input.registryUrl
-  );
+  const { stdout, stderr, exitCode } = await spawnNpmPublish(tempFolder, input.registryUrl);
   if (exitCode !== 0) {
     throw new Error(
       `[publishPackage] npm publish failed for ${input.pkgName}@${version} ` +
@@ -249,9 +228,7 @@ export async function cleanupPublished(tempFolder: string): Promise<void> {
   if (!tempFolder) return;
   const tmpRoot = tmpdir();
   if (!tempFolder.startsWith(tmpRoot)) {
-    throw new Error(
-      `[cleanupPublished] refusing to remove "${tempFolder}" — not under ${tmpRoot}`
-    );
+    throw new Error(`[cleanupPublished] refusing to remove "${tempFolder}" — not under ${tmpRoot}`);
   }
   await rm(tempFolder, { recursive: true, force: true });
 }
@@ -288,14 +265,7 @@ function spawnNpmUnpublish(
   return new Promise((resolvePromise, rejectPromise) => {
     const proc = spawn(
       'npm',
-      [
-        'unpublish',
-        pkgSpec,
-        '--force',
-        '--registry',
-        registryUrl,
-        '--loglevel=error',
-      ],
+      ['unpublish', pkgSpec, '--force', '--registry', registryUrl, '--loglevel=error'],
       {
         cwd,
         env: { ...process.env },
@@ -338,17 +308,11 @@ export async function unpublishPackage(
   if (!workingFolder) {
     ownsWorkingFolder = true;
     const { token } = await obtainLegacyToken(input.registryUrl);
-    workingFolder = await mkdtemp(
-      join(tmpdir(), `verdaccio-e2e-ui-unpublish-`)
-    );
+    workingFolder = await mkdtemp(join(tmpdir(), `verdaccio-e2e-ui-unpublish-`));
     const registryHost = input.registryUrl.replace(/^https?:/, '');
     await writeFile(
       join(workingFolder, '.npmrc'),
-      [
-        `registry=${input.registryUrl}`,
-        `${registryHost}/:_authToken=${token}`,
-        '',
-      ].join('\n')
+      [`registry=${input.registryUrl}`, `${registryHost}/:_authToken=${token}`, ''].join('\n')
     );
   }
 
@@ -361,10 +325,9 @@ export async function unpublishPackage(
 
     // Treat "already absent" as success. npm prints slightly different
     // messages depending on version — match loosely.
-    const alreadyGone =
-      /404|not found|no such package|does not (exist|match)/i.test(
-        `${stderr}\n${stdout}`
-      );
+    const alreadyGone = /404|not found|no such package|does not (exist|match)/i.test(
+      `${stderr}\n${stdout}`
+    );
 
     if (exitCode !== 0 && !alreadyGone) {
       throw new Error(
@@ -382,9 +345,7 @@ export async function unpublishPackage(
     };
   } finally {
     if (ownsWorkingFolder && workingFolder) {
-      await rm(workingFolder, { recursive: true, force: true }).catch(
-        () => undefined
-      );
+      await rm(workingFolder, { recursive: true, force: true }).catch(() => undefined);
     }
   }
 }

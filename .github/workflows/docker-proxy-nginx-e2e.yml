@@ -2,7 +2,7 @@
 
 # concurrency:
 #   group: docker-nginx-${{ github.ref }}
-#   cancel-in-progress: true  
+#   cancel-in-progress: true
 
 # on:
 #   workflow_dispatch:

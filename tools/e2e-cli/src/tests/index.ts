@@ -1,6 +1,5 @@
-import { TestDefinition } from '../types';
-
 import { allScenarios, installMultipleDepsScenario } from '../scenarios';
+import { TestDefinition } from '../types';
 import { auditTest } from './audit';
 import { ciTest } from './ci';
 import { deprecateTest } from './deprecate';

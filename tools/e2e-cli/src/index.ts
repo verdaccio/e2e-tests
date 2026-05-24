@@ -8,10 +8,10 @@ import {
   createYarnClassicAdapter,
   createYarnModernAdapter,
 } from './adapters';
+import { runAll } from './runner';
 import { allTests } from './tests';
 import { CliOptions, PackageManagerAdapter } from './types';
 import { createUser, pingRegistry } from './utils/registry-client';
-import { runAll } from './runner';
 
 const debug = buildDebug('verdaccio:e2e-cli');
 
@@ -187,9 +187,10 @@ export async function main(argv: string[] = process.argv): Promise<void> {
   console.log(`Adapters: ${adapters.map((a) => a.name).join(', ')}`);
 
   // Filter tests
-  const tests = options.test && options.test.length > 0
-    ? allTests.filter((t) => options.test!.includes(t.name))
-    : allTests;
+  const tests =
+    options.test && options.test.length > 0
+      ? allTests.filter((t) => options.test!.includes(t.name))
+      : allTests;
 
   console.log(`Tests: ${tests.map((t) => t.name).join(', ')}`);
 
@@ -206,6 +207,13 @@ export async function main(argv: string[] = process.argv): Promise<void> {
 // Re-export for programmatic usage
 export { allTests } from './tests';
 export { allScenarios } from './scenarios';
-export { createBunAdapter, createDenoAdapter, createNpmAdapter, createPnpmAdapter, createYarnClassicAdapter, createYarnModernAdapter } from './adapters';
+export {
+  createBunAdapter,
+  createDenoAdapter,
+  createNpmAdapter,
+  createPnpmAdapter,
+  createYarnClassicAdapter,
+  createYarnModernAdapter,
+} from './adapters';
 export { runAll, runSuite } from './runner';
 export type { PackageManagerAdapter, TestDefinition, TestContext, CliOptions } from './types';
