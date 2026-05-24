@@ -1,5 +1,11 @@
 # @verdaccio/e2e-cli
 
+## 2.9.0
+
+### Minor Changes
+
+- d788be0: feat: disable hardened mode for yarn 4
+
 ## 2.8.0
 
 ### Minor Changes
