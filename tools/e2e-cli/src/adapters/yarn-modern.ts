@@ -16,6 +16,11 @@ const YARN_MODERN_SUPPORTED_COMMANDS = new Set(['publish', 'install', 'info', 'p
 const YARN_ENV = {
   COREPACK_ENABLE_STRICT: '0',
   YARN_IGNORE_PATH: '1',
+  // Hardened mode auto-enables on GitHub PR runs and quarantines freshly
+  // published packages. Every seed package an e2e scenario publishes looks
+  // exactly like the case it's designed to block, so disable it for the
+  // throwaway projects we drive.
+  YARN_ENABLE_HARDENED_MODE: '0',
 };
 
 function detectVersion(bin: string): string {
@@ -72,6 +77,7 @@ function createYamlConfig(registry: string, token?: string) {
   const defaultYaml: any = {
     npmRegistryServer: registry,
     enableImmutableInstalls: false,
+    enableHardenedMode: false,
     unsafeHttpWhitelist: ['localhost'],
   };
 

@@ -12,3 +12,4 @@ minimumReleaseAgeExclude:
   - 'verdaccio-*'
 saveExact: true
 ignoreScripts: true
+preferFrozenLockfile: true
