@@ -25,10 +25,10 @@ jobs:
           - npm@10
           - pnpm@9
           - pnpm@10
-          - pnpm@11.0.0-rc.2
+          - pnpm@11.5.2
           - yarn-classic
           - yarn-modern@3
-          - yarn-modern@4
+          - yarn-modern@4.16.0
           - bun
           - deno
     name: verdaccio@${{ matrix.verdaccio }} / ${{ matrix.pm }}

@@ -48,6 +48,12 @@ export type TestDefinition = {
   run: (ctx: TestContext) => Promise<void>;
   /** Commands required for this test (e.g. 'deprecate', 'star'). Skipped if adapter doesn't support them. */
   requires?: string[];
+  /**
+   * Predicate to gate a test to specific adapters/versions. Returns false to skip.
+   * Use for tests that only make sense on a particular package manager or version
+   * (e.g. pnpm-only settings). Evaluated after the `requires` check.
+   */
+  appliesTo?: (adapter: PackageManagerAdapter) => boolean;
 };
 
 export interface PackageManagerAdapter {

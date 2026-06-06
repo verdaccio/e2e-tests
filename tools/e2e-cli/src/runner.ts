@@ -135,6 +135,13 @@ export async function runSuite(
       }
     }
 
+    // Check adapter/version gate (e.g. pnpm-only tests)
+    if (test.appliesTo && !test.appliesTo(adapter)) {
+      reportSkipped(test.name);
+      skipped++;
+      continue;
+    }
+
     reportTestStart(adapter.name, test.name);
     const result = await runSingleTest(adapter, test, registryUrl, token, options.timeout);
     results.push(result);
