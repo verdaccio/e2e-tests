@@ -34,7 +34,7 @@
     "@verdaccio/registry-cli": "^1.1.0",
     "debug": "4.4.0",
     "get-port": "5.1.1",
-    "js-yaml": "4.1.0"
+    "js-yaml": "4.1.1"
   },
   "devDependencies": {
     "@types/debug": "4.1.12",
