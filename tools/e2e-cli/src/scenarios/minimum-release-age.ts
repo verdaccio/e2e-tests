@@ -8,7 +8,7 @@ import { PackageManagerAdapter, TestContext, TestDefinition } from '../types';
 const debug = buildDebug('verdaccio:e2e-cli:scenario:minimum-release-age');
 
 /**
- * Scenario: minimum-release-age (pnpm 11 only)
+ * Scenario: minimum-release-age (pnpm 11.1+ only)
  *
  * Exercises pnpm's `minimumReleaseAge` cooldown together with
  * `minimumReleaseAgeExclude`. With a 7-day (10080 minute) cooldown, freshly
@@ -25,8 +25,10 @@ const debug = buildDebug('verdaccio:e2e-cli:scenario:minimum-release-age');
  *   - an excluded unscoped package (verdaccio-*)  installs despite the cooldown
  *   - a non-excluded package is blocked by the cooldown (proving it is active)
  *
- * pnpm >= 11 reads these settings from `pnpm-workspace.yaml`, mirroring the
- * configuration used by the repo root.
+ * pnpm reads these settings from `pnpm-workspace.yaml`, mirroring the
+ * configuration used by the repo root. The cooldown is only enforced from
+ * pnpm 11.1.0 onward (11.0.x silently ignores it), so the scenario is gated to
+ * that version range — see {@link isPnpm11Plus}.
  */
 
 const MINIMUM_RELEASE_AGE = 10080; // 7 days, in minutes
@@ -39,13 +41,25 @@ const PNPM_WORKSPACE_YAML = [
   '',
 ].join('\n');
 
-/** True only for pnpm 11 and newer, where minimumReleaseAge is supported. */
+/**
+ * True only for pnpm versions that actually enforce minimumReleaseAge.
+ *
+ * The cooldown is honored in pnpm 11.1.0+, but it is silently ignored in
+ * 11.0.0 / 11.0.1 (and the 11.0.0 release candidates) — those versions install
+ * brand-new packages regardless of the configured cooldown. We scope this
+ * scenario to pnpm 11.1.0 and newer so it doesn't false-fail on that regression.
+ */
 export function isPnpm11Plus(adapter: PackageManagerAdapter): boolean {
   if (adapter.type !== 'pnpm') {
     return false;
   }
-  const match = adapter.name.match(/pnpm@(\d+)/);
-  return match ? parseInt(match[1], 10) >= 11 : false;
+  const match = adapter.name.match(/pnpm@(\d+)\.(\d+)/);
+  if (!match) {
+    return false;
+  }
+  const major = parseInt(match[1], 10);
+  const minor = parseInt(match[2], 10);
+  return major > 11 || (major === 11 && minor >= 1);
 }
 
 async function publishPackage(

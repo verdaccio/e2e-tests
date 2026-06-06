@@ -136,7 +136,7 @@ function printHelp(): void {
                             Available: publish, install, ci, audit, info, deprecate,
                                        dist-tags, ping, search, star, unpublish
                             Scenarios: scenario:install-multiple-deps,
-                                       scenario:minimum-release-age (pnpm 11+)
+                                       scenario:minimum-release-age (pnpm 11.1+)
                             Default: all supported by the PM
 
     --token <token>         Auth token (skips user creation)
