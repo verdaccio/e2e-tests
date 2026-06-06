@@ -1,4 +1,4 @@
-import { allScenarios, installMultipleDepsScenario } from '../scenarios';
+import { allScenarios, installMultipleDepsScenario, minimumReleaseAgeScenario } from '../scenarios';
 import { TestDefinition } from '../types';
 import { auditTest } from './audit';
 import { ciTest } from './ci';
@@ -45,5 +45,6 @@ export {
   unpublishTest,
   // Scenarios
   installMultipleDepsScenario,
+  minimumReleaseAgeScenario,
   allScenarios,
 };

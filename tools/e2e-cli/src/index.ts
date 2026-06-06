@@ -135,7 +135,8 @@ function printHelp(): void {
     -t, --test <name>       Filter tests by name (can be repeated)
                             Available: publish, install, ci, audit, info, deprecate,
                                        dist-tags, ping, search, star, unpublish
-                            Scenarios: scenario:install-multiple-deps
+                            Scenarios: scenario:install-multiple-deps,
+                                       scenario:minimum-release-age (pnpm 11+)
                             Default: all supported by the PM
 
     --token <token>         Auth token (skips user creation)
