@@ -17,12 +17,9 @@ const PNPM_V10_COMMANDS = new Set([
   'dist-tag',
   'ping',
   'search',
-  'star',
-  'stars',
-  'unstar',
 ]);
 
-// pnpm v11 removed ping, search, star/stars/unstar
+// pnpm v11 removed ping and search
 // dist-tag output format changed (no --json), needs adapted assertions
 const PNPM_V11_COMMANDS = new Set([
   'publish',
