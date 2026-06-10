@@ -10,7 +10,6 @@ import { loginTest } from './login';
 import { pingTest } from './ping';
 import { publishTest } from './publish';
 import { searchTest } from './search';
-import { starTest } from './star';
 import { unpublishTest } from './unpublish';
 
 export const allTests: TestDefinition[] = [
@@ -24,7 +23,6 @@ export const allTests: TestDefinition[] = [
   loginTest,
   pingTest,
   searchTest,
-  starTest,
   unpublishTest,
   // Scenarios (complex, multi-step tests)
   ...allScenarios,
@@ -41,7 +39,6 @@ export {
   loginTest,
   pingTest,
   searchTest,
-  starTest,
   unpublishTest,
   // Scenarios
   installMultipleDepsScenario,

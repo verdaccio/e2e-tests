@@ -78,10 +78,9 @@ verdaccio-e2e -r http://localhost:4873 -v   # verbose — shows each command
 | login     | skip | skip     | skip     | skip         | yes         | skip | skip |
 | ping      | yes  | yes      | skip     | skip         | yes         | skip | skip |
 | search    | yes  | yes      | skip     | skip         | skip        | skip | skip |
-| star      | yes  | yes      | skip     | skip         | skip        | skip | skip |
 | unpublish | yes  | yes      | yes      | skip         | skip        | skip | skip |
 
-> **pnpm ≥11 notes:** pnpm v11 reimplemented many commands natively and removed `ping`, `search`, `star`, and `dist-tag`. Un-deprecate uses the new `pnpm undeprecate` command (other package managers use `deprecate pkg ""` with an empty message).
+> **pnpm ≥11 notes:** pnpm v11 reimplemented many commands natively and removed `ping`, `search`, and `dist-tag`. Un-deprecate uses the new `pnpm undeprecate` command (other package managers use `deprecate pkg ""` with an empty message).
 >
 > **Bun notes:** `bun info` reads the registry from `.npmrc` (does not accept `--registry`). All other commands use `--registry`.
 >

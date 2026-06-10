@@ -46,7 +46,7 @@ export type SuiteResult = {
 export type TestDefinition = {
   name: string;
   run: (ctx: TestContext) => Promise<void>;
-  /** Commands required for this test (e.g. 'deprecate', 'star'). Skipped if adapter doesn't support them. */
+  /** Commands required for this test (e.g. 'deprecate', 'search'). Skipped if adapter doesn't support them. */
   requires?: string[];
   /**
    * Predicate to gate a test to specific adapters/versions. Returns false to skip.

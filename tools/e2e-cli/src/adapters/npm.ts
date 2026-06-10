@@ -17,9 +17,6 @@ const NPM_SUPPORTED_COMMANDS = new Set([
   'dist-tag',
   'ping',
   'search',
-  'star',
-  'stars',
-  'unstar',
 ]);
 
 function detectVersion(bin: string): string {

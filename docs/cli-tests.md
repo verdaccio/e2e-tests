@@ -95,15 +95,6 @@ Searches for `@verdaccio/cli` in the registry.
 | -------------- | -------------------------------------------------------------------- |
 | Search by name | JSON array response contains an entry with `name: "@verdaccio/cli"`. |
 
-## star
-
-Two sub-tests covering starring and unstarring a package.
-
-| Sub-test  | Assertion                                                                         |
-| --------- | --------------------------------------------------------------------------------- |
-| 1. Star   | Publishes a package, stars it. Output includes the package name.                  |
-| 2. Unstar | Publishes a package, stars it, then unstars it. Output includes the package name. |
-
 ## unpublish
 
 Two sub-tests covering full unpublish and single-version unpublish.

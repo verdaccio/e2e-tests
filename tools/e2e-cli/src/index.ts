@@ -134,7 +134,7 @@ function printHelp(): void {
 
     -t, --test <name>       Filter tests by name (can be repeated)
                             Available: publish, install, ci, audit, info, deprecate,
-                                       dist-tags, ping, search, star, unpublish
+                                       dist-tags, ping, search, unpublish
                             Scenarios: scenario:install-multiple-deps,
                                        scenario:minimum-release-age (pnpm 11.1+)
                             Default: all supported by the PM
