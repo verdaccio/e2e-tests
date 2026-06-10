@@ -1,5 +1,13 @@
 # @verdaccio/e2e-cli
 
+## 2.10.1
+
+### Patch Changes
+
+- c855e2c: Remove the `star`/`unstar` CLI e2e test
+
+  The `star` test (covering both starring and unstarring a package) has been removed, along with the `star`/`stars`/`unstar` command capabilities from the npm and pnpm adapters and the related documentation.
+
 ## 2.10.0
 
 ### Minor Changes
