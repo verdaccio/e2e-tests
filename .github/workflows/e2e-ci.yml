@@ -23,6 +23,8 @@ jobs:
           - npm@8
           - npm@9
           - npm@10
+          - npm@11
+          - npm@next-12
           - pnpm@9
           - pnpm@10
           - pnpm@11.5.2
