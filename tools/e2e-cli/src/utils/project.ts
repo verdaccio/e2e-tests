@@ -58,8 +58,13 @@ export async function prepareGenericEmptyProject(
   devDependencies: Record<string, string> = {}
 ): Promise<{ tempFolder: string }> {
   debug('preparing generic project %o', packageName);
+  // `min-release-age=0` keeps the harness hermetic: npm 12 added a release-age
+  // cooldown that, if set in the developer's global ~/.npmrc, would reject the
+  // just-published packages these tests install (ETARGET / "no matching version
+  // ... before <date>"). Pinning it per-project overrides any global value.
+  // It's an npm-only key — pnpm (minimum-release-age) and yarn ignore it.
   const getNPMrc = (port: number, token: string, registry: string) =>
-    `//localhost:${port}/:_authToken=${token}\nregistry=${registry}`;
+    `//localhost:${port}/:_authToken=${token}\nregistry=${registry}\nmin-release-age=0`;
   const tempFolder = await createTempFolder('temp-folder');
   await writeFile(
     join(tempFolder, 'package.json'),

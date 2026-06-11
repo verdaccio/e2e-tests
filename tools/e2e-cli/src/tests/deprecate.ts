@@ -4,6 +4,7 @@ import { readFile, writeFile } from 'fs/promises';
 import { join } from 'path';
 
 import { TestContext, TestDefinition } from '../types';
+import { parseInfoJson } from '../utils/info';
 
 const debug = buildDebug('verdaccio:e2e-cli:test:deprecate');
 
@@ -49,7 +50,7 @@ async function getInfo(ctx: TestContext, tempFolder: string, pkgName: string) {
     '--json',
     ...ctx.adapter.registryArg(ctx.registryUrl)
   );
-  const parsed = JSON.parse(resp.stdout);
+  const parsed = parseInfoJson(resp.stdout);
   debug('info for %s: deprecated=%s', pkgName, parsed.deprecated ?? '(not set)');
   return parsed;
 }
