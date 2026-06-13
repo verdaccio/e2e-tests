@@ -48,6 +48,7 @@ jobs:
           commit: 'build: release packages'
           title: 'build: release packages'
           setupGitUser: true
+          createGithubReleases: true
         env:
           GITHUB_TOKEN: ${{ secrets.CHANGESET_RELEASE_TOKEN }}
 
