@@ -2,6 +2,7 @@ import assert from 'assert';
 import buildDebug from 'debug';
 
 import { TestContext, TestDefinition } from '../types';
+import { normalizeInfo } from '../utils/info';
 
 const debug = buildDebug('verdaccio:e2e-cli:scenario:install-multiple-deps');
 
@@ -40,9 +41,9 @@ function parseInfoOutput(stdout: string, adapterType: string): any {
       }
     }
     // Fallback: try parsing the whole output
-    return JSON.parse(stdout);
+    return normalizeInfo(JSON.parse(stdout));
   }
-  return JSON.parse(stdout);
+  return normalizeInfo(JSON.parse(stdout));
 }
 
 async function publishSeedPackage(

@@ -3,6 +3,7 @@ import { writeFile } from 'fs/promises';
 import { join } from 'path';
 
 import { TestContext, TestDefinition } from '../types';
+import { parseInfoJson } from '../utils/info';
 import { createTempFolder } from '../utils/project';
 
 async function testInfo(ctx: TestContext): Promise<void> {
@@ -38,7 +39,7 @@ async function testInfo(ctx: TestContext): Promise<void> {
     const output = resp.stdout + resp.stderr;
     assert.ok(output.includes('verdaccio'), 'Expected deno info output to reference verdaccio');
   } else {
-    const parsedBody = JSON.parse(resp.stdout);
+    const parsedBody = parseInfoJson(resp.stdout);
     assert.strictEqual(parsedBody.name, 'verdaccio', 'Expected package name "verdaccio"');
     assert.ok(parsedBody.dependencies !== undefined, 'Expected "dependencies" to be defined');
   }
