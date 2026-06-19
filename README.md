@@ -2,7 +2,7 @@
 
 End-to-end tests for [Verdaccio](https://verdaccio.org) across all popular package managers and the web UI.
 
-## Packages
+## Packages test
 
 | Package                               | Description                                   |
 | ------------------------------------- | --------------------------------------------- |
