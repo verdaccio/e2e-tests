@@ -20,7 +20,7 @@ jobs:
           - source: docker
             verdaccio: 'nightly-master'
           - source: npm
-            verdaccio: 'nightly-master'
+            verdaccio: 'next-9'
     name: UI / ${{ matrix.source }} verdaccio@${{ matrix.verdaccio }}
     timeout-minutes: 10
     runs-on: ubuntu-latest
