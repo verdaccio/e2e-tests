@@ -18,9 +18,9 @@ jobs:
       matrix:
         include:
           - source: docker
-            verdaccio: '6'
+            verdaccio: 'nightly-master'
           - source: npm
-            verdaccio: '6'
+            verdaccio: 'nightly-master'
     name: UI / ${{ matrix.source }} verdaccio@${{ matrix.verdaccio }}
     timeout-minutes: 10
     runs-on: ubuntu-latest
