@@ -32,12 +32,12 @@ jobs:
           - source: docker
             version: '6'
             verdaccio: '6'
-          # - source: docker
-          #   version: 'next-7'
-          #   verdaccio: '7.x-next'
-          # - source: docker
-          #   version: 'nightly-master'
-          #   verdaccio: 'nightly-master'
+          - source: docker
+            version: 'next-7'
+            verdaccio: '7.x-next'
+          - source: docker
+            version: 'nightly-master'
+            verdaccio: 'nightly-master'
     name: UI / ${{ matrix.source }} verdaccio@${{ matrix.version }}
     timeout-minutes: 10
     runs-on: ubuntu-latest
