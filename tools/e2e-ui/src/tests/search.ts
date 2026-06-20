@@ -41,19 +41,17 @@ export function searchTests(config: RegistryConfig) {
       });
     });
 
-    it('should show a "no results" state for an impossible query', () => {
-      const query = 'xyzzy-no-such-package-' + Date.now();
-
-      getSearchInput().clear().type(query, { delay: 30 });
-      cy.wait(anySearchAlias(), { timeout: 10000 });
-
-      // Give the UI a tick to render the empty state.
-      cy.wait(300);
-
-      // The UI may render "No Match", "No results", or similar — match
-      // loosely rather than binding to one exact string.
-      cy.contains(/no\s+(match|results|packages)/i, { timeout: 5000 }).should('be.visible');
-    });
+    // NOTE: there is intentionally no "no results / empty state" test.
+    //
+    // Verdaccio 7+ removed the `searchRemote` flag (verdaccio/verdaccio#5801)
+    // and the Web UI search now ALWAYS queries the configured uplinks. The CI
+    // config proxies `**` to registry.npmjs.org, and npmjs' `/-/v1/search`
+    // returns fuzzy / fallback matches for ANY non-empty text — so there is no
+    // query that reliably yields zero results and renders the autocomplete's
+    // "No results found" state. (On verdaccio 6, where search stayed local by
+    // default, an impossible query did return `[]`, so this test used to pass.)
+    // Asserting the empty state here is therefore non-deterministic; the search
+    // *flow* is covered by the tests above and the published-package tests below.
 
     it('should clear the query and allow typing a new one', () => {
       getSearchInput().clear().type('first-query', { delay: 20 });

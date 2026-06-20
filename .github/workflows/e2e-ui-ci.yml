@@ -17,11 +17,28 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - source: docker
-            verdaccio: 'nightly-master'
+          # npm dist-tags resolve all three lines directly.
           - source: npm
+            version: '6'
+            verdaccio: '6'
+          - source: npm
+            version: 'next-7'
+            verdaccio: 'next-7'
+          - source: npm
+            version: 'next-9'
             verdaccio: 'next-9'
-    name: UI / ${{ matrix.source }} verdaccio@${{ matrix.verdaccio }}
+          # Docker image tags differ from npm dist-tags: the 7.x/9.x lines
+          # publish line tags (`7.x-next`, `nightly-master`), not `next-*`.
+          - source: docker
+            version: '6'
+            verdaccio: '6'
+          - source: docker
+            version: 'next-7'
+            verdaccio: '7.x-next'
+          - source: docker
+            version: 'next-9'
+            verdaccio: 'nightly-master'
+    name: UI / ${{ matrix.source }} verdaccio@${{ matrix.version }}
     timeout-minutes: 10
     runs-on: ubuntu-latest
     steps:
