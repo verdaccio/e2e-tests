@@ -23,7 +23,8 @@ jobs:
           - npm@9
           - npm@10
           - npm@11
-          - npm@next-12
+          # Next candary releases are broken (update later)
+          - npm@12.0.0-pre.0.0
           - pnpm@9
           - pnpm@10
           - pnpm@11
