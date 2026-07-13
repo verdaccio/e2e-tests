@@ -16,7 +16,7 @@ importers:
         version: 2.29.8(@types/node@24.12.4)
       '@trivago/prettier-plugin-sort-imports':
         specifier: 6.0.2
-        version: 6.0.2(prettier@3.8.3)
+        version: 6.0.2(prettier@3.8.3)(supports-color@8.1.1)
       '@types/node':
         specifier: 24.12.4
         version: 24.12.4
@@ -36,33 +36,7 @@ importers:
         specifier: 5.9.3
         version: 5.9.3
 
-  tools/e2e-cli:
-    dependencies:
-      '@verdaccio/registry-cli':
-        specifier: ^1.1.0
-        version: 1.1.0
-      debug:
-        specifier: 4.4.3
-        version: 4.4.3(supports-color@8.1.1)
-      get-port:
-        specifier: 5.1.1
-        version: 5.1.1
-      js-yaml:
-        specifier: 4.3.0
-        version: 4.3.0
-    devDependencies:
-      '@types/debug':
-        specifier: 4.1.12
-        version: 4.1.12
-      '@types/js-yaml':
-        specifier: 4.0.9
-        version: 4.0.9
-      '@types/node':
-        specifier: 24.12.4
-        version: 24.12.4
-      vite:
-        specifier: 8.0.11
-        version: 8.0.11(@types/node@24.12.4)
+  tools/e2e-cli: {}
 
   tools/e2e-ui:
     devDependencies:
@@ -365,15 +339,6 @@ packages:
   '@tybys/wasm-util@0.10.2':
     resolution: {integrity: sha512-RoBvJ2X0wuKlWFIjrwffGw1IqZHKQqzIchKaadZZfnNpsAYp2mM0h36JtPCjNDAHGgYez/15uMBpfGwchhiMgg==}
 
-  '@types/debug@4.1.12':
-    resolution: {integrity: sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==}
-
-  '@types/js-yaml@4.0.9':
-    resolution: {integrity: sha512-k4MGaQl5TGo/iipqb2UDG2UwjXziSWkh0uysQelTlJpX1qGlpUZYm8PnO4DxG1qBomtJUdYJ6qR6xdIah10JLg==}
-
-  '@types/ms@2.1.0':
-    resolution: {integrity: sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==}
-
   '@types/node@12.20.55':
     resolution: {integrity: sha512-J8xLz7q2OFulZ2cyGTLE1TbbZcjpno7FaN6zdJNrgAdrJ+DZzh/uFR6YrTb4C+nXakvud8Q4+rbhoIWlYQbUFQ==}
 
@@ -394,11 +359,6 @@ packages:
 
   '@types/yauzl@2.10.3':
     resolution: {integrity: sha512-oJoftv0LSuaDZE3Le4DbKX+KS9G36NzOeSap90UIK0yMA/NhKJhqlSGtNDORNRaIbQfzjXDrQa0ytJ6mNRGz/Q==}
-
-  '@verdaccio/registry-cli@1.1.0':
-    resolution: {integrity: sha512-YXgHbKKQKTRH0ilt058i4IaU5rkyqzWjQXI+zrlGmtaRLbHXqMcHczq1PtkaT3pkQdIGohPelcjQX8gsUH+KDA==}
-    engines: {node: '>=24'}
-    hasBin: true
 
   '@verdaccio/types@13.0.0-next-8.12':
     resolution: {integrity: sha512-li020wGFKFXgO1yHhz2q5Nf6MRD/81UyNabRTaMVzaLm0dlRTHk5Mpr90alMlIU3IfiOkmBW3zmFYLzFg4M6hQ==}
@@ -762,10 +722,6 @@ packages:
     resolution: {integrity: sha512-9fSjSaos/fRIVIp+xSJlE6lfwhES7LNtKaCBIamHsjr2na1BiABJPo0mOjjz8GJDURarmCPGqaiVg5mfjb98CQ==}
     engines: {node: '>= 0.4'}
 
-  get-port@5.1.1:
-    resolution: {integrity: sha512-g/Q1aTSDOxFpchXC4i8ZWvxA1lnPqx/JHqcpIw0/LX9T8x/GBbi6YnlN5nhaKIFkT8oFsscUKgDJYxfwfS6QsQ==}
-    engines: {node: '>=8'}
-
   get-proto@1.0.1:
     resolution: {integrity: sha512-sTSfBjoXBp89JvIKIefqw7U2CCebsc74kiY6awiGogKtoSGbgjYE/G/+l9sF3MWFPNc9IcoOC4ODfKHfxFmp0g==}
     engines: {node: '>= 0.4'}
@@ -912,10 +868,6 @@ packages:
 
   js-yaml@4.1.1:
     resolution: {integrity: sha512-qQKT4zQxXl8lLwBtHMWwaTcGfFOZviOJet3Oy/xmGk2gZH677CJM9EvtfdSkgWcATZhj/55JZ0rmy3myCT5lsA==}
-    hasBin: true
-
-  js-yaml@4.3.0:
-    resolution: {integrity: sha512-1td788aAnnZ5qs7V2QIRl1owjtYpbKt749Y3xauqQgwIIGF/xXWz1wMTEBx5O3LK3lXLVuqXPdPxj2BoFHaW9Q==}
     hasBin: true
 
   jsbn@0.1.1:
@@ -1583,7 +1535,7 @@ snapshots:
       '@babel/parser': 7.29.3
       '@babel/types': 7.29.0
 
-  '@babel/traverse@7.29.0':
+  '@babel/traverse@7.29.0(supports-color@8.1.1)':
     dependencies:
       '@babel/code-frame': 7.29.0
       '@babel/generator': 7.29.1
@@ -1913,11 +1865,11 @@ snapshots:
 
   '@rolldown/pluginutils@1.0.0-rc.18': {}
 
-  '@trivago/prettier-plugin-sort-imports@6.0.2(prettier@3.8.3)':
+  '@trivago/prettier-plugin-sort-imports@6.0.2(prettier@3.8.3)(supports-color@8.1.1)':
     dependencies:
       '@babel/generator': 7.29.1
       '@babel/parser': 7.29.3
-      '@babel/traverse': 7.29.0
+      '@babel/traverse': 7.29.0(supports-color@8.1.1)
       '@babel/types': 7.29.0
       javascript-natural-sort: 0.7.1
       lodash-es: 4.18.1
@@ -1931,14 +1883,6 @@ snapshots:
     dependencies:
       tslib: 2.8.1
     optional: true
-
-  '@types/debug@4.1.12':
-    dependencies:
-      '@types/ms': 2.1.0
-
-  '@types/js-yaml@4.0.9': {}
-
-  '@types/ms@2.1.0': {}
 
   '@types/node@12.20.55': {}
 
@@ -1961,8 +1905,6 @@ snapshots:
     dependencies:
       '@types/node': 20.19.0
     optional: true
-
-  '@verdaccio/registry-cli@1.1.0': {}
 
   '@verdaccio/types@13.0.0-next-8.12': {}
 
@@ -2348,8 +2290,6 @@ snapshots:
       hasown: 2.0.3
       math-intrinsics: 1.1.0
 
-  get-port@5.1.1: {}
-
   get-proto@1.0.1:
     dependencies:
       dunder-proto: 1.0.1
@@ -2472,10 +2412,6 @@ snapshots:
       esprima: 4.0.1
 
   js-yaml@4.1.1:
-    dependencies:
-      argparse: 2.0.1
-
-  js-yaml@4.3.0:
     dependencies:
       argparse: 2.0.1
 

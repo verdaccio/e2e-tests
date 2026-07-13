@@ -11,6 +11,8 @@ End-to-end tests for [Verdaccio](https://verdaccio.org) across all popular packa
 
 ## Quick Start
 
+Requires Node.js/pnpm and a Rust toolchain with Cargo. `@verdaccio/e2e-cli` is implemented in Rust; the npm package builds the local binary during install/build instead of shipping a single precompiled default binary.
+
 ```bash
 pnpm install
 pnpm build
@@ -111,40 +113,17 @@ Simulates a realistic `npm install` that triggers many parallel registry request
 
 See [docs/cli-tests.md](docs/cli-tests.md) for detailed descriptions of what each test asserts.
 
-### Programmatic API
+### Package Build
 
-```ts
-import {
-  allTests,
-  createBunAdapter,
-  createDenoAdapter,
-  createNpmAdapter,
-  createPnpmAdapter,
-  runAll,
-} from '@verdaccio/e2e-cli';
+`@verdaccio/e2e-cli` exposes the `verdaccio-e2e` bin through npm. The package does not publish a generic prebuilt binary; `postinstall` runs `cargo build --release` and generates the local Node launcher assets for the current platform.
 
-const adapters = [createNpmAdapter(), createPnpmAdapter(), createBunAdapter(), createDenoAdapter()];
-const { results, exitCode } = await runAll(adapters, allTests, 'http://localhost:4873', token, {
-  timeout: 50000,
-  concurrency: 1,
-});
-```
+For local development:
 
-Run only scenarios:
-
-```ts
-import { allScenarios, createNpmAdapter, runAll } from '@verdaccio/e2e-cli';
-
-const { results, exitCode } = await runAll(
-  [createNpmAdapter()],
-  allScenarios,
-  'http://localhost:4873',
-  token,
-  {
-    timeout: 120000,
-    concurrency: 1,
-  }
-);
+```bash
+pnpm --filter @verdaccio/e2e-cli build
+pnpm rust:fmt
+pnpm rust:clippy
+pnpm rust:docs
 ```
 
 ---
@@ -262,9 +241,12 @@ All scripts accept `--docker` to use Docker images instead of local npm install.
 
 ## Build
 
-All packages built with **Vite 8** in library mode. Pure ESM, no Babel.
+`@verdaccio/e2e-cli` builds with Cargo. `@verdaccio/e2e-ui` builds with **Vite 8** in library mode.
 
 ```bash
 pnpm build        # build all tools
 pnpm clean        # clean build output
+pnpm rust:fmt     # check Rust formatting
+pnpm rust:clippy  # run clippy with warnings denied
+pnpm rust:docs    # build Rust docs
 ```
