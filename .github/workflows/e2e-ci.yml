@@ -28,6 +28,7 @@ jobs:
           - pnpm@9
           - pnpm@10
           - pnpm@11
+          - pnpm@next-12
           - yarn-classic
           - yarn-modern@3
           - yarn-modern@4
