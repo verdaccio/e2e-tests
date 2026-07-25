@@ -111,7 +111,6 @@ struct RunState {
 struct TestContext<'a> {
     registry_url: String,
     token: String,
-    port: u16,
     adapter: Adapter,
     run_id: String,
     state: &'a mut RunState,
@@ -164,7 +163,7 @@ fn run() -> Result<i32> {
         }
     };
 
-    let adapters = parse_adapters(&cli.pm)?;
+    let adapters = parse_adapters(&cli.pm, &mut state)?;
     println!(
         "Adapters: {}",
         adapters
@@ -253,11 +252,9 @@ fn run_suite(
 
         println!("  {DIM}running{RESET} {} > {}...", adapter.name, test.name);
         let started = Instant::now();
-        let port = get_port(registry_url);
         let mut ctx = TestContext {
             registry_url: registry_url.to_string(),
             token: token.to_string(),
-            port,
             adapter: adapter.clone(),
             run_id: run_id(),
             state,
@@ -303,15 +300,15 @@ fn run_suite(
     }
 }
 
-fn parse_adapters(filters: &[String]) -> Result<Vec<Adapter>> {
+fn parse_adapters(filters: &[String], state: &mut RunState) -> Result<Vec<Adapter>> {
     if filters.is_empty() {
-        return Ok(vec![create_adapter("npm", None, None)?]);
+        return Ok(vec![create_adapter("npm", None, None, state)?]);
     }
     filters
         .iter()
         .map(|filter| {
             let (name, version, bin_path) = parse_pm_spec(filter);
-            create_adapter(&name, version.as_deref(), bin_path.as_deref())
+            create_adapter(&name, version.as_deref(), bin_path.as_deref(), state)
         })
         .collect()
 }
@@ -326,10 +323,15 @@ fn parse_pm_spec(filter: &str) -> (String, Option<String>, Option<String>) {
     (filter.to_ascii_lowercase(), None, None)
 }
 
-fn create_adapter(name: &str, version: Option<&str>, bin_path: Option<&str>) -> Result<Adapter> {
+fn create_adapter(
+    name: &str,
+    version: Option<&str>,
+    bin_path: Option<&str>,
+    state: &mut RunState,
+) -> Result<Adapter> {
     match name {
         "npm" => {
-            let bin = resolve_installed_bin(bin_path, version, "npm", "npm", "npm")?;
+            let bin = resolve_installed_bin(bin_path, version, "npm", "npm", "npm", state)?;
             let resolved = detect_version(&bin, &[])?;
             Ok(Adapter {
                 name: format!("npm@{resolved}"),
@@ -341,7 +343,7 @@ fn create_adapter(name: &str, version: Option<&str>, bin_path: Option<&str>) -> 
             })
         }
         "pnpm" => {
-            let bin = resolve_installed_bin(bin_path, version, "pnpm", "pnpm", "pnpm")?;
+            let bin = resolve_installed_bin(bin_path, version, "pnpm", "pnpm", "pnpm", state)?;
             let resolved = detect_version(&bin, &[])?;
             let major = parse_major(&resolved);
             let supports = if major >= 11 {
@@ -367,9 +369,9 @@ fn create_adapter(name: &str, version: Option<&str>, bin_path: Option<&str>) -> 
                     } else {
                         "yarn@1".to_string()
                     };
-                    install_package_bin(&package, "node_modules/.bin/yarn")?
+                    install_package_bin(&package, "node_modules/.bin/yarn", state)?
                 }
-                _ => resolve_yarn_classic_bin()?,
+                _ => resolve_yarn_classic_bin(state)?,
             };
             let resolved = detect_version_with_env(&bin, &[], yarn_base_env())?;
             Ok(Adapter {
@@ -384,8 +386,12 @@ fn create_adapter(name: &str, version: Option<&str>, bin_path: Option<&str>) -> 
         "yarn-modern" | "yarn" => {
             let bin = match (bin_path, version) {
                 (Some(bin), _) => bin.to_string(),
-                (_, Some(version)) => install_package_bin(&format!("@yarnpkg/cli-dist@{version}"), "node_modules/@yarnpkg/cli-dist/bin/yarn.js")?,
-                _ => resolve_yarn_modern_bin()?,
+                (_, Some(version)) => install_package_bin(
+                    &format!("@yarnpkg/cli-dist@{version}"),
+                    "node_modules/@yarnpkg/cli-dist/bin/yarn.js",
+                    state,
+                )?,
+                _ => resolve_yarn_modern_bin(state)?,
             };
             let resolved = detect_version_with_env(&bin, &[], yarn_base_env())?;
             let major = parse_major(&resolved);
@@ -441,6 +447,7 @@ fn resolve_installed_bin(
     package_name: &str,
     default_bin: &str,
     bin_rel: &str,
+    state: &mut RunState,
 ) -> Result<String> {
     if let Some(bin) = bin_path {
         return Ok(bin.to_string());
@@ -449,12 +456,13 @@ fn resolve_installed_bin(
         return install_package_bin(
             &format!("{package_name}@{version}"),
             &format!("node_modules/.bin/{bin_rel}"),
+            state,
         );
     }
     Ok(default_bin.to_string())
 }
 
-fn resolve_yarn_classic_bin() -> Result<String> {
+fn resolve_yarn_classic_bin(state: &mut RunState) -> Result<String> {
     if let Ok(output) = command_output("which", &["yarn"], None, &[], false, None) {
         let bin = output.stdout.trim();
         if !bin.is_empty() {
@@ -465,10 +473,10 @@ fn resolve_yarn_classic_bin() -> Result<String> {
             }
         }
     }
-    install_package_bin("yarn@1", "node_modules/.bin/yarn")
+    install_package_bin("yarn@1", "node_modules/.bin/yarn", state)
 }
 
-fn resolve_yarn_modern_bin() -> Result<String> {
+fn resolve_yarn_modern_bin(state: &mut RunState) -> Result<String> {
     if let Ok(output) = command_output("which", &["yarn"], None, &[], false, None) {
         let bin = output.stdout.trim();
         if !bin.is_empty() {
@@ -482,12 +490,13 @@ fn resolve_yarn_modern_bin() -> Result<String> {
     install_package_bin(
         "@yarnpkg/cli-dist@4",
         "node_modules/@yarnpkg/cli-dist/bin/yarn.js",
+        state,
     )
 }
 
-fn install_package_bin(package: &str, bin_rel: &str) -> Result<String> {
+fn install_package_bin(package: &str, bin_rel: &str, state: &mut RunState) -> Result<String> {
     let dir = tempfile::tempdir().context("failed to create package-manager install dir")?;
-    let path = dir.keep();
+    let path = dir.path().to_path_buf();
     let prefix = path.to_string_lossy().to_string();
     command_output(
         "npm",
@@ -508,6 +517,7 @@ fn install_package_bin(package: &str, bin_rel: &str) -> Result<String> {
     let bin = path.join(bin_rel).to_string_lossy().to_string();
     let installed = detect_version(&bin, &[]).unwrap_or_else(|_| "unknown".to_string());
     println!("  Auto-installed {} {}", package_label(package), installed);
+    state.temp_dirs.push(dir);
     Ok(bin)
 }
 
@@ -696,7 +706,7 @@ fn normalize_adapter_args(adapter: &Adapter, args: Vec<String>) -> Vec<String> {
                     .filter(|arg| {
                         !arg.starts_with("--registry")
                             && !arg.starts_with("--loglevel")
-                            && !arg.starts_with("--no--git-tag-version")
+                            && !arg.starts_with("--no-git-tag-version")
                     })
                     .collect::<Vec<_>>()
             } else {
@@ -801,8 +811,10 @@ fn prepare_project(
         fs::write(path.join(".yarnrc.yml"), yaml)?;
     } else {
         let npmrc = format!(
-            "//localhost:{}/:_authToken={}\nregistry={}\nmin-release-age=0\nminimum-release-age=0",
-            ctx.port, ctx.token, ctx.registry_url
+            "{}:_authToken={}\nregistry={}\nmin-release-age=0\nminimum-release-age=0",
+            npm_auth_scope(&ctx.registry_url)?,
+            ctx.token,
+            ctx.registry_url
         );
         fs::write(path.join(".npmrc"), npmrc)?;
         if ctx.adapter.kind == AdapterType::Pnpm {
@@ -933,19 +945,15 @@ fn run_id() -> String {
     format!("{:x}-{counter:x}", now_millis())
 }
 
-fn get_port(registry_url: &str) -> u16 {
-    Url::parse(registry_url)
-        .ok()
-        .and_then(|url| {
-            url.port().or_else(|| {
-                if url.scheme() == "https" {
-                    Some(443)
-                } else {
-                    Some(80)
-                }
-            })
-        })
-        .unwrap_or(4873)
+fn npm_auth_scope(registry_url: &str) -> Result<String> {
+    let url = Url::parse(registry_url)
+        .with_context(|| format!("failed to parse registry URL: {registry_url}"))?;
+    let host = url
+        .host_str()
+        .ok_or_else(|| anyhow!("registry URL has no host: {registry_url}"))?;
+    let port = url.port().map_or(String::new(), |port| format!(":{port}"));
+    let path = url.path().trim_end_matches('/');
+    Ok(format!("//{host}{port}{path}/"))
 }
 
 fn sub_test(
@@ -1095,7 +1103,7 @@ fn bump_version(ctx: &TestContext<'_>, temp: &Path, bump: &str) -> Result<()> {
         let mut args = vec![
             "version".into(),
             bump.into(),
-            "--no--git-tag-version".into(),
+            "--no-git-tag-version".into(),
             "--loglevel=info".into(),
         ];
         args.extend(registry_arg(&ctx.adapter, &ctx.registry_url));
@@ -1192,8 +1200,10 @@ fn prepare_cooldown_consumer(
     fs::write(
         temp.join(".npmrc"),
         format!(
-            "//localhost:{}/:_authToken={}\nregistry={}",
-            ctx.port, ctx.token, ctx.registry_url
+            "{}:_authToken={}\nregistry={}",
+            npm_auth_scope(&ctx.registry_url)?,
+            ctx.token,
+            ctx.registry_url
         ),
     )?;
     fs::write(
