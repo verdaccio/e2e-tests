@@ -1,4 +1,4 @@
-import { copyFileSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { chmodSync, copyFileSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -10,6 +10,9 @@ const binaryDest = resolve(root, 'build', 'bin', binaryName);
 rmSync(resolve(root, 'build'), { recursive: true, force: true });
 mkdirSync(dirname(binaryDest), { recursive: true });
 copyFileSync(binarySource, binaryDest);
+if (process.platform !== 'win32') {
+  chmodSync(binaryDest, 0o755);
+}
 
 const esm = `export const allTests = [];\nexport const allScenarios = [];\nexport function runAll() { throw new Error('@verdaccio/e2e-cli programmatic API is no longer available in the Rust build. Use the verdaccio-e2e binary.'); }\nexport function runSuite() { throw new Error('@verdaccio/e2e-cli programmatic API is no longer available in the Rust build. Use the verdaccio-e2e binary.'); }\nexport function createNpmAdapter() { throw new Error('@verdaccio/e2e-cli adapters are implemented in Rust. Use the verdaccio-e2e binary.'); }\nexport const createPnpmAdapter = createNpmAdapter;\nexport const createYarnClassicAdapter = createNpmAdapter;\nexport const createYarnModernAdapter = createNpmAdapter;\nexport const createBunAdapter = createNpmAdapter;\nexport const createDenoAdapter = createNpmAdapter;\n`;
 const cjs = `function unavailable() { throw new Error('@verdaccio/e2e-cli programmatic API is no longer available in the Rust build. Use the verdaccio-e2e binary.'); }\nexports.allTests = [];\nexports.allScenarios = [];\nexports.runAll = unavailable;\nexports.runSuite = unavailable;\nexports.createNpmAdapter = unavailable;\nexports.createPnpmAdapter = unavailable;\nexports.createYarnClassicAdapter = unavailable;\nexports.createYarnModernAdapter = unavailable;\nexports.createBunAdapter = unavailable;\nexports.createDenoAdapter = unavailable;\n`;

@@ -5,15 +5,18 @@ use serde_json::{json, Value};
 use std::collections::{BTreeMap, BTreeSet};
 use std::env;
 use std::fs;
-use std::io::Write;
+use std::io::{Read, Write};
 use std::path::{Path, PathBuf};
-use std::process::Command;
+use std::process::{Command, Stdio};
+use std::sync::atomic::{AtomicU64, Ordering};
 use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 use tempfile::{Builder, TempDir};
 use url::Url;
 
 mod e2e_tests;
 mod scenarios;
+
+static RUN_COUNTER: AtomicU64 = AtomicU64::new(0);
 
 const RESET: &str = "\x1b[0m";
 const RED: &str = "\x1b[31m";
@@ -102,6 +105,7 @@ struct SuiteResult {
 struct RunState {
     temp_dirs: Vec<TempDir>,
     verbose: bool,
+    command_timeout: Duration,
 }
 
 struct TestContext<'a> {
@@ -137,6 +141,7 @@ fn run() -> Result<i32> {
     let mut state = RunState {
         temp_dirs: Vec::new(),
         verbose: cli.verbose,
+        command_timeout: Duration::from_millis(cli.timeout),
     };
 
     let run_dir = create_temp_dir(&mut state, "e2e-run")?;
@@ -407,7 +412,7 @@ fn create_adapter(name: &str, version: Option<&str>, bin_path: Option<&str>) -> 
         }
         "deno" => {
             let bin = bin_path.unwrap_or("deno").to_string();
-            let output = command_output(&bin, &["--version"], None, &[], false)?;
+            let output = command_output(&bin, &["--version"], None, &[], false, None)?;
             let resolved = output
                 .stdout
                 .lines()
@@ -450,7 +455,7 @@ fn resolve_installed_bin(
 }
 
 fn resolve_yarn_classic_bin() -> Result<String> {
-    if let Ok(output) = command_output("which", &["yarn"], None, &[], false) {
+    if let Ok(output) = command_output("which", &["yarn"], None, &[], false, None) {
         let bin = output.stdout.trim();
         if !bin.is_empty() {
             let version = detect_version_with_env(bin, &[], yarn_base_env())
@@ -464,7 +469,7 @@ fn resolve_yarn_classic_bin() -> Result<String> {
 }
 
 fn resolve_yarn_modern_bin() -> Result<String> {
-    if let Ok(output) = command_output("which", &["yarn"], None, &[], false) {
+    if let Ok(output) = command_output("which", &["yarn"], None, &[], false, None) {
         let bin = output.stdout.trim();
         if !bin.is_empty() {
             let version = detect_version_with_env(bin, &[], yarn_base_env())
@@ -497,16 +502,26 @@ fn install_package_bin(package: &str, bin_rel: &str) -> Result<String> {
         None,
         &[],
         false,
+        None,
     )
     .with_context(|| format!("failed to install {package}"))?;
     let bin = path.join(bin_rel).to_string_lossy().to_string();
     let installed = detect_version(&bin, &[]).unwrap_or_else(|_| "unknown".to_string());
-    println!(
-        "  Auto-installed {} {}",
-        package.split('@').next().unwrap_or(package),
-        installed
-    );
+    println!("  Auto-installed {} {}", package_label(package), installed);
     Ok(bin)
+}
+
+fn package_label(package: &str) -> &str {
+    package.rsplit_once('@').map_or(
+        package,
+        |(name, _)| {
+            if name.is_empty() {
+                package
+            } else {
+                name
+            }
+        },
+    )
 }
 
 fn detect_version(bin: &str, args: &[&str]) -> Result<String> {
@@ -520,7 +535,7 @@ fn detect_version_with_env(
 ) -> Result<String> {
     let mut full_args = Vec::from(args);
     full_args.push("--version");
-    Ok(command_output(bin, &full_args, None, &envs, false)?
+    Ok(command_output(bin, &full_args, None, &envs, false, None)?
         .stdout
         .trim()
         .to_string())
@@ -553,6 +568,7 @@ fn command_output(
     cwd: Option<&Path>,
     envs: &[(&str, &str)],
     verbose: bool,
+    timeout: Option<Duration>,
 ) -> Result<ExecOutput> {
     if verbose {
         let cwd_label = cwd
@@ -571,38 +587,67 @@ fn command_output(
     let started = Instant::now();
     let mut command = Command::new(bin);
     command.args(args);
+    command.stdout(Stdio::piped());
+    command.stderr(Stdio::piped());
     if let Some(cwd) = cwd {
         command.current_dir(cwd);
     }
     for (key, value) in envs {
         command.env(key, value);
     }
-    let output = command
-        .output()
+    let mut child = command
+        .spawn()
         .with_context(|| format!("failed to start command: {bin} {}", args.join(" ")))?;
-    let stdout = String::from_utf8_lossy(&output.stdout).to_string();
-    let stderr = String::from_utf8_lossy(&output.stderr).to_string();
+    let status = loop {
+        if let Some(status) = child
+            .try_wait()
+            .with_context(|| format!("failed waiting for command: {bin} {}", args.join(" ")))?
+        {
+            break status;
+        }
+        if timeout.is_some_and(|limit| started.elapsed() >= limit) {
+            let _ = child.kill();
+            let _ = child.wait();
+            bail!(
+                "Running \"{} {}\" timed out after {}",
+                bin,
+                args.join(" "),
+                format_duration(started.elapsed())
+            );
+        }
+        std::thread::sleep(Duration::from_millis(25));
+    };
+    let mut stdout = String::new();
+    let mut stderr = String::new();
+    if let Some(mut pipe) = child.stdout.take() {
+        pipe.read_to_string(&mut stdout)
+            .context("failed to read command stdout")?;
+    }
+    if let Some(mut pipe) = child.stderr.take() {
+        pipe.read_to_string(&mut stderr)
+            .context("failed to read command stderr")?;
+    }
 
     if verbose {
-        let status = if output.status.success() {
+        let status_label = if status.success() {
             format!("{GREEN}ok{RESET}")
         } else {
-            format!("{RED}exit {}{RESET}", output.status.code().unwrap_or(-1))
+            format!("{RED}exit {}{RESET}", status.code().unwrap_or(-1))
         };
         println!(
-            "      {DIM}  -> {status} {DIM}({}){RESET}",
+            "      {DIM}  -> {status_label} {DIM}({}){RESET}",
             format_duration(started.elapsed())
         );
     }
 
-    if output.status.success() {
+    if status.success() {
         Ok(ExecOutput { stdout, stderr })
     } else {
         bail!(
             "Running \"{} {}\" returned error code {}...\n\nSTDOUT:\n{}\n\nSTDERR:\n{}\n",
             bin,
             args.join(" "),
-            output.status.code().unwrap_or(-1),
+            status.code().unwrap_or(-1),
             stdout,
             stderr
         )
@@ -627,7 +672,14 @@ fn exec_adapter(
         AdapterType::YarnClassic | AdapterType::YarnModern => yarn_env(&ctx.adapter),
         _ => Vec::new(),
     };
-    command_output(&ctx.adapter.bin, &refs, cwd, &envs, ctx.state.verbose)
+    command_output(
+        &ctx.adapter.bin,
+        &refs,
+        cwd,
+        &envs,
+        ctx.state.verbose,
+        Some(ctx.state.command_timeout),
+    )
 }
 
 fn normalize_adapter_args(adapter: &Adapter, args: Vec<String>) -> Vec<String> {
@@ -847,7 +899,7 @@ fn create_user(registry_url: &str, user: &str, password: &str) -> Result<String>
         "_id": format!("org.couchdb.user:{user}"),
         "type": "user",
         "roles": [],
-        "date": chrono_free_iso_now(),
+        "date": unix_millis_string(),
     });
     let response = Client::new()
         .put(url)
@@ -865,7 +917,7 @@ fn create_user(registry_url: &str, user: &str, password: &str) -> Result<String>
     bail!("Failed to create/login user \"{user}\" on {registry_url}: {status} {body}")
 }
 
-fn chrono_free_iso_now() -> String {
+fn unix_millis_string() -> String {
     format!("{}", now_millis())
 }
 
@@ -877,7 +929,8 @@ fn now_millis() -> u128 {
 }
 
 fn run_id() -> String {
-    format!("{:x}", now_millis())
+    let counter = RUN_COUNTER.fetch_add(1, Ordering::Relaxed);
+    format!("{:x}-{counter:x}", now_millis())
 }
 
 fn get_port(registry_url: &str) -> u16 {
@@ -1102,23 +1155,22 @@ fn import_plugin(ctx: &TestContext<'_>, cwd: &Path, plugin_name: &str) -> Result
         None,
         &[],
         false,
+        None,
     )?;
+    let tgz = fs::read_dir(tmp.path())?
+        .filter_map(Result::ok)
+        .map(|entry| entry.path())
+        .find(|path| path.extension().and_then(|ext| ext.to_str()) == Some("tgz"))
+        .ok_or_else(|| anyhow!("failed to find packed yarn plugin"))?;
+    let tgz_str = tgz.to_string_lossy().to_string();
     command_output(
         "tar",
-        &["xzf", &format!("{tmp_path}/*.tgz"), "-C", &tmp_path],
+        &["xzf", &tgz_str, "-C", &tmp_path],
         None,
         &[],
         false,
-    )
-    .or_else(|_| {
-        let tgz = fs::read_dir(tmp.path())?
-            .filter_map(Result::ok)
-            .map(|entry| entry.path())
-            .find(|path| path.extension().and_then(|ext| ext.to_str()) == Some("tgz"))
-            .ok_or_else(|| anyhow!("failed to find packed yarn plugin"))?;
-        let tgz_str = tgz.to_string_lossy().to_string();
-        command_output("tar", &["xzf", &tgz_str, "-C", &tmp_path], None, &[], false)
-    })?;
+        None,
+    )?;
     let bundle = tmp
         .path()
         .join(format!("package/bundles/@yarnpkg/plugin-{plugin_name}.js"));
