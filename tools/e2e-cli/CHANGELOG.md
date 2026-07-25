@@ -1,5 +1,11 @@
 # @verdaccio/e2e-cli
 
+## 3.0.0
+
+### Major Changes
+
+- 90165cd: Refactor the e2e CLI internals to use the Rust runner while preserving the npm package entrypoint.
+
 ## 2.10.2
 
 ### Patch Changes
