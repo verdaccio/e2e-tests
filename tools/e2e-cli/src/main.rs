@@ -486,7 +486,14 @@ fn install_package_bin(package: &str, bin_rel: &str) -> Result<String> {
     let prefix = path.to_string_lossy().to_string();
     command_output(
         "npm",
-        &["install", "--prefix", &prefix, package, "--loglevel=error"],
+        &[
+            "install",
+            "--prefix",
+            &prefix,
+            package,
+            "--loglevel=error",
+            "--min-release-age=0",
+        ],
         None,
         &[],
         false,
@@ -747,7 +754,10 @@ fn prepare_project(
         );
         fs::write(path.join(".npmrc"), npmrc)?;
         if ctx.adapter.kind == AdapterType::Pnpm {
-            fs::write(path.join("pnpm-workspace.yaml"), "minimumReleaseAge: 0\n")?;
+            fs::write(
+                path.join("pnpm-workspace.yaml"),
+                "packages:\n  - .\nminimumReleaseAge: 0\n",
+            )?;
         }
     }
     Ok(path)
@@ -1136,7 +1146,7 @@ fn prepare_cooldown_consumer(
     )?;
     fs::write(
         temp.join("pnpm-workspace.yaml"),
-        "minimumReleaseAge: 10080\nminimumReleaseAgeExclude:\n  - '@verdaccio/*'\n  - 'verdaccio-*'\n",
+        "packages:\n  - .\nminimumReleaseAge: 10080\nminimumReleaseAgeExclude:\n  - '@verdaccio/*'\n  - 'verdaccio-*'\n",
     )?;
     Ok(temp)
 }
@@ -1151,7 +1161,7 @@ fn is_pnpm_minimum_release_age_capable(adapter: &Adapter) -> bool {
         .filter_map(|part| part.parse::<u64>().ok());
     let major = parts.next().unwrap_or(0);
     let minor = parts.next().unwrap_or(0);
-    major > 11 || (major == 11 && minor >= 1)
+    major == 11 && minor >= 1
 }
 
 fn assert_true(condition: bool, message: &str) -> Result<()> {

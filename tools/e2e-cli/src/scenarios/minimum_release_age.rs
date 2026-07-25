@@ -25,7 +25,7 @@ pub(crate) fn scenario_minimum_release_age(ctx: &mut TestContext<'_>) -> Result<
         let mut deps = BTreeMap::new();
         deps.insert(blocked.clone(), "1.0.0".into());
         let temp = prepare_cooldown_consumer(ctx, &format!("e2e-consumer-blocked-{id}"), deps)?;
-        let mut args = vec!["install".into(), "--frozen-lockfile=false".into()];
+        let mut args = vec!["install".into(), "--no-frozen-lockfile".into()];
         args.extend(registry_arg(&ctx.adapter, &ctx.registry_url));
         let error = exec_adapter(ctx, Some(&temp), args)
             .err()
@@ -38,7 +38,7 @@ pub(crate) fn scenario_minimum_release_age(ctx: &mut TestContext<'_>) -> Result<
         assert_true(
             error.to_ascii_lowercase().contains("minimumreleaseage")
                 || error.contains("NO_MATURE_MATCHING_VERSION"),
-            "Expected minimumReleaseAge cooldown error",
+            &format!("Expected minimumReleaseAge cooldown error, got: {error}"),
         )
     })?;
     Ok(())
