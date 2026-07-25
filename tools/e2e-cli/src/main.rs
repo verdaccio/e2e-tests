@@ -742,10 +742,13 @@ fn prepare_project(
         fs::write(path.join(".yarnrc.yml"), yaml)?;
     } else {
         let npmrc = format!(
-            "//localhost:{}/:_authToken={}\nregistry={}\nmin-release-age=0",
+            "//localhost:{}/:_authToken={}\nregistry={}\nmin-release-age=0\nminimum-release-age=0",
             ctx.port, ctx.token, ctx.registry_url
         );
         fs::write(path.join(".npmrc"), npmrc)?;
+        if ctx.adapter.kind == AdapterType::Pnpm {
+            fs::write(path.join("pnpm-workspace.yaml"), "minimumReleaseAge: 0\n")?;
+        }
     }
     Ok(path)
 }
@@ -1124,6 +1127,13 @@ fn prepare_cooldown_consumer(
     deps: BTreeMap<String, String>,
 ) -> Result<PathBuf> {
     let temp = prepare_project(ctx, name, "1.0.0", deps, BTreeMap::new())?;
+    fs::write(
+        temp.join(".npmrc"),
+        format!(
+            "//localhost:{}/:_authToken={}\nregistry={}",
+            ctx.port, ctx.token, ctx.registry_url
+        ),
+    )?;
     fs::write(
         temp.join("pnpm-workspace.yaml"),
         "minimumReleaseAge: 10080\nminimumReleaseAgeExclude:\n  - '@verdaccio/*'\n  - 'verdaccio-*'\n",

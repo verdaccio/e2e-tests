@@ -11,7 +11,7 @@ pub(crate) mod search;
 pub(crate) mod unpublish;
 
 pub(crate) mod prelude {
-    pub(crate) use anyhow::Result;
+    pub(crate) use anyhow::{Context, Result};
     pub(crate) use reqwest::blocking::Client;
     pub(crate) use serde_json::Value;
     pub(crate) use std::collections::BTreeMap;

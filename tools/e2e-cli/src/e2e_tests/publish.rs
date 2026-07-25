@@ -23,18 +23,46 @@ pub(crate) fn test_publish(ctx: &mut TestContext<'_>) -> Result<()> {
             AdapterType::Bun => {}
             _ => {
                 if let Ok(parsed) = serde_json::from_str::<Value>(&resp.stdout) {
-                    assert_eq_json(
-                        parsed.get("name"),
-                        pkg_name.as_str(),
-                        "Expected package name",
-                    )?;
-                    assert_true(
-                        parsed.get("files").is_some(),
-                        "Expected files to be defined",
-                    )?;
+                    let expected_id = format!("{pkg_name}@1.0.0");
+                    let published_name = parsed.get("name").and_then(Value::as_str);
+                    let published_id = parsed.get("id").and_then(Value::as_str);
+                    if published_name.is_some() || published_id.is_some() {
+                        assert_true(
+                            published_name == Some(pkg_name.as_str())
+                                || published_id == Some(expected_id.as_str()),
+                            &format!(
+                                "Expected package name \"{pkg_name}\" or id \"{expected_id}\""
+                            ),
+                        )?;
+                    }
                 }
             }
         }
+        assert_published(ctx, &pkg_name)?;
     }
     Ok(())
+}
+
+fn assert_published(ctx: &TestContext<'_>, pkg_name: &str) -> Result<()> {
+    let encoded = pkg_name.replace('/', "%2F");
+    let response = Client::new()
+        .get(format!(
+            "{}/{}",
+            ctx.registry_url.trim_end_matches('/'),
+            encoded
+        ))
+        .bearer_auth(&ctx.token)
+        .send()
+        .with_context(|| format!("failed to fetch published package {pkg_name}"))?;
+    let status = response.status();
+    let body: Value = response.json().unwrap_or(Value::Null);
+    assert_true(
+        status.is_success(),
+        &format!("Expected published package {pkg_name}, got {status} {body}"),
+    )?;
+    assert_eq_json(
+        body.get("name"),
+        pkg_name,
+        "Expected published registry package name",
+    )
 }

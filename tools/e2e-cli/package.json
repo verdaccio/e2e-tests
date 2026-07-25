@@ -10,6 +10,7 @@
     "directory": "tools/e2e-cli"
   },
   "files": [
+    "build",
     "bin",
     "Cargo.lock",
     "Cargo.toml",

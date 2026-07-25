@@ -1,4 +1,4 @@
-import { copyFileSync, mkdirSync, writeFileSync } from 'node:fs';
+import { copyFileSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -7,6 +7,7 @@ const binaryName = process.platform === 'win32' ? 'verdaccio-e2e.exe' : 'verdacc
 const binarySource = resolve(root, 'target', 'release', binaryName);
 const binaryDest = resolve(root, 'build', 'bin', binaryName);
 
+rmSync(resolve(root, 'build'), { recursive: true, force: true });
 mkdirSync(dirname(binaryDest), { recursive: true });
 copyFileSync(binarySource, binaryDest);
 

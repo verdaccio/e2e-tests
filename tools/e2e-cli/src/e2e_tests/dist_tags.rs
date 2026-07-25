@@ -9,7 +9,10 @@ pub(crate) fn test_dist_tags(ctx: &mut TestContext<'_>) -> Result<()> {
     let mut args = vec!["dist-tag".into(), "ls".into(), "--json".into()];
     args.extend(registry_arg(&ctx.adapter, &ctx.registry_url));
     let resp = exec_adapter(ctx, Some(&tf1), args)?;
-    assert_eq_str(resp.stdout.trim(), "beta: 1.1.0latest: 1.0.0")?;
+    assert_eq_str(
+        &normalize_dist_tag_list(&resp.stdout),
+        "beta: 1.1.0\nlatest: 1.0.0",
+    )?;
 
     let pkg2 = format!("@verdaccio/dt2-{}", ctx.run_id);
     let tf2 = prepare_project(ctx, &pkg2, "1.0.0", BTreeMap::new(), BTreeMap::new())?;
@@ -41,4 +44,13 @@ pub(crate) fn test_dist_tags(ctx: &mut TestContext<'_>) -> Result<()> {
     let resp = exec_adapter(ctx, Some(&tf3), args)?;
     assert_eq_str(resp.stdout.trim(), &format!("+alfa: {pkg3}@1.1.0"))?;
     Ok(())
+}
+
+fn normalize_dist_tag_list(output: &str) -> String {
+    output
+        .lines()
+        .map(str::trim)
+        .filter(|line| !line.is_empty())
+        .collect::<Vec<_>>()
+        .join("\n")
 }
