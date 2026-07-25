@@ -105,7 +105,6 @@ struct SuiteResult {
 struct RunState {
     temp_dirs: Vec<TempDir>,
     verbose: bool,
-    command_timeout: Duration,
 }
 
 struct TestContext<'a> {
@@ -113,6 +112,8 @@ struct TestContext<'a> {
     token: String,
     adapter: Adapter,
     run_id: String,
+    timeout: Duration,
+    deadline: Instant,
     state: &'a mut RunState,
     sub_results: Vec<SubTestResult>,
 }
@@ -140,7 +141,6 @@ fn run() -> Result<i32> {
     let mut state = RunState {
         temp_dirs: Vec::new(),
         verbose: cli.verbose,
-        command_timeout: Duration::from_millis(cli.timeout),
     };
 
     let run_dir = create_temp_dir(&mut state, "e2e-run")?;
@@ -252,17 +252,21 @@ fn run_suite(
 
         println!("  {DIM}running{RESET} {} > {}...", adapter.name, test.name);
         let started = Instant::now();
+        let timeout = Duration::from_millis(timeout_ms);
+        let deadline = started + timeout;
         let mut ctx = TestContext {
             registry_url: registry_url.to_string(),
             token: token.to_string(),
             adapter: adapter.clone(),
             run_id: run_id(),
+            timeout,
+            deadline,
             state,
             sub_results: Vec::new(),
         };
 
         let result = match (test.run)(&mut ctx) {
-            Ok(()) if started.elapsed() > Duration::from_millis(timeout_ms) => TestResult {
+            Ok(()) if started.elapsed() > timeout => TestResult {
                 name: test.name,
                 passed: false,
                 duration: started.elapsed(),
@@ -615,15 +619,17 @@ fn command_output(
         {
             break status;
         }
-        if timeout.is_some_and(|limit| started.elapsed() >= limit) {
-            let _ = child.kill();
-            let _ = child.wait();
-            bail!(
-                "Running \"{} {}\" timed out after {}",
-                bin,
-                args.join(" "),
-                format_duration(started.elapsed())
-            );
+        if let Some(limit) = timeout {
+            if started.elapsed() >= limit {
+                let _ = child.kill();
+                let _ = child.wait();
+                bail!(
+                    "Running \"{} {}\" timed out after {}",
+                    bin,
+                    args.join(" "),
+                    format_duration(limit)
+                );
+            }
         }
         std::thread::sleep(Duration::from_millis(25));
     };
@@ -688,8 +694,14 @@ fn exec_adapter(
         cwd,
         &envs,
         ctx.state.verbose,
-        Some(ctx.state.command_timeout),
+        Some(remaining_test_time(ctx)?),
     )
+}
+
+fn remaining_test_time(ctx: &TestContext<'_>) -> Result<Duration> {
+    ctx.deadline
+        .checked_duration_since(Instant::now())
+        .ok_or_else(|| anyhow!("Test timed out after {}", format_duration(ctx.timeout)))
 }
 
 fn normalize_adapter_args(adapter: &Adapter, args: Vec<String>) -> Vec<String> {
