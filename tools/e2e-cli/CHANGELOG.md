@@ -1,5 +1,11 @@
 # @verdaccio/e2e-cli
 
+## 2.10.4
+
+### Patch Changes
+
+- 268bf03: chore: update dependencies (get-port 7, js-yaml 5, and tooling)
+
 ## 2.10.3
 
 ### Patch Changes
