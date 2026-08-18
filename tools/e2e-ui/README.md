@@ -69,6 +69,7 @@ createRegistryConfig({
   credentials: { user: 'test', password: 'test' }, // optional
   testIds: { header: { settingsTooltip: 'my-btn' } }, // optional per-field override
   selectors: { loginDialog: { submitButton: '#go' } }, // optional per-field override
+  features: { publish: { privateDownloadTarball: true } }, // optional feature flags
 });
 ```
 
@@ -76,6 +77,10 @@ Every data-testid referenced by the suites is configurable. See
 [`src/testIds.ts`](./src/testIds.ts) for the full `TestIds` + `Selectors`
 shapes and defaults. Overrides are merged per section — unspecified fields
 inherit from `DEFAULT_TEST_IDS` / `DEFAULT_SELECTORS`.
+
+`features.publish.privateDownloadTarball` is disabled by default for
+compatibility with Verdaccio 6.x. Enable it when testing Verdaccio 7.x or 9.x
+builds that support Web UI bearer tokens on protected package tarball routes.
 
 ## `publishPackage` task
 
