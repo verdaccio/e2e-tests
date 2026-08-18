@@ -62,11 +62,7 @@ export function isPnpm11Plus(adapter: PackageManagerAdapter): boolean {
   return major > 11 || (major === 11 && minor >= 1);
 }
 
-async function publishPackage(
-  ctx: TestContext,
-  pkgName: string,
-  version: string
-): Promise<void> {
+async function publishPackage(ctx: TestContext, pkgName: string, version: string): Promise<void> {
   debug('publishing %s@%s', pkgName, version);
   const { tempFolder } = await ctx.adapter.prepareProject(
     pkgName,
