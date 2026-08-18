@@ -185,7 +185,7 @@ function getSearchInput() {
  * alias fires first. This helper lets us stay agnostic to which search
  * endpoint the UI is wired to.
  */
-function anySearchAlias(): string {
+function anySearchAlias(): `@${string}` {
   // In practice most Verdaccio 6 builds call the web search endpoint;
   // prefer that one and let the test fail loud if neither fires.
   return '@webSearch';

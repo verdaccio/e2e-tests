@@ -1,7 +1,7 @@
 import { SpawnOptions, execSync } from 'child_process';
 import buildDebug from 'debug';
 import { writeFile } from 'fs/promises';
-import YAML from 'js-yaml';
+import * as YAML from 'js-yaml';
 import { join } from 'path';
 import { URL } from 'url';
 
