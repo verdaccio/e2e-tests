@@ -1,5 +1,11 @@
 # @verdaccio/e2e-ui
 
+## 2.4.3
+
+### Patch Changes
+
+- 151c3a7: Add Web UI coverage for downloading authenticated private package tarballs from the home package list and package sidebar, covering verdaccio/verdaccio#5765.
+
 ## 2.4.2
 
 ### Patch Changes
