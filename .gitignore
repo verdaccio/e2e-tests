@@ -7,3 +7,6 @@ screenshots/
 .idea/
 cypress/downloads/*.tgz
 .claude
+CLAUDE.md
+/tools/e2e-cli/target/debug/.fingerprint
+/tools/e2e-cli/target

@@ -28,6 +28,9 @@
   "scripts": {
     "clean": "pnpm --filter=./tools clean",
     "build": "pnpm --filter \"./tools/*\" build",
+    "rust:fmt": "cargo fmt --manifest-path tools/e2e-cli/Cargo.toml -- --check",
+    "rust:clippy": "cargo clippy --manifest-path tools/e2e-cli/Cargo.toml --all-targets -- -D warnings",
+    "rust:docs": "cargo doc --manifest-path tools/e2e-cli/Cargo.toml --no-deps",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,yml,yaml,md}\"",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,yml,yaml,md}\"",
     "ci:version:changeset": "changeset version",

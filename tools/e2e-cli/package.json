@@ -1,6 +1,6 @@
 {
   "name": "@verdaccio/e2e-cli",
-  "version": "2.10.2",
+  "version": "3.0.0",
   "type": "module",
   "license": "MIT",
   "description": "CLI tool to run Verdaccio e2e tests against any running registry",
@@ -11,7 +11,11 @@
   },
   "files": [
     "build",
-    "bin"
+    "bin",
+    "Cargo.lock",
+    "Cargo.toml",
+    "scripts",
+    "src"
   ],
   "bin": {
     "verdaccio-e2e": "./bin/e2e-cli.js"
@@ -27,19 +31,13 @@
     }
   },
   "scripts": {
-    "build": "vite build && tsc --emitDeclarationOnly -p tsconfig.build.json",
-    "clean": "rimraf build"
+    "build": "cargo build --release && node scripts/build-js-package.mjs",
+    "postinstall": "cargo build --release && node scripts/build-js-package.mjs",
+    "clean": "rimraf build target",
+    "fmt:check": "cargo fmt -- --check",
+    "clippy": "cargo clippy --all-targets -- -D warnings",
+    "docs": "cargo doc --no-deps"
   },
-  "dependencies": {
-    "@verdaccio/registry-cli": "^1.1.0",
-    "debug": "4.4.3",
-    "get-port": "5.1.1",
-    "js-yaml": "4.3.0"
-  },
-  "devDependencies": {
-    "@types/debug": "4.1.12",
-    "@types/js-yaml": "4.0.9",
-    "@types/node": "24.12.4",
-    "vite": "8.0.11"
-  }
+  "dependencies": {},
+  "devDependencies": {}
 }
