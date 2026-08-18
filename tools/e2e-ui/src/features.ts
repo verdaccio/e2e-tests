@@ -11,9 +11,11 @@ import type { DeepPartial } from './testIds';
  * branch, consumers can disable individual tests via
  * `createRegistryConfig({ features: { … } })`.
  *
- * Every flag defaults to `true` (test runs). Override to `false` to
- * convert the test into a Mocha `it.skip` call — the suite still
- * reports the test but marks it as pending.
+ * Most flags default to `true` (test runs). Compatibility probes for
+ * unreleased server behavior may default to `false`; enable them in
+ * consumers that run against a Verdaccio build with the feature.
+ * A disabled flag converts the test into a Mocha `it.skip` call — the
+ * suite still reports the test but marks it as pending.
  */
 export interface Features {
   search: {
@@ -70,6 +72,16 @@ export interface Features {
      * the published package manifest having a valid `dist.tarball`.
      */
     downloadTarball: boolean;
+    /**
+     * Whether to run the private package tarball download tests from
+     * the Web UI package list and sidebar.
+     *
+     * Enable only on Verdaccio builds that accept Web UI bearer tokens
+     * on protected npm package/tarball routes. Verdaccio 6.x currently
+     * returns HTTP 401 for this flow; the regression is tracked in
+     * verdaccio/verdaccio#5765.
+     */
+    privateDownloadTarball: boolean;
     /**
      * Whether to run the "raw viewer dialog opens + closes" test.
      * Depends on `web.showRaw` (defaults to true).
@@ -133,6 +145,7 @@ export const DEFAULT_FEATURES: Features = {
   },
   publish: {
     downloadTarball: true,
+    privateDownloadTarball: false,
     rawViewer: true,
   },
   changePassword: {

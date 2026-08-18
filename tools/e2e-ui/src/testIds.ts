@@ -108,6 +108,8 @@ export interface TestIds {
     noUplinks: string;
     /** Action-bar tarball download FAB. */
     downloadTarballBtn: string;
+    /** Package list tarball download button. */
+    downloadTarball: string;
     /** Action-bar "view raw manifest" FAB. */
     rawBtn: string;
     /** Full-screen dialog that opens when `rawBtn` is clicked. */
@@ -186,6 +188,7 @@ export const DEFAULT_TEST_IDS: TestIds = {
     uplinksTab: 'uplinks-tab',
     noUplinks: 'no-uplinks',
     downloadTarballBtn: 'download-tarball-btn',
+    downloadTarball: 'download-tarball',
     rawBtn: 'raw-btn',
     rawViewerDialog: 'rawViewer--dialog',
     closeRawViewer: 'close-raw-viewer',

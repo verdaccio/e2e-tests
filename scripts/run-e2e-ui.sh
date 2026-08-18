@@ -185,6 +185,10 @@ auth:
   htpasswd:
     file: ${VERDACCIO_DIR}/htpasswd
 packages:
+  '@private/*':
+    access: \$authenticated
+    publish: \$anonymous \$authenticated
+    unpublish: \$anonymous \$authenticated
   '@*/*':
     access: \$all
     publish: \$anonymous \$authenticated

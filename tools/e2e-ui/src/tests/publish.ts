@@ -6,6 +6,35 @@ export function publishTests(config: RegistryConfig) {
   const { header, package: pkg } = config.testIds;
   const { markdownBody, loginDialog } = config.selectors;
   const { features } = config;
+  /**
+   * Log in once, reuse the session across tests in the requested suite.
+   * `cy.session` caches cookies + localStorage keyed on the first
+   * argument, so subsequent calls restore without hitting the network.
+   */
+  const loginOnce = (sessionName: string) => {
+    cy.session(
+      [sessionName, config.credentials.user],
+      () => {
+        cy.visit(config.registryUrl);
+        cy.login(config.credentials.user, config.credentials.password, {
+          loginButton: header.loginButton,
+          ...loginDialog,
+        });
+        cy.wait('@sign');
+      },
+      {
+        validate() {
+          cy.request({
+            url: `${config.registryUrl}/-/verdaccio/data/packages`,
+            failOnStatusCode: false,
+          })
+            .its('status')
+            .should('be.oneOf', [200, 304]);
+        },
+        cacheAcrossSpecs: true,
+      }
+    );
+  };
 
   describe('publish', () => {
     const pkgName = '@verdaccio/pkg-scoped';
@@ -17,36 +46,6 @@ export function publishTests(config: RegistryConfig) {
     // Per-test state so afterEach can clean up the specific publish
     // that this test created (temp folder + registry entry).
     let tempFolder: string | null = null;
-
-    /**
-     * Log in once, reuse the session across every test in this suite.
-     * `cy.session` caches cookies + localStorage keyed on the first
-     * argument, so subsequent calls restore without hitting the network.
-     */
-    const loginOnce = () => {
-      cy.session(
-        ['publish-suite', config.credentials.user],
-        () => {
-          cy.visit(config.registryUrl);
-          cy.login(config.credentials.user, config.credentials.password, {
-            loginButton: header.loginButton,
-            ...loginDialog,
-          });
-          cy.wait('@sign');
-        },
-        {
-          validate() {
-            cy.request({
-              url: `${config.registryUrl}/-/verdaccio/data/packages`,
-              failOnStatusCode: false,
-            })
-              .its('status')
-              .should('be.oneOf', [200, 304]);
-          },
-          cacheAcrossSpecs: true,
-        }
-      );
-    };
 
     beforeEach(() => {
       cy.intercept('POST', '/-/verdaccio/sec/login').as('sign');
@@ -66,7 +65,7 @@ export function publishTests(config: RegistryConfig) {
         tempFolder = result?.tempFolder ?? null;
       });
 
-      loginOnce();
+      loginOnce('publish-suite');
       cy.visit(config.registryUrl);
     });
 
@@ -233,6 +232,74 @@ export function publishTests(config: RegistryConfig) {
         // subsequent tests don't inherit an open overlay.
         cy.getByTestId(pkg.closeRawViewer).click();
         cy.getByTestId(pkg.rawViewerDialog).should('not.exist');
+      }
+    );
+  });
+
+  describe('private package tarball downloads', () => {
+    const privatePkgName = '@private/tarball-fixture';
+    let tempFolder: string | null = null;
+
+    beforeEach(() => {
+      cy.intercept('POST', '/-/verdaccio/sec/login').as('sign');
+      cy.intercept('GET', '/-/verdaccio/data/packages').as('pkgs');
+      cy.intercept('GET', '**/-/verdaccio/data/sidebar/@private/tarball-fixture*').as('sidebar');
+
+      cy.task('publishPackage', {
+        pkgName: privatePkgName,
+        version: '1.0.0',
+        unique: true,
+      }).then((result) => {
+        tempFolder = result?.tempFolder ?? null;
+      });
+
+      loginOnce('private-tarball-suite');
+      cy.visit(config.registryUrl);
+    });
+
+    afterEach(() => {
+      cy.task('unpublishPackage', {
+        pkgName: privatePkgName,
+        tempFolder: tempFolder ?? undefined,
+      });
+      if (tempFolder) {
+        cy.task('cleanupPublished', tempFolder);
+      }
+      tempFolder = null;
+    });
+
+    maybeIt(features.publish.privateDownloadTarball)(
+      'should fetch a private tarball from the home package list',
+      () => {
+        cy.intercept('GET', '**/tarball-fixture-*.tgz').as('privateTarballFetch');
+
+        cy.wait('@pkgs');
+        cy.contains(`[data-testid="${pkg.title}"]`, privatePkgName)
+          .should('be.visible')
+          .closest(`[data-testid="${pkg.itemList}"]`)
+          .find(`[data-testid="${pkg.downloadTarball}"]`)
+          .should('be.visible')
+          .click();
+
+        cy.wait('@privateTarballFetch', { timeout: 10000 })
+          .its('response.statusCode')
+          .should('eq', 200);
+      }
+    );
+
+    maybeIt(features.publish.privateDownloadTarball)(
+      'should fetch a private tarball from the package sidebar',
+      () => {
+        cy.intercept('GET', '**/tarball-fixture-*.tgz').as('privateTarballFetch');
+
+        cy.wait('@pkgs');
+        cy.contains(`[data-testid="${pkg.title}"]`, privatePkgName).click();
+        cy.wait('@sidebar');
+        cy.getByTestId(pkg.downloadTarballBtn).should('be.visible').click();
+
+        cy.wait('@privateTarballFetch', { timeout: 10000 })
+          .its('response.statusCode')
+          .should('eq', 200);
       }
     );
   });
