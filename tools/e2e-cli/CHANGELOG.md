@@ -1,5 +1,11 @@
 # @verdaccio/e2e-cli
 
+## 2.10.3
+
+### Patch Changes
+
+- 7250c67: Update Yarn modern login tests for Verdaccio without incoming Basic authentication. The login scenario now treats duplicate legacy login as unsupported and uses fresh users for publish and switch-user checks.
+
 ## 2.10.2
 
 ### Patch Changes
