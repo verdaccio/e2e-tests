@@ -78,15 +78,15 @@ async function testLogin(ctx: TestContext): Promise<void> {
     assert.ok(who.includes(user1), `Expected whoami "${user1}" but got "${who}"`);
   });
 
-  await ctx.subTest('login existing user', async () => {
+  await ctx.subTest('legacy re-login is rejected without basic auth', async () => {
     const tf = await prepareLoginProject(ctx, `verdaccio-login2-${id}`);
-    const loginResp = await yarnLogin(ctx, tf, user1, password1, email1);
-    assert.ok(
-      loginResp.stdout.includes('Logged in') || loginResp.stdout.includes('token saved'),
-      `Expected login success for existing user but got "${loginResp.stdout}"`
-    );
-    const who = await yarnWhoami(ctx, tf);
-    assert.ok(who.includes(user1), `Expected "${user1}" but got "${who}"`);
+    let loginFailed = false;
+    try {
+      await yarnLogin(ctx, tf, user1, password1, email1);
+    } catch {
+      loginFailed = true;
+    }
+    assert.ok(loginFailed, 'Legacy re-login for an existing user should fail without Basic auth');
   });
 
   await ctx.subTest('wrong password fails', async () => {
@@ -102,6 +102,9 @@ async function testLogin(ctx: TestContext): Promise<void> {
 
   await ctx.subTest('login then publish', async () => {
     const pkgName = `@verdaccio/login-pub-${id}`;
+    const publishUser = `login-pub-${id}`;
+    const publishPassword = 'publish-password-123';
+    const publishEmail = `${publishUser}@test.example.com`;
     const tf = await createTempFolder(`login-pub-${id}`);
     const yamlContent = YAML.dump({
       npmRegistryServer: ctx.registryUrl,
@@ -114,7 +117,7 @@ async function testLogin(ctx: TestContext): Promise<void> {
     if (ctx.adapter.importPlugin) {
       await ctx.adapter.importPlugin(tf, 'npm-login');
     }
-    await yarnLogin(ctx, tf, user1, password1, email1);
+    await yarnLogin(ctx, tf, publishUser, publishPassword, publishEmail);
     await ctx.adapter.exec({ cwd: tf }, 'install');
     const pubResp = await ctx.adapter.exec({ cwd: tf }, 'publish');
     assert.ok(
@@ -124,14 +127,17 @@ async function testLogin(ctx: TestContext): Promise<void> {
   });
 
   await ctx.subTest('switch users', async () => {
+    const switchUser1 = `login-switch-a-${id}`;
+    const switchPassword1 = 'switch-password-123';
+    const switchEmail1 = `${switchUser1}@test.example.com`;
     const user2 = `login-b-${id}`;
     const password2 = 'other-password-456';
     const email2 = `${user2}@test.example.com`;
     const tf = await prepareLoginProject(ctx, `verdaccio-login5-${id}`);
 
-    await yarnLogin(ctx, tf, user1, password1, email1);
+    await yarnLogin(ctx, tf, switchUser1, switchPassword1, switchEmail1);
     const who1 = await yarnWhoami(ctx, tf);
-    assert.ok(who1.includes(user1), `Expected "${user1}" but got "${who1}"`);
+    assert.ok(who1.includes(switchUser1), `Expected "${switchUser1}" but got "${who1}"`);
 
     await yarnLogin(ctx, tf, user2, password2, email2);
     const who2 = await yarnWhoami(ctx, tf);
