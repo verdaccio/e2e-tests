@@ -31,16 +31,14 @@ usage() {
   echo "    -h, --help          Show this help"
   echo ""
   echo "  Package managers (must be installed on your system):"
-  echo "    npm                 (default)"
-  echo "    pnpm"
-  echo "    yarn-classic        Yarn 1.x (requires 'yarn' in PATH)"
-  echo "    yarn-modern         Yarn Berry 2+ (requires 'yarn' in PATH)"
+  echo "    npm                 npm 10-12 (default)"
+  echo "    pnpm                pnpm 10+"
+  echo "    yarn-modern         Yarn Berry 3+ (requires 'yarn' in PATH)"
   echo ""
   echo "  Examples:"
   echo "    $0                              # verdaccio@6, npm"
   echo "    $0 5                            # verdaccio@5, npm"
   echo "    $0 6 pnpm                       # verdaccio@6, pnpm"
-  echo "    $0 6 yarn-classic               # verdaccio@6, yarn v1"
   echo "    $0 6 yarn-modern                # verdaccio@6, yarn berry"
   echo "    $0 --docker 5 pnpm             # docker verdaccio@5, pnpm"
   echo "    $0 --image verdaccio/verdaccio:nightly-master npm"
@@ -110,15 +108,37 @@ if lsof -i ":${PORT}" >/dev/null 2>&1; then
   sleep 1
 fi
 
+# ─── Build e2e-cli (needed early: it generates the registry config) ───
+echo -e "${CYAN}Building @verdaccio/e2e-cli...${RESET}"
+pnpm --filter @verdaccio/e2e-cli build 2>&1
+
+E2E_CLI="$PROJECT_DIR/tools/e2e-cli/bin/e2e-cli.js"
+UPLINK_PORT=4874
+
+# Shared config for the full battery (max_body_size, mock uplink for
+# scenario:uplink-failure) — single source of truth in @verdaccio/e2e-cli.
+VERDACCIO_CONFIG="$VERDACCIO_DIR/config.yaml"
+node "$E2E_CLI" --print-config --uplink-port "$UPLINK_PORT" > "$VERDACCIO_CONFIG"
+
 # ─── Start Verdaccio ───
 if [[ "$USE_DOCKER" == true ]]; then
   echo -e "${CYAN}Pulling ${DOCKER_IMAGE}...${RESET}"
   docker pull "$DOCKER_IMAGE"
 
+  # Container paths for storage/htpasswd; the mock uplink is unreachable from
+  # inside the container, so scenario:uplink-failure is skipped in docker mode
+  # (E2E_UPLINK_PORT is not exported below).
+  DOCKER_CONFIG="$VERDACCIO_DIR/config.docker.yaml"
+  sed \
+    -e 's|^storage: .*|storage: /verdaccio/storage/data|' \
+    -e 's|file: ./htpasswd|file: /verdaccio/storage/htpasswd|' \
+    "$VERDACCIO_CONFIG" > "$DOCKER_CONFIG"
+
   echo -e "${CYAN}Starting container ${CONTAINER_NAME} on port ${PORT}...${RESET}"
   docker run -d \
     --name "$CONTAINER_NAME" \
     -p "${PORT}:4873" \
+    -v "$DOCKER_CONFIG:/verdaccio/conf/config.yaml" \
     "$DOCKER_IMAGE" >/dev/null
 
   INSTALLED_VERSION="docker:${DOCKER_IMAGE}"
@@ -135,34 +155,8 @@ else
   INSTALLED_VERSION=$("$VERDACCIO_BIN" --version 2>&1 || echo "unknown")
   echo -e "${GREEN}Installed verdaccio ${INSTALLED_VERSION}${RESET}"
 
-  # Isolated config so runs don't share storage
-  VERDACCIO_CONFIG="$VERDACCIO_DIR/config.yaml"
-  cat > "$VERDACCIO_CONFIG" <<YAML
-storage: ${VERDACCIO_DIR}/storage
-web:
-  enable: true
-  title: Verdaccio
-  login: true
-auth:
-  htpasswd:
-    file: ${VERDACCIO_DIR}/htpasswd
-uplinks:
-  npmjs:
-    url: https://registry.npmjs.org/
-packages:
-  '@*/*':
-    access: \$all
-    publish: \$authenticated
-    unpublish: \$authenticated
-    proxy: npmjs
-  '**':
-    access: \$all
-    publish: \$authenticated
-    unpublish: \$authenticated
-    proxy: npmjs
-log: { type: stdout, format: pretty, level: warn }
-YAML
-
+  # The shared config uses paths relative to its own location ($VERDACCIO_DIR),
+  # so runs don't share storage.
   echo -e "${CYAN}Starting Verdaccio on port ${PORT}...${RESET}"
   "$VERDACCIO_BIN" --config "$VERDACCIO_CONFIG" --listen "$PORT" &>"$VERDACCIO_DIR/verdaccio.log" &
   VERDACCIO_PID=$!
@@ -194,18 +188,22 @@ if ! curl -s "http://localhost:${PORT}/-/ping" >/dev/null 2>&1; then
   exit 1
 fi
 
-# ─── Build e2e-cli ───
-echo -e "${CYAN}Building @verdaccio/e2e-cli...${RESET}"
-pnpm --filter @verdaccio/e2e-cli build 2>&1
-
 # ─── Run tests ───
 echo -e "${CYAN}Running tests: ${INSTALLED_VERSION} / ${PM}${RESET}"
 echo ""
 
+# The mock uplink only works when the registry runs on this host — in docker
+# mode scenario:uplink-failure is skipped by not passing the port.
+UPLINK_ARGS=()
+if [[ "$USE_DOCKER" != true ]]; then
+  UPLINK_ARGS=(--uplink-port "$UPLINK_PORT")
+fi
+
 set +e
-node "$PROJECT_DIR/tools/e2e-cli/bin/e2e-cli.js" \
+node "$E2E_CLI" \
   --registry "http://localhost:${PORT}" \
-  --pm "$PM_ARG"
+  --pm "$PM_ARG" \
+  ${UPLINK_ARGS[@]+"${UPLINK_ARGS[@]}"}
 EXIT_CODE=$?
 set -e
 echo ""

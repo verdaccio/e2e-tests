@@ -1,15 +1,21 @@
 import assert from 'assert';
 
 import { TestContext, TestDefinition } from '../types';
+import { publishLocalPackage } from '../utils/publish';
 
 async function testInstall(ctx: TestContext): Promise<void> {
+  // Publish the dependency locally first — the suite must work offline, so
+  // nothing is ever resolved from an external registry.
+  const depName = `e2e-install-dep-${ctx.runId}`;
+  await publishLocalPackage(ctx, depName, '1.0.0');
+
   const { tempFolder } = await ctx.adapter.prepareProject(
     `install-test-${ctx.runId}`,
     '1.0.0',
     ctx.registryUrl,
     ctx.port,
     ctx.token,
-    { react: '18.2.0' }
+    { [depName]: '1.0.0' }
   );
 
   const isNpm = ctx.adapter.type === 'npm';

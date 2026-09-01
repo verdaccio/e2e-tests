@@ -4,6 +4,7 @@ import { rm } from 'fs/promises';
 import { join } from 'path';
 
 import { TestContext, TestDefinition } from '../types';
+import { publishLocalPackage } from '../utils/publish';
 
 const debug = buildDebug('verdaccio:e2e-cli:test:ci');
 
@@ -30,9 +31,6 @@ function getCiArgs(ctx: TestContext): string[] {
     case 'pnpm':
       // `pnpm install --frozen-lockfile` — same command, strict mode
       return ['install', '--frozen-lockfile', ...ctx.adapter.registryArg(ctx.registryUrl)];
-    case 'yarn-classic':
-      // `yarn install --frozen-lockfile`
-      return ['install', '--frozen-lockfile', ...ctx.adapter.registryArg(ctx.registryUrl)];
     case 'yarn-modern':
       // `yarn install --immutable`
       return ['install', '--immutable'];
@@ -51,13 +49,17 @@ async function testCi(ctx: TestContext): Promise<void> {
     return;
   }
 
+  // Publish the dependency locally first — the suite must run offline
+  const depName = `e2e-ci-dep-${ctx.runId}`;
+  await publishLocalPackage(ctx, depName, '1.0.0');
+
   const { tempFolder } = await ctx.adapter.prepareProject(
     `ci-test-${ctx.runId}`,
     '1.0.0',
     ctx.registryUrl,
     ctx.port,
     ctx.token,
-    { 'is-odd': '1.0.0' }
+    { [depName]: '1.0.0' }
   );
 
   debug('running initial install to generate lockfile in %s', tempFolder);

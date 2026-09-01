@@ -5,7 +5,6 @@ import {
   createDenoAdapter,
   createNpmAdapter,
   createPnpmAdapter,
-  createYarnClassicAdapter,
   createYarnModernAdapter,
 } from './adapters';
 import { runAll } from './runner';
@@ -16,7 +15,7 @@ import { createUser, pingRegistry } from './utils/registry-client';
 const debug = buildDebug('verdaccio:e2e-cli');
 
 function parsePmSpec(filter: string): { name: string; version?: string; binPath?: string } {
-  // --pm yarn-modern@3, --pm yarn-classic@1.22.22, --pm npm=/path/to/bin
+  // --pm yarn-modern@3, --pm npm@10, --pm npm=/path/to/bin
   const eqIdx = filter.indexOf('=');
   if (eqIdx !== -1) {
     return { name: filter.slice(0, eqIdx).toLowerCase(), binPath: filter.slice(eqIdx + 1) };
@@ -43,7 +42,9 @@ function parseAdapters(pmFilters?: string[]): PackageManagerAdapter[] {
     } else if (name === 'pnpm') {
       adapters.push(createPnpmAdapter(binPath, version));
     } else if (name === 'yarn-classic' || name === 'yarn1') {
-      adapters.push(createYarnClassicAdapter(binPath, version));
+      throw new Error(
+        'yarn classic (v1) is no longer supported. Use yarn-modern (Yarn 3+) instead.'
+      );
     } else if (name === 'yarn-modern' || name === 'yarn') {
       adapters.push(createYarnModernAdapter(binPath, version));
     } else if (name === 'bun') {
@@ -52,7 +53,7 @@ function parseAdapters(pmFilters?: string[]): PackageManagerAdapter[] {
       adapters.push(createDenoAdapter(binPath, version));
     } else {
       throw new Error(
-        `Unknown package manager: "${name}". Supported: npm, pnpm, yarn-classic, yarn-modern, bun, deno`
+        `Unknown package manager: "${name}". Supported: npm, pnpm, yarn-modern, bun, deno`
       );
     }
   }
@@ -85,6 +86,10 @@ function parseArgs(argv: string[]): CliOptions {
       options.timeout = parseInt(argv[++i], 10);
     } else if (arg === '--token') {
       options.token = argv[++i];
+    } else if (arg === '--uplink-port') {
+      options.uplinkPort = parseInt(argv[++i], 10);
+    } else if (arg === '--print-config') {
+      options.printConfig = true;
     } else if (arg === '--verbose' || arg === '-v') {
       options.verbose = true;
     } else if (arg === '--help' || arg === '-h') {
@@ -100,6 +105,8 @@ function parseArgs(argv: string[]): CliOptions {
       options.token = arg.split('=')[1];
     } else if (arg.startsWith('--timeout=')) {
       options.timeout = parseInt(arg.split('=')[1], 10);
+    } else if (arg.startsWith('--uplink-port=')) {
+      options.uplinkPort = parseInt(arg.split('=')[1], 10);
     } else {
       console.error(`Unknown argument: ${arg}`);
       printHelp();
@@ -122,11 +129,11 @@ function printHelp(): void {
 
   Options:
     --pm <name[@version]>   Package manager to test (can be repeated)
-                            Supported: npm, pnpm, yarn-classic, yarn-modern (or yarn), bun, deno
-                            Examples: --pm npm@10 --pm pnpm@9
+                            Supported: npm (10-12), pnpm (10+),
+                                       yarn-modern (or yarn, Yarn 3+), bun, deno
+                            Examples: --pm npm@10 --pm pnpm@11
                                       --pm yarn-modern@4
                                       --pm yarn-modern@3
-                                      --pm yarn-classic
                                       --pm bun
                                       --pm npm --pm pnpm  (uses system version)
                             Auto-installs the requested yarn version if needed
@@ -136,11 +143,24 @@ function printHelp(): void {
                             Available: publish, install, ci, audit, info, deprecate,
                                        dist-tags, ping, search, unpublish
                             Scenarios: scenario:install-multiple-deps,
-                                       scenario:minimum-release-age (pnpm 11.1+)
+                                       scenario:minimum-release-age (pnpm 11.1+),
+                                       scenario:tarballs (npm adapter),
+                                       scenario:metadata (npm adapter),
+                                       scenario:search (npm adapter; the
+                                         uplink sub-tests also need
+                                         --uplink-port / E2E_UPLINK_PORT),
+                                       scenario:uplink-failure (npm adapter,
+                                         needs --uplink-port / E2E_UPLINK_PORT
+                                         and a registry started with the config
+                                         from --print-config)
                             Default: all supported by the PM
 
     --token <token>         Auth token (skips user creation)
     --timeout <ms>          Per-test timeout (default: 50000)
+    --uplink-port <port>    Port for the mock uplink used by
+                            scenario:uplink-failure (default: $E2E_UPLINK_PORT)
+    --print-config          Print the recommended Verdaccio config for the full
+                            battery (max_body_size, mock uplink) and exit
     -v, --verbose           Enable debug output
     -h, --help              Show this help
   `);
@@ -148,6 +168,17 @@ function printHelp(): void {
 
 export async function main(argv: string[] = process.argv): Promise<void> {
   const options = parseArgs(argv);
+
+  if (options.printConfig) {
+    const { buildE2EConfig, DEFAULT_UPLINK_PORT } = await import('./utils/e2e-config');
+    process.stdout.write(buildE2EConfig(options.uplinkPort ?? DEFAULT_UPLINK_PORT));
+    process.exit(0);
+  }
+
+  // Expose the mock uplink port to scenarios (scenario:uplink-failure gates on it).
+  if (options.uplinkPort) {
+    process.env.E2E_UPLINK_PORT = String(options.uplinkPort);
+  }
 
   if (!options.registry) {
     console.error('Error: --registry is required\n');
@@ -213,7 +244,6 @@ export {
   createDenoAdapter,
   createNpmAdapter,
   createPnpmAdapter,
-  createYarnClassicAdapter,
   createYarnModernAdapter,
 } from './adapters';
 export { runAll, runSuite } from './runner';

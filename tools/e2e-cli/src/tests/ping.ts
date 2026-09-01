@@ -4,21 +4,20 @@ import { TestContext, TestDefinition } from '../types';
 
 async function testPing(ctx: TestContext): Promise<void> {
   const type = ctx.adapter.type;
-  const needsProject = type === 'yarn-modern';
-  let cwd: string | undefined;
 
-  if (needsProject) {
-    const { tempFolder } = await ctx.adapter.prepareProject(
-      `verdaccio-ping-${ctx.runId}`,
-      '1.0.0',
-      ctx.registryUrl,
-      ctx.port,
-      ctx.token
-    );
-    cwd = tempFolder;
-    if (ctx.adapter.importPlugin) {
-      await ctx.adapter.importPlugin(tempFolder, 'npm-ping');
-    }
+  // Always run from a prepared project: its .npmrc carries the fresh token and
+  // shields the test from whatever the developer's global ~/.npmrc has for
+  // this registry (a stale token there would turn into a spurious E401).
+  const { tempFolder } = await ctx.adapter.prepareProject(
+    `verdaccio-ping-${ctx.runId}`,
+    '1.0.0',
+    ctx.registryUrl,
+    ctx.port,
+    ctx.token
+  );
+  const cwd = tempFolder;
+  if (type === 'yarn-modern' && ctx.adapter.importPlugin) {
+    await ctx.adapter.importPlugin(tempFolder, 'npm-ping');
   }
 
   const jsonFlag = type === 'yarn-modern' ? [] : ['--json'];

@@ -19,11 +19,23 @@ const NPM_SUPPORTED_COMMANDS = new Set([
   'search',
 ]);
 
+// Only currently maintained npm majors are supported by the suite.
+const NPM_SUPPORTED_MAJORS = [10, 11, 12];
+
 function detectVersion(bin: string): string {
   try {
     return execSync(`${bin} --version`, { encoding: 'utf8', timeout: 5000 }).trim();
   } catch {
     return 'unknown';
+  }
+}
+
+function assertSupportedVersion(resolved: string): void {
+  const major = parseInt(resolved.split('.')[0], 10);
+  if (!Number.isNaN(major) && !NPM_SUPPORTED_MAJORS.includes(major)) {
+    throw new Error(
+      `npm@${resolved} is not supported. Supported majors: ${NPM_SUPPORTED_MAJORS.join(', ')}`
+    );
   }
 }
 
@@ -51,6 +63,7 @@ function resolveNpmBin(binPath?: string, version?: string): string {
 export function createNpmAdapter(binPath?: string, version?: string): PackageManagerAdapter {
   const bin = resolveNpmBin(binPath, version);
   const resolved = detectVersion(bin);
+  assertSupportedVersion(resolved);
   debug('creating npm adapter with bin: %s (%s)', bin, resolved);
 
   const adapter: PackageManagerAdapter = {

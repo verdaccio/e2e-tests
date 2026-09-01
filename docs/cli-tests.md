@@ -6,9 +6,9 @@ Detailed description of what each `@verdaccio/e2e-cli` test asserts.
 
 Publishes four packages (two unscoped, two scoped) and validates the output format.
 
-| Sub-test             | Assertion                                                                                                                                                                         |
-| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Publish each package | **yarn-modern**: output matches `Package archive published`. **yarn-classic**: output length > 0. **npm/pnpm**: JSON contains `name` matching the package and `files` is defined. |
+| Sub-test             | Assertion                                                                                                                                    |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| Publish each package | **yarn-modern**: output matches `Package archive published`. **npm/pnpm**: JSON contains `name` matching the package and `files` is defined. |
 
 - **yarn-modern** runs `install` before each publish to generate the lockfile.
 - Tests both scoped (`@verdaccio/foo-*`) and unscoped (`verdaccio-*`) packages.
@@ -25,9 +25,9 @@ Installs `react@18.2.0` as a dependency and validates the result.
 
 Fetches package info for `verdaccio` from the registry.
 
-| Sub-test   | Assertion                                                                                                                                                        |
-| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Fetch info | **yarn-classic**: NDJSON output contains a line with `type === "inspect"`. **npm/pnpm/yarn-modern**: JSON has `name: "verdaccio"` and `dependencies` is defined. |
+| Sub-test   | Assertion                                                                             |
+| ---------- | ------------------------------------------------------------------------------------- |
+| Fetch info | **npm/pnpm/yarn-modern**: JSON has `name: "verdaccio"` and `dependencies` is defined. |
 
 ## audit
 

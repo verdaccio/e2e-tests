@@ -1,5 +1,7 @@
 import assert from 'assert';
 import buildDebug from 'debug';
+import { readFile } from 'fs/promises';
+import { join } from 'path';
 
 import { TestContext, TestDefinition } from '../types';
 import { normalizeInfo } from '../utils/info';
@@ -24,25 +26,8 @@ const SEED_PACKAGES_COUNT = 5;
 
 /**
  * Parse `info --json` output across all adapters.
- * Yarn classic wraps the result in NDJSON lines with `{ type: "inspect", data: { ... } }`.
  */
-function parseInfoOutput(stdout: string, adapterType: string): any {
-  if (adapterType === 'yarn-classic') {
-    // Yarn classic outputs NDJSON — find the "inspect" line that holds package data
-    const lines = stdout.split('\n').filter(Boolean);
-    for (const line of lines) {
-      try {
-        const obj = JSON.parse(line);
-        if (obj.type === 'inspect' && obj.data) {
-          return obj.data;
-        }
-      } catch {
-        // skip non-JSON lines
-      }
-    }
-    // Fallback: try parsing the whole output
-    return normalizeInfo(JSON.parse(stdout));
-  }
+function parseInfoOutput(stdout: string): any {
   return normalizeInfo(JSON.parse(stdout));
 }
 
@@ -151,7 +136,7 @@ async function testInstallMultipleDeps(ctx: TestContext): Promise<void> {
         '--json',
         ...ctx.adapter.registryArg(ctx.registryUrl)
       );
-      const info = parseInfoOutput(resp.stdout, ctx.adapter.type);
+      const info = parseInfoOutput(resp.stdout);
       assert.strictEqual(info.name, name, `Expected package name "${name}"`);
       assert.strictEqual(info.version, '1.0.0', `Expected version 1.0.0 for ${name}`);
     }
@@ -165,7 +150,7 @@ async function testInstallMultipleDeps(ctx: TestContext): Promise<void> {
       '--json',
       ...ctx.adapter.registryArg(ctx.registryUrl)
     );
-    const midInfo = parseInfoOutput(resp.stdout, ctx.adapter.type);
+    const midInfo = parseInfoOutput(resp.stdout);
     assert.strictEqual(midInfo.name, midName);
 
     const deps = midInfo.dependencies || {};
@@ -197,7 +182,10 @@ async function testInstallMultipleDeps(ctx: TestContext): Promise<void> {
     const sharedName = `@verdaccio/seed-shared-${id}`;
     await publishSeedPackage(ctx, sharedName, '2.0.0');
 
-    // Create a new consumer that uses ^ ranges — should pick up 2.0.0
+    // Create a new consumer that uses ^1.0.0 ranges. With 2.0.0 published,
+    // the range must still resolve to 1.0.0 (^1.0.0 excludes 2.x) even though
+    // dist-tags.latest now points at 2.0.0 — this catches registries that
+    // serve range resolution from `latest` instead of the full version list.
     const consumerDeps: Record<string, string> = {
       [leafName]: '^1.0.0',
       [sharedName]: '^1.0.0',
@@ -219,6 +207,22 @@ async function testInstallMultipleDeps(ctx: TestContext): Promise<void> {
       ...ctx.adapter.registryArg(ctx.registryUrl)
     );
 
+    // Verify what actually landed on disk, not just the registry metadata.
+    // yarn-modern uses PnP (no node_modules), so the on-disk check applies to
+    // the linkers that materialize it.
+    if (['npm', 'pnpm', 'bun'].includes(ctx.adapter.type)) {
+      for (const name of [leafName, sharedName]) {
+        const manifestPath = join(tempFolder, 'node_modules', name, 'package.json');
+        const installed = JSON.parse(await readFile(manifestPath, 'utf8'));
+        assert.strictEqual(
+          installed.version,
+          '1.0.0',
+          `Expected ${name}@1.0.0 installed for range ^1.0.0 (latest is 2.0.0), ` +
+            `got ${installed.version}`
+        );
+      }
+    }
+
     // Verify that the registry now serves both versions
     const leafResp = await ctx.adapter.exec(
       { cwd: tempFolder },
@@ -227,7 +231,7 @@ async function testInstallMultipleDeps(ctx: TestContext): Promise<void> {
       '--json',
       ...ctx.adapter.registryArg(ctx.registryUrl)
     );
-    const leafInfo = parseInfoOutput(leafResp.stdout, ctx.adapter.type);
+    const leafInfo = parseInfoOutput(leafResp.stdout);
 
     // dist-tags.latest should be 2.0.0
     assert.strictEqual(

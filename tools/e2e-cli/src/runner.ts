@@ -143,7 +143,8 @@ export async function runSuite(
     }
 
     reportTestStart(adapter.name, test.name);
-    const result = await runSingleTest(adapter, test, registryUrl, token, options.timeout);
+    const timeout = Math.max(options.timeout, test.timeout ?? 0);
+    const result = await runSingleTest(adapter, test, registryUrl, token, timeout);
     results.push(result);
     reportTestResult(result, result.hasSubTests);
   }

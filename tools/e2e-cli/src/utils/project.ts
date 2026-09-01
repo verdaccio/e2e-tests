@@ -63,8 +63,11 @@ export async function prepareGenericEmptyProject(
   // just-published packages these tests install (ETARGET / "no matching version
   // ... before <date>"). Pinning it per-project overrides any global value.
   // It's an npm-only key — pnpm (minimum-release-age) and yarn ignore it.
+  // `audit=false`/`fund=false` stop npm's implicit audit/fund calls on every
+  // install — the registry would proxy those upstream, and the suite must run
+  // fully offline (the dedicated audit test still runs `npm audit` explicitly).
   const getNPMrc = (port: number, token: string, registry: string) =>
-    `//localhost:${port}/:_authToken=${token}\nregistry=${registry}\nmin-release-age=0`;
+    `//localhost:${port}/:_authToken=${token}\nregistry=${registry}\nmin-release-age=0\naudit=false\nfund=false`;
   const tempFolder = await createTempFolder('temp-folder');
   await writeFile(
     join(tempFolder, 'package.json'),

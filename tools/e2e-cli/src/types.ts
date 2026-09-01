@@ -49,6 +49,12 @@ export type TestDefinition = {
   /** Commands required for this test (e.g. 'deprecate', 'search'). Skipped if adapter doesn't support them. */
   requires?: string[];
   /**
+   * Minimum timeout (ms) for this test. The effective timeout is the larger of
+   * this and the CLI-level --timeout. Use for long scenarios (large tarballs,
+   * uplink failure simulation) that outgrow the default per-test budget.
+   */
+  timeout?: number;
+  /**
    * Predicate to gate a test to specific adapters/versions. Returns false to skip.
    * Use for tests that only make sense on a particular package manager or version
    * (e.g. pnpm-only settings). Evaluated after the `requires` check.
@@ -59,8 +65,8 @@ export type TestDefinition = {
 export interface PackageManagerAdapter {
   /** Display name, e.g. "npm@10" */
   name: string;
-  /** Package manager type: npm, pnpm, yarn-classic, yarn-modern, bun, deno */
-  type: 'npm' | 'pnpm' | 'yarn-classic' | 'yarn-modern' | 'bun' | 'deno';
+  /** Package manager type: npm, pnpm, yarn-modern, bun, deno */
+  type: 'npm' | 'pnpm' | 'yarn-modern' | 'bun' | 'deno';
   /** Resolved path to the binary */
   bin: string;
   /** Commands this PM supports */
@@ -93,4 +99,8 @@ export type CliOptions = {
   timeout: number;
   token?: string;
   verbose: boolean;
+  /** Port of the mock uplink used by scenario:uplink-failure (also E2E_UPLINK_PORT) */
+  uplinkPort?: number;
+  /** Print the recommended registry config for the full battery and exit */
+  printConfig?: boolean;
 };
