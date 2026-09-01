@@ -1,5 +1,98 @@
 # @verdaccio/e2e-cli
 
+## 3.0.0
+
+### Major Changes
+
+- 696bcfb: Drop support for end-of-life package managers:
+
+  - **npm**: only majors 10, 11 and 12 are supported (npm 8 and 9 removed).
+    npm 12 is stable now, so the CI matrix runs `npm@12` instead of a pinned
+    pre-release.
+  - **pnpm**: minimum supported major is 10 (pnpm 8 and 9 removed).
+  - **Yarn Classic (v1)**: removed entirely — the `yarn-classic` adapter is gone
+    and `--pm yarn-classic` / `--pm yarn1` now fail with a clear error pointing
+    to `yarn-modern` (Yarn 3+).
+
+  The npm and pnpm adapters now validate the resolved version and fail fast
+  with an explicit error when an unsupported version is requested (or found in
+  PATH), instead of running the suite against a client that is no longer
+  maintained.
+
+### Minor Changes
+
+- 696bcfb: Add `scenario:search` — a contract battery for `GET /-/v1/search` pinning the
+  registry.npmjs.org spec and what npm CLI 12 actually consumes: result shape
+  (`maintainers` must be an array), real `total` vs page size, `from`/`size`
+  pagination over local results and over results merged with an uplink, 400
+  `ERR_TEXT_MISSING` without `text`, ISO 8601 `time`, the npmjs size clamp, and
+  a real `npm search --json` on top. The shared mock uplink now implements
+  `/-/v1/search` the way npmjs does (it applies `from`/`size` itself and reports
+  the real `total`), which is what exposes double pagination in the registry
+  under test. The contract checks run independently and are all reported before
+  the scenario fails, so one run lists every divergence.
+
+  The checks that are red against every current Verdaccio (real `total`, 400
+  without `text`, ISO `time`, merged local+uplink pagination) ship disabled
+  behind `PENDING_CONTRACT_CHECKS_ENABLED` so the scenario stays green in CI;
+  flip the flag once the registry-side fixes land.
+
+- 696bcfb: Add an HTTP-protocol e2e battery and the harness support it needs:
+
+  - `scenario:tarballs`: publishes a large (~30 MB, incompressible) package and
+    exercises the tarball endpoints — full download with Content-Length +
+    shasum/integrity verification, repeated client aborts mid-download,
+    concurrent downloads, 404s (missing package/version/mismatched filename),
+    scoped `%2f`-encoded URLs, and an end-to-end install through the package
+    manager.
+  - `scenario:metadata`: packument battery — full packument shape (versions,
+    dist-tags, readme, time), abbreviated metadata
+    (`Accept: application/vnd.npm.install-v1+json`), `ETag`/`If-None-Match`
+    → 304 revalidation, `dist.tarball` URL rewriting, scoped `%2f` URLs, 404
+    error body, and coherence after publish/unpublish.
+  - `scenario:uplink-failure`: starts a controllable mock uplink and verifies
+    registry behavior when the uplink is healthy, drops the connection
+    mid-tarball (no client hang, no poisoned cache), is slower than the
+    configured timeout, or is down (cached packages still served, clean errors
+    otherwise). Gated on `--uplink-port` / `E2E_UPLINK_PORT`.
+  - New `--print-config` flag printing the recommended registry config for the
+    full battery (`max_body_size: 100mb`, mock uplink wiring) so every consuming
+    repo starts Verdaccio from the same single source of truth.
+  - New `--uplink-port` flag and support for per-test minimum timeouts in
+    `TestDefinition`.
+  - The whole suite now runs fully offline: the generated config has no npmjs
+    uplink, and every test publishes the packages it consumes (install, ci,
+    audit, info and search no longer depend on react/is-odd/jquery/npmjs).
+    Adapters that cannot publish (deno) get their fixtures through the raw
+    registry HTTP API. Project `.npmrc` files disable npm's implicit
+    audit/fund requests, and client-side tests always run from a prepared
+    project so a stale token in the developer's global `~/.npmrc` cannot break
+    them. The audit test skips cleanly when the audit upstream is unreachable.
+
+### Patch Changes
+
+- 696bcfb: Harden `scenario:metadata`: the abbreviated (install-v1) check now asserts
+  `_id`, `_rev` and `readmeFilename` are absent (not just `readme` — all of them
+  leaked once), and a new sub-test verifies the packument ETag changes after a
+  new version is published, so a stuck ETag serving 304 forever fails the suite.
+- 696bcfb: Harden the remaining scenarios:
+
+  - `scenario:tarballs`: shasum/integrity assertions are now hard (their absence
+    on a locally published version is a bug, not a skip), aborts now exercise
+    three depths into the stream (first chunk, 25%, 50%) via a new `onChunk`
+    download hook, and two gated contract checks pin that tarball responses
+    should advertise `Content-Length` and must not be re-compressed for
+    gzip-accepting clients (red against current registries — behind
+    `PENDING_CONTRACT_CHECKS_ENABLED`).
+  - `scenario:uplink-failure`: new sub-test for an uplink answering 500 (cached
+    package still served, unknown fails cleanly, registry stays up), and the
+    slow-uplink assertion tightened from 9s to 6s so retry/timeout
+    multiplication regressions are caught earlier.
+  - `scenario:install-multiple-deps`: the re-install phase now verifies the
+    version that actually lands in `node_modules` — `^1.0.0` must resolve to
+    1.0.0 even though `dist-tags.latest` points at 2.0.0 (npm/pnpm/bun; yarn
+    PnP has no `node_modules`).
+
 ## 2.10.4
 
 ### Patch Changes
