@@ -2,6 +2,7 @@ import assert from 'assert';
 
 import { TestContext, TestDefinition } from '../types';
 import { MockUplink } from '../utils/mock-uplink';
+import { pendingContractChecksEnabled } from '../utils/pending-checks';
 import { trace } from '../utils/process';
 import { publishLocalPackage } from '../utils/publish';
 
@@ -34,15 +35,13 @@ const LOCAL_COUNT = 8;
 const UPLINK_COUNT = 6;
 
 /**
- * TODO: flip to true once S-1/S-3/S-4/S-5 from the search parity review are
- * fixed in verdaccio (see verdaccio packages/api/src/v1/search.ts). These
- * checks pin the correct npmjs contract but are red against every current
- * registry: real `total` (S-3), 400 without `text` (S-4), ISO `time` (S-5),
- * and single pagination of merged local+uplink results (S-1). Disabled so the
- * scenario gates regressions on the behavior that works today without turning
- * CI red.
+ * Contract checks that are red against every current registry: real `total`,
+ * 400 without `text`, ISO `time`, single pagination of merged local+uplink
+ * results, and `package.version` on results. Off by default so CI stays
+ * green; enable with E2E_PENDING_CONTRACT_CHECKS=true (and make that the
+ * default once the fixes land in verdaccio).
  */
-const PENDING_CONTRACT_CHECKS_ENABLED = false;
+const PENDING_CONTRACT_CHECKS_ENABLED = pendingContractChecksEnabled('search');
 
 function uplinkPort(): number {
   return parseInt(process.env.E2E_UPLINK_PORT || '', 10);

@@ -168,7 +168,7 @@ Pins the registry.npmjs.org `GET /-/v1/search` contract (spec + what npm CLI 12 
 
 The contract checks run independently and are all reported before the scenario fails, so a single run lists every divergence at once. The two uplink sub-tests are gated on `--uplink-port` / `E2E_UPLINK_PORT`.
 
-> **Temporarily disabled** behind `PENDING_CONTRACT_CHECKS_ENABLED` (in `scenarios/search.ts`): the real-`total`, 400-without-`text`, ISO-`time`, and merged local+uplink pagination checks. They pin the correct npmjs contract but are red against every current Verdaccio — flip the flag once the registry-side fixes land.
+> **Disabled by default**: the pending contract checks (search: real `total`, 400 without `text`, ISO `time`, merged local+uplink pagination, `package.version` on results; tarballs: `Content-Length` present, no gzip re-compression). They pin the correct npmjs contract but are red against every current Verdaccio. Enable the full battery with `E2E_PENDING_CONTRACT_CHECKS=true`; make it the default once the registry-side fixes land.
 
 #### `scenario:uplink-failure`
 
