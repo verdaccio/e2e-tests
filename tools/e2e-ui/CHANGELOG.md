@@ -1,5 +1,11 @@
 # @verdaccio/e2e-ui
 
+## 2.5.0
+
+### Minor Changes
+
+- 536ab30: chore: trigger release
+
 ## 2.4.3
 
 ### Patch Changes

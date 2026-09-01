@@ -1,5 +1,11 @@
 # @verdaccio/e2e-cli
 
+## 3.1.0
+
+### Minor Changes
+
+- 536ab30: chore: trigger release
+
 ## 3.0.0
 
 ### Major Changes
