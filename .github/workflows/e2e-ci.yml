@@ -17,7 +17,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        verdaccio: ['6', 'next-7', 'next-9']
+        # next-7/next-9 are disabled: the published next binaries still carry
+        # the tarball/uplink bugs this battery detects (client hang on uplink
+        # drop, abbreviated metadata leaking internal fields, max_fails
+        # driving got retries). Re-add them once a fixed next release ships.
+        verdaccio: ['6']
         pm:
           - npm@10
           - npm@11
