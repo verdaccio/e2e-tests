@@ -1,11 +1,9 @@
 import assert from 'assert';
-import buildDebug from 'debug';
 import { writeFile } from 'fs/promises';
 import { join } from 'path';
 
 import { PackageManagerAdapter, TestContext, TestDefinition } from '../types';
-
-const debug = buildDebug('verdaccio:e2e-cli:scenario:minimum-release-age');
+import { trace } from '../utils/process';
 
 /**
  * Scenario: minimum-release-age (pnpm 11.1+ only)
@@ -63,7 +61,7 @@ export function isPnpm11Plus(adapter: PackageManagerAdapter): boolean {
 }
 
 async function publishPackage(ctx: TestContext, pkgName: string, version: string): Promise<void> {
-  debug('publishing %s@%s', pkgName, version);
+  trace('publishing %s@%s', pkgName, version);
   const { tempFolder } = await ctx.adapter.prepareProject(
     pkgName,
     version,
@@ -76,7 +74,7 @@ async function publishPackage(ctx: TestContext, pkgName: string, version: string
     'publish',
     ...ctx.adapter.registryArg(ctx.registryUrl)
   );
-  debug('published %s@%s', pkgName, version);
+  trace('published %s@%s', pkgName, version);
 }
 
 /**
@@ -97,7 +95,7 @@ async function prepareCooldownConsumer(
     dependencies
   );
   await writeFile(join(tempFolder, 'pnpm-workspace.yaml'), PNPM_WORKSPACE_YAML);
-  debug('prepared cooldown consumer %s at %s', consumerName, tempFolder);
+  trace('prepared cooldown consumer %s at %s', consumerName, tempFolder);
   return tempFolder;
 }
 
@@ -129,7 +127,7 @@ async function testMinimumReleaseAge(ctx: TestContext): Promise<void> {
       ...ctx.adapter.registryArg(ctx.registryUrl)
     );
 
-    debug('excluded packages installed successfully under cooldown');
+    trace('excluded packages installed successfully under cooldown');
   });
 
   // --- Phase 3: Non-excluded fresh package is blocked by the cooldown ---
@@ -148,7 +146,7 @@ async function testMinimumReleaseAge(ctx: TestContext): Promise<void> {
       );
     } catch (err) {
       errorMessage = err instanceof Error ? err.message : String(err);
-      debug('install correctly rejected by cooldown: %s', errorMessage);
+      trace('install correctly rejected by cooldown: %s', errorMessage.split('\n')[0]);
     }
 
     assert.ok(

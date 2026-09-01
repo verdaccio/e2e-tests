@@ -1,10 +1,8 @@
 import assert from 'assert';
-import buildDebug from 'debug';
 
 import { TestContext, TestDefinition } from '../types';
 import { downloadTarball, fetchPackument } from '../utils/http-client';
-
-const debug = buildDebug('verdaccio:e2e-cli:scenario:metadata');
+import { trace } from '../utils/process';
 
 /**
  * Scenario: metadata
@@ -36,7 +34,7 @@ async function publishVersion(ctx: TestContext, pkgName: string, version: string
     'publish',
     ...ctx.adapter.registryArg(ctx.registryUrl)
   );
-  debug('published %s@%s', pkgName, version);
+  trace('published %s@%s', pkgName, version);
   return tempFolder;
 }
 
@@ -52,6 +50,13 @@ async function testMetadata(ctx: TestContext): Promise<void> {
 
   await ctx.subTest('full packument has versions, dist-tags, readme and time', async () => {
     const { status, body } = await fetchPackument(ctx.registryUrl, pkg);
+    trace(
+      'full packument → %d | keys=%j dist-tags=%j versions=%j',
+      status,
+      Object.keys(body ?? {}),
+      body?.['dist-tags'],
+      Object.keys(body?.versions ?? {})
+    );
     assert.strictEqual(status, 200, 'Expected 200 for full packument');
     assert.strictEqual(body.name, pkg, 'Packument name mismatch');
     assert.ok(body.versions['1.0.0'], 'Expected version 1.0.0 in packument');
@@ -64,6 +69,7 @@ async function testMetadata(ctx: TestContext): Promise<void> {
 
   await ctx.subTest('abbreviated metadata (install-v1) is served', async () => {
     const { status, body } = await fetchPackument(ctx.registryUrl, pkg, { abbreviated: true });
+    trace('abbreviated packument → %d | keys=%j', status, Object.keys(body ?? {}));
     assert.strictEqual(status, 200, 'Expected 200 for abbreviated packument');
     assert.ok(body.versions['1.1.0'], 'Expected versions in abbreviated metadata');
     assert.ok(body['dist-tags'], 'Expected dist-tags in abbreviated metadata');
@@ -84,8 +90,10 @@ async function testMetadata(ctx: TestContext): Promise<void> {
   await ctx.subTest('ETag + If-None-Match revalidation returns 304', async () => {
     const first = await fetchPackument(ctx.registryUrl, pkg);
     const etag = first.headers.get('etag');
+    trace('etag on first response: %s', etag);
     assert.ok(etag, 'Expected an ETag header on the packument response');
     const revalidated = await fetchPackument(ctx.registryUrl, pkg, { etag });
+    trace('revalidation with If-None-Match → %d', revalidated.status);
     assert.strictEqual(
       revalidated.status,
       304,
@@ -103,6 +111,7 @@ async function testMetadata(ctx: TestContext): Promise<void> {
     // A "stuck" ETag would keep serving 304 forever — the stale value must
     // now miss and return the fresh packument with a different ETag.
     const after = await fetchPackument(ctx.registryUrl, pkg, { etag: staleEtag as string });
+    trace('stale etag %s → %d | fresh etag %s', staleEtag, after.status, after.headers.get('etag'));
     assert.strictEqual(
       after.status,
       200,
@@ -122,6 +131,15 @@ async function testMetadata(ctx: TestContext): Promise<void> {
       `Expected dist.tarball to be rewritten to ${ctx.registryUrl}, got ${tarball}`
     );
     const download = await downloadTarball(tarball);
+    trace(
+      'tarball %s → %d | bytes=%d sha1=%s content-length=%s content-encoding=%s',
+      tarball,
+      download.status,
+      download.bytes,
+      download.sha1,
+      download.headers.get('content-length'),
+      download.headers.get('content-encoding')
+    );
     assert.strictEqual(download.status, 200, `Expected 200 downloading ${tarball}`);
     assert.strictEqual(
       download.sha1,
@@ -140,6 +158,7 @@ async function testMetadata(ctx: TestContext): Promise<void> {
 
   await ctx.subTest('unknown package returns a 404 error body', async () => {
     const { status, body } = await fetchPackument(ctx.registryUrl, `does-not-exist-${id}`);
+    trace('unknown package → %d | body=%j', status, body);
     assert.strictEqual(status, 404, `Expected 404, got ${status}`);
     assert.ok(body?.error, 'Expected an "error" field in the 404 body');
   });
@@ -154,6 +173,12 @@ async function testMetadata(ctx: TestContext): Promise<void> {
       ...ctx.adapter.registryArg(ctx.registryUrl)
     );
     const { status, body } = await fetchPackument(ctx.registryUrl, pkg);
+    trace(
+      'after unpublish → %d | versions=%j dist-tags=%j',
+      status,
+      Object.keys(body?.versions ?? {}),
+      body?.['dist-tags']
+    );
     assert.strictEqual(status, 200, 'Expected 200 after unpublishing one version');
     assert.strictEqual(body.versions['1.0.0'], undefined, 'Expected 1.0.0 to be gone');
     assert.ok(body.versions['1.1.0'], 'Expected 1.1.0 to survive the unpublish');

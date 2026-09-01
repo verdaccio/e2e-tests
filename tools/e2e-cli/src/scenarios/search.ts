@@ -1,11 +1,9 @@
 import assert from 'assert';
-import buildDebug from 'debug';
 
 import { TestContext, TestDefinition } from '../types';
 import { MockUplink } from '../utils/mock-uplink';
+import { trace } from '../utils/process';
 import { publishLocalPackage } from '../utils/publish';
-
-const debug = buildDebug('verdaccio:e2e-cli:scenario:search');
 
 /**
  * Scenario: search
@@ -65,7 +63,8 @@ async function searchV1(
       url.searchParams.set(key, String(value));
     }
   }
-  debug('GET %s', url);
+  trace('GET %s', url);
+  const started = Date.now();
   const response = await fetch(url);
   let body: any;
   try {
@@ -73,6 +72,15 @@ async function searchV1(
   } catch {
     body = undefined;
   }
+  trace(
+    'GET %s → %d in %dms | total=%s objects=%d [%s]',
+    url,
+    response.status,
+    Date.now() - started,
+    body?.total,
+    body?.objects?.length ?? -1,
+    (body?.objects ?? []).map((o: any) => o?.package?.name).join(', ')
+  );
   return { status: response.status, body };
 }
 
@@ -92,6 +100,7 @@ async function assertPaginationCovers(
     const { status, body } = await searchV1(registryUrl, { text, size, from });
     assert.strictEqual(status, 200, `Expected 200 for from=${from}`);
     const names = body.objects.map((o: any) => o.package.name);
+    trace('page from=%d size=%d → %d results: %s', from, size, names.length, names.join(', '));
     assert.strictEqual(
       names.length,
       Math.min(size, remaining),
@@ -119,6 +128,7 @@ async function testSearch(ctx: TestContext): Promise<void> {
     try {
       await ctx.subTest(label, fn);
     } catch (err) {
+      trace('check FAILED: %s — %s', label, err instanceof Error ? err.message : err);
       failed.push(`${label} — ${err instanceof Error ? err.message : String(err)}`);
     }
   };
@@ -134,6 +144,7 @@ async function testSearch(ctx: TestContext): Promise<void> {
     const { status, body } = await searchV1(ctx.registryUrl, { text: localPrefix, size: 250 });
     assert.strictEqual(status, 200, 'Expected 200 from /-/v1/search');
     assert.ok(Array.isArray(body.objects), 'Expected an "objects" array');
+    trace('first result object: %j', body.objects[0]);
     assert.strictEqual(
       body.objects.length,
       LOCAL_COUNT,
@@ -257,7 +268,7 @@ async function testSearch(ctx: TestContext): Promise<void> {
       await mock.stop();
     }
   } else {
-    debug('E2E_UPLINK_PORT not set — skipping merged local+uplink pagination sub-tests');
+    trace('E2E_UPLINK_PORT not set — skipping merged local+uplink pagination sub-tests');
   }
 
   if (failed.length > 0) {

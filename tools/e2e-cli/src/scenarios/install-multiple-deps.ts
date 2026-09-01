@@ -1,12 +1,10 @@
 import assert from 'assert';
-import buildDebug from 'debug';
 import { readFile } from 'fs/promises';
 import { join } from 'path';
 
 import { TestContext, TestDefinition } from '../types';
 import { normalizeInfo } from '../utils/info';
-
-const debug = buildDebug('verdaccio:e2e-cli:scenario:install-multiple-deps');
+import { trace } from '../utils/process';
 
 /**
  * Scenario: install-multiple-deps
@@ -37,7 +35,7 @@ async function publishSeedPackage(
   version: string,
   dependencies: Record<string, string> = {}
 ): Promise<void> {
-  debug('publishing seed package %s@%s', pkgName, version);
+  trace('publishing seed package %s@%s', pkgName, version);
   const { tempFolder } = await ctx.adapter.prepareProject(
     pkgName,
     version,
@@ -56,7 +54,7 @@ async function publishSeedPackage(
     'publish',
     ...ctx.adapter.registryArg(ctx.registryUrl)
   );
-  debug('published %s@%s', pkgName, version);
+  trace('published %s@%s', pkgName, version);
 }
 
 async function testInstallMultipleDeps(ctx: TestContext): Promise<void> {
@@ -86,7 +84,7 @@ async function testInstallMultipleDeps(ctx: TestContext): Promise<void> {
       [sharedPkg]: '1.0.0',
     });
 
-    debug('all seed packages published');
+    trace('all seed packages published');
   });
 
   // --- Phase 2: Create a consumer project that depends on everything ---
@@ -116,12 +114,12 @@ async function testInstallMultipleDeps(ctx: TestContext): Promise<void> {
 
     projectCwd = tempFolder;
 
-    debug('installing %d dependencies in consumer project', Object.keys(consumerDeps).length);
+    trace('installing %d dependencies in consumer project', Object.keys(consumerDeps).length);
 
     const args = ['install', ...ctx.adapter.registryArg(ctx.registryUrl)];
     await ctx.adapter.exec({ cwd: tempFolder }, ...args);
 
-    debug('install completed for consumer project');
+    trace('install completed for consumer project');
   });
 
   // --- Phase 3: Verify all packages resolved correctly ---
@@ -170,7 +168,7 @@ async function testInstallMultipleDeps(ctx: TestContext): Promise<void> {
       'Intermediate should depend on shared'
     );
 
-    debug('all packages verified');
+    trace('all packages verified');
   });
 
   // --- Phase 4: Publish updated versions and re-install ---
@@ -214,6 +212,7 @@ async function testInstallMultipleDeps(ctx: TestContext): Promise<void> {
       for (const name of [leafName, sharedName]) {
         const manifestPath = join(tempFolder, 'node_modules', name, 'package.json');
         const installed = JSON.parse(await readFile(manifestPath, 'utf8'));
+        trace('on disk: %s@%s (%s)', installed.name, installed.version, manifestPath);
         assert.strictEqual(
           installed.version,
           '1.0.0',
@@ -232,6 +231,12 @@ async function testInstallMultipleDeps(ctx: TestContext): Promise<void> {
       ...ctx.adapter.registryArg(ctx.registryUrl)
     );
     const leafInfo = parseInfoOutput(leafResp.stdout);
+    trace(
+      'registry info for %s: version=%s dist-tags=%j',
+      leafName,
+      leafInfo.version,
+      leafInfo['dist-tags']
+    );
 
     // dist-tags.latest should be 2.0.0
     assert.strictEqual(
@@ -240,7 +245,7 @@ async function testInstallMultipleDeps(ctx: TestContext): Promise<void> {
       `Expected latest version of ${leafName} to be 2.0.0`
     );
 
-    debug('update and re-install verified');
+    trace('update and re-install verified');
   });
 }
 

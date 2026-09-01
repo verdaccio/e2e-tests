@@ -1,11 +1,9 @@
 import assert from 'assert';
-import buildDebug from 'debug';
 
 import { TestContext, TestDefinition } from '../types';
 import { downloadTarball, fetchPackument } from '../utils/http-client';
 import { MockUplink } from '../utils/mock-uplink';
-
-const debug = buildDebug('verdaccio:e2e-cli:scenario:uplink-failure');
+import { trace } from '../utils/process';
 
 /**
  * Scenario: uplink-failure
@@ -54,6 +52,7 @@ async function testUplinkFailure(ctx: TestContext): Promise<void> {
   try {
     await ctx.subTest('healthy uplink: packument and tarball proxied through', async () => {
       const { status, body } = await fetchPackument(ctx.registryUrl, cachedPkg);
+      trace('healthy proxy %s → %d | keys=%j', cachedPkg, status, Object.keys(body ?? {}));
       assert.strictEqual(status, 200, `Expected 200 proxying ${cachedPkg}, got ${status}`);
       assert.strictEqual(body.name, cachedPkg, 'Proxied packument name mismatch');
       const tarball: string = body.versions['1.0.0'].dist.tarball;
@@ -64,6 +63,7 @@ async function testUplinkFailure(ctx: TestContext): Promise<void> {
       const download = await downloadTarball(tarball);
       assert.strictEqual(download.status, 200, 'Proxied tarball download failed');
       assert.strictEqual(download.sha1, cached.shasum, 'Proxied tarball bytes mismatch');
+      trace('mock uplink requests so far: %j', mock.requests);
       assert.ok(mock.requests.length > 0, 'Expected the registry to hit the mock uplink');
     });
 
@@ -86,7 +86,13 @@ async function testUplinkFailure(ctx: TestContext): Promise<void> {
         // what must NOT happen is a "successful" download with wrong bytes
         // going undetected, so we check integrity ourselves.
         sawCleanFailure = download.status !== 200 || download.sha1 !== dropped.shasum;
-        debug('drop-mid-stream download: status=%d bytes=%d', download.status, download.bytes);
+        trace(
+          'drop-mid-stream download: status=%d bytes=%d sha1=%s (expected %s)',
+          download.status,
+          download.bytes,
+          download.sha1,
+          dropped.shasum
+        );
       } catch (err) {
         assert.ok(
           (err as Error).name !== 'TimeoutError',
@@ -94,7 +100,10 @@ async function testUplinkFailure(ctx: TestContext): Promise<void> {
             '(response never terminated within 15s)'
         );
         sawCleanFailure = true;
-        debug('drop-mid-stream download rejected as expected: %s', err);
+        trace(
+          'drop-mid-stream download rejected as expected: %s',
+          err instanceof Error ? err.message : err
+        );
       }
       assert.ok(
         sawCleanFailure,
@@ -104,6 +113,7 @@ async function testUplinkFailure(ctx: TestContext): Promise<void> {
       // Back to healthy: the tarball must be intact (no partial tarball cached).
       mock.mode = 'ok';
       const retry = await downloadTarball(tarball);
+      trace('retry after recovery → %d bytes=%d sha1=%s', retry.status, retry.bytes, retry.sha1);
       assert.strictEqual(retry.status, 200, 'Tarball download after uplink recovery failed');
       assert.strictEqual(
         retry.sha1,
@@ -119,6 +129,7 @@ async function testUplinkFailure(ctx: TestContext): Promise<void> {
       const start = Date.now();
       const { status } = await fetchPackument(ctx.registryUrl, slowPkg);
       const elapsed = Date.now() - start;
+      trace('slow uplink: %s → %d in %dms', slowPkg, status, elapsed);
       mock.mode = 'ok';
       assert.ok(status >= 400, `Expected an error status for a timed-out uplink, got ${status}`);
       // Configured uplink timeout is 3s with retry: 0 — anything close to the
@@ -134,6 +145,7 @@ async function testUplinkFailure(ctx: TestContext): Promise<void> {
       mock.mode = 'error-500';
       // The already-proxied package must keep working from cache.
       const cachedResp = await fetchPackument(ctx.registryUrl, cachedPkg);
+      trace('uplink 500: cached %s → %d', cachedPkg, cachedResp.status);
       assert.strictEqual(
         cachedResp.status,
         200,
@@ -141,6 +153,7 @@ async function testUplinkFailure(ctx: TestContext): Promise<void> {
       );
       // An unknown package must fail cleanly, not crash or hang.
       const unknown = await fetchPackument(ctx.registryUrl, `e2e-uplink-500-missing-${id}`);
+      trace('uplink 500: unknown package → %d | body=%j', unknown.status, unknown.body);
       assert.ok(
         unknown.status >= 400,
         `Expected a clean 4xx/5xx for an unknown package while the uplink returns 500, got ${unknown.status}`
@@ -155,6 +168,7 @@ async function testUplinkFailure(ctx: TestContext): Promise<void> {
 
   await ctx.subTest('uplink down: cached package still served', async () => {
     const { status, body } = await fetchPackument(ctx.registryUrl, cachedPkg);
+    trace('uplink down: cached %s → %d', cachedPkg, status);
     assert.strictEqual(
       status,
       200,
@@ -167,7 +181,9 @@ async function testUplinkFailure(ctx: TestContext): Promise<void> {
   });
 
   await ctx.subTest('uplink down: unknown package fails cleanly', async () => {
+    const started = Date.now();
     const { status } = await fetchPackument(ctx.registryUrl, `e2e-uplink-missing-${id}`);
+    trace('uplink down: unknown package → %d in %dms', status, Date.now() - started);
     assert.ok(
       status >= 400,
       `Expected a clean 4xx/5xx for an unknown package with the uplink down, got ${status}`

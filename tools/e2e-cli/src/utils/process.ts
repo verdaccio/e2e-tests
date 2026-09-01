@@ -2,6 +2,7 @@ import { SpawnOptions, spawn } from 'child_process';
 import buildDebug from 'debug';
 import { basename } from 'path';
 import { createInterface } from 'readline';
+import { format } from 'util';
 
 import { ExecOutput } from '../types';
 
@@ -26,6 +27,16 @@ const COLORS = {
 function shortCmd(cmd: string, args: string[]): string {
   const bin = basename(cmd);
   return `${bin} ${args.join(' ')}`;
+}
+
+/**
+ * Always-on scenario tracing, printed inline with the test output in the same
+ * style as the verbose `$ <command>` lines — so a red scenario explains what
+ * it actually saw (statuses, headers, bodies, timings) in any run, CI or
+ * local, without a reproduction. Accepts util.format tokens (%s %d %j %o).
+ */
+export function trace(fmt: string, ...args: unknown[]): void {
+  process.stdout.write(`      ${COLORS.dim}» ${format(fmt, ...args)}${COLORS.reset}\n`);
 }
 
 export async function exec(

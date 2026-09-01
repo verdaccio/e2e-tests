@@ -1,13 +1,11 @@
 import assert from 'assert';
 import { randomBytes } from 'crypto';
-import buildDebug from 'debug';
 import { writeFile } from 'fs/promises';
 import { join } from 'path';
 
 import { TestContext, TestDefinition } from '../types';
 import { downloadTarball, fetchPackument, packumentUrl } from '../utils/http-client';
-
-const debug = buildDebug('verdaccio:e2e-cli:scenario:tarballs');
+import { trace } from '../utils/process';
 
 /**
  * Scenario: tarballs
@@ -68,7 +66,7 @@ async function publishWithPayload(
     'publish',
     ...ctx.adapter.registryArg(ctx.registryUrl)
   );
-  debug('published %s@%s (payload: %d bytes)', pkgName, version, payloadBytes ?? 0);
+  trace('published %s@%s (payload: %d bytes)', pkgName, version, payloadBytes ?? 0);
 }
 
 async function getDist(
@@ -99,6 +97,16 @@ async function testTarballs(ctx: TestContext): Promise<void> {
     largeTarballUrl = dist.tarball;
 
     const download = await downloadTarball(dist.tarball);
+    trace(
+      'large tarball %s → %d | bytes=%d content-length=%s content-encoding=%s transfer-encoding=%s',
+      dist.tarball,
+      download.status,
+      download.bytes,
+      download.headers.get('content-length'),
+      download.headers.get('content-encoding'),
+      download.headers.get('transfer-encoding')
+    );
+    trace('advertised dist: shasum=%s integrity=%s', dist.shasum, dist.integrity);
     assert.strictEqual(download.status, 200, `Expected 200 downloading ${dist.tarball}`);
     assert.ok(
       download.bytes >= largeBytes,
@@ -171,15 +179,21 @@ async function testTarballs(ctx: TestContext): Promise<void> {
         });
       } catch (err) {
         aborted = true;
-        debug('download aborted at >=%d bytes as expected: %s', threshold, err);
+        trace(
+          'download aborted at >=%d bytes as expected: %s',
+          threshold,
+          err instanceof Error ? err.message : err
+        );
       }
       assert.ok(aborted, `Expected download to abort mid-stream (threshold ${threshold} bytes)`);
     }
 
     // The registry must survive the aborts: ping + a full download still work.
     const ping = await fetch(`${ctx.registryUrl}/-/ping`);
+    trace('ping after aborts → %d', ping.status);
     assert.strictEqual(ping.status, 200, 'Registry did not respond to ping after aborts');
     const download = await downloadTarball(largeTarballUrl);
+    trace('full download after aborts → %d bytes=%d', download.status, download.bytes);
     assert.strictEqual(download.status, 200, 'Full download after aborts failed');
     assert.strictEqual(download.sha1, largeSha1, 'Tarball corrupted after aborted downloads');
   });
@@ -206,7 +220,8 @@ async function testTarballs(ctx: TestContext): Promise<void> {
     for (const url of cases) {
       const response = await fetch(url);
       // drain the body so sockets are released
-      await response.arrayBuffer();
+      const responseBody = await response.text();
+      trace('404 case %s → %d | body=%s', url, response.status, responseBody.slice(0, 200));
       assert.strictEqual(response.status, 404, `Expected 404 for ${url}, got ${response.status}`);
     }
   });
