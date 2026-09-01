@@ -38,7 +38,7 @@ export const ABBREVIATED_ACCEPT = 'application/vnd.npm.install-v1+json';
  * `%2f` form npm clients use: `@scope%2fname`.
  */
 export function packumentUrl(registryUrl: string, pkgName: string): string {
-  const encoded = pkgName.startsWith('@') ? pkgName.replace('/', '%2f') : pkgName;
+  const encoded = pkgName.startsWith('@') ? pkgName.replaceAll('/', '%2f') : pkgName;
   return `${registryUrl.replace(/\/$/, '')}/${encoded}`;
 }
 

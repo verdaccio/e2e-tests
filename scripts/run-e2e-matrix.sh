@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # ─── Config ───
-VERDACCIO_VERSIONS=("5" "6" "next-7")
+VERDACCIO_VERSIONS=("6" "next-7")
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 EXTRA_ARGS=()
 

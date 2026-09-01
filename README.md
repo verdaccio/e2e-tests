@@ -21,7 +21,7 @@ pnpm build
 # UI tests — run Cypress against any Verdaccio
 ./scripts/run-e2e-ui.sh 6
 
-# Full matrix (all PMs x Verdaccio 5+6)
+# Full matrix (all PMs x Verdaccio 6)
 ./scripts/run-e2e-matrix.sh
 ```
 
@@ -312,17 +312,16 @@ Importing `@verdaccio/e2e-ui/commands` adds:
 
 ## Scripts
 
-| Script                                | Description                                               |
-| ------------------------------------- | --------------------------------------------------------- |
-| `./scripts/run-e2e.sh [version] [pm]` | Run CLI tests against a Verdaccio version                 |
-| `./scripts/run-e2e-ui.sh [version]`   | Run Cypress UI tests against a Verdaccio version          |
-| `./scripts/run-e2e-matrix.sh`         | Run CLI tests for all detected PMs x Verdaccio 5+6+next-7 |
+| Script                                | Description                                             |
+| ------------------------------------- | ------------------------------------------------------- |
+| `./scripts/run-e2e.sh [version] [pm]` | Run CLI tests against a Verdaccio version               |
+| `./scripts/run-e2e-ui.sh [version]`   | Run Cypress UI tests against a Verdaccio version        |
+| `./scripts/run-e2e-matrix.sh`         | Run CLI tests for all detected PMs x Verdaccio 6+next-7 |
 
 All scripts accept `--docker` to use Docker images instead of local npm install.
 
 ```bash
 ./scripts/run-e2e.sh 6 npm                # CLI: verdaccio@6, npm
-./scripts/run-e2e.sh 5 pnpm               # CLI: verdaccio@5, pnpm
 ./scripts/run-e2e.sh next-7 npm           # CLI: verdaccio@next-7, npm
 ./scripts/run-e2e.sh --docker 6 npm       # CLI: Docker verdaccio@6
 ./scripts/run-e2e-ui.sh 6                  # UI: verdaccio@6

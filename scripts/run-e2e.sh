@@ -37,10 +37,9 @@ usage() {
   echo ""
   echo "  Examples:"
   echo "    $0                              # verdaccio@6, npm"
-  echo "    $0 5                            # verdaccio@5, npm"
   echo "    $0 6 pnpm                       # verdaccio@6, pnpm"
   echo "    $0 6 yarn-modern                # verdaccio@6, yarn berry"
-  echo "    $0 --docker 5 pnpm             # docker verdaccio@5, pnpm"
+  echo "    $0 --docker 6 pnpm             # docker verdaccio@6, pnpm"
   echo "    $0 --image verdaccio/verdaccio:nightly-master npm"
   echo ""
   exit 0

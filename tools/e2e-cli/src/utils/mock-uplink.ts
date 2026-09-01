@@ -126,10 +126,11 @@ export class MockUplink {
           return;
         }
 
-        // Tarball route: /<name>/-/<file>.tgz
-        const tarballMatch = url.match(/^\/(.+?)\/-\/.+\.tgz$/);
-        if (tarballMatch) {
-          const pkg = this.packages.get(decodeURIComponent(tarballMatch[1]));
+        // Tarball route: /<name>/-/<file>.tgz — parsed without a regex to
+        // avoid backtracking on untrusted input (CodeQL js/polynomial-redos).
+        const tarballSep = url.indexOf('/-/');
+        if (tarballSep > 0 && url.endsWith('.tgz')) {
+          const pkg = this.packages.get(decodeURIComponent(url.slice(1, tarballSep)));
           if (!pkg) {
             res.writeHead(404, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ error: 'not found' }));

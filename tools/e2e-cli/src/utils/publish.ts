@@ -65,7 +65,7 @@ export async function publishViaHttp(
   const tarball = buildPackageTarball(pkgName, version, dependencies);
   const { shasum, integrity } = computeDist(tarball);
   const filename = `${pkgName.replace(/^@[^/]+\//, '')}-${version}.tgz`;
-  const encodedName = pkgName.startsWith('@') ? pkgName.replace('/', '%2f') : pkgName;
+  const encodedName = pkgName.startsWith('@') ? pkgName.replaceAll('/', '%2f') : pkgName;
   const tarballUrl = `${ctx.registryUrl}/${encodedName}/-/${filename}`;
   const body = {
     _id: pkgName,
