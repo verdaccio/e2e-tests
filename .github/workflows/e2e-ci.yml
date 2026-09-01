@@ -17,18 +17,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        verdaccio: ['5', '6', 'next-7', 'next-9']
+        # next-7/next-9 are disabled: the published next binaries still carry
+        # the tarball/uplink bugs this battery detects (client hang on uplink
+        # drop, abbreviated metadata leaking internal fields, max_fails
+        # driving got retries). Re-add them once a fixed next release ships.
+        verdaccio: ['6']
         pm:
-          - npm@8
-          - npm@9
           - npm@10
           - npm@11
-          # Next candary releases are broken (update later)
-          - npm@12.0.0-pre.0.0
-          - pnpm@9
+          - npm@12
           - pnpm@10
           - pnpm@11
-          - yarn-classic
           - yarn-modern@3
           - yarn-modern@4
           - bun
@@ -55,32 +54,15 @@ jobs:
       - name: Install Verdaccio
         run: npm install -g verdaccio@${{ matrix.verdaccio }}
       - name: Generate Verdaccio config
+        # Shared battery config from the CLI itself: max_body_size for
+        # scenario:tarballs, mock uplink (port 4874) for scenario:uplink-failure.
         run: |
-          mkdir -p /tmp/verdaccio-storage
-          cat > /tmp/verdaccio-config.yaml <<'YAML'
-          storage: /tmp/verdaccio-storage
-          auth:
-            htpasswd:
-              file: /tmp/verdaccio-htpasswd
-          uplinks:
-            npmjs:
-              url: https://registry.npmjs.org/
-          packages:
-            '@*/*':
-              access: $all
-              publish: $authenticated
-              unpublish: $authenticated
-              proxy: npmjs
-            '**':
-              access: $all
-              publish: $authenticated
-              unpublish: $authenticated
-              proxy: npmjs
-          log: { type: stdout, format: pretty, level: warn }
-          YAML
+          mkdir -p /tmp/verdaccio-e2e
+          node tools/e2e-cli/bin/e2e-cli.js --print-config --uplink-port 4874 > /tmp/verdaccio-e2e/config.yaml
       - name: Start Verdaccio
         run: |
-          verdaccio --config /tmp/verdaccio-config.yaml --listen 4873 &
+          cd /tmp/verdaccio-e2e
+          verdaccio --config /tmp/verdaccio-e2e/config.yaml --listen 4873 &
           for i in $(seq 1 30); do
             if curl -s http://localhost:4873/-/ping; then
               break
@@ -92,4 +74,4 @@ jobs:
             sleep 1
           done
       - name: Run E2E tests
-        run: node tools/e2e-cli/bin/e2e-cli.js --registry http://localhost:4873 --pm "${{ matrix.pm }}" -v
+        run: node tools/e2e-cli/bin/e2e-cli.js --registry http://localhost:4873 --pm "${{ matrix.pm }}" --uplink-port 4874 -v

@@ -1,5 +1,7 @@
 import { SpawnOptions, execSync } from 'child_process';
 import buildDebug from 'debug';
+import { writeFile } from 'fs/promises';
+import { join } from 'path';
 
 import { ExecOutput, PackageManagerAdapter } from '../types';
 import { exec } from '../utils/process';
@@ -39,11 +41,23 @@ function getSupportedCommands(version: string): Set<string> {
   return PNPM_V10_COMMANDS;
 }
 
+// pnpm 8 and 9 are end-of-life and no longer supported by the suite.
+const PNPM_MIN_SUPPORTED_MAJOR = 10;
+
 function detectVersion(bin: string): string {
   try {
     return execSync(`${bin} --version`, { encoding: 'utf8', timeout: 5000 }).trim();
   } catch {
     return 'unknown';
+  }
+}
+
+function assertSupportedVersion(resolved: string): void {
+  const major = parseInt(resolved.split('.')[0], 10);
+  if (!Number.isNaN(major) && major < PNPM_MIN_SUPPORTED_MAJOR) {
+    throw new Error(
+      `pnpm@${resolved} is not supported. Minimum supported major: ${PNPM_MIN_SUPPORTED_MAJOR}`
+    );
   }
 }
 
@@ -71,6 +85,7 @@ function resolvePnpmBin(binPath?: string, version?: string): string {
 export function createPnpmAdapter(binPath?: string, version?: string): PackageManagerAdapter {
   const bin = resolvePnpmBin(binPath, version);
   const resolved = detectVersion(bin);
+  assertSupportedVersion(resolved);
   debug('creating pnpm adapter with bin: %s (%s)', bin, resolved);
 
   const adapter: PackageManagerAdapter = {
@@ -126,7 +141,7 @@ export function createPnpmAdapter(binPath?: string, version?: string): PackageMa
       dependencies: Record<string, string> = {},
       devDependencies: Record<string, string> = {}
     ): Promise<{ tempFolder: string }> {
-      return prepareGenericEmptyProject(
+      const project = await prepareGenericEmptyProject(
         packageName,
         version,
         port,
@@ -135,6 +150,14 @@ export function createPnpmAdapter(binPath?: string, version?: string): PackageMa
         dependencies,
         devDependencies
       );
+      // pnpm 11.24+ enforces a minimumReleaseAge cooldown by default, which
+      // rejects the just-published packages these tests install
+      // (ERR_PNPM_NO_MATURE_MATCHING_VERSION). Disable it per project via
+      // pnpm-workspace.yaml — the file also marks the temp folder as its own
+      // workspace root, isolating it from any parent workspace. Tests that
+      // exercise the cooldown itself overwrite this file with their own config.
+      await writeFile(join(project.tempFolder, 'pnpm-workspace.yaml'), 'minimumReleaseAge: 0\n');
+      return project;
     },
   };
 

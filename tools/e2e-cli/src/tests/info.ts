@@ -1,46 +1,44 @@
 import assert from 'assert';
-import { writeFile } from 'fs/promises';
-import { join } from 'path';
 
 import { TestContext, TestDefinition } from '../types';
 import { parseInfoJson } from '../utils/info';
-import { createTempFolder } from '../utils/project';
+import { publishLocalPackage } from '../utils/publish';
 
 async function testInfo(ctx: TestContext): Promise<void> {
-  // Create a minimal temp project so yarn modern has a project context
-  // and yarn classic doesn't pick up the repo's packageManager field
-  const tempFolder = await createTempFolder('info-test');
-  await writeFile(
-    join(tempFolder, 'package.json'),
-    JSON.stringify({ name: 'info-test', version: '1.0.0' })
+  // Publish the package we inspect (with one dependency, also local) — asking
+  // for a real npmjs package would need an uplink and the suite must run
+  // offline. deno resolves the dependency tree, so the dep must exist too.
+  const depName = `e2e-info-dep-${ctx.runId}`;
+  const pkgName = `e2e-info-${ctx.runId}`;
+  await publishLocalPackage(ctx, depName, '1.0.0');
+  await publishLocalPackage(ctx, pkgName, '1.0.0', { [depName]: '1.0.0' });
+
+  // Run from a prepared project: it gives yarn modern a project context, and
+  // its .npmrc (fresh token) shields the test from stale credentials in
+  // ~/.npmrc.
+  const { tempFolder } = await ctx.adapter.prepareProject(
+    `info-client-${ctx.runId}`,
+    '1.0.0',
+    ctx.registryUrl,
+    ctx.port,
+    ctx.token
   );
 
   const resp = await ctx.adapter.exec(
     { cwd: tempFolder },
     'info',
-    'verdaccio',
+    pkgName,
     '--json',
     ...ctx.adapter.registryArg(ctx.registryUrl)
   );
 
-  if (ctx.adapter.type === 'yarn-classic') {
-    const lines = resp.stdout.split('\n').filter(Boolean);
-    const dataLine = lines.find((l) => {
-      try {
-        const obj = JSON.parse(l);
-        return obj.type === 'inspect';
-      } catch {
-        return false;
-      }
-    });
-    assert.ok(dataLine, 'Expected yarn info NDJSON to contain an "inspect" entry');
-  } else if (ctx.adapter.type === 'deno') {
+  if (ctx.adapter.type === 'deno') {
     // deno info npm:<pkg> outputs a text dependency tree
     const output = resp.stdout + resp.stderr;
-    assert.ok(output.includes('verdaccio'), 'Expected deno info output to reference verdaccio');
+    assert.ok(output.includes(pkgName), `Expected deno info output to reference ${pkgName}`);
   } else {
     const parsedBody = parseInfoJson(resp.stdout);
-    assert.strictEqual(parsedBody.name, 'verdaccio', 'Expected package name "verdaccio"');
+    assert.strictEqual(parsedBody.name, pkgName, `Expected package name "${pkgName}"`);
     assert.ok(parsedBody.dependencies !== undefined, 'Expected "dependencies" to be defined');
   }
 }

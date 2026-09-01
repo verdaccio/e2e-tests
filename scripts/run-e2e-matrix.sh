@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # ─── Config ───
-VERDACCIO_VERSIONS=("5" "6" "next-7")
+VERDACCIO_VERSIONS=("6" "next-7")
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 EXTRA_ARGS=()
 
@@ -64,9 +64,8 @@ fi
 if command -v yarn >/dev/null 2>&1; then
   YARN_VERSION=$(COREPACK_ENABLE_STRICT=0 yarn --version 2>/dev/null || echo "0")
   YARN_MAJOR="${YARN_VERSION%%.*}"
-  if [[ "$YARN_MAJOR" == "1" ]]; then
-    PACKAGE_MANAGERS+=("yarn-classic")
-  else
+  # yarn classic (v1) is no longer supported — only modern yarn runs
+  if [[ "$YARN_MAJOR" != "1" ]]; then
     PACKAGE_MANAGERS+=("yarn-modern")
   fi
 fi

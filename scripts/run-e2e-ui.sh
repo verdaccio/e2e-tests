@@ -52,7 +52,6 @@ usage() {
   echo ""
   echo "  Examples:"
   echo "    $0              # verdaccio@6, headless"
-  echo "    $0 5            # verdaccio@5, headless"
   echo "    $0 --open       # verdaccio@6, interactive"
   echo "    $0 --docker 6   # verdaccio@6 via Docker"
   echo "    DEBUG=0 $0      # run without debug logs"
