@@ -5,6 +5,7 @@ import { join } from 'path';
 
 import { TestContext, TestDefinition } from '../types';
 import { downloadTarball, fetchPackument, packumentUrl } from '../utils/http-client';
+import { pendingContractChecksEnabled } from '../utils/pending-checks';
 import { trace } from '../utils/process';
 
 /**
@@ -34,15 +35,13 @@ const LARGE_MB = parseInt(process.env.E2E_LARGE_TARBALL_MB || '30', 10);
 const CONCURRENT_DOWNLOADS = 8;
 
 /**
- * TODO: flip to true once Verdaccio serves tarballs the way npmjs does.
- * Verified against current registries: local tarballs are always streamed
- * chunked with no Content-Length (even with Accept-Encoding: identity), and
- * the express compression() middleware re-gzips the already-compressed .tgz
- * whenever the client accepts gzip (npm and undici do by default) — wasted
- * CPU per download and the reason Content-Length disappears. These checks pin
- * the correct behavior but are red today.
+ * Contract checks that are red against current registries: tarballs are
+ * streamed chunked with no Content-Length, and compression() re-gzips the
+ * already-compressed .tgz for gzip-accepting clients. Off by default so CI
+ * stays green; enable with E2E_PENDING_CONTRACT_CHECKS=true (and make that
+ * the default once the fixes land in a published verdaccio).
  */
-const PENDING_CONTRACT_CHECKS_ENABLED = false;
+const PENDING_CONTRACT_CHECKS_ENABLED = pendingContractChecksEnabled('tarballs');
 
 async function publishWithPayload(
   ctx: TestContext,
