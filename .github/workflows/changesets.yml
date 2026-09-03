@@ -23,7 +23,8 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.repository == 'verdaccio/e2e-tests'
     outputs:
-      hasChangesets: ${{ steps.changesets.outputs.hasChangesets }}
+      # v2 renamed the output hasChangesets -> has-changesets
+      hasChangesets: ${{ steps.changesets.outputs['has-changesets'] }}
     steps:
       - name: checkout code repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -44,13 +45,16 @@ jobs:
         id: changesets
         uses: changesets/action@198f833dd7d863100ea6e28967bc9a9fdefadb0a
         with:
-          version: pnpm ci:version
-          commit: 'build: release packages'
-          title: 'build: release packages'
-          setupGitUser: true
-          createGithubReleases: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.CHANGESET_RELEASE_TOKEN }}
+          # v2 renamed every input (version -> version-script, commit ->
+          # commit-message, title -> pr-title, createGithubReleases ->
+          # create-github-releases) and dropped setupGitUser. It also no
+          # longer reads the GITHUB_TOKEN env var: the custom PAT (needed so
+          # the release PR triggers CI) must go through the github-token input.
+          github-token: ${{ secrets.CHANGESET_RELEASE_TOKEN }}
+          version-script: pnpm ci:version
+          commit-message: 'build: release packages'
+          pr-title: 'build: release packages'
+          create-github-releases: true
 
   # Publish to npm once the version PR has been merged (no changesets left).
   # Gated by the `npm` environment, which requires manual approval.
@@ -79,9 +83,8 @@ jobs:
       - name: publish
         uses: changesets/action@198f833dd7d863100ea6e28967bc9a9fdefadb0a
         with:
-          publish: pnpm ci:publish
-          createGithubReleases: true
-          setupGitUser: true
+          github-token: ${{ secrets.CHANGESET_RELEASE_TOKEN }}
+          publish-script: pnpm ci:publish
+          create-github-releases: true
         env:
-          GITHUB_TOKEN: ${{ secrets.CHANGESET_RELEASE_TOKEN }}
           NPM_CONFIG_REGISTRY: https://registry.npmjs.org
