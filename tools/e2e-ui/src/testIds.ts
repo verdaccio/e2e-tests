@@ -117,6 +117,14 @@ export interface TestIds {
     /** Close button inside the raw viewer dialog. */
     closeRawViewer: string;
   };
+  errors: {
+    /**
+     * Generic error page shown when a data request fails without a
+     * specific status (5xx, network failure). Added by
+     * verdaccio/verdaccio#6210 — only present on builds with that fix.
+     */
+    genericError: string;
+  };
 }
 
 /**
@@ -133,6 +141,16 @@ export interface Selectors {
     /** Password text input inside the login dialog. */
     passwordInput: string;
     /** Submit button inside the login dialog. */
+    submitButton: string;
+  };
+  signup: {
+    /** Username input on /-/web/add-user (shares ids with the login form). */
+    usernameInput: string;
+    /** Password input on /-/web/add-user. */
+    passwordInput: string;
+    /** Email input on /-/web/add-user (only email-typed input on the page). */
+    emailInput: string;
+    /** Submit button on /-/web/add-user. */
     submitButton: string;
   };
 }
@@ -193,6 +211,9 @@ export const DEFAULT_TEST_IDS: TestIds = {
     rawViewerDialog: 'rawViewer--dialog',
     closeRawViewer: 'close-raw-viewer',
   },
+  errors: {
+    genericError: 'generic-error',
+  },
 };
 
 /**
@@ -205,6 +226,12 @@ export const DEFAULT_SELECTORS: Selectors = {
     usernameInput: '#login--dialog-username',
     passwordInput: '#login--dialog-password',
     submitButton: '#login--dialog-button-submit',
+  },
+  signup: {
+    usernameInput: '#login--dialog-username',
+    passwordInput: '#login--dialog-password',
+    emailInput: 'input[type="email"]',
+    submitButton: 'button[type="submit"]',
   },
 };
 
@@ -228,6 +255,7 @@ export function mergeTestIds(defaults: TestIds, overrides?: DeepPartial<TestIds>
     footer: { ...defaults.footer, ...overrides.footer },
     login: { ...defaults.login, ...overrides.login },
     package: { ...defaults.package, ...overrides.package },
+    errors: { ...defaults.errors, ...overrides.errors },
   };
 }
 
@@ -237,5 +265,6 @@ export function mergeSelectors(defaults: Selectors, overrides?: DeepPartial<Sele
   return {
     markdownBody: overrides.markdownBody ?? defaults.markdownBody,
     loginDialog: { ...defaults.loginDialog, ...overrides.loginDialog },
+    signup: { ...defaults.signup, ...overrides.signup },
   };
 }
