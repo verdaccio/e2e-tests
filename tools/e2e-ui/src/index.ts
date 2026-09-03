@@ -162,6 +162,7 @@ export function setupVerdaccioTasks(on: Cypress.PluginEvents, options: Verdaccio
         version: input.version,
         dependencies: input.dependencies,
         devDependencies: input.devDependencies,
+        manifest: input.manifest,
         unique: input.unique,
       });
     },

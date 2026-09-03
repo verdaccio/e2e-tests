@@ -102,8 +102,9 @@ export function detailTests(config: RegistryConfig) {
           cy.getByTestId(pkg.versionsTab, { timeout: 10000 }).click();
           cy.get('[data-testid="version-list-text"]').should('have.length', 2);
 
-          // SPA navigation back home via the logo (no full reload)
-          cy.getByTestId(config.testIds.header.defaultLogo).click();
+          // SPA navigation back home via the logo (no full reload);
+          // the logo can render more than once (desktop + mobile nav)
+          cy.getByTestId(config.testIds.header.defaultLogo).first().click();
           cy.contains(`[data-testid="${pkg.title}"]`, otherPkg).click();
           cy.getByTestId(pkg.versionsTab, { timeout: 10000 }).click();
           // stale-state bug: B showed A's list (length 2) here
