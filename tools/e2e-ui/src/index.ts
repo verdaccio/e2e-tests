@@ -14,12 +14,16 @@ import { DEFAULT_SELECTORS, DEFAULT_TEST_IDS, mergeSelectors, mergeTestIds } fro
 // Re-export for convenience
 import {
   changePasswordTests,
+  detailTests,
+  failureModeTests,
   homeTests,
+  i18nKeyTests,
   layoutTests,
   publishTests,
   searchTests,
   settingsTests,
   signinTests,
+  signupTests,
 } from './tests';
 import { RegistryConfig, RegistryTaskResult, VerdaccioUiOptions } from './types';
 
@@ -44,6 +48,10 @@ export {
   settingsTests,
   layoutTests,
   changePasswordTests,
+  detailTests,
+  failureModeTests,
+  i18nKeyTests,
+  signupTests,
 } from './tests';
 
 /**
@@ -210,5 +218,9 @@ export function registerAllTests(config: RegistryConfig): void {
   searchTests(config);
   settingsTests(config);
   publishTests(config);
+  detailTests(config);
+  failureModeTests(config);
+  i18nKeyTests(config);
+  signupTests(config);
   changePasswordTests(config);
 }

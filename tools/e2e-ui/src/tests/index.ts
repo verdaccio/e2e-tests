@@ -5,3 +5,7 @@ export { searchTests } from './search';
 export { settingsTests } from './settings';
 export { layoutTests } from './layout';
 export { changePasswordTests } from './change-password';
+export { detailTests } from './detail';
+export { failureModeTests } from './failure-modes';
+export { i18nKeyTests } from './i18n-keys';
+export { signupTests } from './signup';

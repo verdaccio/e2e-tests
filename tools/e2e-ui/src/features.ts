@@ -88,6 +88,85 @@ export interface Features {
      */
     rawViewer: boolean;
   };
+  detail: {
+    /**
+     * Whether to run the "visiting /v/<version> pins that version" test
+     * (asserts the sidebar request carries `?v=<version>`).
+     */
+    versionPinned: boolean;
+    /**
+     * Whether to run the wire-format test for scoped packages: the UI
+     * must request `/-/verdaccio/data/sidebar/@scope/name` with the `@`
+     * and `/` literal (npm registry convention), never `%40`-encoded.
+     * Pins the regression caught by these suites in
+     * verdaccio/verdaccio#6210.
+     */
+    scopedWireFormat: boolean;
+    /**
+     * Whether to run the "nonexistent version renders Not Found" test.
+     * Requires the server to answer 404 for unknown `?v=` values
+     * (verdaccio/verdaccio#6210); released lines silently fall back to
+     * `latest`, so this defaults to `false` as a probe.
+     */
+    versionNotFound: boolean;
+  };
+  failureModes: {
+    /**
+     * Whether to run the "backend 5xx on the package list must not
+     * render the empty-registry onboarding" test. Holds on every line
+     * (a 5xx carries an HTTP code the UI always treated as an error).
+     */
+    homeServerError: boolean;
+    /**
+     * Whether to run the network-failure variant (request never
+     * reaches the server). Released UIs treat a network failure as an
+     * empty registry and show the onboarding card
+     * (verdaccio/verdaccio#6210 fixes it), so this defaults to `false`
+     * as a probe.
+     */
+    homeNetworkError: boolean;
+    /**
+     * Whether to run the "5xx on the detail page renders an error
+     * state instead of a blank page" test. Requires the generic error
+     * page from verdaccio/verdaccio#6210; released UIs render blank,
+     * so this defaults to `false` as a probe.
+     */
+    detailErrorState: boolean;
+  };
+  i18n: {
+    /**
+     * Whether to scan the home and detail pages for raw i18n keys
+     * (visible text like `sidebar.detail.version`). Holds on every
+     * released line — these pages ship fully translated.
+     */
+    noRawKeysCorePages: boolean;
+    /**
+     * Whether to scan the security pages (login dialog, /-/web/login,
+     * add-user, change-password) for raw i18n keys. The whole
+     * `security.*` namespace is missing from every published ui-theme
+     * bundle (fixed in verdaccio/verdaccio#6210), so this defaults to
+     * `false` as a probe.
+     */
+    noRawKeysSecurityPages: boolean;
+  };
+  signup: {
+    /**
+     * Whether to run the create-user happy path (fill the form on
+     * /-/web/add-user, submit, land on the success page) and assert
+     * the wire contract: `PUT /-/verdaccio/sec/signup` with a 36-char
+     * `sessionId`. Requires the server flag `createUser: true` AND the
+     * fixed signup form from verdaccio/verdaccio#6210 — every
+     * published ui-theme posts to a URL that only serves the SPA, so
+     * this defaults to `false` as a probe.
+     */
+    happyPath: boolean;
+    /**
+     * Whether to run the client-side validation tests on the add-user
+     * form (invalid email shows a message, url-unsafe username blocks
+     * submit). Same requirements as `happyPath`.
+     */
+    validation: boolean;
+  };
   changePassword: {
     /**
      * Whether to run the happy-path test (submit valid change,
@@ -148,6 +227,24 @@ export const DEFAULT_FEATURES: Features = {
     privateDownloadTarball: false,
     rawViewer: true,
   },
+  detail: {
+    versionPinned: true,
+    scopedWireFormat: true,
+    versionNotFound: false,
+  },
+  failureModes: {
+    homeServerError: true,
+    homeNetworkError: false,
+    detailErrorState: false,
+  },
+  i18n: {
+    noRawKeysCorePages: true,
+    noRawKeysSecurityPages: false,
+  },
+  signup: {
+    happyPath: false,
+    validation: false,
+  },
   changePassword: {
     happyPath: true,
     validation: true,
@@ -168,6 +265,10 @@ export function mergeFeatures(defaults: Features, overrides?: DeepPartial<Featur
     signin: { ...defaults.signin, ...overrides.signin },
     layout: { ...defaults.layout, ...overrides.layout },
     publish: { ...defaults.publish, ...overrides.publish },
+    detail: { ...defaults.detail, ...overrides.detail },
+    failureModes: { ...defaults.failureModes, ...overrides.failureModes },
+    i18n: { ...defaults.i18n, ...overrides.i18n },
+    signup: { ...defaults.signup, ...overrides.signup },
     changePassword: { ...defaults.changePassword, ...overrides.changePassword },
   };
 }
