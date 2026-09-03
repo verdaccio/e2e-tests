@@ -16,6 +16,26 @@ export function failureModeTests(config: RegistryConfig) {
   const { home, header, errors, package: pkg } = config.testIds;
 
   describe('failure modes', () => {
+    maybeIt(features.failureModes.searchError)(
+      'a search 5xx must show an error, not "no results found"',
+      () => {
+        cy.intercept('GET', '**/-/verdaccio/data/search/**', {
+          statusCode: 500,
+          body: { error: 'internal server error' },
+        }).as('search');
+
+        cy.visit(config.registryUrl);
+        cy.getByTestId(header.searchContainer).find('input').type('anything', { delay: 20 });
+        cy.wait('@search', { timeout: 10000 });
+
+        // en-US bundle: autoComplete.error
+        cy.contains('Something went wrong while searching', { timeout: 10000 }).should(
+          'be.visible'
+        );
+        cy.contains('No results found').should('not.exist');
+      }
+    );
+
     maybeIt(features.failureModes.homeServerError)(
       'a 5xx on the package list must not render the empty-registry onboarding',
       () => {
@@ -72,6 +92,26 @@ export function failureModeTests(config: RegistryConfig) {
         }
         tempFolder = null;
       });
+
+      maybeIt(features.failureModes.downloadError)(
+        'a failed tarball download must show an error snackbar, not silence',
+        () => {
+          cy.intercept('GET', '**/*.tgz*', {
+            statusCode: 500,
+            body: 'boom',
+          }).as('tarball');
+
+          cy.visit(`${config.registryUrl}/-/web/detail/${pkgName}`);
+          cy.getByTestId(pkg.sidebar, { timeout: 10000 }).should('be.visible');
+          cy.getByTestId(pkg.downloadTarballBtn).click();
+          cy.wait('@tarball', { timeout: 10000 });
+
+          // en-US bundle: error.download-tarball
+          cy.contains('The tarball could not be downloaded', { timeout: 10000 }).should(
+            'be.visible'
+          );
+        }
+      );
 
       maybeIt(features.failureModes.detailErrorState)(
         'a 5xx on the detail data must render an error state, not a blank page',

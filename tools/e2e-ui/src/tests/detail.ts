@@ -79,6 +79,43 @@ export function detailTests(config: RegistryConfig) {
         }
       );
 
+      maybeIt(features.detail.staleVersionsNavigation)(
+        'the versions tab must show the CURRENT package after SPA navigation',
+        () => {
+          // second fixture with a different version count; the detail
+          // routes reuse one mounted component, so navigating A -> B
+          // must not leak A's cached versions into B's tab
+          const otherPkg = '@verdaccio/stale-nav-fixture';
+          let otherTemp: string | null = null;
+          cy.task('publishPackage', { pkgName: otherPkg, version: '2.0.0', unique: true }).then(
+            (result) => {
+              otherTemp = result?.tempFolder ?? null;
+            }
+          );
+          // give the first fixture a second version so the counts differ
+          cy.task('publishPackage', { pkgName, version: '1.1.0', unique: true }).then((r) => {
+            if (r?.tempFolder) cy.task('cleanupPublished', r.tempFolder);
+          });
+
+          cy.visit(config.registryUrl);
+          cy.contains(`[data-testid="${pkg.title}"]`, pkgName).click();
+          cy.getByTestId(pkg.versionsTab, { timeout: 10000 }).click();
+          cy.get('[data-testid="version-list-text"]').should('have.length', 2);
+
+          // SPA navigation back home via the logo (no full reload)
+          cy.getByTestId(config.testIds.header.defaultLogo).click();
+          cy.contains(`[data-testid="${pkg.title}"]`, otherPkg).click();
+          cy.getByTestId(pkg.versionsTab, { timeout: 10000 }).click();
+          // stale-state bug: B showed A's list (length 2) here
+          cy.get('[data-testid="version-list-text"]').should('have.length', 1);
+
+          cy.task('unpublishPackage', { pkgName: otherPkg, tempFolder: otherTemp ?? undefined });
+          cy.then(() => {
+            if (otherTemp) cy.task('cleanupPublished', otherTemp);
+          });
+        }
+      );
+
       maybeIt(features.detail.versionNotFound)(
         'should render Not Found for a version that does not exist',
         () => {

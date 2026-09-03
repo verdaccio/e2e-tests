@@ -90,5 +90,38 @@ export function settingsTests(config: RegistryConfig) {
       cy.get('body').type('{esc}');
       cy.get('[role="dialog"]').should('not.exist');
     });
+
+    maybeIt(features.settings.localizedDates)(
+      'relative dates must follow the selected language (dayjs locale)',
+      () => {
+        // fresh fixture so "published … ago" is a relative date
+        const pkgName = '@verdaccio/dates-fixture';
+        let tempFolder: string | null = null;
+        cy.task('publishPackage', { pkgName, version: '1.0.0', unique: true }).then((result) => {
+          tempFolder = result?.tempFolder ?? null;
+        });
+
+        // switch the UI to German via the settings dialog
+        cy.getByTestId(header.settingsTooltip).click();
+        cy.get('[role="dialog"]').should('be.visible');
+        cy.contains('[role="dialog"] [role="tab"]', 'Translations').click();
+        cy.contains('[role="dialog"] .MuiCard-root', 'German').click({ force: true });
+        cy.get('body').type('{esc}');
+
+        // the language persists; a fresh page load must localize dayjs too
+        const sidebar = `[data-testid="${config.testIds.package.sidebar}"]`;
+        cy.visit(`${config.registryUrl}/-/web/detail/${pkgName}`);
+        cy.get(sidebar, { timeout: 10000 }).should('be.visible');
+        // dayjs de locale renders relative times as "vor ein paar Sekunden";
+        // the released UIs kept English ("a few seconds ago") in every language
+        cy.get(sidebar).contains(/vor /);
+        cy.get(sidebar).contains(/ago\b/).should('not.exist');
+
+        cy.task('unpublishPackage', { pkgName, tempFolder: tempFolder ?? undefined });
+        cy.then(() => {
+          if (tempFolder) cy.task('cleanupPublished', tempFolder);
+        });
+      }
+    );
   });
 }

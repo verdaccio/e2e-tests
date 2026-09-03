@@ -19,8 +19,10 @@ import {
   homeTests,
   i18nKeyTests,
   layoutTests,
+  manifestRenderingTests,
   publishTests,
   searchTests,
+  sessionTests,
   settingsTests,
   signinTests,
   signupTests,
@@ -51,6 +53,8 @@ export {
   detailTests,
   failureModeTests,
   i18nKeyTests,
+  manifestRenderingTests,
+  sessionTests,
   signupTests,
 } from './tests';
 
@@ -221,6 +225,8 @@ export function registerAllTests(config: RegistryConfig): void {
   detailTests(config);
   failureModeTests(config);
   i18nKeyTests(config);
+  manifestRenderingTests(config);
+  sessionTests(config);
   signupTests(config);
   changePasswordTests(config);
 }

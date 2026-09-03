@@ -47,6 +47,13 @@ export interface Features {
      * builds that lag behind the upstream translation file.
      */
     languageSwitcher: boolean;
+    /**
+     * Whether to assert that dates follow the selected language
+     * (dayjs locale). Released UIs never load the dayjs locale, so
+     * relative dates stay English in every language (fixed in
+     * verdaccio/verdaccio#6210) — probe.
+     */
+    localizedDates: boolean;
   };
   signin: {
     /**
@@ -109,6 +116,47 @@ export interface Features {
      * `latest`, so this defaults to `false` as a probe.
      */
     versionNotFound: boolean;
+    /**
+     * Whether to run the "versions tab shows the CURRENT package after
+     * SPA navigation" test. The detail routes reuse one mounted
+     * component, and released UIs cache the previous package's versions
+     * in local state (fixed in verdaccio/verdaccio#6210) — defaults to
+     * `false` as a probe.
+     */
+    staleVersionsNavigation: boolean;
+  };
+  manifestRendering: {
+    /**
+     * Whether to run the string-form manifest tests: `repository`,
+     * `funding` and `bugs` in their string/array forms are valid npm
+     * and must render (fixed in verdaccio/verdaccio#6210) — probe.
+     */
+    stringForms: boolean;
+    /**
+     * Whether to assert gravatar avatars render on the detail sidebar.
+     * Released UIs read `avatar` while the sidebar endpoint sends
+     * `_avatar` (fixed in verdaccio/verdaccio#6210) — probe.
+     */
+    gravatarAvatars: boolean;
+    /**
+     * Whether to assert contributors without email don't collapse into
+     * one (fixed in verdaccio/verdaccio#6210) — probe.
+     */
+    developersWithoutEmail: boolean;
+  };
+  session: {
+    /**
+     * Whether to assert that an expired token in localStorage boots the
+     * UI logged out (header shows the login button). Holds on every
+     * released line.
+     */
+    expiredTokenLoggedOut: boolean;
+    /**
+     * Whether to assert the expired token is also PURGED from
+     * localStorage on boot — otherwise the api client keeps attaching
+     * it (fixed in verdaccio/verdaccio#6210) — probe.
+     */
+    expiredTokenPurged: boolean;
   };
   failureModes: {
     /**
@@ -132,6 +180,18 @@ export interface Features {
      * so this defaults to `false` as a probe.
      */
     detailErrorState: boolean;
+    /**
+     * Whether to run the "search 5xx shows an error, not 'no results
+     * found'" test. The error state ships with verdaccio/verdaccio#6210
+     * — probe.
+     */
+    searchError: boolean;
+    /**
+     * Whether to run the "failed tarball download shows an error
+     * snackbar" test — clicking download and having nothing happen sent
+     * users retrying blindly (fixed in verdaccio/verdaccio#6210) — probe.
+     */
+    downloadError: boolean;
   };
   i18n: {
     /**
@@ -215,6 +275,7 @@ export const DEFAULT_FEATURES: Features = {
   },
   settings: {
     languageSwitcher: true,
+    localizedDates: false,
   },
   signin: {
     validationTests: true,
@@ -231,11 +292,23 @@ export const DEFAULT_FEATURES: Features = {
     versionPinned: true,
     scopedWireFormat: true,
     versionNotFound: false,
+    staleVersionsNavigation: false,
+  },
+  manifestRendering: {
+    stringForms: false,
+    gravatarAvatars: false,
+    developersWithoutEmail: false,
+  },
+  session: {
+    expiredTokenLoggedOut: true,
+    expiredTokenPurged: false,
   },
   failureModes: {
     homeServerError: true,
     homeNetworkError: false,
     detailErrorState: false,
+    searchError: false,
+    downloadError: false,
   },
   i18n: {
     noRawKeysCorePages: true,
@@ -266,6 +339,8 @@ export function mergeFeatures(defaults: Features, overrides?: DeepPartial<Featur
     layout: { ...defaults.layout, ...overrides.layout },
     publish: { ...defaults.publish, ...overrides.publish },
     detail: { ...defaults.detail, ...overrides.detail },
+    manifestRendering: { ...defaults.manifestRendering, ...overrides.manifestRendering },
+    session: { ...defaults.session, ...overrides.session },
     failureModes: { ...defaults.failureModes, ...overrides.failureModes },
     i18n: { ...defaults.i18n, ...overrides.i18n },
     signup: { ...defaults.signup, ...overrides.signup },

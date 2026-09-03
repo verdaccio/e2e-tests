@@ -11,6 +11,15 @@ export interface PublishPackageInput {
   dependencies?: Record<string, string>;
   devDependencies?: Record<string, string>;
   /**
+   * Extra fields merged into the generated package.json AFTER the
+   * defaults, so fixtures can carry arbitrary manifest shapes: a string
+   * `repository`, a `funding` array, `contributors` without email, a
+   * non-string `homepage`… — exactly the field forms npm accepts on
+   * publish but UIs tend to mishandle. `name`, `version` and
+   * `publishConfig` always win over this override.
+   */
+  manifest?: Record<string, unknown>;
+  /**
    * When true, append a timestamp suffix to the version so reruns against
    * a persistent registry don't collide on 403. The suffix is a valid
    * semver prerelease, e.g. `1.0.0-t1712345678`. Defaults to false.
@@ -98,14 +107,13 @@ async function createTempProject(
   registryUrl: string,
   token: string,
   dependencies: Record<string, string>,
-  devDependencies: Record<string, string>
+  devDependencies: Record<string, string>,
+  manifestOverrides: Record<string, unknown> = {}
 ): Promise<string> {
   const tempFolder = await mkdtemp(
     join(tmpdir(), `verdaccio-e2e-ui-${sanitizeFolderName(pkgName)}-`)
   );
   const manifest = {
-    name: pkgName,
-    version,
     description: `e2e test fixture ${pkgName}`,
     main: 'index.js',
     dependencies,
@@ -113,6 +121,13 @@ async function createTempProject(
     keywords: ['verdaccio', 'e2e', 'test'],
     author: 'Verdaccio E2E <verdaccio@example.org>',
     license: 'MIT',
+    // Fixture-specific manifest shapes (string `repository`, `funding`
+    // arrays, contributors without email…) — npm accepts them on
+    // publish, so the UI must render them. Identity fields and
+    // publishConfig below always win over the overrides.
+    ...manifestOverrides,
+    name: pkgName,
+    version,
     // Scoped packages default to `restricted` access which modern npm
     // refuses to publish anonymously. Pin it to `public` so the CLI
     // skips that check for fixtures like `@verdaccio/pkg-scoped`.
@@ -207,7 +222,8 @@ export async function publishPackage(input: PublishPackageInput): Promise<Publis
     input.registryUrl,
     token,
     input.dependencies ?? {},
-    input.devDependencies ?? {}
+    input.devDependencies ?? {},
+    input.manifest ?? {}
   );
   const { stdout, stderr, exitCode } = await spawnNpmPublish(tempFolder, input.registryUrl);
   if (exitCode !== 0) {

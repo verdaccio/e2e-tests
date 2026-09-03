@@ -9,3 +9,5 @@ export { detailTests } from './detail';
 export { failureModeTests } from './failure-modes';
 export { i18nKeyTests } from './i18n-keys';
 export { signupTests } from './signup';
+export { manifestRenderingTests } from './manifest-rendering';
+export { sessionTests } from './session';
