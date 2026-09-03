@@ -34,10 +34,15 @@ export function changePasswordTests(config: RegistryConfig) {
   const { loginDialog } = config.selectors;
   const { features } = config;
 
-  // The onSubmit catch block in ChangePassword.tsx sets a hardcoded
-  // English string — if the upstream component ever localizes this,
-  // this constant and the wrongOldPassword test will need updating.
-  const GENERIC_FAILURE_TEXT = 'Failed to change password';
+  // The wrongOldPassword banner text differs across verdaccio lines: older
+  // published ui-theme shows a hardcoded "Failed to change password", while
+  // current master surfaces the server message ("internal server error") or
+  // the i18n fallback ("Unable to change password") via authErrorMessage. The
+  // contract this test pins is "a non-empty error banner appears, not
+  // silence", so it asserts visibility + non-empty text rather than an exact
+  // string. The Express "Cannot PUT" 404 body is the one text that must never
+  // appear — that means the reset_password route was not registered (the
+  // server was started without flags.changePassword).
 
   describe('change password', () => {
     const CHANGE_PASSWORD_PATH = '/-/web/change-password';
@@ -154,12 +159,16 @@ export function changePasswordTests(config: RegistryConfig) {
         cy.get('input[name="newPassword"]').type('newSecretPass123');
         cy.get('input[name="confirmPassword"]').type('newSecretPass123');
         cy.get('form button[type="submit"]').should('not.be.disabled').click();
-        // Server rejects (htpasswd → plain Error → handler returns 4xx).
+        // Server rejects the wrong password (the route exists → not a 404).
         cy.wait('@reset').its('response.statusCode').should('not.eq', 200);
         // onSubmit's catch sets errors.root → rendered via LoginDialogFormError.
+        // Assert a non-empty banner (not silence), text-agnostic across lines,
+        // but never the raw "Cannot PUT" 404 (route missing).
         cy.getByTestId(login.error, { timeout: 5000 })
           .should('be.visible')
-          .and('contain.text', GENERIC_FAILURE_TEXT);
+          .and('not.contain.text', 'Cannot PUT')
+          .invoke('text')
+          .then((text) => expect(text.trim()).to.not.be.empty);
         // Still on the change-password page so the user can retry.
         cy.location('pathname').should('include', CHANGE_PASSWORD_PATH);
       }
