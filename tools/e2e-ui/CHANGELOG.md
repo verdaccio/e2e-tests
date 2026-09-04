@@ -1,5 +1,24 @@
 # @verdaccio/e2e-ui
 
+## 2.7.0
+
+### Minor Changes
+
+- 661fe1f: Second wave of feature-gated coverage, closing the e2e gaps left by the verdaccio/verdaccio#6210 bug batch:
+
+  - `publishPackage` task accepts a `manifest` override merged into the generated package.json, enabling fixtures with the manifest shapes real packuments carry (string `repository`, `funding` arrays, contributors without email, …)
+  - `manifestRenderingTests` — repository rendered as a browsable https link (git:// rewrite), funding array, bugs url, sidebar gravatars and email-less contributors surviving dedupe
+  - `sessionTests` — an expired token in localStorage boots the UI logged out (default on) and is purged from storage (probe)
+  - `detailTests` gains a stale-state probe: the versions tab must show the current package after SPA navigation
+  - `failureModeTests` gains search-5xx (error instead of "no results found") and failed-tarball-download (error snackbar instead of silence) probes
+  - `settingsTests` gains a dayjs-locale probe: relative dates must follow the selected language
+
+  Probes default `false` (they need the #6210 fixes); everything else runs against released lines. Validated green against published verdaccio@6 with defaults and 19/19 with every probe enabled against a #6210 master build.
+
+- 661fe1f: second wave of coverage: session token lifecycle suite (expired stored token boots logged out, optional purge probe), manifest-rendering suite (string/array `repository`, `funding`, `bugs` and email-less contributors), publishPackage task accepts manifest overrides, and new feature-gated probes in the detail, failure-modes and settings suites.
+
+  Also makes the change-password wrong-old-password assertion text-agnostic: the error banner wording differs across verdaccio lines (published ui-theme shows "Failed to change password", master surfaces the server message via `authErrorMessage`), so it now asserts a non-empty banner rather than an exact string, while still failing on the raw "Cannot PUT" 404 that means the `reset_password` route was not registered.
+
 ## 2.6.0
 
 ### Minor Changes
