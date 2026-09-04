@@ -14,9 +14,14 @@ import { trace } from '../utils/process';
  * threshold — but packages matching the exclude globs bypass the check.
  *
  *   minimumReleaseAge: 10080
+ *   minimumReleaseAgeStrict: true
  *   minimumReleaseAgeExclude:
  *     - '@verdaccio/*'
  *     - 'verdaccio-*'
+ *
+ * minimumReleaseAgeStrict is required on pnpm 12: without it, pnpm 12
+ * auto-adds new direct dependencies to minimumReleaseAgeExclude instead of
+ * failing. pnpm 11 enforces the cooldown unconditionally and ignores the key.
  *
  * The scenario publishes brand-new (age ~0) packages and asserts:
  *   - an excluded scoped package   (@verdaccio/*) installs despite the cooldown
@@ -34,6 +39,11 @@ const MINIMUM_RELEASE_AGE_EXCLUDE = ['@verdaccio/*', 'verdaccio-*'];
 
 const PNPM_WORKSPACE_YAML = [
   `minimumReleaseAge: ${MINIMUM_RELEASE_AGE}`,
+  // pnpm 12 no longer blocks new direct dependencies by default: it auto-adds
+  // them to minimumReleaseAgeExclude in pnpm-workspace.yaml and proceeds.
+  // minimumReleaseAgeStrict restores the blocking behavior this scenario
+  // asserts (ERR_PNPM_NO_MATURE_MATCHING_VERSION); pnpm 11 ignores the key.
+  'minimumReleaseAgeStrict: true',
   'minimumReleaseAgeExclude:',
   ...MINIMUM_RELEASE_AGE_EXCLUDE.map((glob) => `  - '${glob}'`),
   '',
@@ -141,7 +151,9 @@ async function testMinimumReleaseAge(ctx: TestContext): Promise<void> {
       await ctx.adapter.exec(
         { cwd: tempFolder },
         'install',
-        '--frozen-lockfile=false',
+        // pnpm 12's parser rejects the `--flag=false` form; --no-frozen-lockfile
+        // is accepted by pnpm 10, 11 and 12 alike
+        '--no-frozen-lockfile',
         ...ctx.adapter.registryArg(ctx.registryUrl)
       );
     } catch (err) {
