@@ -28,6 +28,7 @@ jobs:
           - npm@12
           - pnpm@10
           - pnpm@11
+          - pnpm@12
           - yarn-modern@3
           - yarn-modern@4
           - bun
