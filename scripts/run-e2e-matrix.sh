@@ -2,7 +2,9 @@
 set -euo pipefail
 
 # ─── Config ───
-VERDACCIO_VERSIONS=("6" "next-7")
+# pnpr (@pnpm/pnpr@next) is a registry under test like any verdaccio line; it
+# runs without the mock uplink, so its uplink tests skip.
+VERDACCIO_VERSIONS=("6" "next-7" "pnpr")
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 EXTRA_ARGS=()
 
@@ -26,8 +28,8 @@ usage() {
   echo "    --docker    Use Docker images instead of npm install"
   echo ""
   echo "  Examples:"
-  echo "    $0              # local install, v5+v6+next-7, all detected PMs"
-  echo "    $0 --docker     # docker images, v5+v6+next-7, all detected PMs"
+  echo "    $0              # local install, v6+next-7+pnpr, all detected PMs"
+  echo "    $0 --docker     # docker images, v6+next-7, all detected PMs"
   echo ""
   exit 0
 }
@@ -96,9 +98,17 @@ echo -e "${BOLD}$((${#VERDACCIO_VERSIONS[@]} * ${#PACKAGE_MANAGERS[@]})) combina
 echo ""
 
 for version in "${VERDACCIO_VERSIONS[@]}"; do
+  # ghcr.io/pnpm/pnpr has no floating tag for prereleases, so the docker
+  # matrix skips pnpr (run it pinned: run-e2e.sh --docker pnpr@<version>).
+  if [[ "$version" == "pnpr" && "$MODE" == "docker" ]]; then
+    echo -e "${YELLOW}Skipping pnpr in docker mode (needs a pinned version)${RESET}"
+    echo ""
+    continue
+  fi
   for pm in "${PACKAGE_MANAGERS[@]}"; do
     TOTAL=$((TOTAL + 1))
-    LABEL="verdaccio@${version} / ${pm} (${MODE})"
+    LABEL="${version} / ${pm} (${MODE})"
+    [[ "$version" != "pnpr" ]] && LABEL="verdaccio@${version} / ${pm} (${MODE})"
     echo -e "${BOLD}${CYAN}━━━ ${LABEL} ━━━${RESET}"
 
     if "$SCRIPT_DIR/run-e2e.sh" "${EXTRA_ARGS[@]+"${EXTRA_ARGS[@]}"}" "$version" "$pm"; then

@@ -66,6 +66,7 @@ function parseArgs(argv: string[]): CliOptions {
     registry: '',
     pm: [],
     test: [],
+    skipTest: [],
     concurrency: 1,
     timeout: 50000,
     verbose: false,
@@ -90,6 +91,14 @@ function parseArgs(argv: string[]): CliOptions {
       options.uplinkPort = parseInt(argv[++i], 10);
     } else if (arg === '--print-config') {
       options.printConfig = true;
+    } else if (arg === '--server') {
+      options.server = argv[++i];
+    } else if (arg.startsWith('--server=')) {
+      options.server = arg.split('=')[1];
+    } else if (arg === '--skip-test') {
+      options.skipTest!.push(argv[++i]);
+    } else if (arg.startsWith('--skip-test=')) {
+      options.skipTest!.push(arg.split('=')[1]);
     } else if (arg === '--verbose' || arg === '-v') {
       options.verbose = true;
     } else if (arg === '--help' || arg === '-h') {
@@ -155,12 +164,21 @@ function printHelp(): void {
                                          from --print-config)
                             Default: all supported by the PM
 
+    --skip-test <name>      Skip a test by name (can be repeated). Unlike
+                            --test, the rest of the battery still runs and
+                            the skipped tests are reported as SKIP
+
     --token <token>         Auth token (skips user creation)
     --timeout <ms>          Per-test timeout (default: 50000)
     --uplink-port <port>    Port for the mock uplink used by
                             scenario:uplink-failure (default: $E2E_UPLINK_PORT)
-    --print-config          Print the recommended Verdaccio config for the full
+    --print-config          Print the recommended registry config for the full
                             battery (max_body_size, mock uplink) and exit
+    --server <name>         Registry server the printed config targets:
+                            verdaccio (default) or pnpr. pnpr's config has no
+                            mock uplink (its registry namespaces can't claim
+                            the unscoped dynamic e2e-uplink-* names), so run
+                            it without --uplink-port and the uplink tests skip
     -v, --verbose           Enable debug output
     -h, --help              Show this help
   `);
@@ -170,8 +188,17 @@ export async function main(argv: string[] = process.argv): Promise<void> {
   const options = parseArgs(argv);
 
   if (options.printConfig) {
-    const { buildE2EConfig, DEFAULT_UPLINK_PORT } = await import('./utils/e2e-config');
-    process.stdout.write(buildE2EConfig(options.uplinkPort ?? DEFAULT_UPLINK_PORT));
+    const { buildE2EConfig, buildPnprE2EConfig, DEFAULT_UPLINK_PORT } =
+      await import('./utils/e2e-config');
+    const server = options.server ?? 'verdaccio';
+    if (server === 'pnpr') {
+      process.stdout.write(buildPnprE2EConfig());
+    } else if (server === 'verdaccio') {
+      process.stdout.write(buildE2EConfig(options.uplinkPort ?? DEFAULT_UPLINK_PORT));
+    } else {
+      console.error(`Unknown --server: "${server}". Supported: verdaccio, pnpr`);
+      process.exit(1);
+    }
     process.exit(0);
   }
 
@@ -226,11 +253,16 @@ export async function main(argv: string[] = process.argv): Promise<void> {
 
   console.log(`Tests: ${tests.map((t) => t.name).join(', ')}`);
 
+  if (options.skipTest && options.skipTest.length > 0) {
+    console.log(`Skipping tests: ${options.skipTest.join(', ')}`);
+  }
+
   // Run
   const { exitCode } = await runAll(adapters, tests, options.registry, token, {
     timeout: options.timeout,
     concurrency: options.concurrency,
     testFilter: options.test,
+    skipTests: options.skipTest,
   });
 
   process.exit(exitCode);
