@@ -109,7 +109,7 @@ export async function runSuite(
   tests: TestDefinition[],
   registryUrl: string,
   token: string,
-  options: { timeout: number; testFilter?: string[] }
+  options: { timeout: number; testFilter?: string[]; skipTests?: string[] }
 ): Promise<SuiteResult> {
   const suiteStart = Date.now();
   const results: TestResult[] = [];
@@ -123,6 +123,13 @@ export async function runSuite(
       if (!options.testFilter.includes(test.name)) {
         continue;
       }
+    }
+
+    // Skip-listed tests still show up as SKIP so the gap stays visible
+    if (options.skipTests && options.skipTests.includes(test.name)) {
+      reportSkipped(test.name);
+      skipped++;
+      continue;
     }
 
     // Check if adapter supports required commands
@@ -167,7 +174,7 @@ export async function runAll(
   tests: TestDefinition[],
   registryUrl: string,
   token: string,
-  options: { timeout: number; concurrency: number; testFilter?: string[] }
+  options: { timeout: number; concurrency: number; testFilter?: string[]; skipTests?: string[] }
 ): Promise<{ results: SuiteResult[]; exitCode: number }> {
   debug('running %d adapters with %d tests', adapters.length, tests.length);
   const results: SuiteResult[] = [];

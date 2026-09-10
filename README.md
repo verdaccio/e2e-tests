@@ -312,17 +312,18 @@ Importing `@verdaccio/e2e-ui/commands` adds:
 
 ## Scripts
 
-| Script                                | Description                                             |
-| ------------------------------------- | ------------------------------------------------------- |
-| `./scripts/run-e2e.sh [version] [pm]` | Run CLI tests against a Verdaccio version               |
-| `./scripts/run-e2e-ui.sh [version]`   | Run Cypress UI tests against a Verdaccio version        |
-| `./scripts/run-e2e-matrix.sh`         | Run CLI tests for all detected PMs x Verdaccio 6+next-7 |
+| Script                                | Description                                                       |
+| ------------------------------------- | ----------------------------------------------------------------- |
+| `./scripts/run-e2e.sh [version] [pm]` | Run CLI tests against a registry (verdaccio or pnpr)              |
+| `./scripts/run-e2e-ui.sh [version]`   | Run Cypress UI tests against a Verdaccio version                  |
+| `./scripts/run-e2e-matrix.sh`         | Run CLI tests for all detected PMs x verdaccio 6, next-7 and pnpr |
 
 All scripts accept `--docker` to use Docker images instead of local npm install.
 
 ```bash
 ./scripts/run-e2e.sh 6 npm                # CLI: verdaccio@6, npm
 ./scripts/run-e2e.sh next-7 npm           # CLI: verdaccio@next-7, npm
+./scripts/run-e2e.sh pnpr npm             # CLI: @pnpm/pnpr@next, npm
 ./scripts/run-e2e.sh --docker 6 npm       # CLI: Docker verdaccio@6
 ./scripts/run-e2e-ui.sh 6                  # UI: verdaccio@6
 ./scripts/run-e2e-ui.sh --docker 6         # UI: Docker verdaccio@6
