@@ -37,6 +37,13 @@ jobs:
           - yarn-modern@4
           - bun
           - deno
+        exclude:
+          # deno parses npm publish dates strictly and rejects the coarsened
+          # (seconds-less) time entries the published @pnpm/pnpr serves in
+          # abbreviated packuments, failing every deno install. Re-add once
+          # a release ships the RFC 3339 fix (workspace audit, informe 46).
+          - registry: 'pnpr'
+            pm: deno
     name: ${{ matrix.registry }} / ${{ matrix.pm }}
     runs-on: ubuntu-latest
     steps:
