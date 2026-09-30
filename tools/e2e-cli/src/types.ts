@@ -65,8 +65,8 @@ export type TestDefinition = {
 export interface PackageManagerAdapter {
   /** Display name, e.g. "npm@10" */
   name: string;
-  /** Package manager type: npm, pnpm, yarn-modern, bun, deno */
-  type: 'npm' | 'pnpm' | 'yarn-modern' | 'bun' | 'deno';
+  /** Package manager type: npm, pnpm, yarn-modern, bun, deno, upm */
+  type: 'npm' | 'pnpm' | 'yarn-modern' | 'bun' | 'deno' | 'upm';
   /** Resolved path to the binary */
   bin: string;
   /** Commands this PM supports */

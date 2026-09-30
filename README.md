@@ -71,32 +71,39 @@ Without `--uplink-port`, `scenario:uplink-failure` is skipped and the rest of th
 
 ### Supported Package Managers
 
-| Adapter           | `--pm` value                   | Notes                                                       |
-| ----------------- | ------------------------------ | ----------------------------------------------------------- |
-| npm (10-12)       | `npm`                          | Uses `--registry` flag                                      |
-| pnpm (10+)        | `pnpm`                         | Uses `--registry` flag                                      |
-| Yarn Modern (v3+) | `yarn-modern=/path/to/yarn.js` | Uses `.yarnrc.yml` for registry config                      |
-| Bun               | `bun`                          | Uses `--registry` flag (except `info` which reads `.npmrc`) |
-| Deno              | `deno`                         | Reads registry from `.npmrc`, install and info only         |
+| Adapter           | `--pm` value                   | Notes                                                                                  |
+| ----------------- | ------------------------------ | -------------------------------------------------------------------------------------- |
+| npm (10-12)       | `npm`                          | Uses `--registry` flag                                                                 |
+| pnpm (10+)        | `pnpm`                         | Uses `--registry` flag                                                                 |
+| Yarn Modern (v3+) | `yarn-modern=/path/to/yarn.js` | Uses `.yarnrc.yml` for registry config                                                 |
+| Bun               | `bun`                          | Uses `--registry` flag (except `info` which reads `.npmrc`)                            |
+| Deno              | `deno`                         | Reads registry from `.npmrc`, install and info only                                    |
+| upm               | `upm`                          | Reads registry from `.npmrc`, native `install`/`ci` only (other commands proxy to npm) |
 
 > Dropped: npm 8/9, pnpm 8/9 and Yarn Classic (v1) are end-of-life and no
 > longer supported by the suite.
 
 ### Tests
 
-| Test      | npm  | pnpm 10 | pnpm ≥11 | yarn-modern | bun  | deno |
-| --------- | ---- | ------- | -------- | ----------- | ---- | ---- |
-| publish   | yes  | yes     | yes      | yes         | yes  | skip |
-| install   | yes  | yes     | yes      | yes         | yes  | yes  |
-| ci        | yes  | yes     | yes      | yes         | yes  | skip |
-| info      | yes  | yes     | yes      | yes         | yes  | yes  |
-| audit     | yes  | yes     | yes      | skip        | yes  | skip |
-| deprecate | yes  | yes     | yes      | yes         | skip | skip |
-| dist-tags | yes  | yes     | skip     | skip        | skip | skip |
-| login     | skip | skip    | skip     | yes         | skip | skip |
-| ping      | yes  | yes     | skip     | yes         | skip | skip |
-| search    | yes  | yes     | skip     | skip        | skip | skip |
-| unpublish | yes  | yes     | yes      | skip        | skip | skip |
+| Test      | npm  | pnpm 10 | pnpm ≥11 | yarn-modern | bun  | deno | upm  |
+| --------- | ---- | ------- | -------- | ----------- | ---- | ---- | ---- |
+| publish   | yes  | yes     | yes      | yes         | yes  | skip | skip |
+| install   | yes  | yes     | yes      | yes         | yes  | yes  | yes  |
+| ci        | yes  | yes     | yes      | yes         | yes  | skip | yes  |
+| info      | yes  | yes     | yes      | yes         | yes  | yes  | skip |
+| audit     | yes  | yes     | yes      | skip        | yes  | skip | skip |
+| deprecate | yes  | yes     | yes      | yes         | skip | skip | skip |
+| dist-tags | yes  | yes     | skip     | skip        | skip | skip | skip |
+| login     | skip | skip    | skip     | yes         | skip | skip | skip |
+| ping      | yes  | yes     | skip     | yes         | skip | skip | skip |
+| search    | yes  | yes     | skip     | skip        | skip | skip | skip |
+| unpublish | yes  | yes     | yes      | skip        | skip | skip | skip |
+
+> **upm notes:** upm ([upm.sh](https://upm.sh)) proxies most commands straight
+> to npm; only its resolver is native, so the suite runs just `install` and `ci`.
+> Registry, auth and the release-age cooldown come from the project `.npmrc`
+> (`min-release-age=0` is required — upm holds back sub-day-old versions by
+> default, which would reject the freshly-published fixtures).
 
 > **pnpm ≥11 notes:** pnpm v11 reimplemented many commands natively and removed `ping`, `search`, and `dist-tag`. Un-deprecate uses the new `pnpm undeprecate` command (other package managers use `deprecate pkg ""` with an empty message).
 >
