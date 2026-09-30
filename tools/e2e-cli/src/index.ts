@@ -4,6 +4,7 @@ import {
   createBunAdapter,
   createDenoAdapter,
   createNpmAdapter,
+  createNubAdapter,
   createPnpmAdapter,
   createUpmAdapter,
   createYarnModernAdapter,
@@ -54,9 +55,11 @@ function parseAdapters(pmFilters?: string[]): PackageManagerAdapter[] {
       adapters.push(createDenoAdapter(binPath, version));
     } else if (name === 'upm') {
       adapters.push(createUpmAdapter(binPath, version));
+    } else if (name === 'nub') {
+      adapters.push(createNubAdapter(binPath, version));
     } else {
       throw new Error(
-        `Unknown package manager: "${name}". Supported: npm, pnpm, yarn-modern, bun, deno, upm`
+        `Unknown package manager: "${name}". Supported: npm, pnpm, yarn-modern, bun, deno, upm, nub`
       );
     }
   }
@@ -143,7 +146,7 @@ function printHelp(): void {
     --pm <name[@version]>   Package manager to test (can be repeated)
                             Supported: npm (10-12), pnpm (10+),
                                        yarn-modern (or yarn, Yarn 3+), bun, deno,
-                                       upm (install/ci only)
+                                       upm (install/ci only), nub (install/ci only)
                             Examples: --pm npm@10 --pm pnpm@11
                                       --pm yarn-modern@4
                                       --pm yarn-modern@3
@@ -279,6 +282,7 @@ export {
   createBunAdapter,
   createDenoAdapter,
   createNpmAdapter,
+  createNubAdapter,
   createPnpmAdapter,
   createUpmAdapter,
   createYarnModernAdapter,
