@@ -37,6 +37,9 @@ jobs:
           - yarn-modern@4
           - bun
           - deno
+          # upm proxies most commands to npm; the CLI auto-installs it from the
+          # pinned version and runs only its native install/ci.
+          - upm@1.3.1
         exclude:
           # deno parses npm publish dates strictly and rejects the coarsened
           # (seconds-less) time entries the published @pnpm/pnpr serves in
