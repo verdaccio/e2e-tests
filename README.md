@@ -79,31 +79,39 @@ Without `--uplink-port`, `scenario:uplink-failure` is skipped and the rest of th
 | Bun               | `bun`                          | Uses `--registry` flag (except `info` which reads `.npmrc`)                            |
 | Deno              | `deno`                         | Reads registry from `.npmrc`, install and info only                                    |
 | upm               | `upm`                          | Reads registry from `.npmrc`, native `install`/`ci` only (other commands proxy to npm) |
+| nub               | `nub`                          | Reads registry from `.npmrc`, `install`/`ci` only (no publish/info/etc.)               |
 
 > Dropped: npm 8/9, pnpm 8/9 and Yarn Classic (v1) are end-of-life and no
 > longer supported by the suite.
 
 ### Tests
 
-| Test      | npm  | pnpm 10 | pnpm ≥11 | yarn-modern | bun  | deno | upm  |
-| --------- | ---- | ------- | -------- | ----------- | ---- | ---- | ---- |
-| publish   | yes  | yes     | yes      | yes         | yes  | skip | skip |
-| install   | yes  | yes     | yes      | yes         | yes  | yes  | yes  |
-| ci        | yes  | yes     | yes      | yes         | yes  | skip | yes  |
-| info      | yes  | yes     | yes      | yes         | yes  | yes  | skip |
-| audit     | yes  | yes     | yes      | skip        | yes  | skip | skip |
-| deprecate | yes  | yes     | yes      | yes         | skip | skip | skip |
-| dist-tags | yes  | yes     | skip     | skip        | skip | skip | skip |
-| login     | skip | skip    | skip     | yes         | skip | skip | skip |
-| ping      | yes  | yes     | skip     | yes         | skip | skip | skip |
-| search    | yes  | yes     | skip     | skip        | skip | skip | skip |
-| unpublish | yes  | yes     | yes      | skip        | skip | skip | skip |
+| Test      | npm  | pnpm 10 | pnpm ≥11 | yarn-modern | bun  | deno | upm  | nub  |
+| --------- | ---- | ------- | -------- | ----------- | ---- | ---- | ---- | ---- |
+| publish   | yes  | yes     | yes      | yes         | yes  | skip | skip | skip |
+| install   | yes  | yes     | yes      | yes         | yes  | yes  | yes  | yes  |
+| ci        | yes  | yes     | yes      | yes         | yes  | skip | yes  | yes  |
+| info      | yes  | yes     | yes      | yes         | yes  | yes  | skip | skip |
+| audit     | yes  | yes     | yes      | skip        | yes  | skip | skip | skip |
+| deprecate | yes  | yes     | yes      | yes         | skip | skip | skip | skip |
+| dist-tags | yes  | yes     | skip     | skip        | skip | skip | skip | skip |
+| login     | skip | skip    | skip     | yes         | skip | skip | skip | skip |
+| ping      | yes  | yes     | skip     | yes         | skip | skip | skip | skip |
+| search    | yes  | yes     | skip     | skip        | skip | skip | skip | skip |
+| unpublish | yes  | yes     | yes      | skip        | skip | skip | skip | skip |
 
 > **upm notes:** upm ([upm.sh](https://upm.sh)) proxies most commands straight
 > to npm; only its resolver is native, so the suite runs just `install` and `ci`.
 > Registry, auth and the release-age cooldown come from the project `.npmrc`
 > (`min-release-age=0` is required — upm holds back sub-day-old versions by
 > default, which would reject the freshly-published fixtures).
+>
+> **nub notes:** nub ([nubjs.com](https://nubjs.com), `@nubjs/nub`) is an
+> all-in-one toolkit whose package-manager side only covers the install path, so
+> the suite runs just `install` and `ci`. Registry and auth come from the project
+> `.npmrc`; the adapter passes `--minimum-release-age=0` because nub enforces a
+> strict 24h cooldown by default under the pnpm-style key (not npm's
+> `min-release-age`), which would otherwise reject the freshly-published fixtures.
 
 > **pnpm ≥11 notes:** pnpm v11 reimplemented many commands natively and removed `ping`, `search`, and `dist-tag`. Un-deprecate uses the new `pnpm undeprecate` command (other package managers use `deprecate pkg ""` with an empty message).
 >
