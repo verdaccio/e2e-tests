@@ -86,19 +86,20 @@ Without `--uplink-port`, `scenario:uplink-failure` is skipped and the rest of th
 
 ### Tests
 
-| Test      | npm  | pnpm 10 | pnpm ≥11 | yarn-modern | bun  | deno | upm  | nub  |
-| --------- | ---- | ------- | -------- | ----------- | ---- | ---- | ---- | ---- |
-| publish   | yes  | yes     | yes      | yes         | yes  | skip | skip | skip |
-| install   | yes  | yes     | yes      | yes         | yes  | yes  | yes  | yes  |
-| ci        | yes  | yes     | yes      | yes         | yes  | skip | yes  | yes  |
-| info      | yes  | yes     | yes      | yes         | yes  | yes  | skip | skip |
-| audit     | yes  | yes     | yes      | skip        | yes  | skip | skip | skip |
-| deprecate | yes  | yes     | yes      | yes         | skip | skip | skip | skip |
-| dist-tags | yes  | yes     | skip     | skip        | skip | skip | skip | skip |
-| login     | skip | skip    | skip     | yes         | skip | skip | skip | skip |
-| ping      | yes  | yes     | skip     | yes         | skip | skip | skip | skip |
-| search    | yes  | yes     | skip     | skip        | skip | skip | skip | skip |
-| unpublish | yes  | yes     | yes      | skip        | skip | skip | skip | skip |
+| Test          | npm  | pnpm 10 | pnpm ≥11 | yarn-modern | bun  | deno | upm  | nub  |
+| ------------- | ---- | ------- | -------- | ----------- | ---- | ---- | ---- | ---- |
+| publish       | yes  | yes     | yes      | yes         | yes  | skip | skip | skip |
+| install       | yes  | yes     | yes      | yes         | yes  | yes  | yes  | yes  |
+| ci            | yes  | yes     | yes      | yes         | yes  | skip | yes  | yes  |
+| info          | yes  | yes     | yes      | yes         | yes  | yes  | skip | skip |
+| audit         | yes  | yes     | yes      | skip        | yes  | skip | skip | skip |
+| deprecate     | yes  | yes     | yes      | yes         | skip | skip | skip | skip |
+| dist-tags     | yes  | yes     | skip     | skip        | skip | skip | skip | skip |
+| package-names | yes  | yes     | yes      | yes         | yes  | yes  | yes  | yes  |
+| login         | skip | skip    | skip     | yes         | skip | skip | skip | skip |
+| ping          | yes  | yes     | skip     | yes         | skip | skip | skip | skip |
+| search        | yes  | yes     | skip     | skip        | skip | skip | skip | skip |
+| unpublish     | yes  | yes     | yes      | skip        | skip | skip | skip | skip |
 
 > **upm notes:** upm ([upm.sh](https://upm.sh)) proxies most commands straight
 > to npm; only its resolver is native, so the suite runs just `install` and `ci`.
@@ -131,6 +132,7 @@ Scenarios are complex, multi-step tests that simulate real-world workflows beyon
 | `scenario:metadata`              | HTTP-level packument battery: full and abbreviated (install-v1) metadata shape, `ETag`/304 revalidation, `dist.tarball` URL rewriting, 404 error body, coherence after publish/unpublish                       | npm adapter                                      |
 | `scenario:search`                | Contract battery for `GET /-/v1/search`: result shape, real `total`, `from`/`size` pagination (local and merged with an uplink), 400 without `text`, ISO `time`, size clamp, plus a real `npm search` on top   | npm adapter (uplink checks need `--uplink-port`) |
 | `scenario:uplink-failure`        | Starts a controllable mock uplink and verifies registry behavior when the upstream is healthy, cuts the connection mid-tarball, is slower than the timeout, or is down                                         | npm adapter, `--uplink-port` + battery config    |
+| `scenario:reserved-names`        | Proxies, installs and publishes packages named like Windows device names (`nul.*`, `@e2e-uplink/con.*`, `aux.*`), which exist on npmjs, and checks the registry stays healthy when the uplink is down          | npm adapter, `--uplink-port` + battery config    |
 
 Run a specific scenario:
 
@@ -183,7 +185,7 @@ Pins the registry.npmjs.org `GET /-/v1/search` contract (spec + what npm CLI 12 
 
 The contract checks run independently and are all reported before the scenario fails, so a single run lists every divergence at once. The two uplink sub-tests are gated on `--uplink-port` / `E2E_UPLINK_PORT`.
 
-> **Disabled by default**: the pending contract checks (search: real `total`, 400 without `text`, ISO `time`, merged local+uplink pagination, `package.version` on results; tarballs: `Content-Length` present, no gzip re-compression). They pin the correct npmjs contract but are red against every current Verdaccio. Enable the full battery with `E2E_PENDING_CONTRACT_CHECKS=true`; make it the default once the registry-side fixes land.
+> **Disabled by default**: the pending contract checks (search: real `total`, 400 without `text`, ISO `time`, merged local+uplink pagination, `package.version` on results; tarballs: `Content-Length` present, no gzip re-compression; package-names: 400 for names npm does not accept; reserved-names: tarballs, install and local publish). They pin the correct npmjs contract but are red against every current Verdaccio. Enable the full battery with `E2E_PENDING_CONTRACT_CHECKS=true`; make it the default once the registry-side fixes land.
 
 #### `scenario:uplink-failure`
 
@@ -195,6 +197,16 @@ Starts a **controllable mock uplink** (on `--uplink-port`) and verifies how the 
 - uplink down: cached packages are still served, everything else fails cleanly
 
 Requires the registry to be started with the config from `--print-config` (it wires the mock uplink in). Gated on `--uplink-port` / `E2E_UPLINK_PORT` — skipped otherwise.
+
+#### `scenario:reserved-names`
+
+Packages named like Windows device names (`nul`, `con`, `aux`, with or without an extension) exist on npmjs. Using the same mock uplink, the scenario checks that the registry:
+
+- proxies their packuments
+- answers them with `200` (cached) or `404` (not cached), never a `5xx`, once the uplink is down
+- pending (`E2E_PENDING_CONTRACT_CHECKS=reserved-names`): proxies their tarballs, the npm client installs them, and a local publish of such a name is accepted or cleanly refused (`404`) with the registry staying healthy
+
+Uses the `nul.*` and `@e2e-uplink/*` patterns of the `--print-config` config. Gated on `--uplink-port` / `E2E_UPLINK_PORT` — skipped otherwise.
 
 See [docs/cli-tests.md](docs/cli-tests.md) for detailed descriptions of what each test asserts.
 

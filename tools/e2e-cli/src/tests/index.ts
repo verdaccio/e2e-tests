@@ -3,6 +3,7 @@ import {
   installMultipleDepsScenario,
   metadataScenario,
   minimumReleaseAgeScenario,
+  reservedNamesScenario,
   searchScenario,
   tarballsScenario,
   uplinkFailureScenario,
@@ -15,6 +16,7 @@ import { distTagsTest } from './dist-tags';
 import { infoTest } from './info';
 import { installTest } from './install';
 import { loginTest } from './login';
+import { packageNamesTest } from './package-names';
 import { pingTest } from './ping';
 import { publishTest } from './publish';
 import { searchTest } from './search';
@@ -28,6 +30,7 @@ export const allTests: TestDefinition[] = [
   infoTest,
   deprecateTest,
   distTagsTest,
+  packageNamesTest,
   loginTest,
   pingTest,
   searchTest,
@@ -44,6 +47,7 @@ export {
   infoTest,
   deprecateTest,
   distTagsTest,
+  packageNamesTest,
   loginTest,
   pingTest,
   searchTest,
@@ -55,5 +59,6 @@ export {
   metadataScenario,
   searchScenario,
   uplinkFailureScenario,
+  reservedNamesScenario,
   allScenarios,
 };

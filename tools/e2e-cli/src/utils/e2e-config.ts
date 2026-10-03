@@ -5,8 +5,9 @@
  *
  *   - max_body_size raised so scenario:tarballs can publish ~30 MB packages
  *     (Verdaccio's default is 10mb)
- *   - an `e2emock` uplink + `e2e-uplink-*` package pattern wired to the mock
- *     uplink server that scenario:uplink-failure starts on E2E_UPLINK_PORT
+ *   - an `e2emock` uplink + `e2e-uplink-*`, `nul.*` and `@e2e-uplink/*` package
+ *     patterns wired to the mock uplink server that scenario:uplink-failure and
+ *     scenario:reserved-names start on E2E_UPLINK_PORT
  *     (short timeout so the "slow uplink" case completes quickly; high
  *     max_fails so simulated failures don't trip the circuit breaker for
  *     later sub-tests)
@@ -39,6 +40,12 @@ uplinks:
     fail_timeout: 1s
 packages:
   'e2e-uplink-*':
+    access: $all
+    proxy: e2emock
+  'nul.*':
+    access: $all
+    proxy: e2emock
+  '@e2e-uplink/*':
     access: $all
     proxy: e2emock
   '@*/*':

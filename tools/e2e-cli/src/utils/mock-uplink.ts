@@ -40,9 +40,9 @@ export class MockUplink {
 
   constructor(public readonly port: number) {}
 
-  /** Register a package served by this uplink; tarball is random (incompressible) bytes. */
-  addPackage(name: string, tarballBytes = 64 * 1024): MockPackage {
-    const tarball = randomBytes(tarballBytes);
+  /** Register a package served by this uplink; tarball is random (incompressible) bytes unless one is given. */
+  addPackage(name: string, tarballBytes: number | Buffer = 64 * 1024): MockPackage {
+    const tarball = Buffer.isBuffer(tarballBytes) ? tarballBytes : randomBytes(tarballBytes);
     const { shasum, integrity } = computeDist(tarball);
     const pkg: MockPackage = { name, version: '1.0.0', tarball, shasum, integrity };
     this.packages.set(name, pkg);
@@ -86,7 +86,8 @@ export class MockUplink {
   }
 
   private packument(pkg: MockPackage): string {
-    const tarballUrl = `http://localhost:${this.port}/${pkg.name}/-/${pkg.name}-${pkg.version}.tgz`;
+    const filename = `${pkg.name.split('/').pop()}-${pkg.version}.tgz`;
+    const tarballUrl = `http://localhost:${this.port}/${pkg.name}/-/${filename}`;
     return JSON.stringify({
       name: pkg.name,
       'dist-tags': { latest: pkg.version },
