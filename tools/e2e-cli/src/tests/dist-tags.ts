@@ -87,6 +87,45 @@ async function testDistTags(ctx: TestContext): Promise<void> {
     ...ctx.adapter.registryArg(ctx.registryUrl)
   );
   assert.strictEqual(resp3.stdout, `+alfa: ${pkgName3}@1.1.0`);
+
+  // Test 4: tags named like Windows device names are plain metadata keys
+  const pkgName4 = `@verdaccio/dt4-${id}`;
+  const { tempFolder: tf4 } = await ctx.adapter.prepareProject(
+    pkgName4,
+    '1.0.0',
+    ctx.registryUrl,
+    ctx.port,
+    ctx.token
+  );
+  await publishPkg(ctx, tf4);
+  for (const tag of ['aux', 'con']) {
+    const added = await ctx.adapter.exec(
+      { cwd: tf4 },
+      'dist-tag',
+      'add',
+      `${pkgName4}@1.0.0`,
+      tag,
+      ...ctx.adapter.registryArg(ctx.registryUrl)
+    );
+    assert.strictEqual(added.stdout, `+${tag}: ${pkgName4}@1.0.0`);
+  }
+  const listed = await ctx.adapter.exec(
+    { cwd: tf4 },
+    'dist-tag',
+    'ls',
+    ...ctx.adapter.registryArg(ctx.registryUrl)
+  );
+  assert.ok(listed.stdout.includes('aux: 1.0.0'), `Expected aux tag in: ${listed.stdout}`);
+  assert.ok(listed.stdout.includes('con: 1.0.0'), `Expected con tag in: ${listed.stdout}`);
+  const removed = await ctx.adapter.exec(
+    { cwd: tf4 },
+    'dist-tag',
+    'rm',
+    pkgName4,
+    'aux',
+    ...ctx.adapter.registryArg(ctx.registryUrl)
+  );
+  assert.strictEqual(removed.stdout, `-aux: ${pkgName4}@1.0.0`);
 }
 
 export const distTagsTest: TestDefinition = {

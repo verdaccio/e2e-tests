@@ -69,13 +69,24 @@ Tests user creation, authentication, error handling, and token usage via non-int
 
 ## dist-tags
 
-Three sub-tests covering listing, removing, and adding dist-tags.
+Four sub-tests covering listing, removing, and adding dist-tags.
 
-| Sub-test      | Assertion                                                                                                                |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| 1. List tags  | Publishes v1.0.0, then v1.1.0 with `--tag beta`. `dist-tag ls --json` output contains `beta: 1.1.0` and `latest: 1.0.0`. |
-| 2. Remove tag | Publishes v1.0.0 and v1.1.0 with `--tag beta`. `dist-tag rm beta` output contains `-beta: pkg@1.1.0`.                    |
-| 3. Add tag    | Publishes v1.0.0 and v1.1.0. `dist-tag add pkg@1.1.0 alfa` output contains `+alfa: pkg@1.1.0`.                           |
+| Sub-test            | Assertion                                                                                                                                                                                          |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1. List tags        | Publishes v1.0.0, then v1.1.0 with `--tag beta`. `dist-tag ls --json` output contains `beta: 1.1.0` and `latest: 1.0.0`.                                                                           |
+| 2. Remove tag       | Publishes v1.0.0 and v1.1.0 with `--tag beta`. `dist-tag rm beta` output contains `-beta: pkg@1.1.0`.                                                                                              |
+| 3. Add tag          | Publishes v1.0.0 and v1.1.0. `dist-tag add pkg@1.1.0 alfa` output contains `+alfa: pkg@1.1.0`.                                                                                                     |
+| 4. Device-name tags | Publishes v1.0.0. `dist-tag add` with `aux` and `con`, both listed by `dist-tag ls`, then `dist-tag rm aux`. Tags are metadata keys, so names that are invalid as file names on Windows must work. |
+
+## package-names
+
+Unusual names that are valid for existing npm packages.
+
+| Sub-test                | Assertion                                                                                                                                                                        |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1. Published and served | Publishes over HTTP `JSONStream-<id>` (capitals), `@e2e-names/_x-<id>`, `@con/x-<id>` and `-x-<id>`; each packument returns `200` with the right name and its tarball downloads. |
+| 2. Installed            | A consumer project depending on the first three installs with the package manager (skipped when it cannot install).                                                              |
+| 3. Rejected (pending)   | `GET` of `_x-<id>`, `@x-<id>` and `x-<id>@y` returns `400`. Enabled with `E2E_PENDING_CONTRACT_CHECKS=package-names`.                                                            |
 
 ## ping
 
