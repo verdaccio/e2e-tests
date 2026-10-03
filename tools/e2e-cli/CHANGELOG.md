@@ -1,5 +1,28 @@
 # @verdaccio/e2e-cli
 
+## 3.4.0
+
+### Minor Changes
+
+- 718eae0: Add a `nub` package-manager adapter ([nubjs.com](https://nubjs.com),
+  `@nubjs/nub`). nub is an all-in-one Node.js toolkit whose package-manager side
+  only covers the install path, so the suite exercises its native `install` and
+  `ci`. Registry and auth come from the project `.npmrc`; the adapter passes
+  `--minimum-release-age=0` because nub enforces a strict 24h cooldown by default.
+  Wired into the CLI (`--pm nub`) and the CI matrix.
+- 2936f57: Add a `package-names` test and a `scenario:reserved-names` scenario.
+
+  `package-names` publishes, serves and installs unusual names that are valid for existing npm packages (capitals, a leading underscore inside a scope, a scope named like a Windows device name, a leading hyphen). Rejection of names npm does not accept is a pending contract check, enabled with `E2E_PENDING_CONTRACT_CHECKS=package-names`.
+
+  `scenario:reserved-names` uses the mock uplink to proxy packages named like Windows device names, which exist on npmjs, and checks that the registry stays healthy when they are requested with the uplink down. Downloading their tarballs, installing them and publishing such a name locally are pending contract checks, enabled with `E2E_PENDING_CONTRACT_CHECKS=reserved-names`. The `--print-config` config routes the new `nul.*` and `@e2e-uplink/*` patterns to the mock uplink.
+
+  `dist-tags` also adds and removes tags named `aux` and `con`, and the mock uplink now serves scoped packages with the correct tarball file name.
+
+- 59146b3: Add a `upm` package-manager adapter ([upm.sh](https://upm.sh)). upm proxies most
+  commands to npm, so the suite exercises only its native `install` and `ci`.
+  Registry, auth and the release-age cooldown (`min-release-age=0`) come from the
+  project `.npmrc`. Wired into the CLI (`--pm upm`) and the CI matrix.
+
 ## 3.3.0
 
 ### Minor Changes
