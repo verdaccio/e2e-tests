@@ -81,25 +81,25 @@ Without `--uplink-port`, `scenario:uplink-failure` is skipped and the rest of th
 | upm               | `upm`                          | Reads registry from `.npmrc`, native `install`/`ci` only (other commands proxy to npm) |
 | nub               | `nub`                          | Reads registry from `.npmrc`, `install`/`ci` only (no publish/info/etc.)               |
 
-> Dropped: npm 8/9, pnpm 8/9 and Yarn Classic (v1) are end-of-life and no
-> longer supported by the suite.
+> Dropped: npm 8/9, pnpm 8/9/10 and Yarn Classic (v1) are no longer
+> supported by the suite.
 
 ### Tests
 
-| Test          | npm  | pnpm 10 | pnpm ≥11 | yarn-modern | bun  | deno | upm  | nub  |
-| ------------- | ---- | ------- | -------- | ----------- | ---- | ---- | ---- | ---- |
-| publish       | yes  | yes     | yes      | yes         | yes  | skip | skip | skip |
-| install       | yes  | yes     | yes      | yes         | yes  | yes  | yes  | yes  |
-| ci            | yes  | yes     | yes      | yes         | yes  | skip | yes  | yes  |
-| info          | yes  | yes     | yes      | yes         | yes  | yes  | skip | skip |
-| audit         | yes  | yes     | yes      | skip        | yes  | skip | skip | skip |
-| deprecate     | yes  | yes     | yes      | yes         | skip | skip | skip | skip |
-| dist-tags     | yes  | yes     | skip     | skip        | skip | skip | skip | skip |
-| package-names | yes  | yes     | yes      | yes         | yes  | yes  | yes  | yes  |
-| login         | skip | skip    | skip     | yes         | skip | skip | skip | skip |
-| ping          | yes  | yes     | skip     | yes         | skip | skip | skip | skip |
-| search        | yes  | yes     | skip     | skip        | skip | skip | skip | skip |
-| unpublish     | yes  | yes     | yes      | skip        | skip | skip | skip | skip |
+| Test          | npm  | pnpm | yarn-modern | bun  | deno | upm  | nub  |
+| ------------- | ---- | ---- | ----------- | ---- | ---- | ---- | ---- |
+| publish       | yes  | yes  | yes         | yes  | skip | skip | skip |
+| install       | yes  | yes  | yes         | yes  | yes  | yes  | yes  |
+| ci            | yes  | yes  | yes         | yes  | skip | yes  | yes  |
+| info          | yes  | yes  | yes         | yes  | yes  | skip | skip |
+| audit         | yes  | yes  | skip        | yes  | skip | skip | skip |
+| deprecate     | yes  | yes  | yes         | skip | skip | skip | skip |
+| dist-tags     | yes  | skip | skip        | skip | skip | skip | skip |
+| package-names | yes  | yes  | yes         | yes  | yes  | yes  | yes  |
+| login         | skip | skip | yes         | skip | skip | skip | skip |
+| ping          | yes  | skip | yes         | skip | skip | skip | skip |
+| search        | yes  | skip | skip        | skip | skip | skip | skip |
+| unpublish     | yes  | yes  | skip        | skip | skip | skip | skip |
 
 > **upm notes:** upm ([upm.sh](https://upm.sh)) proxies most commands straight
 > to npm; only its resolver is native, so the suite runs just `install` and `ci`.

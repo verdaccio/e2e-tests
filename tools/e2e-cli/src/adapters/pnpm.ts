@@ -9,40 +9,11 @@ import { prepareGenericEmptyProject } from '../utils/project';
 
 const debug = buildDebug('verdaccio:e2e-cli:pnpm');
 
-const PNPM_V10_COMMANDS = new Set([
-  'publish',
-  'unpublish',
-  'install',
-  'info',
-  'audit',
-  'deprecate',
-  'dist-tag',
-  'ping',
-  'search',
-]);
+// pnpm removed ping and search; the dist-tag output changed (no --json) and needs adapted assertions
+const PNPM_COMMANDS = new Set(['publish', 'unpublish', 'install', 'info', 'audit', 'deprecate']);
 
-// pnpm v11 removed ping and search
-// dist-tag output format changed (no --json), needs adapted assertions
-const PNPM_V11_COMMANDS = new Set([
-  'publish',
-  'unpublish',
-  'install',
-  'info',
-  'audit',
-  'deprecate',
-]);
-
-function getSupportedCommands(version: string): Set<string> {
-  const major = parseInt(version.split('.')[0], 10);
-  if (major >= 11) {
-    debug('pnpm v%d detected, using v11 command set', major);
-    return PNPM_V11_COMMANDS;
-  }
-  return PNPM_V10_COMMANDS;
-}
-
-// pnpm 8 and 9 are end-of-life and no longer supported by the suite.
-const PNPM_MIN_SUPPORTED_MAJOR = 10;
+// pnpm 8, 9 and 10 are no longer supported by the suite.
+const PNPM_MIN_SUPPORTED_MAJOR = 11;
 
 function detectVersion(bin: string): string {
   try {
@@ -92,7 +63,7 @@ export function createPnpmAdapter(binPath?: string, version?: string): PackageMa
     name: `pnpm@${resolved}`,
     type: 'pnpm',
     bin,
-    supports: getSupportedCommands(resolved),
+    supports: PNPM_COMMANDS,
 
     registryArg(url: string): string[] {
       return ['--registry', url];
