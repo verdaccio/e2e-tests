@@ -145,14 +145,21 @@ async function testLogin(ctx: TestContext): Promise<void> {
     assert.ok(who2.includes(user2), `Expected "${user2}" after switch but got "${who2}"`);
   });
 
-  // the clients below are replayed over HTTP: they are what `npm login` and native `yarn npm login` send
-  for (const client of ['npm', 'yarn'] as const) {
+  // replayed over HTTP: what `npm login`, native `yarn npm login` and `pnpm login` send
+  for (const client of ['npm', 'yarn', 'pnpm'] as const) {
     await ctx.subTest(`${client} logs an existing user in with the Basic retry`, async () => {
       const user = `login-retry-${client}-${id}`;
       const password = 'retry-password-123';
       await createUser(ctx.registryUrl, user, password);
 
       const token = await legacyLogin(ctx.registryUrl, user, password, client);
+      assert.strictEqual(await whoami(ctx.registryUrl, token), user);
+    });
+
+    await ctx.subTest(`${client} registers a new user`, async () => {
+      const user = `login-new-${client}-${id}`;
+
+      const token = await legacyLogin(ctx.registryUrl, user, 'retry-password-123', client);
       assert.strictEqual(await whoami(ctx.registryUrl, token), user);
     });
 

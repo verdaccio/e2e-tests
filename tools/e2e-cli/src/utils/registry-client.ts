@@ -73,15 +73,15 @@ export class LegacyLoginError extends Error {
 }
 
 /**
- * Replays the legacy login of an existing user the way each client sends it.
- * Both retry a 409 with Basic; Yarn also sends it on the GET. A registry that
- * authenticates the first PUT is accepted too.
+ * Replays the legacy login the way each client sends it. npm and Yarn retry a
+ * 409 with Basic (Yarn on the GET too); pnpm sends Basic on a single PUT. A
+ * registry that authenticates the first PUT is accepted too.
  */
 export async function legacyLogin(
   registryUrl: string,
   user: string,
   password: string,
-  client: 'npm' | 'yarn'
+  client: 'npm' | 'yarn' | 'pnpm'
 ): Promise<string> {
   const userUrl = `${registryUrl}/-/user/org.couchdb.user:${encodeURIComponent(user)}`;
   const basic = `Basic ${Buffer.from(`${user}:${password}`).toString('base64')}`;
@@ -98,7 +98,12 @@ export async function legacyLogin(
   const put = (url: string, headers: Record<string, string>) =>
     fetch(url, { method: 'PUT', headers, body: JSON.stringify(body) });
 
-  const first = await put(userUrl, jsonHeaders);
+  const first = await put(
+    userUrl,
+    client === 'pnpm'
+      ? { ...jsonHeaders, Authorization: basic, 'npm-auth-type': 'web' }
+      : jsonHeaders
+  );
   const firstBody = (await first.json()) as any;
   if (first.ok && firstBody.token) {
     debug('%s: first PUT authenticated %s', client, user);
