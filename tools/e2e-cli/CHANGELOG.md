@@ -1,5 +1,15 @@
 # @verdaccio/e2e-cli
 
+## 4.0.0
+
+### Major Changes
+
+- 5d1dabc: Drop support for pnpm 10: the minimum supported major is now 11. The pnpm adapter fails fast with an explicit error when pnpm 10 is requested or found in PATH, and the `dist-tags`, `ping` and `search` tests no longer run for pnpm, since only pnpm 10 supported them.
+
+### Patch Changes
+
+- 5d1dabc: Cover the login of an existing user in the `login` test: the retry with Basic that `npm login` sends and the one native `yarn npm login` sends (Basic on the GET and on the PUT), plus the rejection of a wrong password. Both are replayed over HTTP, so they run once per Yarn version.
+
 ## 3.4.0
 
 ### Minor Changes
