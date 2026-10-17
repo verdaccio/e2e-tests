@@ -30,7 +30,6 @@ jobs:
           - npm@10
           - npm@11
           - npm@12
-          - pnpm@10
           - pnpm@11
           - pnpm@12
           - yarn-modern@3

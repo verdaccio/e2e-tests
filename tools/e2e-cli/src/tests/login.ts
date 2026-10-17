@@ -6,6 +6,7 @@ import { join } from 'path';
 
 import { TestContext, TestDefinition } from '../types';
 import { createTempFolder, getPackageJSON, getREADME } from '../utils/project';
+import { LegacyLoginError, createUser, legacyLogin, whoami } from '../utils/registry-client';
 
 const debug = buildDebug('verdaccio:e2e-cli:test:login');
 
@@ -143,6 +144,38 @@ async function testLogin(ctx: TestContext): Promise<void> {
     const who2 = await yarnWhoami(ctx, tf);
     assert.ok(who2.includes(user2), `Expected "${user2}" after switch but got "${who2}"`);
   });
+
+  // replayed over HTTP: what `npm login`, native `yarn npm login` and `pnpm login` send
+  for (const client of ['npm', 'yarn', 'pnpm'] as const) {
+    await ctx.subTest(`${client} logs an existing user in with the Basic retry`, async () => {
+      const user = `login-retry-${client}-${id}`;
+      const password = 'retry-password-123';
+      await createUser(ctx.registryUrl, user, password);
+
+      const token = await legacyLogin(ctx.registryUrl, user, password, client);
+      assert.strictEqual(await whoami(ctx.registryUrl, token), user);
+    });
+
+    await ctx.subTest(`${client} registers a new user`, async () => {
+      const user = `login-new-${client}-${id}`;
+
+      const token = await legacyLogin(ctx.registryUrl, user, 'retry-password-123', client);
+      assert.strictEqual(await whoami(ctx.registryUrl, token), user);
+    });
+
+    await ctx.subTest(
+      `${client} cannot log an existing user in with a wrong password`,
+      async () => {
+        const user = `login-wrong-${client}-${id}`;
+        await createUser(ctx.registryUrl, user, 'retry-password-123');
+
+        await assert.rejects(
+          legacyLogin(ctx.registryUrl, user, 'wrong-password', client),
+          (error: unknown) => error instanceof LegacyLoginError && error.status === 401
+        );
+      }
+    );
+  }
 }
 
 export const loginTest: TestDefinition = {

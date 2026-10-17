@@ -152,7 +152,7 @@ async function testMinimumReleaseAge(ctx: TestContext): Promise<void> {
         { cwd: tempFolder },
         'install',
         // pnpm 12's parser rejects the `--flag=false` form; --no-frozen-lockfile
-        // is accepted by pnpm 10, 11 and 12 alike
+        // is accepted by pnpm 11 and 12 alike
         '--no-frozen-lockfile',
         ...ctx.adapter.registryArg(ctx.registryUrl)
       );

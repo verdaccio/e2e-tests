@@ -41,7 +41,7 @@ usage() {
   echo ""
   echo "  Package managers (must be installed on your system):"
   echo "    npm                 npm 10-12 (default)"
-  echo "    pnpm                pnpm 10+"
+  echo "    pnpm                pnpm 11+"
   echo "    yarn-modern         Yarn Berry 3+ (requires 'yarn' in PATH)"
   echo ""
   echo "  Examples:"
