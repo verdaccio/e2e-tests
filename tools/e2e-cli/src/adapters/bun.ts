@@ -53,6 +53,15 @@ export function createBunAdapter(binPath?: string, _version?: string): PackageMa
         return exec(options, bin, ['info', pkgName, ...cleaned]);
       }
 
+      if (cmd === 'publish') {
+        // bun 1.4.4 rejects `publish --json`; the publish test only checks the exit code for bun
+        return exec(
+          options,
+          bin,
+          args.filter((a) => a !== '--json')
+        );
+      }
+
       return exec(options, bin, args);
     },
 
