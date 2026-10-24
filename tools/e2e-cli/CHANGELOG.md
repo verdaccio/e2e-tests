@@ -1,5 +1,15 @@
 # @verdaccio/e2e-cli
 
+## 4.0.1
+
+### Patch Changes
+
+- 6751b0c: Fix the bun adapter failing the `publish` test on bun 1.4.4.
+
+  bun 1.4.4 removed the `--json` flag from `bun publish` and now exits with `error: bun publish has no --json flag.`, so the `publish` test failed for every registry under test. The bun adapter now drops `--json` from `publish`. The publish test already checked only the exit code for bun, and older bun versions behave the same without the flag.
+
+- 6751b0c: Accept a registry URL with a trailing slash, such as pnpr's `http://localhost:4873/npm/`. The CLI built request paths by appending `/-/...` to it, so the slash produced `//-/user/...` and the test user could not be created. The ping test also compares the registry npm reports without its trailing slash, which npm adds to a bare host but not to a path.
+
 ## 4.0.0
 
 ### Major Changes
