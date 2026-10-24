@@ -44,6 +44,15 @@ export function changePasswordTests(config: RegistryConfig) {
   // appear — that means the reset_password route was not registered (the
   // server was started without flags.changePassword).
 
+  // the form asks for the username only on released UIs; 9.x takes it from the session
+  const typeUsernameIfPresent = (user: string) => {
+    cy.get('input[name="oldPassword"]').should('exist');
+    cy.get('form').then(($form) => {
+      const $username = $form.find('input[name="username"]');
+      if ($username.length) cy.wrap($username).type(user);
+    });
+  };
+
   describe('change password', () => {
     const CHANGE_PASSWORD_PATH = '/-/web/change-password';
     const { user, password } = config.credentials;
@@ -119,7 +128,7 @@ export function changePasswordTests(config: RegistryConfig) {
       });
       cy.wait('@signChangePwdRestore').its('response.statusCode').should('eq', 200);
       cy.visit(CHANGE_PASSWORD_PATH);
-      cy.get('input[name="username"]').type(user);
+      typeUsernameIfPresent(user);
       cy.get('input[name="oldPassword"]').type(currentPassword);
       cy.get('input[name="newPassword"]').type(password);
       cy.get('input[name="confirmPassword"]').type(password);
@@ -139,7 +148,7 @@ export function changePasswordTests(config: RegistryConfig) {
     maybeIt(features.changePassword.validation)(
       'should keep submit disabled when new and confirm passwords mismatch',
       () => {
-        cy.get('input[name="username"]').type(user);
+        typeUsernameIfPresent(user);
         cy.get('input[name="oldPassword"]').type(currentPassword);
         cy.get('input[name="newPassword"]').type('newSecretPass123');
         cy.get('input[name="confirmPassword"]').type('different-value');
@@ -151,10 +160,10 @@ export function changePasswordTests(config: RegistryConfig) {
     // ── Server error path ────────────────────────────────────────
 
     maybeIt(features.changePassword.wrongOldPassword)(
-      'should show an error banner when the old password is wrong',
+      'should show an error when the old password is wrong',
       () => {
         cy.intercept('PUT', '/-/verdaccio/sec/reset_password').as('reset');
-        cy.get('input[name="username"]').type(user);
+        typeUsernameIfPresent(user);
         cy.get('input[name="oldPassword"]').type('definitely-wrong-xyz');
         cy.get('input[name="newPassword"]').type('newSecretPass123');
         cy.get('input[name="confirmPassword"]').type('newSecretPass123');
@@ -164,11 +173,17 @@ export function changePasswordTests(config: RegistryConfig) {
         // onSubmit's catch sets errors.root → rendered via LoginDialogFormError.
         // Assert a non-empty banner (not silence), text-agnostic across lines,
         // but never the raw "Cannot PUT" 404 (route missing).
-        cy.getByTestId(login.error, { timeout: 5000 })
-          .should('be.visible')
-          .and('not.contain.text', 'Cannot PUT')
-          .invoke('text')
-          .then((text) => expect(text.trim()).to.not.be.empty);
+        // released UIs show a banner; 9.x flags the old password field instead
+        cy.get('form', { timeout: 5000 }).should(($form) => {
+          const $banner = $form.find(`[data-testid="${login.error}"]`);
+          const $invalidField = $form.find('input[name="oldPassword"][aria-invalid="true"]');
+          expect($banner.length + $invalidField.length, 'error shown').to.be.greaterThan(0);
+          const message = $banner.length
+            ? $banner.text()
+            : $invalidField.closest('.MuiFormControl-root').find('.MuiFormHelperText-root').text();
+          expect(message.trim()).to.not.be.empty;
+          expect(message).to.not.contain('Cannot PUT');
+        });
         // Still on the change-password page so the user can retry.
         cy.location('pathname').should('include', CHANGE_PASSWORD_PATH);
       }
@@ -182,7 +197,7 @@ export function changePasswordTests(config: RegistryConfig) {
         const newPassword = `${currentPassword}-rotated`;
         cy.intercept('PUT', '/-/verdaccio/sec/reset_password').as('reset');
 
-        cy.get('input[name="username"]').type(user);
+        typeUsernameIfPresent(user);
         cy.get('input[name="oldPassword"]').type(currentPassword);
         cy.get('input[name="newPassword"]').type(newPassword);
         cy.get('input[name="confirmPassword"]').type(newPassword);

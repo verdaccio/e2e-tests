@@ -227,6 +227,51 @@ export interface Features {
      */
     validation: boolean;
   };
+  homeDetailUx: {
+    /**
+     * Whether to run the home toolbar tests: filter narrows the list and
+     * lives in `?q=`, `?scope=` restores the scope, no-match message.
+     * Ships with the 9.x home toolbar — probe, defaults to `false`.
+     */
+    homeToolbar: boolean;
+    /**
+     * Whether to assert the package page tab lives in `?tab=` (click
+     * writes it, a link opens it, readme removes it) — probe.
+     */
+    detailTabInUrl: boolean;
+    /**
+     * Whether to assert the step-by-step welcome card (setup tabs per
+     * package manager, `.npmrc` tab, uplinks note) — probe.
+     */
+    welcomeGuide: boolean;
+    /**
+     * Whether to assert the sidebar install box lists `bun` and the
+     * `.npmrc` registry line. Needs `bun` in `web.pkgManagers` (default
+     * on 9.x) — probe.
+     */
+    installBunAndNpmrc: boolean;
+    /**
+     * Whether to assert that a copy button confirms the copy (its
+     * accessible name switches to "Copied") — probe.
+     */
+    copyFeedback: boolean;
+    /**
+     * Whether to assert search results are grouped by origin and a
+     * locally published package lands in the "published here" group.
+     * Needs `web.showUplinks` (default true) — probe.
+     */
+    searchGrouping: boolean;
+    /**
+     * Whether to assert that the version on each home list item links
+     * to its version page `/-/web/detail/<name>/v/<version>` — probe.
+     */
+    versionLink: boolean;
+    /**
+     * Whether to assert the settings dialog has a "Publishing" tab with
+     * the welcome guide, so it stays reachable once packages exist — probe.
+     */
+    settingsPublishTab: boolean;
+  };
   changePassword: {
     /**
      * Whether to run the happy-path test (submit valid change,
@@ -318,6 +363,16 @@ export const DEFAULT_FEATURES: Features = {
     happyPath: false,
     validation: false,
   },
+  homeDetailUx: {
+    homeToolbar: false,
+    detailTabInUrl: false,
+    welcomeGuide: false,
+    installBunAndNpmrc: false,
+    copyFeedback: false,
+    searchGrouping: false,
+    versionLink: false,
+    settingsPublishTab: false,
+  },
   changePassword: {
     happyPath: true,
     validation: true,
@@ -344,6 +399,7 @@ export function mergeFeatures(defaults: Features, overrides?: DeepPartial<Featur
     failureModes: { ...defaults.failureModes, ...overrides.failureModes },
     i18n: { ...defaults.i18n, ...overrides.i18n },
     signup: { ...defaults.signup, ...overrides.signup },
+    homeDetailUx: { ...defaults.homeDetailUx, ...overrides.homeDetailUx },
     changePassword: { ...defaults.changePassword, ...overrides.changePassword },
   };
 }

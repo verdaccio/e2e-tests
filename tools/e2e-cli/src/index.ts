@@ -12,6 +12,7 @@ import {
 import { runAll } from './runner';
 import { allTests } from './tests';
 import { CliOptions, PackageManagerAdapter } from './types';
+import { stripTrailingSlashes } from './utils/http-client';
 import { createUser, pingRegistry } from './utils/registry-client';
 
 const debug = buildDebug('verdaccio:e2e-cli');
@@ -219,6 +220,8 @@ export async function main(argv: string[] = process.argv): Promise<void> {
     printHelp();
     process.exit(1);
   }
+  // URLs are built as `${registry}/-/...`; a trailing slash (pnpr's `/npm/`) would double it
+  options.registry = stripTrailingSlashes(options.registry);
 
   // Run from a temp dir to isolate from the host project's packageManager, .yarnrc.yml, etc.
   const { createTempFolder } = await import('./utils/project');

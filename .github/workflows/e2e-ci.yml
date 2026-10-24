@@ -111,9 +111,10 @@ jobs:
         # The pnpr skip list mirrors PNPR_SKIP_TESTS in scripts/run-e2e.sh:
         # known gaps in the published @pnpm/pnpr, tracked in the workspace
         # audit (informe 46). Drop entries as a release ships each fix.
+        # pnpr answers npm under /npm/ only since 0.1.0-alpha.16 (the prefix exists since alpha.11).
         run: |
           if [ "${{ matrix.registry }}" = "pnpr" ]; then
-            node tools/e2e-cli/bin/e2e-cli.js --registry http://localhost:4873 --pm "${{ matrix.pm }}" -v \
+            node tools/e2e-cli/bin/e2e-cli.js --registry http://localhost:4873/npm/ --pm "${{ matrix.pm }}" -v \
               --skip-test deprecate --skip-test search --skip-test login \
               --skip-test scenario:tarballs --skip-test scenario:metadata --skip-test scenario:search
           else
