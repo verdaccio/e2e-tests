@@ -160,7 +160,7 @@ export function changePasswordTests(config: RegistryConfig) {
     // ── Server error path ────────────────────────────────────────
 
     maybeIt(features.changePassword.wrongOldPassword)(
-      'should show an error banner when the old password is wrong',
+      'should show an error when the old password is wrong',
       () => {
         cy.intercept('PUT', '/-/verdaccio/sec/reset_password').as('reset');
         typeUsernameIfPresent(user);

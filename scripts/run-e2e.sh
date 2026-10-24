@@ -295,9 +295,13 @@ if [[ "$SERVER" == "pnpr" && -n "$PNPR_SKIP_TESTS" ]]; then
   done
 fi
 
+# pnpr answers npm under /npm/ only since 0.1.0-alpha.16 (the prefix exists since alpha.11)
+REGISTRY_URL="http://localhost:${PORT}"
+[[ "$SERVER" == "pnpr" ]] && REGISTRY_URL="${REGISTRY_URL}/npm/"
+
 set +e
 node "$E2E_CLI" \
-  --registry "http://localhost:${PORT}" \
+  --registry "$REGISTRY_URL" \
   --pm "$PM_ARG" \
   ${UPLINK_ARGS[@]+"${UPLINK_ARGS[@]}"} \
   ${SKIP_ARGS[@]+"${SKIP_ARGS[@]}"}
