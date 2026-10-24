@@ -1,6 +1,7 @@
 import assert from 'assert';
 
 import { TestContext, TestDefinition } from '../types';
+import { stripTrailingSlashes } from '../utils/http-client';
 
 async function testPing(ctx: TestContext): Promise<void> {
   const type = ctx.adapter.type;
@@ -33,9 +34,10 @@ async function testPing(ctx: TestContext): Promise<void> {
     assert.ok(true, 'ping succeeded');
   } else {
     const parsedBody = JSON.parse(resp.stdout);
+    // npm adds the trailing slash to a bare host but not to a path such as pnpr's /npm
     assert.strictEqual(
-      parsedBody.registry,
-      ctx.registryUrl + '/',
+      stripTrailingSlashes(String(parsedBody.registry)),
+      stripTrailingSlashes(ctx.registryUrl),
       `Expected registry "${ctx.registryUrl}/" but got "${parsedBody.registry}"`
     );
   }

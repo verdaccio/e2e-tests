@@ -37,6 +37,13 @@ export const ABBREVIATED_ACCEPT = 'application/vnd.npm.install-v1+json';
  * Registry URL for a package name. Scoped names are encoded with the same
  * `%2f` form npm clients use: `@scope%2fname`.
  */
+/** `url` without trailing slashes; a loop instead of a regex, which CodeQL flags as ReDoS-prone. */
+export function stripTrailingSlashes(url: string): string {
+  let end = url.length;
+  while (end > 0 && url[end - 1] === '/') end--;
+  return url.slice(0, end);
+}
+
 export function packumentUrl(registryUrl: string, pkgName: string): string {
   const encoded = pkgName.startsWith('@') ? pkgName.replaceAll('/', '%2f') : pkgName;
   return `${registryUrl.replace(/\/$/, '')}/${encoded}`;
