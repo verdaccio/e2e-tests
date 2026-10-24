@@ -22,6 +22,20 @@ export interface TestIds {
     helpCard: string;
     /** 404 "not found" container. */
     notFound: string;
+    /** Filter / scope / sort bar above the package list (9.x). */
+    packageListToolbar: string;
+    /** Text filter input inside the toolbar. */
+    packageListFilter: string;
+    /** Native input of the scope select (only with more than one scope). */
+    packageListScope: string;
+    /** Message shown when the filter matches no package. */
+    packageListNoMatch: string;
+    /** Prefix of the welcome card setup tabs: `<prefix><manager>`. */
+    helpSetupTabPrefix: string;
+    /** Note on the welcome card explaining cached uplink packages. */
+    helpUplinksNote: string;
+    /** Step list of the publishing guide, in the welcome card and the settings (9.x). */
+    helpGuide: string;
   };
   header: {
     /** Outermost `<NavBar>` element. */
@@ -40,6 +54,10 @@ export interface TestIds {
     loginButton: string;
     /** Gear icon that opens the settings dialog. */
     settingsTooltip: string;
+    /** "Publishing" tab of the settings dialog (9.x). */
+    settingsPublishTab: string;
+    /** Panel of the "Publishing" tab (9.x). */
+    settingsPublishPanel: string;
     /** Info icon that opens the registry info dialog. */
     infoTooltip: string;
     /**
@@ -80,6 +98,8 @@ export interface TestIds {
     itemList: string;
     /** Package name link in the package list (home + search results). */
     title: string;
+    /** Version link of a package list item, to its version page (9.x). */
+    versionLink: string;
     /** Readme container on the package detail page. */
     readme: string;
     /** Sidebar container on the package detail page. */
@@ -92,6 +112,14 @@ export interface TestIds {
     installYarn: string;
     /** Individual install line for pnpm. */
     installPnpm: string;
+    /** Individual install line for bun (9.x). */
+    installBun: string;
+    /** `.npmrc` registry line below the install commands (9.x). */
+    installNpmrc: string;
+    /** Copy button of the `.npmrc` registry line. */
+    installNpmrcCopy: string;
+    /** Tab that shows the readme. */
+    readmeTab: string;
     /** Keyword list below the install section. */
     keywordList: string;
     /** Tab that reveals the dependencies view. */
@@ -116,6 +144,12 @@ export interface TestIds {
     rawViewerDialog: string;
     /** Close button inside the raw viewer dialog. */
     closeRawViewer: string;
+  };
+  search: {
+    /** Prefix of the origin group headers: `<prefix>private|cached|remote`. */
+    groupPrefix: string;
+    /** Prefix of the origin icon on each result: `<prefix>private|...`. */
+    originPrefix: string;
   };
   errors: {
     /**
@@ -163,6 +197,13 @@ export const DEFAULT_TEST_IDS: TestIds = {
   home: {
     helpCard: 'help-card',
     notFound: '404',
+    packageListToolbar: 'package-list-toolbar',
+    packageListFilter: 'package-list-filter',
+    packageListScope: 'package-list-scope',
+    packageListNoMatch: 'package-list-no-match',
+    helpSetupTabPrefix: 'help-setup-',
+    helpUplinksNote: 'help-uplinks-note',
+    helpGuide: 'help-guide',
   },
   header: {
     container: 'header',
@@ -173,6 +214,8 @@ export const DEFAULT_TEST_IDS: TestIds = {
     customLogo: 'custom-logo',
     loginButton: 'header--button-login',
     settingsTooltip: 'header--tooltip-settings',
+    settingsPublishTab: 'settings-publish-tab',
+    settingsPublishPanel: 'settings-publish',
     infoTooltip: 'header--tooltip-info',
     themeSwitchLight: 'header--button--light',
     themeSwitchDark: 'header--button--dark',
@@ -192,12 +235,17 @@ export const DEFAULT_TEST_IDS: TestIds = {
   package: {
     itemList: 'package-item-list',
     title: 'package-title',
+    versionLink: 'package-version-link',
     readme: 'readme',
     sidebar: 'sidebar',
     installList: 'installList',
     installNpm: 'installListItem-npm',
     installYarn: 'installListItem-yarn',
     installPnpm: 'installListItem-pnpm',
+    installBun: 'installListItem-bun',
+    installNpmrc: 'install-npmrc',
+    installNpmrcCopy: 'installNpmrc',
+    readmeTab: 'readme-tab',
     keywordList: 'keyword-list',
     dependenciesTab: 'dependencies-tab',
     dependencies: 'dependencies',
@@ -210,6 +258,10 @@ export const DEFAULT_TEST_IDS: TestIds = {
     rawBtn: 'raw-btn',
     rawViewerDialog: 'rawViewer--dialog',
     closeRawViewer: 'close-raw-viewer',
+  },
+  search: {
+    groupPrefix: 'search-group-',
+    originPrefix: 'search-origin-',
   },
   errors: {
     genericError: 'generic-error',
@@ -255,6 +307,7 @@ export function mergeTestIds(defaults: TestIds, overrides?: DeepPartial<TestIds>
     footer: { ...defaults.footer, ...overrides.footer },
     login: { ...defaults.login, ...overrides.login },
     package: { ...defaults.package, ...overrides.package },
+    search: { ...defaults.search, ...overrides.search },
     errors: { ...defaults.errors, ...overrides.errors },
   };
 }

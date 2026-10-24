@@ -123,7 +123,8 @@ export function publishTests(config: RegistryConfig) {
       cy.wait('@sidebar');
       // publishPackage writes `keywords: ['verdaccio', 'e2e', 'test']`
       // into the generated package.json.
-      cy.getByTestId(pkg.keywordList).should('be.visible');
+      // the sidebar scrolls; a taller install box can push the keywords below the fold
+      cy.getByTestId(pkg.keywordList).scrollIntoView().should('be.visible');
       cy.getByTestId(pkg.keywordList).should('contain.text', 'verdaccio');
       cy.getByTestId(pkg.keywordList).should('contain.text', 'e2e');
       cy.getByTestId(pkg.keywordList).should('contain.text', 'test');

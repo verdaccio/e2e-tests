@@ -39,7 +39,8 @@ export function settingsTests(config: RegistryConfig) {
     it('should show both Package Managers and Translations tabs', () => {
       cy.getByTestId(header.settingsTooltip).click();
       cy.get('[role="dialog"]').should('be.visible');
-      cy.get('[role="dialog"] [role="tab"]').should('have.length', 2);
+      // 9.x adds a "Publishing" tab, so count the two this test is about as a minimum
+      cy.get('[role="dialog"] [role="tab"]').should('have.length.at.least', 2);
       cy.contains('[role="dialog"] [role="tab"]', 'Translations').should('be.visible');
     });
 
@@ -70,8 +71,10 @@ export function settingsTests(config: RegistryConfig) {
           .then((englishTitle) => {
             // Click the German card. We scope to the dialog + the MUI
             // card class to avoid matching other "German" text.
-            cy.contains('[role="dialog"] .MuiCard-root', 'German').click({
-              force: true,
+            // released UIs handle the click on the card, 9.x on its CardActionArea
+            cy.contains('[role="dialog"] .MuiCard-root', 'German').then(($card) => {
+              const $area = $card.find('.MuiCardActionArea-root');
+              cy.wrap($area.length ? $area : $card).click({ force: true });
             });
 
             // The English tab label "Translations" must no longer be

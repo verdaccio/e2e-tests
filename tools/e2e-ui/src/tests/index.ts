@@ -11,3 +11,4 @@ export { i18nKeyTests } from './i18n-keys';
 export { signupTests } from './signup';
 export { manifestRenderingTests } from './manifest-rendering';
 export { sessionTests } from './session';
+export { homeDetailUxTests } from './home-detail-ux';
