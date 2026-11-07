@@ -1,4 +1,12 @@
-import { randomBytes } from 'crypto';
+import type { KeyObject } from 'crypto';
+import {
+  createECDH,
+  createHash,
+  createPrivateKey,
+  createPublicKey,
+  createSign,
+  randomBytes,
+} from 'crypto';
 import buildDebug from 'debug';
 import { Server, createServer } from 'http';
 
@@ -22,7 +30,61 @@ type MockPackage = {
   tarball: Buffer;
   shasum: string;
   integrity: string;
+  /** Registry signature over `name@version:integrity`, as registry.npmjs.org publishes it. */
+  signatures?: { keyid: string; sig: string }[];
 };
+
+/** How the uplink signs a package: like npmjs, with a broken signature, or not at all. */
+export type MockSignature = 'valid' | 'tampered' | 'none';
+
+export type MockRegistryKey = {
+  expires: null;
+  keyid: string;
+  keytype: 'ecdsa-sha2-nistp256';
+  scheme: 'ecdsa-sha2-nistp256';
+  key: string;
+};
+
+// An EC P-256 private key whose scalar is the sha256 of the seed; the public point comes from ECDH.
+function deterministicKey(seed: string): KeyObject {
+  const ecdh = createECDH('prime256v1');
+  ecdh.setPrivateKey(createHash('sha256').update(seed).digest());
+  const point = ecdh.getPublicKey();
+  const b64url = (b: Buffer) => b.toString('base64url');
+  return createPrivateKey({
+    format: 'jwk',
+    key: {
+      kty: 'EC',
+      crv: 'P-256',
+      d: b64url(ecdh.getPrivateKey()),
+      x: b64url(point.subarray(1, 33)),
+      y: b64url(point.subarray(33, 65)),
+    },
+  });
+}
+
+// `keyid` is the SSH fingerprint of the public key, the convention npmjs uses
+function sshFingerprint(spki: Buffer): string {
+  const field = (b: Buffer) => {
+    const len = Buffer.alloc(4);
+    len.writeUInt32BE(b.length);
+    return Buffer.concat([len, b]);
+  };
+  const { x, y } = createPublicKey({ key: spki, format: 'der', type: 'spki' }).export({
+    format: 'jwk',
+  }) as { x: string; y: string };
+  const point = Buffer.concat([
+    Buffer.from([4]),
+    Buffer.from(x, 'base64url'),
+    Buffer.from(y, 'base64url'),
+  ]);
+  const blob = Buffer.concat([
+    field(Buffer.from('ecdsa-sha2-nistp256')),
+    field(Buffer.from('nistp256')),
+    field(point),
+  ]);
+  return 'SHA256:' + createHash('sha256').update(blob).digest('base64').replace(/=+$/, '');
+}
 
 /**
  * Minimal controllable npm uplink used by scenario:uplink-failure.
@@ -34,17 +96,49 @@ type MockPackage = {
 export class MockUplink {
   public mode: UplinkMode = 'ok';
   public requests: string[] = [];
+  /** The signing key this uplink publishes on `/-/npm/v1/keys`; the same on every run. */
+  public readonly registryKey: MockRegistryKey;
   private server?: Server;
   private packages = new Map<string, MockPackage>();
   private searchResults: { name: string; version: string }[] = [];
+  private readonly privateKey: KeyObject;
 
-  constructor(public readonly port: number) {}
+  constructor(public readonly port: number) {
+    // Derived from a fixed seed, not stored: registries cache signing keys (Verdaccio
+    // for an hour), so a key that changed per run would break every second run.
+    this.privateKey = deterministicKey('verdaccio-e2e-mock-uplink');
+    const spki = createPublicKey(this.privateKey).export({ type: 'spki', format: 'der' });
+    this.registryKey = {
+      expires: null,
+      keyid: sshFingerprint(spki),
+      keytype: 'ecdsa-sha2-nistp256',
+      scheme: 'ecdsa-sha2-nistp256',
+      key: spki.toString('base64'),
+    };
+  }
 
-  /** Register a package served by this uplink; tarball is random (incompressible) bytes unless one is given. */
-  addPackage(name: string, tarballBytes: number | Buffer = 64 * 1024): MockPackage {
+  /**
+   * Register a package served by this uplink; tarball is random (incompressible) bytes unless
+   * one is given. `signature` adds a registry signature like npmjs does ('valid'), one that
+   * does not match the tarball ('tampered'), or none (default, like most private registries).
+   */
+  addPackage(
+    name: string,
+    tarballBytes: number | Buffer = 64 * 1024,
+    signature: MockSignature = 'none'
+  ): MockPackage {
     const tarball = Buffer.isBuffer(tarballBytes) ? tarballBytes : randomBytes(tarballBytes);
     const { shasum, integrity } = computeDist(tarball);
     const pkg: MockPackage = { name, version: '1.0.0', tarball, shasum, integrity };
+    if (signature !== 'none') {
+      // npm verifies exactly this message with the key published under `keyid`
+      const signed = signature === 'valid' ? integrity : 'sha512-tampered';
+      const sig = createSign('SHA256')
+        .update(`${name}@${pkg.version}:${signed}`)
+        .end()
+        .sign(this.privateKey, 'base64');
+      pkg.signatures = [{ keyid: this.registryKey.keyid, sig }];
+    }
     this.packages.set(name, pkg);
     return pkg;
   }
@@ -96,7 +190,12 @@ export class MockUplink {
           name: pkg.name,
           version: pkg.version,
           description: 'mock uplink package',
-          dist: { tarball: tarballUrl, shasum: pkg.shasum, integrity: pkg.integrity },
+          dist: {
+            tarball: tarballUrl,
+            shasum: pkg.shasum,
+            integrity: pkg.integrity,
+            ...(pkg.signatures ? { signatures: pkg.signatures } : {}),
+          },
         },
       },
       time: {
@@ -117,6 +216,19 @@ export class MockUplink {
         if (this.mode === 'error-500') {
           res.writeHead(500, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ error: 'mock uplink internal error' }));
+          return;
+        }
+
+        // Signing keys: what `npm audit signatures` verifies registry signatures with
+        if (url === '/-/npm/v1/keys') {
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ keys: [this.registryKey] }));
+          return;
+        }
+        // No sigstore attestations here: provenance needs the public Sigstore instance
+        if (url.startsWith('/-/npm/v1/attestations/')) {
+          res.writeHead(404, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'not found' }));
           return;
         }
 

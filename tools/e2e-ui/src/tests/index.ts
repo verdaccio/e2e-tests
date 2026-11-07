@@ -12,3 +12,4 @@ export { signupTests } from './signup';
 export { manifestRenderingTests } from './manifest-rendering';
 export { sessionTests } from './session';
 export { homeDetailUxTests } from './home-detail-ux';
+export { provenanceTests } from './provenance';

@@ -1,5 +1,6 @@
 import {
   allScenarios,
+  auditSignaturesScenario,
   installMultipleDepsScenario,
   metadataScenario,
   minimumReleaseAgeScenario,
@@ -60,5 +61,6 @@ export {
   searchScenario,
   uplinkFailureScenario,
   reservedNamesScenario,
+  auditSignaturesScenario,
   allScenarios,
 };

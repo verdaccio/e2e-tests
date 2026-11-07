@@ -118,6 +118,10 @@ export interface TestIds {
     installNpmrc: string;
     /** Copy button of the `.npmrc` registry line. */
     installNpmrcCopy: string;
+    /** Chip of the "Provenance" sidebar section that opens the provenance dialog (9.x). */
+    provenanceBadge: string;
+    /** Root of the provenance dialog (shares the registry info dialog container). */
+    provenanceDialog: string;
     /** Tab that shows the readme. */
     readmeTab: string;
     /** Keyword list below the install section. */
@@ -245,6 +249,8 @@ export const DEFAULT_TEST_IDS: TestIds = {
     installBun: 'installListItem-bun',
     installNpmrc: 'install-npmrc',
     installNpmrcCopy: 'installNpmrc',
+    provenanceBadge: 'provenance-badge',
+    provenanceDialog: 'registryInfo--dialog',
     readmeTab: 'readme-tab',
     keywordList: 'keyword-list',
     dependenciesTab: 'dependencies-tab',

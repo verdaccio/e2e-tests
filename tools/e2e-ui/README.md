@@ -52,14 +52,15 @@ homeTests(config);
 
 ## Available suites
 
-| Export          | Covers                                                   |
-| --------------- | -------------------------------------------------------- |
-| `homeTests`     | Empty-registry landing page, help card, 404              |
-| `signinTests`   | Login dialog, greeting, logout                           |
-| `layoutTests`   | `/-/static/ui-options.js` health, header chrome, footer  |
-| `searchTests`   | Search input, query fires, empty state, clear            |
-| `settingsTests` | Settings dialog, language picker, language switch        |
-| `publishTests`  | Publishes via `cy.task`, asserts readme / sidebar / tabs |
+| Export            | Covers                                                                                                                                              |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `homeTests`       | Empty-registry landing page, help card, 404                                                                                                         |
+| `signinTests`     | Login dialog, greeting, logout                                                                                                                      |
+| `layoutTests`     | `/-/static/ui-options.js` health, header chrome, footer                                                                                             |
+| `searchTests`     | Search input, query fires, empty state, clear                                                                                                       |
+| `settingsTests`   | Settings dialog, language picker, language switch                                                                                                   |
+| `publishTests`    | Publishes via `cy.task`, asserts readme / sidebar / tabs                                                                                            |
+| `provenanceTests` | "Provenance" sidebar chip + dialog for versions carrying `dist.attestations` / `dist.signatures` (9.x, behind `features.provenance.sidebarSection`) |
 
 ## Configuration
 
@@ -81,6 +82,10 @@ inherit from `DEFAULT_TEST_IDS` / `DEFAULT_SELECTORS`.
 `features.publish.privateDownloadTarball` is disabled by default for
 compatibility with Verdaccio 6.x. Enable it when testing Verdaccio 7.x or 9.x
 builds that support Web UI bearer tokens on protected package tarball routes.
+
+`features.provenance.sidebarSection` is disabled by default: the "Provenance"
+sidebar section ships with the 9.x UI (verdaccio/verdaccio#6447). Enable it on
+master and on 7.x once it consumes that `@verdaccio/ui-theme`.
 
 ## `publishPackage` task
 
