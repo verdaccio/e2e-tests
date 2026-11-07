@@ -272,6 +272,18 @@ export interface Features {
      */
     settingsPublishTab: boolean;
   };
+  provenance: {
+    /**
+     * Whether to run the "Provenance" sidebar section tests: a version
+     * carrying `dist.attestations` or `dist.signatures` shows a chip
+     * under "Distribution" that opens a dialog with the statement type,
+     * the signing key ids and a link to the attestation bundle, and the
+     * build details are only requested when the server announces the
+     * endpoint (`capabilities.provenance`). Ships with 9.x
+     * (verdaccio/verdaccio#6447) — probe, defaults to `false`.
+     */
+    sidebarSection: boolean;
+  };
   changePassword: {
     /**
      * Whether to run the happy-path test (submit valid change,
@@ -373,6 +385,9 @@ export const DEFAULT_FEATURES: Features = {
     versionLink: false,
     settingsPublishTab: false,
   },
+  provenance: {
+    sidebarSection: false,
+  },
   changePassword: {
     happyPath: true,
     validation: true,
@@ -400,6 +415,7 @@ export function mergeFeatures(defaults: Features, overrides?: DeepPartial<Featur
     i18n: { ...defaults.i18n, ...overrides.i18n },
     signup: { ...defaults.signup, ...overrides.signup },
     homeDetailUx: { ...defaults.homeDetailUx, ...overrides.homeDetailUx },
+    provenance: { ...defaults.provenance, ...overrides.provenance },
     changePassword: { ...defaults.changePassword, ...overrides.changePassword },
   };
 }

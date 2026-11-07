@@ -1,4 +1,5 @@
 import { TestDefinition } from '../types';
+import { auditSignaturesScenario } from './audit-signatures';
 import { installMultipleDepsScenario } from './install-multiple-deps';
 import { metadataScenario } from './metadata';
 import { minimumReleaseAgeScenario } from './minimum-release-age';
@@ -15,6 +16,7 @@ export const allScenarios: TestDefinition[] = [
   searchScenario,
   uplinkFailureScenario,
   reservedNamesScenario,
+  auditSignaturesScenario,
 ];
 
 export {
@@ -25,4 +27,5 @@ export {
   metadataScenario,
   uplinkFailureScenario,
   reservedNamesScenario,
+  auditSignaturesScenario,
 };

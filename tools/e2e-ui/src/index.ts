@@ -21,6 +21,7 @@ import {
   i18nKeyTests,
   layoutTests,
   manifestRenderingTests,
+  provenanceTests,
   publishTests,
   searchTests,
   sessionTests,
@@ -58,6 +59,7 @@ export {
   sessionTests,
   signupTests,
   homeDetailUxTests,
+  provenanceTests,
 } from './tests';
 
 /**
@@ -232,5 +234,6 @@ export function registerAllTests(config: RegistryConfig): void {
   sessionTests(config);
   signupTests(config);
   homeDetailUxTests(config);
+  provenanceTests(config);
   changePasswordTests(config);
 }

@@ -83,7 +83,7 @@ storage: ./storage
 auth:
   htpasswd:
     file: ./htpasswd
-    max_users: 1000
+    maxUsers: 1000
 registries:
   local:
     type: hosted
