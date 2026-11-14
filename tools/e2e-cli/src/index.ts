@@ -169,7 +169,10 @@ function printHelp(): void {
                                        scenario:uplink-failure (npm adapter,
                                          needs --uplink-port / E2E_UPLINK_PORT
                                          and a registry started with the config
-                                         from --print-config)
+                                         from --print-config),
+                                       scenario:tarball-disconnect (npm adapter,
+                                         same needs as uplink-failure; on demand:
+                                         E2E_PENDING_CONTRACT_CHECKS=tarball-disconnect)
                             Default: all supported by the PM
 
     --skip-test <name>      Skip a test by name (can be repeated). Unlike

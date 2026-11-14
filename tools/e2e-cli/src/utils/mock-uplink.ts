@@ -19,6 +19,8 @@ export type UplinkMode =
   | 'ok'
   /** Send tarball headers + half the body, then destroy the socket */
   | 'drop-mid-stream'
+  /** Send tarball headers + half the body, then keep the response open */
+  | 'stall-mid-stream'
   /** Delay every response long enough to trip the registry's uplink timeout */
   | 'slow'
   /** Respond 500 to everything */
@@ -96,6 +98,8 @@ function sshFingerprint(spki: Buffer): string {
 export class MockUplink {
   public mode: UplinkMode = 'ok';
   public requests: string[] = [];
+  /** Stalled tarball responses the registry closed from its side, in closing order. */
+  public stalledClosed: { url: string; closedAt: number }[] = [];
   /** The signing key this uplink publishes on `/-/npm/v1/keys`; the same on every run. */
   public readonly registryKey: MockRegistryKey;
   private server?: Server;
@@ -257,6 +261,16 @@ export class MockUplink {
             res.write(pkg.tarball.subarray(0, Math.floor(pkg.tarball.length / 2)));
             // Kill the connection before the body completes.
             setTimeout(() => res.socket?.destroy(), 50);
+            return;
+          }
+          if (this.mode === 'stall-mid-stream') {
+            res.writeHead(200, {
+              'Content-Type': 'application/octet-stream',
+              'Content-Length': String(pkg.tarball.length),
+            });
+            res.write(pkg.tarball.subarray(0, Math.max(1, Math.floor(pkg.tarball.length / 2))));
+            // Only the registry can end this response: record when it hangs up.
+            res.once('close', () => this.stalledClosed.push({ url, closedAt: Date.now() }));
             return;
           }
           res.writeHead(200, {

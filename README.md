@@ -124,16 +124,17 @@ Without `--uplink-port`, `scenario:uplink-failure` and `scenario:audit-signature
 
 Scenarios are complex, multi-step tests that simulate real-world workflows beyond single-command operations. They exercise the registry under realistic conditions — many parallel requests, transitive dependency resolution, version updates, etc.
 
-| Scenario                         | Description                                                                                                                                                                                                                                | Requires                                          |
-| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------- |
-| `scenario:install-multiple-deps` | Publishes a tree of packages (leaf, shared, intermediate with transitive deps), installs them all in a consumer project, verifies metadata, then publishes updated versions and re-installs with semver ranges                             | `publish`, `install`, `info`                      |
-| `scenario:minimum-release-age`   | Exercises pnpm's `minimumReleaseAge` cooldown + `minimumReleaseAgeExclude` globs: excluded fresh packages install, non-excluded ones are blocked                                                                                           | pnpm 11.1+                                        |
-| `scenario:tarballs`              | HTTP-level tarball battery over a large (~30 MB) package: full download integrity, client aborts mid-download, concurrent downloads, 404s, scoped `%2f` URLs, end-to-end install                                                           | npm adapter                                       |
-| `scenario:metadata`              | HTTP-level packument battery: full and abbreviated (install-v1) metadata shape, `ETag`/304 revalidation, `dist.tarball` URL rewriting, 404 error body, coherence after publish/unpublish                                                   | npm adapter                                       |
-| `scenario:search`                | Contract battery for `GET /-/v1/search`: result shape, real `total`, `from`/`size` pagination (local and merged with an uplink), 400 without `text`, ISO `time`, size clamp, plus a real `npm search` on top                               | npm adapter (uplink checks need `--uplink-port`)  |
-| `scenario:uplink-failure`        | Starts a controllable mock uplink and verifies registry behavior when the upstream is healthy, cuts the connection mid-tarball, is slower than the timeout, or is down                                                                     | npm adapter, `--uplink-port` + battery config     |
-| `scenario:audit-signatures`      | The mock uplink signs its packages like registry.npmjs.org and publishes its key on `/-/npm/v1/keys`; verifies that `npm audit signatures` passes for a package installed through the registry and reports a tampered signature as invalid | npm adapter, `--uplink-port` + `flags.signatures` |
-| `scenario:reserved-names`        | Proxies, installs and publishes packages named like Windows device names (`nul.*`, `@e2e-uplink/con.*`, `aux.*`), which exist on npmjs, and checks the registry stays healthy when the uplink is down                                      | npm adapter, `--uplink-port` + battery config     |
+| Scenario                         | Description                                                                                                                                                                                                                                | Requires                                                                                        |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------- |
+| `scenario:install-multiple-deps` | Publishes a tree of packages (leaf, shared, intermediate with transitive deps), installs them all in a consumer project, verifies metadata, then publishes updated versions and re-installs with semver ranges                             | `publish`, `install`, `info`                                                                    |
+| `scenario:minimum-release-age`   | Exercises pnpm's `minimumReleaseAge` cooldown + `minimumReleaseAgeExclude` globs: excluded fresh packages install, non-excluded ones are blocked                                                                                           | pnpm 11.1+                                                                                      |
+| `scenario:tarballs`              | HTTP-level tarball battery over a large (~30 MB) package: full download integrity, client aborts mid-download, concurrent downloads, 404s, scoped `%2f` URLs, end-to-end install                                                           | npm adapter                                                                                     |
+| `scenario:metadata`              | HTTP-level packument battery: full and abbreviated (install-v1) metadata shape, `ETag`/304 revalidation, `dist.tarball` URL rewriting, 404 error body, coherence after publish/unpublish                                                   | npm adapter                                                                                     |
+| `scenario:search`                | Contract battery for `GET /-/v1/search`: result shape, real `total`, `from`/`size` pagination (local and merged with an uplink), 400 without `text`, ISO `time`, size clamp, plus a real `npm search` on top                               | npm adapter (uplink checks need `--uplink-port`)                                                |
+| `scenario:uplink-failure`        | Starts a controllable mock uplink and verifies registry behavior when the upstream is healthy, cuts the connection mid-tarball, is slower than the timeout, or is down                                                                     | npm adapter, `--uplink-port` + battery config                                                   |
+| `scenario:tarball-disconnect`    | On demand. A client hangs up mid-download of a proxied tarball: the registry must cancel its uplink request right away, and the next download and install must get the complete package                                                    | npm adapter, `--uplink-port` + battery config, `E2E_PENDING_CONTRACT_CHECKS=tarball-disconnect` |
+| `scenario:audit-signatures`      | The mock uplink signs its packages like registry.npmjs.org and publishes its key on `/-/npm/v1/keys`; verifies that `npm audit signatures` passes for a package installed through the registry and reports a tampered signature as invalid | npm adapter, `--uplink-port` + `flags.signatures`                                               |
+| `scenario:reserved-names`        | Proxies, installs and publishes packages named like Windows device names (`nul.*`, `@e2e-uplink/con.*`, `aux.*`), which exist on npmjs, and checks the registry stays healthy when the uplink is down                                      | npm adapter, `--uplink-port` + battery config                                                   |
 
 Run a specific scenario:
 
@@ -198,6 +199,22 @@ Starts a **controllable mock uplink** (on `--uplink-port`) and verifies how the 
 - uplink down: cached packages are still served, everything else fails cleanly
 
 Requires the registry to be started with the config from `--print-config` (it wires the mock uplink in). Gated on `--uplink-port` / `E2E_UPLINK_PORT` — skipped otherwise.
+
+#### `scenario:tarball-disconnect`
+
+**On demand**: not every registry line carries the fix, so it only runs with `E2E_PENDING_CONTRACT_CHECKS=tarball-disconnect` (or `true`) and is reported as `SKIP` otherwise.
+
+```bash
+E2E_PENDING_CONTRACT_CHECKS=tarball-disconnect verdaccio-e2e -r http://localhost:4873 --uplink-port 4874 -t scenario:tarball-disconnect
+```
+
+The scenario owns both ends of the registry. The mock uplink sends half a tarball and keeps the response open, the client drops its connection, and the mock watches the request the registry had open:
+
+- the registry cancels the uplink request right after the client leaves, also with several clients leaving at once
+- the interrupted tarball is not cached truncated: the next download is complete and fetched again from the uplink
+- the package manager installs the interrupted package
+
+A registry without the fix only lets go when its own uplink timeout fires (3s in the `--print-config` config), so the cancellation is asserted well under that: `E2E_DISCONNECT_BUDGET_MS`, default `1500`. Same requirements as `scenario:uplink-failure`.
 
 #### `scenario:reserved-names`
 

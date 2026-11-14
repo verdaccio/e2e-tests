@@ -5,6 +5,7 @@ import { metadataScenario } from './metadata';
 import { minimumReleaseAgeScenario } from './minimum-release-age';
 import { reservedNamesScenario } from './reserved-names';
 import { searchScenario } from './search';
+import { tarballDisconnectScenario } from './tarball-disconnect';
 import { tarballsScenario } from './tarballs';
 import { uplinkFailureScenario } from './uplink-failure';
 
@@ -15,6 +16,7 @@ export const allScenarios: TestDefinition[] = [
   metadataScenario,
   searchScenario,
   uplinkFailureScenario,
+  tarballDisconnectScenario,
   reservedNamesScenario,
   auditSignaturesScenario,
 ];
@@ -26,6 +28,7 @@ export {
   tarballsScenario,
   metadataScenario,
   uplinkFailureScenario,
+  tarballDisconnectScenario,
   reservedNamesScenario,
   auditSignaturesScenario,
 };
