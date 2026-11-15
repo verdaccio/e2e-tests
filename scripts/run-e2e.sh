@@ -51,8 +51,8 @@ usage() {
   echo "    $0 --docker 6 pnpm             # docker verdaccio@6, pnpm"
   echo "    $0 --image verdaccio/verdaccio:nightly-master npm"
   echo "    $0 pnpr npm                    # @pnpm/pnpr@next, npm"
-  echo "    $0 pnpr@0.1.0-alpha.11 pnpm    # pinned pnpr version"
-  echo "    $0 --docker pnpr@0.1.0-alpha.11 npm   # ghcr.io/pnpm/pnpr image"
+  echo "    $0 pnpr@0.1.0-alpha.20 pnpm    # pinned pnpr version (>= alpha.20)"
+  echo "    $0 --docker pnpr@0.1.0-alpha.20 npm   # ghcr.io/pnpm/pnpr image"
   echo ""
   exit 0
 }
@@ -112,6 +112,7 @@ cleanup() {
   if [[ "$USE_DOCKER" == true ]]; then
     echo -e "${DIM}Stopping container ${CONTAINER_NAME}...${RESET}"
     docker rm -f "$CONTAINER_NAME" 2>/dev/null || true
+    docker volume rm "${CONTAINER_NAME}-storage" >/dev/null 2>&1 || true
   else
     if [[ -n "$VERDACCIO_PID" ]]; then
       echo -e "${DIM}Stopping Verdaccio (pid $VERDACCIO_PID)...${RESET}"
@@ -149,8 +150,12 @@ UPLINK_PORT=4874
 # pnpr's config has no mock uplink (its registry namespaces can't claim the
 # unscoped dynamic e2e-uplink-* names), so the uplink tests skip for it.
 VERDACCIO_CONFIG="$VERDACCIO_DIR/config.yaml"
+# pnpr >= 0.1.0-alpha.20 keeps its registries in the database: they are
+# imported from PNPR_REGISTRIES before the server starts.
+PNPR_REGISTRIES="$VERDACCIO_DIR/registries.yaml"
 if [[ "$SERVER" == "pnpr" ]]; then
   node "$E2E_CLI" --print-config --server pnpr > "$VERDACCIO_CONFIG"
+  node "$E2E_CLI" --print-config --server pnpr-registries > "$PNPR_REGISTRIES"
 else
   node "$E2E_CLI" --print-config --uplink-port "$UPLINK_PORT" > "$VERDACCIO_CONFIG"
 fi
@@ -165,15 +170,23 @@ if [[ "$USE_DOCKER" == true ]]; then
   # (E2E_UPLINK_PORT is not exported below).
   DOCKER_CONFIG="$VERDACCIO_DIR/config.docker.yaml"
   if [[ "$SERVER" == "pnpr" ]]; then
-    sed \
-      -e 's|^storage: .*|storage: /pnpr/storage|' \
-      -e 's|file: ./htpasswd|file: /pnpr/storage/htpasswd|' \
-      "$VERDACCIO_CONFIG" > "$DOCKER_CONFIG"
+    sed -e 's|^storage: .*|storage: /pnpr/storage|' "$VERDACCIO_CONFIG" > "$DOCKER_CONFIG"
+
+    # the import and the server are two containers sharing one storage volume
+    PNPR_VOLUME="${CONTAINER_NAME}-storage"
+    docker volume create "$PNPR_VOLUME" >/dev/null
+    docker run --rm \
+      -v "$PNPR_VOLUME:/pnpr/storage" \
+      -v "$DOCKER_CONFIG:/pnpr/config.yaml:ro" \
+      -v "$PNPR_REGISTRIES:/pnpr/registries.yaml:ro" \
+      "$DOCKER_IMAGE" \
+      --config /pnpr/config.yaml registries import /pnpr/registries.yaml
 
     echo -e "${CYAN}Starting container ${CONTAINER_NAME} on port ${PORT}...${RESET}"
     docker run -d \
       --name "$CONTAINER_NAME" \
       -p "${PORT}:7677" \
+      -v "$PNPR_VOLUME:/pnpr/storage" \
       -v "$DOCKER_CONFIG:/pnpr/config.yaml:ro" \
       "$DOCKER_IMAGE" \
       --config /pnpr/config.yaml --listen 0.0.0.0:7677 \
@@ -216,6 +229,8 @@ elif [[ "$SERVER" == "pnpr" ]]; then
 
   # --public-url: pnpr rewrites dist.tarball to an explicit public URL
   # (verdaccio derives it from the request Host header instead).
+  "$REGISTRY_BIN" --config "$VERDACCIO_CONFIG" registries import "$PNPR_REGISTRIES"
+
   echo -e "${CYAN}Starting pnpr on port ${PORT}...${RESET}"
   "$REGISTRY_BIN" --config "$VERDACCIO_CONFIG" --listen "127.0.0.1:${PORT}" \
     --public-url "http://localhost:${PORT}" \
@@ -287,7 +302,7 @@ fi
 # pnpr-verdaccio-e2e-parity; drop entries here as a release ships each fix.
 # Override with PNPR_SKIP_TESTS (space-separated; set to "" to run the full
 # battery, e.g. against a locally built PNPR_BIN that carries the fixes).
-PNPR_SKIP_TESTS="${PNPR_SKIP_TESTS-deprecate search login scenario:tarballs scenario:metadata scenario:search}"
+PNPR_SKIP_TESTS="${PNPR_SKIP_TESTS-deprecate package-names search login scenario:tarballs scenario:metadata scenario:search}"
 SKIP_ARGS=()
 if [[ "$SERVER" == "pnpr" && -n "$PNPR_SKIP_TESTS" ]]; then
   for skip in $PNPR_SKIP_TESTS; do

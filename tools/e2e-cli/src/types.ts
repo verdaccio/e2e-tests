@@ -103,7 +103,7 @@ export type CliOptions = {
   uplinkPort?: number;
   /** Print the recommended registry config for the full battery and exit */
   printConfig?: boolean;
-  /** Registry server --print-config targets: verdaccio (default) or pnpr */
+  /** What --print-config prints: verdaccio (default), pnpr or pnpr-registries */
   server?: string;
   /** Tests to skip by name (reported as SKIP, unlike --test which hides the rest) */
   skipTest?: string[];
