@@ -40,6 +40,6 @@
     "@types/debug": "4.1.13",
     "@types/js-yaml": "4.0.9",
     "@types/node": "26.2.0",
-    "vite": "8.2.1"
+    "vite": "8.2.4"
   }
 }

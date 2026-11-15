@@ -37,6 +37,6 @@
   "devDependencies": {
     "@types/node": "26.2.0",
     "cypress": "15.20.1",
-    "vite": "8.2.1"
+    "vite": "8.2.4"
   }
 }
