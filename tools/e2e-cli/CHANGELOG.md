@@ -1,5 +1,19 @@
 # @verdaccio/e2e-cli
 
+## 4.2.0
+
+### Minor Changes
+
+- d20294f: Follow the pnpr 0.1.0-alpha.20 config format in `--print-config`.
+
+  pnpr now keeps its registries in the database and refuses a config file that declares them, so the battery config is printed in two parts: `--print-config --server pnpr` prints the server settings and `--print-config --server pnpr-registries` prints the registries document to store with `pnpr registries import` before the server starts. Earlier pnpr releases are no longer covered by the printed config.
+
+- d20294f: Add `scenario:tarball-disconnect`, an on-demand scenario for clients that hang up in the middle of a proxied tarball download.
+
+  The mock uplink gets a `stall-mid-stream` mode: it sends half a tarball and keeps the response open, so the scenario can drop the client connection and observe, from the uplink side, whether the registry cancels the request it had open. It then checks that the interrupted tarball is not cached truncated and that the package installs.
+
+  Not every registry line carries the fix yet, so the scenario is skipped unless `E2E_PENDING_CONTRACT_CHECKS=tarball-disconnect` (or `true`) is set. It needs `--uplink-port` and the config from `--print-config`, like `scenario:uplink-failure`.
+
 ## 4.1.0
 
 ### Minor Changes
