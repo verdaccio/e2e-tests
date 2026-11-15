@@ -169,7 +169,10 @@ function printHelp(): void {
                                        scenario:uplink-failure (npm adapter,
                                          needs --uplink-port / E2E_UPLINK_PORT
                                          and a registry started with the config
-                                         from --print-config)
+                                         from --print-config),
+                                       scenario:tarball-disconnect (npm adapter,
+                                         same needs as uplink-failure; on demand:
+                                         E2E_PENDING_CONTRACT_CHECKS=tarball-disconnect)
                             Default: all supported by the PM
 
     --skip-test <name>      Skip a test by name (can be repeated). Unlike
@@ -183,10 +186,12 @@ function printHelp(): void {
     --print-config          Print the recommended registry config for the full
                             battery (max_body_size, mock uplink) and exit
     --server <name>         Registry server the printed config targets:
-                            verdaccio (default) or pnpr. pnpr's config has no
-                            mock uplink (its registry namespaces can't claim
-                            the unscoped dynamic e2e-uplink-* names), so run
-                            it without --uplink-port and the uplink tests skip
+                            verdaccio (default), pnpr (server settings) or
+                            pnpr-registries (the registries document to store
+                            with "pnpr registries import", pnpr >= 0.1.0-alpha.20).
+                            pnpr has no mock uplink (its registry namespaces
+                            can't claim the unscoped dynamic e2e-uplink-* names),
+                            so run it without --uplink-port and the uplink tests skip
     -v, --verbose           Enable debug output
     -h, --help              Show this help
   `);
@@ -196,15 +201,17 @@ export async function main(argv: string[] = process.argv): Promise<void> {
   const options = parseArgs(argv);
 
   if (options.printConfig) {
-    const { buildE2EConfig, buildPnprE2EConfig, DEFAULT_UPLINK_PORT } =
+    const { buildE2EConfig, buildPnprE2EConfig, buildPnprE2ERegistries, DEFAULT_UPLINK_PORT } =
       await import('./utils/e2e-config');
     const server = options.server ?? 'verdaccio';
     if (server === 'pnpr') {
       process.stdout.write(buildPnprE2EConfig());
+    } else if (server === 'pnpr-registries') {
+      process.stdout.write(buildPnprE2ERegistries());
     } else if (server === 'verdaccio') {
       process.stdout.write(buildE2EConfig(options.uplinkPort ?? DEFAULT_UPLINK_PORT));
     } else {
-      console.error(`Unknown --server: "${server}". Supported: verdaccio, pnpr`);
+      console.error(`Unknown --server: "${server}". Supported: verdaccio, pnpr, pnpr-registries`);
       process.exit(1);
     }
     process.exit(0);
