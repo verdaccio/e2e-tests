@@ -60,6 +60,7 @@ export {
   signupTests,
   homeDetailUxTests,
   provenanceTests,
+  prefixedRoutingTests,
 } from './tests';
 
 /**
