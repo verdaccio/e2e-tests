@@ -13,3 +13,4 @@ export { manifestRenderingTests } from './manifest-rendering';
 export { sessionTests } from './session';
 export { homeDetailUxTests } from './home-detail-ux';
 export { provenanceTests } from './provenance';
+export { prefixedRoutingTests } from './prefixed-routing';

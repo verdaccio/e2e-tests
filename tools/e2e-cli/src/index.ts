@@ -186,9 +186,11 @@ function printHelp(): void {
     --print-config          Print the recommended registry config for the full
                             battery (max_body_size, mock uplink) and exit
     --server <name>         Registry server the printed config targets:
-                            verdaccio (default), pnpr (server settings) or
+                            verdaccio (default), pnpr (server settings),
                             pnpr-registries (the registries document to store
-                            with "pnpr registries import", pnpr >= 0.1.0-alpha.20).
+                            with "pnpr registries import") or pnpr-grants
+                            (permissions to store with "pnpr grants import"
+                            after the registries). Requires pnpr >= 0.1.0-alpha.21.
                             pnpr has no mock uplink (its registry namespaces
                             can't claim the unscoped dynamic e2e-uplink-* names),
                             so run it without --uplink-port and the uplink tests skip
@@ -201,17 +203,26 @@ export async function main(argv: string[] = process.argv): Promise<void> {
   const options = parseArgs(argv);
 
   if (options.printConfig) {
-    const { buildE2EConfig, buildPnprE2EConfig, buildPnprE2ERegistries, DEFAULT_UPLINK_PORT } =
-      await import('./utils/e2e-config');
+    const {
+      buildE2EConfig,
+      buildPnprE2EConfig,
+      buildPnprE2ERegistries,
+      buildPnprE2EGrants,
+      DEFAULT_UPLINK_PORT,
+    } = await import('./utils/e2e-config');
     const server = options.server ?? 'verdaccio';
     if (server === 'pnpr') {
       process.stdout.write(buildPnprE2EConfig());
     } else if (server === 'pnpr-registries') {
       process.stdout.write(buildPnprE2ERegistries());
+    } else if (server === 'pnpr-grants') {
+      process.stdout.write(buildPnprE2EGrants());
     } else if (server === 'verdaccio') {
       process.stdout.write(buildE2EConfig(options.uplinkPort ?? DEFAULT_UPLINK_PORT));
     } else {
-      console.error(`Unknown --server: "${server}". Supported: verdaccio, pnpr, pnpr-registries`);
+      console.error(
+        `Unknown --server: "${server}". Supported: verdaccio, pnpr, pnpr-registries, pnpr-grants`
+      );
       process.exit(1);
     }
     process.exit(0);

@@ -64,6 +64,37 @@ homeTests(config);
 
 ## Configuration
 
+### Prefixed routing fixture
+
+`prefixedRoutingTests(config)` checks a registry mounted under a URL prefix with
+asynchronous middleware. Register it explicitly; `registerAllTests` does not
+include it because it needs a dedicated server fixture.
+
+```ts
+import { createRegistryConfig, prefixedRoutingTests } from '@verdaccio/e2e-ui';
+
+prefixedRoutingTests(createRegistryConfig({ registryUrl: 'http://localhost:4873' }));
+```
+
+Alongside `setupVerdaccioTasks`, register these tasks in `setupNodeEvents`:
+
+- `startRoutingRegistry`: start an isolated instance of the Verdaccio build under
+  test with asynchronous middleware. Return `{ registryUrl, publishUrl }`, where
+  `registryUrl` includes the actual Express mount prefix (for example,
+  `http://127.0.0.1:4874/registry`) and `publishUrl` reaches the same instance for
+  publishing the fixture package. These URLs override the configured registry URL
+  for this suite.
+- `stopRoutingRegistry`: close the server, remove its temporary storage, and
+  return `null`. It must be safe to call more than once. Also call it from
+  `after:spec` so interrupted or failed tests do not leave the fixture running.
+
+The consumer owns the server fixture so it tests its own Verdaccio build and
+middleware plugin. The shared suite publishes a scoped package, checks the
+prefixed package list, detail URL, sidebar, README, and ping, then cleans up the
+publish directory and stops the fixture. Normal `testIds` overrides apply.
+
+### Registry options
+
 ```ts
 createRegistryConfig({
   registryUrl: 'http://localhost:4873',

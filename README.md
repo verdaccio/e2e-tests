@@ -53,6 +53,7 @@ verdaccio-e2e -r http://localhost:4873 -v   # verbose — shows each command
 | `--timeout <ms>`       | Per-test timeout                                                    | `50000`            |
 | `--uplink-port <port>` | Port for the mock uplink used by `scenario:uplink-failure`          | `$E2E_UPLINK_PORT` |
 | `--print-config`       | Print the recommended registry config for the full battery and exit | —                  |
+| `--server <name>`      | Printed config: `verdaccio`, `pnpr`, `pnpr-registries` or `pnpr-grants` | `verdaccio`       |
 | `-v, --verbose`        | Show each command executed                                          | `false`            |
 
 The suite runs **fully offline**: every test publishes the packages it consumes, the generated registry config has no npmjs uplink, and the prepared projects disable npm's implicit audit/fund requests. Nothing in the suite depends on npmjs.org being reachable.
@@ -68,6 +69,25 @@ verdaccio-e2e --registry http://localhost:4873 --uplink-port 4874
 ```
 
 Without `--uplink-port`, `scenario:uplink-failure` and `scenario:audit-signatures` are skipped and the rest of the suite runs against any plain registry. `scenario:audit-signatures` also needs the registry to relay `/-/npm/v1/keys` (on Verdaccio, the experimental `flags.signatures: true` added to the printed config); against a registry that answers 404 there it skips as well.
+
+For pnpr >= `0.1.0-alpha.21`, print the server settings, registries and grants
+separately. Import the registries first, then their grants, before starting the
+server. The grants allow public reads and authenticated publishing, metadata
+updates and unpublishing:
+
+```bash
+mkdir -p /tmp/pnpr-e2e
+verdaccio-e2e --print-config --server pnpr > /tmp/pnpr-e2e/config.yaml
+verdaccio-e2e --print-config --server pnpr-registries > /tmp/pnpr-e2e/registries.yaml
+verdaccio-e2e --print-config --server pnpr-grants > /tmp/pnpr-e2e/grants.yaml
+pnpr --config /tmp/pnpr-e2e/config.yaml registries import /tmp/pnpr-e2e/registries.yaml
+pnpr --config /tmp/pnpr-e2e/config.yaml grants import /tmp/pnpr-e2e/grants.yaml
+pnpr --config /tmp/pnpr-e2e/config.yaml --listen 127.0.0.1:4873 --public-url http://localhost:4873 &
+```
+
+Earlier pnpr releases are not supported by this configuration. pnpr runs without
+the mock uplink; `scripts/run-e2e.sh pnpr npm` handles this setup and applies the
+skip list for the published pnpr's known gaps.
 
 ### Supported Package Managers
 

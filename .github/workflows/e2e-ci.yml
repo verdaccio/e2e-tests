@@ -79,13 +79,14 @@ jobs:
       - name: Generate registry config
         # Shared battery config from the CLI itself. verdaccio: max_body_size
         # for scenario:tarballs, mock uplink (port 4874) for
-        # scenario:uplink-failure. pnpr: server settings plus a registries
-        # document it keeps in its database (since 0.1.0-alpha.20), no uplink.
+        # scenario:uplink-failure. pnpr: server settings plus registries and
+        # grants documents it keeps in its database (>= 0.1.0-alpha.21), no uplink.
         run: |
           mkdir -p /tmp/registry-e2e
           if [ "${{ matrix.registry }}" = "pnpr" ]; then
             node tools/e2e-cli/bin/e2e-cli.js --print-config --server pnpr > /tmp/registry-e2e/config.yaml
             node tools/e2e-cli/bin/e2e-cli.js --print-config --server pnpr-registries > /tmp/registry-e2e/registries.yaml
+            node tools/e2e-cli/bin/e2e-cli.js --print-config --server pnpr-grants > /tmp/registry-e2e/grants.yaml
           else
             node tools/e2e-cli/bin/e2e-cli.js --print-config --uplink-port 4874 > /tmp/registry-e2e/config.yaml
           fi
@@ -96,6 +97,7 @@ jobs:
           cd /tmp/registry-e2e
           if [ "${{ matrix.registry }}" = "pnpr" ]; then
             pnpr --config /tmp/registry-e2e/config.yaml registries import /tmp/registry-e2e/registries.yaml
+            pnpr --config /tmp/registry-e2e/config.yaml grants import /tmp/registry-e2e/grants.yaml
             pnpr --config /tmp/registry-e2e/config.yaml --listen 127.0.0.1:4873 --public-url http://localhost:4873 &
           else
             verdaccio --config /tmp/registry-e2e/config.yaml --listen 4873 &
